@@ -102,11 +102,51 @@ rct.compliers <- data.frame("treatment"=treat.rct,
                             "weights"=rct.weights,
                             "cluster"=rct.id)
 
+# put in ROCR object # predicted vs. actual compliers
+pred.compliers <- ROCR::prediction(rct.compliers$comppredicted[rct.compliers$treatment==1],
+                                   rct.compliers$complier[rct.compliers$treatment==1])
+
+# Get optimal cut-point
+cost.perf <- performance(pred.compliers, "cost")
+opt.cut <- pred.compliers@cutoffs[[1]][which.min(cost.perf@y.values[[1]])]
+opt.cut
+ # predicted compliers from the control group
+
+rct.compliers$complier_control<-ifelse(rct.compliers$treatment==0 &
+                                         rct.compliers$comppredicted>opt.cut,1,0)
+rct.compliers$complier_predicted<-rct.compliers$complier+rct.compliers$complier_control
+
+
+
+# Fit a regression to the compliers in the RCT
+y.col <- seq_along(Y.rct)
+Y.rct.response <- Y.rct[which(rct.compliers$complier_predicted==1),]
+X.rct.response <- data.frame("complier"=compl.rct[which(rct.compliers$complier_predicted==1)],
+                              x.rct[which(rct.compliers$complier_predicted==1),])
+
+# For computing unadjusted PATT <-PATT FOR RCT
+#Y.rct.response.unadj <- Y.rct[which(rct.compliers$complier_predicted==1 | rct.compliers$complier_predicted==0),]
+Y.rct.response.unadj <- Y.rct
+X.rct.response.unadj <- data.frame("complier"=compl.rct,
+                                    x.rct)
+
+# Run response model
+set.seed(42)
+response.mod <- lapply(y.col, function (i) SuperLearner(Y=Y.rct.response[,i],
+                                                        X=X.rct.response,
+                                                        SL.library=SL.library.reg,
+                                                        family="gaussian",
+                                                        id=rct.id[which(rct.compliers$complier_predicted==1)],
+                                                        obsWeights = rct.weights[which(rct.compliers$complier_predicted==1)]))
+
+names(response.mod) <- colnames(Y.ohie.response)[y.col] # name each element of list
+
+response.mod # summarize
 
 
 
 
 #roc
-#roc.perf <- performance(pred.compliers, measure = "tpr", x.measure = "fpr") # plot ROC curve
-#plot(roc.perf)
-#abline(a=0, b= 1)
+roc.perf <- performance(pred.compliers, measure = "tpr", x.measure = "fpr") # plot ROC curve
+plot(roc.perf)
+abline(a=0, b= 1)
