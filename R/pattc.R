@@ -139,12 +139,45 @@ response.mod <- lapply(y.col, function (i) SuperLearner(Y=Y.rct.response[,i],
                                                         id=rct.id[which(rct.compliers$complier_predicted==1)],
                                                         obsWeights = rct.weights[which(rct.compliers$complier_predicted==1)]))
 
-names(response.mod) <- colnames(Y.ohie.response)[y.col] # name each element of list
-
-response.mod # summarize
+names(response.mod) <- colnames(Y.rct.response)[y.col] # name each element of list
 
 
 
+set.seed(42)
+response.mod.patt <- lapply(y.col, function (i) SuperLearner(Y=Y.rct.response.unadj[,i],
+                                                             X=X.rct.response.unadj,
+                                                             SL.library=SL.library.reg,
+                                                             family="gaussian",
+                                                             id=rct.id,
+                                                             obsWeights = rct.weights))
+
+# Use response model to estimate potential outcomes for population "compliers" on medicaid
+pop.tr.counterfactual <- cbind("treatment" = rep(1, length(which(compl.pop==1))),
+                               x.pop[which(compl.pop==1),])
+pop.ctrl.counterfactual <- cbind("treatment" = rep(0, length(which(compl.pop==1))),
+                                 x.pop[which(compl.pop==1),])
+
+
+
+
+
+#CACE
+# Compute CACE
+
+rct.cace <- lapply(y.col, function (i) WtC(x=as.matrix(Y.ohie[[i]][which(treatment.ohie==1)]),
+                                           y=as.matrix(Y.ohie[[i]][which(treatment.ohie==0)]),
+                                           c=as.matrix(rct.compliers$complier[which(treatment.ohie==1)]),
+                                           bootse=TRUE,
+                                           bootp = TRUE,
+                                           bootn = 999,
+                                           weight = ohie.weights[which(treatment.ohie == 1)],
+                                           weighty= ohie.weights[which(treatment.ohie == 0)],
+                                           weightc=rct.compliers$weights[which(treatment.ohie == 1)],
+                                           cluster = ohie.hhid[which(treatment.ohie == 1)],
+                                           clustery=ohie.hhid[which(treatment.ohie==0)],
+                                           clusterc=rct.compliers$cluster[which(treatment.ohie == 1)],
+                                           samedata=FALSE,
+                                           equivalence = FALSE))
 
 #roc
 roc.perf <- performance(pred.compliers, measure = "tpr", x.measure = "fpr") # plot ROC curve
