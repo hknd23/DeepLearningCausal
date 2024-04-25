@@ -10,7 +10,7 @@ WtC <- function (x, y, c=NULL, weight = NULL, weighty = NULL, weightc = NULL, cl
     cluster <- rep(1, length(x))
   }
   if (is.null(clustery)) {
-    clustery <- rep(1, length(x))
+    clustery <- rep(1, length(y))
   }
   if (bootse == FALSE & bootp == TRUE)
     warning("bootp can only be used with bootstrapped standard errors")

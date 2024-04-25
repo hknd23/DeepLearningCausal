@@ -12,14 +12,9 @@ if (sum(colnames(rctdata)==colnames(popdata))!=
 
 #loading testing dataset
 load(paste0(getwd(),"/data/prepare-analysis.RData"))
-<<<<<<< HEAD
 #load functions
 source(paste0(getwd(),"/R/superlearners.R"))
 source(paste0(getwd(),"/R/wtc.R"))
-=======
-
-
->>>>>>> parent of c01e0ea (remove large files)
 #general formula Y ~ X|D where Y= Outcome, X= Covariates, D=Compliance (in the population)
 ##### Tobe added: formula code
 RCTDATA <- data.frame(treatment,
@@ -89,13 +84,7 @@ rct.weights<-rct.data[,weight]
 #ComplierMod
 # Predict who is a complier in the control group
 set.seed(42)
-<<<<<<< HEAD
 #Checked same, so rerun this (clear code?)
-=======
-source(paste0(getwd(),"/R/superlearners.R"))
-
-
->>>>>>> parent of c01e0ea (remove large files)
 complier.mod <- SuperLearner(Y=compl.rct[which(treat.rct==1)],
                              X=x.rct[which(treat.rct == 1),],
                              SL.library=SL.library.class,
@@ -204,11 +193,11 @@ response.mod.patt <- lapply(y.col, function (i) SuperLearner(Y=Y.rct.response.un
                                                              family="gaussian",
                                                              id=rct.id,
                                                              obsWeights = rct.weights))
-names(response.mod.patt)<-colnames(Y.pop)
+
 # Use response model to estimate potential outcomes for population "compliers" on medicaid
 
 
-#Error in eval(predvars, data, env) : object 'complier' not found
+
 Y.hat.1.unadj <- lapply(colnames(Y.pop), function (i) predict(response.mod.patt[[i]], nrt.tr.counterfactual, onlySL = T)$pred)
 Y.hat.0.unadj <- lapply(colnames(Y.pop), function (i) predict(response.mod.patt[[i]], nrt.ctrl.counterfactual, onlySL = T)$pred)
 
