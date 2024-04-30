@@ -8,7 +8,8 @@ library(gbm)
 library(xgboost)
 
 # Creates additional randomForest wrappers changing both mtry and nodesize
-tuneGrid <- expand.grid(mtry=c(1,5,10), nodesize=c(1,5))
+#tuneGrid <- expand.grid(mtry=c(1,5,10), nodesize=c(1,5))
+
 create.SL.randomForest <- function(tune = list(mtry = c(1, 5, 10), nodesize = c(1, 5))) {
   tuneGrid <- expand.grid(tune, stringsAsFactors = FALSE)
   for(mm in seq(nrow(tuneGrid))) {
@@ -16,7 +17,6 @@ create.SL.randomForest <- function(tune = list(mtry = c(1, 5, 10), nodesize = c(
   }
   invisible(TRUE)
 }
-create.SL.randomForest()
 
 # Creates knn wrappers in the global environment with different nearest neighbors. The default value for k in SL.knn is 10
 create.SL.knn <- function(k = c(20, 30, 40, 50)) {
@@ -25,7 +25,7 @@ create.SL.knn <- function(k = c(20, 30, 40, 50)) {
   }
   invisible(TRUE)
 }
-create.SL.knn()
+
 
 # Creates glmnet wrappers in the global environment with different alpha. The default value for alpha in SL.glmnet is 1
 create.SL.glmnet <- function(alpha = c(0,0.25, 0.50, 0.75)) {
@@ -34,7 +34,6 @@ create.SL.glmnet <- function(alpha = c(0,0.25, 0.50, 0.75)) {
   }
   invisible(TRUE)
 }
-create.SL.glmnet()
 
 
 # creates gam wrappers in the global environment with different degrees. The default value for deg.gam in SL.gam is 2
@@ -44,7 +43,6 @@ create.SL.gam <- function(deg.gam = c(3, 4)) {
   }
   invisible(TRUE)
 }
-create.SL.gam()
 
 # creates gbm wrappers in the global environment with different distributions (1=bernoulli (logistic reg.), 2=AdaBoost exponential loss)
 create.SL.gbm <- function(distribution = c("bernoulli","adaboost","gaussian")) {
@@ -53,7 +51,6 @@ create.SL.gbm <- function(distribution = c("bernoulli","adaboost","gaussian")) {
   }
   invisible(TRUE)
 }
-create.SL.gbm()
 
 
 SL.mean <- function (Y, X, newX, family, obsWeights, id, ...)
@@ -72,26 +69,52 @@ predict.SL.mean <- function (object, newdata, family, X = NULL, Y = NULL, ...)
   return(pred)
 }
 
-# Define library
-SL.library.class<- c("SL.gbm.adaboost",
-                     "SL.gbm.bernoulli",
-                     "SL.glmnet", # lasso
-                     "SL.glmnet.0.25",
-                     "SL.glmnet.0.5",
-                     "SL.glmnet.0.75",
-                     "SL.glmnet.0", # ridge
-                     "SL.xgboost",
-                     "SL.randomForest.1",
-                     "SL.randomForest.3")# nodesize=1 for regression
+create.SL <- function(learners="all")
+{if (learners=="all") {
+create.SL.randomForest()
+print("Created randomForest wrapper")
+create.SL.knn()
+print("Created knn wrapper")
+create.SL.glmnet()
+print("Created glmnet wrapper")
+create.SL.gam()
+print("Created gam wrapper")
+create.SL.gbm()
+print("Created gbm wrapper")
+}
+}
 
-SL.library.reg <- c("SL.gam", # degree=2
-                    "SL.gam.3",
-                    "SL.gam.4",
-                    "SL.gbm.gaussian",
-                    "SL.glmnet", # lasso
-                    "SL.glmnet.0", # ridge
-                    "SL.glmnet.0.25",
-                    "SL.glmnet.0.5",
-                    "SL.glmnet.0.75",
-                    "SL.randomForest.4", # nodesize=5 for regression
-                    "SL.randomForest.6")
+# Define library
+define.SL.class.library<- function (SL.library.class=c("SL.gbm.adaboost",
+                                       "SL.gbm.bernoulli",
+                                       "SL.glmnet", # lasso
+                                       "SL.glmnet.0.25",
+                                       "SL.glmnet.0.5",
+                                       "SL.glmnet.0.75",
+                                       "SL.glmnet.0", # ridge
+                                       "SL.xgboost",
+                                       "SL.randomForest.1",
+                                       "SL.randomForest.3"# nodesize=1 for regression
+                                       ))
+{
+  SL.library.class = SL.library.class
+  return(SL.library.class)
+}
+
+define.SL.reg.library <- function (SL.library.reg=c("SL.gam", # degree=2
+                                                      "SL.gam.3",
+                                                      "SL.gam.4",
+                                                      "SL.gbm.gaussian",
+                                                      "SL.glmnet", # lasso
+                                                      "SL.glmnet.0", # ridge
+                                                      "SL.glmnet.0.25",
+                                                      "SL.glmnet.0.5",
+                                                      "SL.glmnet.0.75",
+                                                      "SL.randomForest.4", # nodesize=5 for regression
+                                                      "SL.randomForest.6"))
+{
+  SL.library.reg = SL.library.reg
+  return(SL.library.reg)
+}
+
+
