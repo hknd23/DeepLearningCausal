@@ -20,11 +20,12 @@ complier_mod <- function(data,ID=NULL,SL.library=NULL) {
 
 #' @export
 #'
-complier_predict <- function(complier.mod) {
+complier_predict <- function(complier.mod,expdata) {
+covs <- as.data.frame(expdata$Xexp)
 C.pscore <- predict(complier.mod, covs, onlySL=TRUE)
-rct.compliers <- data.frame("treatment"=as.data.frame(exp_prep$Texp)[,1],
-                            "real_complier"=rct.compliance,
-                            "C.pscore"=C.pscore$pred,row.names = rownames(exp_prep$Yexp))
+rct.compliers <- data.frame("treatment"=as.data.frame(expdata$Texp)[,1],
+                            "real_complier"=as.data.frame(expdata$Cexp)[,1],
+                            "C.pscore"=C.pscore$pred,row.names = rownames(expdata$Yexp))
 pred.compliers <- ROCR::prediction(rct.compliers$C.pscore[rct.compliers$
                                                             treatment==1],
                                    rct.compliers$real_complier[rct.compliers$
