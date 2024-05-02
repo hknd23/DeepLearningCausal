@@ -1,12 +1,3 @@
-library(SuperLearner)
-library(class)
-library(randomForest)
-library(glmnet)
-library(gam)
-library(e1071)
-library(gbm)
-library(xgboost)
-
 # Creates additional randomForest wrappers changing both mtry and nodesize
 #tuneGrid <- expand.grid(mtry=c(1,5,10), nodesize=c(1,5))
 

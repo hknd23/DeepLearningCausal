@@ -1,11 +1,27 @@
 Package: newproject
 Type: Package
 Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
+Version: 0.0.1
+Authors@R: c(person(given = "Nguyen K.",
+              family = "Huynh",
+              role = c("aut","cre")),   
+           person(given = "Bumba", 
+              family = "Mukherjee", 
+              role = c("aut")))
 Maintainer: The package maintainer <yourself@somewhere.net>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
+Imports:
+        ROCR,
+        xgboost,
+        SuperLearner,
+        class,
+        randomForest,
+        glmnet,
+        gam,
+        e1071,
+        gbm
+RoxygenNote: 7.2.3
