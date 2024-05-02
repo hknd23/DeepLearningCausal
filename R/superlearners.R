@@ -60,6 +60,8 @@ predict.SL.mean <- function (object, newdata, family, X = NULL, Y = NULL, ...)
   return(pred)
 }
 
+#' @export
+#'
 create.SL <- function(learners="all")
 {if (learners=="all") {
 create.SL.randomForest()
@@ -75,6 +77,8 @@ print("Created gbm wrapper")
 }
 }
 
+#' @export
+#'
 # Define library
 define.SL.class.library<- function (SL.library.class=c("SL.gbm.adaboost",
                                        "SL.gbm.bernoulli",
@@ -92,6 +96,8 @@ define.SL.class.library<- function (SL.library.class=c("SL.gbm.adaboost",
   return(SL.library.class)
 }
 
+#' @export
+#'
 define.SL.reg.library <- function (SL.library.reg=c("SL.gam", # degree=2
                                                       "SL.gam.3",
                                                       "SL.gam.4",
