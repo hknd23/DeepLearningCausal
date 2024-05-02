@@ -10,95 +10,7 @@ summary(expdata)
 # FUNC1
 # expcall()
 #Prepare dataset
-expcall <- function(response.formula,
-                    cov.formula,
-                    compl.formula,
-                    data, 
-                    weights=NULL, 
-                    cluster=NULL,
-                    ID=NULL)
-{
-  if (is.null(ID ==FALSE)){
-    rownames(data)<-data[,ID]
-  }
-  response.formula <- as.formula(response.formula)
-  cov.formula <- as.formula(cov.formula)
-  compl.formula<-as.formula(compl.formula)
-  variables <- unique(c(all.vars(response.formula),
-                        all.vars(cov.formula), 
-                        all.vars(compl.formula)))
-  newdata <- na.omit(data[,variables])
-  
-  expmf <- model.frame(response.formula,data=newdata)
-  covmf <- model.frame(cov.formula,data=newdata)
-  complmf <- model.frame(compl.formula,data=newdata)
-  
-  Xterms <- terms(expmf)
-  attr(Xterms, "intercept") <- 0
-  Covterms <- terms(covmf)
-  attr(Covterms, "intercept") <- 0
-  Complterms <- terms(complmf)
-  attr(Complterms, "intercept") <- 0
-  
-  Texp <- model.matrix(tfX, data = expmf)
-  Yexp <- as.matrix(model.response(expmf))
-  Xexp <- model.matrix(Covterms, data = covmf)
-  Cexp <- model.matrix(Complterms, data = complmf)
-  
-  expl<-list(Yexp= Yexp, Texp = Texp, Xexp= Xexp, 
-             Cexp = Cexp,expdata= newdata,
-             response_formula=response.formula, 
-             covariates=cov.formula,
-             compliance=compl.formula, type="Experiment")
-  
-  return(expl)
-}
 
-popcall <- function(response.formula,
-                    compl.formula,
-                    data,
-                    weights=NULL,
-                    cluster=NULL,
-                    ID=NULL)
-{
-  if (is.null(ID ==FALSE)){
-    rownames(data)<-data[,ID]
-  }
-  if (is.null(weights ==FALSE)){
-    weights<-data[,weights]
-  }
-  if (is.null(cluster ==FALSE)){
-    cluster<-data[,cluster]
-  }
-  response.formula <- as.formula(response.formula)
-  compl.formula<-as.formula(compl.formula)
-  variables <- unique(c(all.vars(response.formula),
-                        all.vars(compl.formula)))
-  newdata <- na.omit(data[,variables])
-  
-  
-  popmf <- model.frame(response.formula,data=newdata)
-  complmf <- model.frame(compl.formula,data=newdata)
-  
-  Covterms <- terms(popmf)
-  attr(Covterms, "intercept") <- 0
-  Complterms <- terms(complmf)
-  attr(Complterms, "intercept") <- 0
-  
-  Ypop <- as.matrix(model.response(popmf))
-  Xpop <- model.matrix(Covterms, data = popmf)
-  Cpop <- model.matrix(Complterms, data = complmf)
-  
-  popl<-list(Ypop= Ypop, Xpop= Xpop, 
-              Cpop = Cpop,popdata= newdata,
-             response_formula=response.formula, 
-             compliance=compl.formula,
-             weights=weights,
-             cluster=cluster,
-             type="Population")
-  
-  return(popl)
-}
 
 
 #religion 5-muslim, 6 Hindu
@@ -196,7 +108,11 @@ pop_prep<-popcall(outcome1~ age + male +
                     Hindu + job_worry,
                   ~compl1,data=popdata,
                   cluster = "year")
-
+pop_prep2<-popcall(outcome1~ age + male + 
+                    income + education + 
+                    employed + married + 
+                    Hindu + job_worry,
+                  ~compl1,data=popdata)
 
 Z <- model.matrix(attr(mf2, "terms"), data = mf2)
 Y <- as.matrix(model.response(mf1))
@@ -220,9 +136,13 @@ SL.library.reg <- define.SL.reg.library()
 data=exp_prep
 
 
-exp_complier_predict <- function(data,ID=NULL) {
+exp_complier_predict <- function(data,ID=NULL,SL.library=NULL) {
 if (!is.null(ID)){
   id=ID
+}
+if (is.null(SL.library))
+{
+  SL.library.class <- define.SL.class.library()
 }
 expdata <- data
 covs <- as.data.frame(expdata$Xexp)
@@ -278,7 +198,10 @@ response_model<-exp_response(exp.data = exp_prep,exp.compliers = exp_compliers,
 pop.data=pop_prep
 pop.data
 
-pattc_counterfactuals<- function(pop.data,response.mod){
+pattc_counterfactuals<- function(pop.data,response.mod,id=NULL,cluster=NULL){
+if(!is.null(cluster)){
+  clustervar<-
+}
 pop.tr.counterfactual <- cbind("complier" = 1,
                                pop.data$Xpop[which(pop.data$Cpop==1),])
 pop.ctrl.counterfactual <- cbind("complier" = 0,
@@ -286,13 +209,33 @@ pop.ctrl.counterfactual <- cbind("complier" = 0,
 Y.hat.1 <- predict(response_model, pop.tr.counterfactual, onlySL = T)$pred 
 Y.hat.0 <- predict(response_model, pop.ctrl.counterfactual, onlySL = T)$pred 
 
-Y.hats<-list(Y_hat1 = Y.hat.1, Y_hat0 = Y.hat.0)
+Y.hats<-data.frame(Y_hat1 = Y.hat.1, Y_hat0 = Y.hat.0)
 
 return(Y.hats)
 }
 
 counterfactuals<-pattc_counterfactuals(pop.data=pop_prep,
                                        response.mod=response_model)
+
+counterfactuals$Y_hat0
+
+
+t.patt <-  WtC(x=counterfactuals$Y_hat1, 
+                                         y=counterfactuals$Y_hat0,
+                                         bootse=FALSE,
+                                         bootp = FALSE,
+                                         bootn = 999, samedata=FALSE,
+                                         equivalence = FALSE)
+                 
+                                        # weight = nhis.weights[which(insurance.nhis == 1)],
+                                       #  weighty=nhis.weights[which(insurance.nhis==1)], 
+                                       #  cluster = nhis.hhid[which(insurance.nhis == 1)],
+                                       #  clustery=nhis.hhid[which(insurance.nhis==1)], 
+                                      #   samedata=FALSE,
+                                      #   equivalence = FALSE)) 
+
+
+
 
 # Compute CACE Booot then
 
