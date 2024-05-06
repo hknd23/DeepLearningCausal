@@ -1,21 +1,9 @@
-WtC <- function (x,
-                 y,
-                 c=NULL,
-                 weight = NULL,
-                 weighty = NULL,
-                 weightc = NULL,
-                 cluster = NULL,
-                 clustery = NULL,
-                 clusterc = NULL,
-                 samedata = TRUE,
-                 alternative = "two.tailed",
-                 mean1 = TRUE,
-                 bootse = TRUE,
-                 bootp = FALSE,
-                 bootn = 1000,
-                 drops = "pairwise",
-                 equivalence=FALSE)
 
+
+
+WtC <- function (x, y, c=NULL, weight = NULL, weighty = NULL, weightc = NULL, cluster = NULL, clustery = NULL, clusterc = NULL, samedata = TRUE,
+                 alternative = "two.tailed", mean1 = TRUE, bootse = TRUE,
+                 bootp = FALSE, bootn = 1000, drops = "pairwise", equivalence=FALSE) {
   if (is.null(weight)) {
     weight <- rep(1, length(x))
   }
@@ -143,3 +131,4 @@ WtC <- function (x,
     names(out) <- c("test", "coefficients", "additional")
   }
   out
+}

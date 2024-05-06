@@ -1,6 +1,9 @@
 library(readr)
 library(dplyr)
 library(tidyr)
+
+#devtools::install_github("hknd23/newproject",auth_token = "devtools::install_github")
+#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
 ###
 ## check weights package
 ####library(weights)
