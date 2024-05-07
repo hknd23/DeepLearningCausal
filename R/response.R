@@ -24,8 +24,8 @@ pattc_counterfactuals<- function (pop.data,response.mod,id=NULL,cluster=NULL){
                                  pop.data$Xpop[which(pop.data$Cpop==1),])
   pop.ctrl.counterfactual <- cbind("complier" = 0,
                                    pop.data$Xpop[which(pop.data$Cpop==1),])
-  Y.hat.1 <- predict(response_model, pop.tr.counterfactual, onlySL = T)$pred
-  Y.hat.0 <- predict(response_model, pop.ctrl.counterfactual, onlySL = T)$pred
+  Y.hat.1 <- predict(response.mod, pop.tr.counterfactual, onlySL = T)$pred
+  Y.hat.0 <- predict(response.mod, pop.ctrl.counterfactual, onlySL = T)$pred
   if (!is.null(cluster)){
     clustervar <- pop.data[,cluster]
     Y.hats <- data.frame(Y_hat1 = Y.hat.1, Y_hat0 = Y.hat.0,cluster=clustervar)
