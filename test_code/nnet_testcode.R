@@ -1,5 +1,5 @@
 #test code for neural network models
-
+sapply(paste0("R/",list.files("R/")), source)
 library(nnet)
 library(neuralnet)
 library(keras)
@@ -11,7 +11,6 @@ source("R/nnet_complier.R")
 expdata <- read_csv("data/expdata0502.csv")
 popdata <- read_csv("data/popdata0502.csv")
 
-sapply(paste0("R/",list.files("R/")), source)
 
 exp_prep<- expcall(outcome ~ trt1,
                    ~age + male + income + education +
@@ -27,12 +26,12 @@ pop_prep<-popcall(outcome1~ age + male +
                   cluster = "year")
 
 
-exp.data<-data.frame("compl"=as.matrix(exp_prep$Cexp),
+expdata<-data.frame("compl"=as.matrix(exp_prep$Cexp),
                      exp_prep$Xexp,treat=exp_prep$Texp,
                      outcome=exp_prep$Yexp)
 
 treat.var="trt1"
-compl.formula=  compl~age + male +
+compl.formula=  compl1~age + male +
   income + education +
   employed + married +
   Hindu + job_worry
@@ -40,13 +39,14 @@ compl.formula=  compl~age + male +
 
 
 
+complier.formula=compl.formula
 
-
-nnet.compl.mod<-nnet_complier_mod(compl.formula,nnetdata,
+nnet.compl.mod<-nnet_complier_mod(compl.formula,expdata,
                                   treat.var = "trt1",
-                                  stepmax = 1e+06)
+                                  stepmax = 1e+07)
 
-nnetcompliers<-nnet_predict(nnet.compl.mod,nnetdata)
+nnetcompliers<-nnet_predict(nnet.compl.mod,expdata,
+                            treat.var = "trt1",compl.var ="compl1" )
 
 expdata<-nnetdata
 nnet.complier.mod<-nnetcompliers
@@ -103,7 +103,7 @@ nnet_pattc_counterfactuals<- function (pop.data,nnet.response.mod,id=NULL,cluste
 nnet.response.mod <- nnet_response_model(response.formula=response.formula,
                                          compl.formula=~. + compl1,
                                          exp.data=exp.data,
-                                         nnet.compliers=nnetcompliers,stepmax = 1e+07)
+                                         nnet.compliers=nnetcompliers,stepmax = 1e+08)
 ##continue work here##continue work here##continue work here##continue work here
 ##continue work here##continue work here##continue work here##continue work here
 

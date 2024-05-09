@@ -7,7 +7,8 @@ nnet_complier_mod<-function(complier.formula,
     id=ID
   }
   complier.formula<-as.formula(complier.formula)
-  nnetdataT<-na.omit(expdata[which(expdata[,treat.var]==1),])
+  expdata.vars<-na.omit(expdata[,c(all.vars(complier.formula),treat.var)])
+  nnetdataT<-expdata.vars[which(expdata.vars[,treat.var]==1),]
   compvar<-all.vars(complier.formula)[1]
   nnetdataT[[compvar]]<-as.factor(nnetdataT[[compvar]])
   nnet.complier.mod <- neuralnet::neuralnet(complier.formula,
@@ -18,13 +19,13 @@ nnet_complier_mod<-function(complier.formula,
   return(nnet.complier.mod)
 }
 
-nnet_predict<-function(nnet.complier.mod,expdata){
+nnet_predict<-function(nnet.complier.mod,expdata,treat.var,compl.var){
 
   nnetpredict<-predict(nnet.complier.mod,expdata)
   nnetpredict.max<-max.col(nnetpredict)
 
-  nnet.compliers<-data.frame("treatment"=nnetdata$trt1,
-                             "real_complier"=nnetdata$compl,
+  nnet.compliers<-data.frame("treatment"=expdata[,treat.var],
+                             "real_complier"=expdata[,compl.var],
                              "NC.pscore"=nnetpredict[,1],
                              "C.pscore"=nnetpredict[,2]
   )
