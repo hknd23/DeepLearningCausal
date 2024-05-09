@@ -38,14 +38,26 @@ cov.formula =outcome  ~ age + male +
   employed + married +
   Hindu + job_worry
 learners=learners
-SLearner_pop<-S_learner(data=pop.frame,cov.formula = ~ age + male +
-                          income + education +
-                          employed + married +
-                          Hindu + job_worry,learners=learners)
 
-expS <- S_learner(cov.formula = outcome  ~ age + male +
+
+expS <- meta_learner(cov.formula = outcome  ~ age + male +
                   income + education +
                   employed + married +
                   Hindu + job_worry,
-                data = expdata,treat.var = "trt1")
+                data = expdata,
+                control = control,
+                meta.learner.type="S.Learner",
+                treat.var = "trt1")
+
+
+
+expT <- meta_learner(cov.formula = outcome  ~ age + male +
+                       income + education +
+                       employed + married +
+                       Hindu + job_worry,
+                     data = expdata,
+                     control = control,
+                     meta.learner.type="T.Learner",
+                     treat.var = "trt1")
+
 
