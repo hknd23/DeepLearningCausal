@@ -51,7 +51,8 @@ dataset also includes numerous other covariates that are summarized in the follo
 | **age**           | what is your age?                                                                         | Numeric                  |
 | **income**        | What is the total monthly income of your household,                                       | 
                      including the income of all working adults?                                                |Ordinal (1 to 10 where 1=No income to 10=> Rs. XX/-)|
-| **imp_rel**       | How important is religion in your life?                                                   |Ordinal (1 to 4, where 1=Very important to 4=Not at all important)
+                     
+| **imp_rel**       | How important is religion in your life?                                                   |Ordinal (1 to 4, where 1=Very important to 4=Not at all important)|
 | **religion**      | Do you belong to a religion or religious denomination? If yes, which one?                 |Categorical (1 to 5, where 1=Christian; 2=Muslim; 3=Hindu; 4=Buddhist; 5=Sikh; 6=others)
 | **education**     | Could you tell us which of the following education level best matches your 
                       education?                                                                                |   Ordinal (1-5, where 1=None to 5=Post-Graduate) |
