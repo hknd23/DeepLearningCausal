@@ -21,9 +21,13 @@ the SL ensemble method and deep neural networks.
 
 ### Why DNCausalPATT?
 
-Scholars across multiple academic disciplines often analyze...
+Answering causal questions is critical for research across both natural and social science. Some of these questions can be 
+addressed via techniques such as randomized clinical trials and A/B testing. Yet the said techniques are not always practical 
+or successful. Substantial effort has thus been invested in recent years to particularly develop stattistical software for causal inference using 
+machine learning algorithms to estimate Conditional Average Treatment Effects (CATE) or Individual Treatment Effects (ITE) 
+from experimental or observational data. (complete para and 2 bullet points here).
 
-### Functions in the BayesSPsurv Package
+### Functions in the DNCausal PATT Package
 
 | Function                | Description                                                                                |
 |-------------------------|--------------------------------------------------------------------------------------------|
