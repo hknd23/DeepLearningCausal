@@ -53,15 +53,11 @@ dataset also includes numerous other covariates that are summarized in the follo
 | **imp_rel**       | How important is religion in your life?                                                   |Ordinal (1 to 4, where 1=Very important to 4=Not at all important)|
 | **religion**      | Do you belong to a religion or religious denomination? If yes, which one?                 |Categorical (1 to 5, where 1=Christian; 2=Muslim; 3=Hindu; 4=Buddhist; 5=Sikh; 6=others)|
 | **education**     | Could you tell us which of the following education level best matches your education?     | Ordinal (1-5, where 1=None to 5=Post-Graduate) |
-| **ideol_lr**      |  When we speak of political leanings, some people sympathize more with the left and       |   
-                       others with the right. Let’s say the number 1 means sympathize very strongly with        |
-                       the left and 10 means sympathize very strongly with the right. Where would you place     |
-                       yourself on this scale?                                                                  |Ordinal (1 to 10, where 1=[extreme] left to 10=[extreme] right) |
+| **ideol_lr**      | The number 1 means sympathize very strongly with the left and 10 means sympathize very strongly with the right. Where would you place yourself on this scale?  |Ordinal (1 to 10, where 1=[extreme] left to 10=[extreme] right) |
 | **empl_status**     | what is your current employment status?                                                 | Categorical (1 to 7, where 1= Full time employee to 7=Student; 8=other) |
 | **Marital_status**  | What is your marital status?                                                            | Categorical (1 to 7, where 1= Single to 7=Civil Union)         |
-| **job_worry**       |  If you had to choose between more job security with a small pay increase and less       |
-                        job security with a big pay increase, which would you pick?                              |Ordinal (1 to 5, where 1= Definitely more job security with a small pay 
-                        increase to 5= Definitely less job security with a big pay increase )
+| **job_worry**       |  If you had to choose between more job security with a small pay increase and less job security with a big pay increase, which would you pick? |Ordinal (1 to 5, where 1= job security with small pay increase to 5= less job
+security with big pay increase )|
 | **Exp1trt**        |  Vignette Survey experiment. Vignette summarizes tense relations with country A and       |  
                         leader of country B proposing the necessity of going to war with Country A.              |
                         Respondents are randomly assigned to control group or to one of the following two        |
