@@ -56,14 +56,8 @@ dataset also includes numerous other covariates that are summarized in the follo
 | **ideol_lr**      | The number 1 means sympathize very strongly with the left and 10 means sympathize very strongly with the right. Where would you place yourself on this scale?  |Ordinal (1 to 10, where 1=[extreme] left to 10=[extreme] right) |
 | **empl_status**     | what is your current employment status?                                                 | Categorical (1 to 7, where 1= Full time employee to 7=Student; 8=other) |
 | **Marital_status**  | What is your marital status?                                                            | Categorical (1 to 7, where 1= Single to 7=Civil Union)         |
-| **job_worry**       |  If you had to choose between more job security with a small pay increase and less job security with a big pay increase, which would you pick? |Ordinal (1 to 5, where 1= job security with small pay increase to 5= less job
-security with big pay increase )|
-| **Exp1trt**        |  Vignette Survey experiment. Vignette summarizes tense relations with country A and       |  
-                        leader of country B proposing the necessity of going to war with Country A.              |
-                        Respondents are randomly assigned to control group or to one of the following two        |
-                        treatments that describes type of leader in country B that proposes war with             |  
-                        Country A—(i) Treatment 1: Strong (populist) leader who does not feel constrained by     |
-                        parliament or elections and is willing to adopt policies without parliamentary approval  |Binary (1=Strong Leader; 2=Centrist Leader)        |
+| **job_worry**       | Choose between more job security with a small pay increase and less job security with a big pay increase, which would you pick? |Ordinal (1 to 5, 1= job security & small pay increase to 5= less jobsecurity & big pay increase )|
+| **Exp1trt**        |  Treatment 1: Strong (populist) leader who does not feel constrained by parliament or elections and is willing to adopt policies without parliamentary approval  |Binary (1=Strong Leader; 2=Centrist Leader)        |
 | **exp1_dv1**       |  What do you think? Would you support your country going to war with country A?           | Binary (1=Yes; 2=No) |
 
 #### Example 2
