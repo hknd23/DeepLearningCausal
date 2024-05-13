@@ -50,6 +50,7 @@ dataset also includes numerous other covariates that are summarized in the follo
 | **female**        | gender                                                                                    | Binary (1=Male; Female=2)           |
 | **age**           | what is your age?                                                                         | Numeric                  |
 | **income**        | What is the total monthly income of your household,                                       | 
+
                      including the income of all working adults?                                                |Ordinal (1 to 10 where 1=No income to 10=> Rs. XX/-)|
                      
 | **imp_rel**       | How important is religion in your life?                                                   |Ordinal (1 to 4, where 1=Very important to 4=Not at all important)|
