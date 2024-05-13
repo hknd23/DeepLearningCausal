@@ -80,7 +80,7 @@ the following table.
 | **Marital_status**  | Are you married?                                                           | Categorical (1 to 6, where 1= Married to 6=Single)         |
 | **job_worry**       | To what degree are you worried about losing my job or not finding a job  |Ordinal (1 to 4, 1= very much to 4= not at all)|
 | **Exp1trt**        | Equivalent to exp1_trt in survey experiment sample|Binary (1=Strong Leader; 2=Centrist Leader)     |
-|**strong_leader**| ?: Having a strong leader who does not have to bother with parliament and  elections   | Binary (1=High Preference for Strong Leader; 2= Negligible preference for strong leader)|
+|**strong_leader**|Having a strong leader who does not have to bother with parliament and  elections   | Binary (1=High Preference for Strong Leader; 2= Negligible preference for strong leader)|
 | **exp1_dv_willing**       |  we all hope that there will not be another war, but if it were to come to that, would you be willing to fight for your country?| Binary (1=Yes; 2=No) |
 
 
