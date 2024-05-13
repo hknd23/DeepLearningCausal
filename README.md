@@ -57,7 +57,7 @@ dataset also includes numerous other covariates that are summarized in the follo
 | **empl_status**     | what is your current employment status?                                                 | Categorical (1 to 7, where 1= Full time employee to 7=Student; 8=other) |
 | **Marital_status**  | What is your marital status?                                                            | Categorical (1 to 7, where 1= Single to 7=Civil Union)         |
 | **job_worry**       | Choose between more job security with a small pay increase and less job security with a big pay increase, which would you pick? |Ordinal (1 to 5, 1= job security & small pay increase to 5= less jobsecurity & big pay increase )|
-| **Exp1trt**        |  Treatment 1: Strong (populist) leader who does not feel constrained by parliament or elections and is willing to adopt policies without parliamentary approval  |Binary (1=Strong Leader; 2=Centrist Leader)        |
+| **Exp1trt**        | Treat 1: Strong leader. Not constrained by parliament. Operates without parliamentary approval. Treat 2: Centrist leader. Constrained by parliament. Seeks parliamentary approval.|Binary (1=Strong Leader; 2=Centrist Leader)     |
 | **exp1_dv1**       |  What do you think? Would you support your country going to war with country A?           | Binary (1=Yes; 2=No) |
 
 #### Example 2
