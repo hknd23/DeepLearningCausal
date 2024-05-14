@@ -61,3 +61,16 @@ expT <- meta_learner(cov.formula = outcome  ~ age + male +
                      treat.var = "trt1")
 
 
+
+
+data=exp.frame
+cov.formula =outcome  ~ age + male +
+  income + education +
+  employed + married +
+  Hindu + job_worry
+data = expdata
+treat.var = "trt1"
+stepmax=1e+05
+nfolds=5
+hidden.layer=c(4,2)
+meta.learner.type = "S.Learner"

@@ -17,24 +17,25 @@ lapply(c("ROCR",
          "e1071",
          "gbm"), require, character.only = TRUE)
 
-expdata <- read_csv("data/expdata0502.csv")
+expdata <- as.data.frame(read_csv("data/expdata0502.csv"))
 popdata <- read_csv("data/popdata0502.csv")
 
 
 
 sapply(paste0("R/",list.files("R/")), source)
 
-exp_prep<- expcall(outcome ~ trt1,
-                   ~age + male + income + education +
+exp_prep<- expcall(outcome ~ age + male + income + education +
                      employed + married + Hindu + job_worry,
-                   ~compl1,
+                   treat.var = "trt1",
+                   compl.var = "compl1",
                    data= expdata, ID="l")
 
 pop_prep<-popcall(outcome1~ age + male +
                     income + education +
                     employed + married +
                     Hindu + job_worry,
-                  ~compl1,data=popdata,
+                  compl.var = "compl1",
+                  data=popdata,
                   cluster = "year")
 
 
