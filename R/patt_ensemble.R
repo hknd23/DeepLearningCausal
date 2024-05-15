@@ -124,12 +124,12 @@ pattc_counterfactuals<- function (pop.data,
   return(Y.hats)
 }
 
-patt_neural <- function(response.formula,
+patt_ensemble <- function(response.formula,
                         exp.data,
                         pop.data,
                         treat.var,
                         compl.var,
-                        create.SL=FALSE,
+                        createSL=TRUE,
                         ID=NULL,
                         cluster=NULL,
                         bootse=FALSE,
@@ -139,7 +139,7 @@ patt_neural <- function(response.formula,
                         equivalence = FALSE)
 
 {
-  if (create.SL){
+  if (createSL) {
     create.SL()
   }
 
@@ -153,21 +153,23 @@ patt_neural <- function(response.formula,
                    data= exp.data, ID=ID)
   covariates <- all.vars(response.formula)[-1]
   compl.formula<- paste0(compl.var," ~ ",paste0(covariates,collapse = " + "))
-  compl.mod<-neuralnet_complier_mod(complier.formula = compl.formula,
-                                    exp.data =expdata$expdata,
-                                    treat.var = treat.var,
-                                    stepmax = compl.stepmax)
 
-  compliers<-neuralnet_predict(compl.mod,exp.data =expdata$expdata,
-                               treat.var = "trt1",compl.var ="compl1" )
+  compl.mod<-complier_mod(expdata,ID=NULL,SL.library=NULL)
 
-  response.mod <- neuralnet_response_model(response.formula=exp_prep$response_formula,
-                                           compl.var,
-                                           exp.data=exp_prep$expdata,
-                                           neuralnet.compliers=compliers,
-                                           stepmax = response.stepmax)
+  compliers<-complier_predict(compl.mod,exp.data =expdata)
 
-  counterfactuals<-neuralnet_pattc_counterfactuals(pop_prep,nnet_response_model)
+  response.mod <-  response_model(exp.data=expdata,
+                                  exp.compliers=compliers,
+                                  family="binomial",
+                                  ID=NULL,
+                                  SL.library=NULL)
+
+
+  counterfactuals<-pattc_counterfactuals(pop.data=popdata,
+                                         response.mod=response.mod,
+                                         id=NULL,
+                                         cluster=NULL,
+                                         cut.point=.5)
 
   pattc<-WtC(x=counterfactuals$Y_hat1,
              y=counterfactuals$Y_hat0,
