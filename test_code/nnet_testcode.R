@@ -1,57 +1,140 @@
-#test code for neural network models
+
+#source all functions
 sapply(paste0("R/",list.files("R/")), source)
-library(nnet)
-library(neuralnet)
-library(keras)
-library(tensorflow)
-library(readr)
-library(tidyverse)
-library(neuralnet)
-source("R/nnet_complier.R")
-expdata <- read_csv("data/expdata0502.csv")
-popdata <- read_csv("data/popdata0502.csv")
 
+#import datasets
+expdata <- read.csv("data/expdata0502.csv")
+popdata <- read.csv("data/popdata0502.csv")
 
-exp_prep<- expcall(outcome ~ age + male + income + education +
-                     employed + married + Hindu + job_worry,
-                   treat.var = "trt1",
-                   compl.var = "compl1",
-                   data= expdata, ID="l")
+eprep<-expcall(response.formula = compl1~ age + male +
+                 income + education +
+                 employed + married +
+                 Hindu + job_worry,
+               data=expdata,treat.var = "trt1",compl.var = "compl1")
 
-pop_prep<-popcall(outcome1~ age + male +
-                    income + education +
-                    employed + married +
-                    Hindu + job_worry,
-                  compl.var = "compl1",
-                  data=popdata,
-                  cluster = "year")
+popprep<-popcall(response.formula = compl1~ age + male +
+                 income + education +
+                 employed + married +
+                 Hindu + job_worry,
+               data=popdata,compl.var = "compl1")
 
 
 
-nnet.compl.mod<-nnet_complier_mod(compl.formula,expdata,
+nnet.compl.mod<-neuralnet_complier_mod(compl1~ age + male +
+                                    income + education +
+                                    employed + married +
+                                    Hindu + job_worry,
+                                  exp_prep$expdata,
                                   treat.var = "trt1",
-                                  stepmax = 1e+07)
+                                  stepmax = 1e+08)
 
-nnetcompliers<-nnet_predict(nnet.compl.mod,expdata,
+nnetcompliers<-neuralnet_predict(nnet.compl.mod,expdata,
                             treat.var = "trt1",compl.var ="compl1" )
 
-exp.data<-expdata
-nnet.complier.mod<-nnetcompliers
-response.formula=outcome~age + male +
-  income + education +
-  employed + married +
-  Hindu + job_worry
-stepmax=1e+06
-nnet.compliers<-nnet.complier.mod
-compl.formula=~. + compl1
+
+
+nnet_response_model <- neuralnet_response_model(response.formula=exp_prep$response_formula,
+                                         compl.var="compl1",
+                                         exp.data=exp_prep$expdata,
+                                         neuralnet.compliers=nnetcompliers,stepmax = 1e+08)
+
+
+neuralnet_pattc_counterfactuals(pop_prep,nnet_response_model)
+
+
+response.formula=outcome ~ age + male + income + education +
+  employed + married + Hindu + job_worry
+exp.data=expdata
+pop.data=popdata
+treat.var="trt1"
+compl.var="compl1"
+compl.algorithm = "rprop+"
+response.algorithm = "rprop+"
+compl.hidden.layer=c(4,2)
+response.hidden.layer=c(4,2)
+compl.stepmax=1e+08
+response.stepmax=1e+08
+ID=NULL
+cluster=NULL
+bootse=FALSE
+bootp = FALSE
+bootn = 999
+samedata=FALSE
+equivalence = FALSE
+
+#####
+#Example code for neural network pattc
+#####
+pattc_neural <- patt_neural(response.formula=outcome ~ age + male +
+                              income + education +
+                              employed + married +
+                              Hindu + job_worry,
+                            exp.data=expdata,
+                            pop.data=popdata,
+                            treat.var="trt1",
+                            compl.var="compl1",
+                            compl.algorithm = "rprop+",
+                            response.algorithm = "rprop+",
+                            compl.hidden.layer=c(4,2),
+                            response.hidden.layer=c(4,2),
+                            compl.stepmax=1e+08,
+                            response.stepmax=1e+08,
+                            ID=NULL,
+                            cluster=NULL,
+                            bootse=FALSE,
+                            bootp = FALSE,
+                            bootn = 999,
+                            samedata=FALSE,
+                            equivalence = FALSE)
+
+
+#####
+#Example code for ensemble based S and T Learners
+#####
+expS <- meta_learner(cov.formula = outcome  ~ age + male +
+                       income + education +
+                       employed + married +
+                       Hindu + job_worry,
+                     data = expdata,
+                     control = control,
+                     meta.learner.type="S.Learner",
+                     treat.var = "trt1")
 
 
 
-nnet.response.mod <- nnet_response_model(response.formula=response.formula,
-                                         compl.var,
-                                         exp.data=exp.data,
-                                         nnet.compliers=nnetcompliers,stepmax = 1e+08)
-##continue work here##continue work here##continue work here##continue work here
-##continue work here##continue work here##continue work here##continue work here
+expT <- meta_learner(cov.formula = outcome  ~ age + male +
+                       income + education +
+                       employed + married +
+                       Hindu + job_worry,
+                     data = expdata,
+                     control = control,
+                     meta.learner.type="T.Learner",
+                     treat.var = "trt1")
 
-nnet_pattc_counterfactuals(pop_prep,nnet_response_model)
+
+
+
+
+#####
+#Example code for neural based S and T Learners
+#####
+expS <- meta_learner(cov.formula = outcome  ~ age + male +
+                       income + education +
+                       employed + married +
+                       Hindu + job_worry,
+                     data = expdata,
+                     control = control,
+                     meta.learner.type="S.Learner",
+                     treat.var = "trt1")
+
+
+
+expT <- meta_learner(cov.formula = outcome  ~ age + male +
+                       income + education +
+                       employed + married +
+                       Hindu + job_worry,
+                     data = expdata,
+                     control = control,
+                     meta.learner.type="T.Learner",
+                     treat.var = "trt1")
+

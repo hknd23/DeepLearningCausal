@@ -14,7 +14,7 @@ WtC <- function (x,
                  bootp = FALSE,
                  bootn = 1000,
                  drops = "pairwise",
-                 equivalence=FALSE)
+                 equivalence=FALSE){
 
   if (is.null(weight)) {
     weight <- rep(1, length(x))
@@ -58,7 +58,7 @@ WtC <- function (x,
   m.bar <- sum(tapply(weight, cluster, FUN=sum, na.rm = TRUE))/n
   x.bar <- tapply(x, cluster, FUN=mean, na.rm = TRUE)
   mx <- sum(x.bar*tapply(weight, cluster, FUN=sum, na.rm = TRUE))/sum(tapply(weight, cluster, FUN=sum, na.rm = TRUE))
-  vx <- (sum(tapply(weight, cluster, FUN=sum, na.rm = TRUE)*x.bar**2)/m.bar - n*wtd.mean(x, weight, na.rm = TRUE)**2)/(n-1)
+  vx <- (sum(tapply(weight, cluster, FUN=sum, na.rm = TRUE)*x.bar**2)/m.bar - n*Hmisc::wtd.mean(x, weight, na.rm = TRUE)**2)/(n-1)
 
   if (length(y) > 1) {
 
@@ -66,7 +66,7 @@ WtC <- function (x,
     m.bar2 <- sum(tapply(weighty, clustery, FUN=sum, na.rm = TRUE))/n2
     y.bar <- tapply(y, clustery, FUN=mean, na.rm = TRUE)
     my <- sum(y.bar*tapply(weighty, clustery, FUN=sum, na.rm = TRUE))/sum(tapply(weighty, clustery, FUN=sum, na.rm = TRUE))
-    vy <- (sum(tapply(weighty, clustery, FUN=sum, na.rm = TRUE)*y.bar**2)/m.bar2 - n2*wtd.mean(y, weighty, na.rm = TRUE)**2)/(n2-1)
+    vy <- (sum(tapply(weighty, clustery, FUN=sum, na.rm = TRUE)*y.bar**2)/m.bar2 - n2*Hmisc::wtd.mean(y, weighty, na.rm = TRUE)**2)/(n2-1)
 
     dif <- mx - my
     sxy <- sqrt((vx/n) + (vy/n2))
@@ -76,7 +76,7 @@ WtC <- function (x,
       m.bar3 <- sum(tapply(weightc, clusterc, FUN=sum, na.rm = TRUE))/n3
       c.bar <- tapply(c, clusterc, FUN=mean, na.rm = TRUE)
       mc <- sum(c.bar*tapply(weightc, clusterc, FUN=sum, na.rm = TRUE))/sum(tapply(weightc, clusterc, FUN=sum, na.rm = TRUE))
-      vc <- (sum(tapply(weightc, clusterc, FUN=sum, na.rm = TRUE)*c.bar**2)/m.bar3 - n3*wtd.mean(c, weightc, na.rm = TRUE)**2)/(n3-1)
+      vc <- (sum(tapply(weightc, clusterc, FUN=sum, na.rm = TRUE)*c.bar**2)/m.bar3 - n3*Hmisc::wtd.mean(c, weightc, na.rm = TRUE)**2)/(n3-1)
 
       dif <- (mx - my)/mc
       sxy <- sqrt((vx/n) + (vy/n2) + (vc/n3))
@@ -143,3 +143,5 @@ WtC <- function (x,
     names(out) <- c("test", "coefficients", "additional")
   }
   out
+}
+

@@ -71,11 +71,6 @@ popcall <- function(response.formula,
 
   popmf <- model.frame(.formula,data=newdata)
 
-  expl<-list(expdata= expmf,
-             response.formula=response.formula,
-             treat.var=treat.var,
-             compl.var=compl.var, type="Experiment")
-
   popl<-list(popdata= popmf,
              response_formula=response.formula,
              compl_var=compl.var,

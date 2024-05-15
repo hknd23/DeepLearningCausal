@@ -1,14 +1,14 @@
 #check for control and need for validation
 neuralnet_meta_learner <- function(data,
-                         cov.formula,
-                         treat.var,
-                         meta.learner.type,
-                         control,
-                         stepmax=1e+05,
-                         nfolds=5,
-                         algorithm = "rprop+",
-                         hidden.layer=c(4,2),
-                         seed=1234,
+                                   cov.formula,
+                                   treat.var,
+                                   meta.learner.type,
+                                   control,
+                                   stepmax=1e+05,
+                                   nfolds=5,
+                                   algorithm = "rprop+",
+                                   hidden.layer=c(4,2),
+                                   seed=1234,
                          linear.output = FALSE){
   cov.formula<-as.formula(cov.formula)
   variables<-all.vars(cov.formula)
@@ -78,7 +78,7 @@ neuralnet_meta_learner <- function(data,
       Y_hat_test_1<-max.col(Y_test_1)-1
       Y_test_0 <- predict(m_mod,X_test_0)
       Y_hat_test_0<-max.col(Y_test_0)-1
-##########CONTINUE HEREEE
+
       # Estimate the CATE as the difference between the model with different treatment status
       score_meta[,1][df_main$ID] = Y_hat_test_1 - Y_hat_test_0
     }

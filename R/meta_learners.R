@@ -1,12 +1,13 @@
 meta_learner <- function(data,
-                      cov.formula,
-                      treat.var,
-                      meta.learner.type,
-                      control,
-                      learners=c( "SL.glmnet","SL.xgboost",
-                                  "SL.ranger","SL.nnet"),
-                      nfolds=5,
-                      seed=1234){
+                        cov.formula,
+                        treat.var,
+                        meta.learner.type,
+                        control,
+                        learners=c("SL.glmnet","SL.xgboost",
+                                    "SL.ranger","SL.nnet"),
+                        nfolds=5,
+                        seed=1234){
+
   cov.formula<-as.formula(cov.formula)
   variables<-all.vars(cov.formula)
   outcome.var<-variables[1]
@@ -80,14 +81,22 @@ meta_learner <- function(data,
     aux_0 <- df_aux[which(df_aux$d==0),]
 
     # Train a regression model for the treatment observations
-    m1_mod <- SuperLearner(Y = aux_1$y, X = aux_1[,covariates], newX = df_main[,covariates], SL.library = learners,
-                           verbose = FALSE, method = "method.NNLS",cvControl = control)
+    m1_mod <- SuperLearner(Y = aux_1$y, X = aux_1[,covariates],
+                           newX = df_main[,covariates],
+                           SL.library = learners,
+                           verbose = FALSE,
+                           method = "method.NNLS",
+                           cvControl = control)
 
     m1_hat <- m1_mod$SL.predict
 
     # Train a regression model for the control observations
-    m0_mod <- SuperLearner(Y = aux_0$y, X = aux_0[,covariates], newX = df_main[,covariates], SL.library = learners,
-                           verbose = FALSE, method = "method.NNLS",cvControl = control)
+    m0_mod <- SuperLearner(Y = aux_0$y, X = aux_0[,covariates],
+                           newX = df_main[,covariates],
+                           SL.library = learners,
+                           verbose = FALSE,
+                           method = "method.NNLS",
+                           cvControl = control)
 
     m0_hat <- m0_mod$SL.predict
 
