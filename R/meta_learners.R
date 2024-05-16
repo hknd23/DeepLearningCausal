@@ -15,6 +15,7 @@
 #' @export
 #'
 #' @examples
+
 meta_learner <- function(data,
                         cov.formula,
                         treat.var,
