@@ -1,15 +1,30 @@
-#check for control and need for validation
+#' Title
+#'
+#' @param data
+#' @param cov.formula
+#' @param treat.var
+#' @param meta.learner.type
+#' @param stepmax
+#' @param nfolds
+#' @param algorithm
+#' @param hidden.layer
+#' @param seed
+#' @param linear.output
+#'
+#' @return
+#' @export
+#'
+#' @examples
 neuralnet_meta_learner <- function(data,
                                    cov.formula,
                                    treat.var,
                                    meta.learner.type,
-                                   control,
                                    stepmax=1e+05,
                                    nfolds=5,
                                    algorithm = "rprop+",
                                    hidden.layer=c(4,2),
                                    seed=1234,
-                         linear.output = FALSE){
+                                   linear.output = FALSE){
   cov.formula<-as.formula(cov.formula)
   variables<-all.vars(cov.formula)
   outcome.var<-variables[1]
@@ -120,4 +135,5 @@ neuralnet_meta_learner <- function(data,
 
   return(score_meta)
 }
+#check for control and need for validation
 

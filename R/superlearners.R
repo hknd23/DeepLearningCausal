@@ -1,6 +1,14 @@
 # Creates additional randomForest wrappers changing both mtry and nodesize
 #tuneGrid <- expand.grid(mtry=c(1,5,10), nodesize=c(1,5))
 
+#' Title
+#'
+#' @param tune
+#'
+#' @return
+#' @export
+#'
+#' @examples
 create.SL.randomForest <- function(tune = list(mtry = c(1, 5, 10), nodesize = c(1, 5))) {
   tuneGrid <- expand.grid(tune, stringsAsFactors = FALSE)
   for(mm in seq(nrow(tuneGrid))) {
@@ -9,7 +17,18 @@ create.SL.randomForest <- function(tune = list(mtry = c(1, 5, 10), nodesize = c(
   invisible(TRUE)
 }
 
-# Creates knn wrappers in the global environment with different nearest neighbors. The default value for k in SL.knn is 10
+#' Title
+#'
+#' @description
+#' Creates knn wrappers in the global environment with different nearest neighbors.
+#' The default value for k in SL.knn is 10
+#'
+#' @param k
+#'
+#' @return
+#' @export
+#'
+#' @examples
 create.SL.knn <- function(k = c(20, 30, 40, 50)) {
   for(mm in seq(length(k))){
     eval(parse(text = paste('SL.knn.', k[mm], '<- function(..., k = ', k[mm], ') SL.knn(..., k = k)', sep = '')), envir = .GlobalEnv)
@@ -18,7 +37,14 @@ create.SL.knn <- function(k = c(20, 30, 40, 50)) {
 }
 
 
-# Creates glmnet wrappers in the global environment with different alpha. The default value for alpha in SL.glmnet is 1
+#' Title
+#'
+#' @param alpha
+#'
+#' @return
+#' @export
+#'
+#' @examples
 create.SL.glmnet <- function(alpha = c(0,0.25, 0.50, 0.75)) {
   for(mm in seq(length(alpha))){
     eval(parse(text = paste('SL.glmnet.', alpha[mm], '<- function(..., alpha = ', alpha[mm], ') SL.glmnet(..., alpha = alpha)', sep = '')), envir = .GlobalEnv)
@@ -27,7 +53,18 @@ create.SL.glmnet <- function(alpha = c(0,0.25, 0.50, 0.75)) {
 }
 
 
-# creates gam wrappers in the global environment with different degrees. The default value for deg.gam in SL.gam is 2
+#' Title
+#'
+#' @description
+#' Creates gam wrappers in the global environment with different degrees.
+#' The default value for deg.gam in SL.gam is 2
+#'
+#' @param deg.gam
+#'
+#' @return
+#' @export
+#'
+#' @examples
 create.SL.gam <- function(deg.gam = c(3, 4)) {
   for(mm in seq(length(deg.gam))){
     eval(parse(text = paste('SL.gam.', deg.gam[mm], '<- function(..., deg.gam = ', deg.gam[mm], ') SL.gam(..., deg.gam = deg.gam)', sep = '')), envir = .GlobalEnv)
@@ -35,7 +72,14 @@ create.SL.gam <- function(deg.gam = c(3, 4)) {
   invisible(TRUE)
 }
 
-# creates gbm wrappers in the global environment with different distributions (1=bernoulli (logistic reg.), 2=AdaBoost exponential loss)
+#' Title
+#'
+#' @param distribution
+#'
+#' @return
+#' @export
+#'
+#' @examples
 create.SL.gbm <- function(distribution = c("bernoulli","adaboost","gaussian")) {
   for(mm in seq(length(distribution))){
     eval(parse(text = paste('SL.gbm.', distribution[mm], '<- function(..., distribution = ', distribution[mm], ') SL.gbm(..., distribution = distribution)', sep = '')), envir = .GlobalEnv)
@@ -44,6 +88,20 @@ create.SL.gbm <- function(distribution = c("bernoulli","adaboost","gaussian")) {
 }
 
 
+#' Title
+#'
+#' @param Y
+#' @param X
+#' @param newX
+#' @param family
+#' @param obsWeights
+#' @param id
+#' @param ...
+#'
+#' @return
+#' @export
+#'
+#' @examples
 SL.mean <- function (Y, X, newX, family, obsWeights, id, ...)
 {
   meanY <- weighted.mean(Y, w = obsWeights)
@@ -54,14 +112,34 @@ SL.mean <- function (Y, X, newX, family, obsWeights, id, ...)
   return(out)
 }
 
+#' Title
+#'
+#' @param object
+#' @param newdata
+#' @param family
+#' @param X
+#' @param Y
+#' @param ...
+#'
+#' @return
+#' @export
+#'
+#' @examples
 predict.SL.mean <- function (object, newdata, family, X = NULL, Y = NULL, ...)
 {
   pred <- rep.int(object$object, times = nrow(newdata))
   return(pred)
 }
 
+
+#' Title
+#'
+#' @param learners
+#'
+#' @return
 #' @export
 #'
+#' @examples
 create.SL <- function(learners="all")
 {if (learners=="all") {
 create.SL.randomForest()
@@ -77,9 +155,15 @@ print("Created gbm wrapper")
 }
 }
 
+
+#' Title
+#'
+#' @param SL.library.class
+#'
+#' @return
 #' @export
 #'
-# Define library
+#' @examples
 define.SL.class.library<- function (SL.library.class=c("SL.gbm.adaboost",
                                        "SL.gbm.bernoulli",
                                        "SL.glmnet", # lasso

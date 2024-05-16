@@ -1,12 +1,29 @@
+#' Title short description of function
+#'
+#' @description
+#' Some details about the function here
+#'
+#' @param data
+#' @param cov.formula
+#' @param treat.var
+#' @param meta.learner.type
+#' @param learners
+#' @param nfolds
+#' @param seed
+#'
+#' @return
+#' @export
+#'
+#' @examples
 meta_learner <- function(data,
                         cov.formula,
                         treat.var,
                         meta.learner.type,
-                        control,
                         learners=c("SL.glmnet","SL.xgboost",
                                     "SL.ranger","SL.nnet"),
                         nfolds=5,
                         seed=1234){
+  control <- SuperLearner::SuperLearner.CV.control(V=5)
 
   cov.formula<-as.formula(cov.formula)
   variables<-all.vars(cov.formula)

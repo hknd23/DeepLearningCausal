@@ -1,6 +1,15 @@
+#' Title
+#'
+#' @param data
+#' @param ID
+#' @param SL.library
+#' @param tr
+#'
+#' @return
 #' @export
 #'
-complier_mod <- function(data,ID=NULL,SL.library=NULL) {
+#' @examples
+complier_mod <- function(data,ID=NULL,SL.library=NULL,tr) {
   if (!is.null(ID)){
     id=ID
   }
@@ -11,6 +20,7 @@ complier_mod <- function(data,ID=NULL,SL.library=NULL) {
   expdata <- data$expdata
   covariates <- all.vars(data$response_formula)[-1]
   compl.var <- data$compl_var
+  treat.var <- data$treat_var
 
   Ycompl<-expdata[which(expdata[,treat.var]==1),compl.var]
   Xcompl<-expdata[which(expdata[,treat.var]==1),covariates]
@@ -23,23 +33,34 @@ complier_mod <- function(data,ID=NULL,SL.library=NULL) {
   return(complier.mod)
 }
 
+#' Title
+#'
+#' @param complier.mod
+#' @param exp.data
+#'
+#' @return
 #' @export
 #'
+#' @examples
 complier_predict <- function(complier.mod,exp.data) {
-
+  message("1")
   covdata <- exp.data$expdata
+  message("2")
   covariates.names <- all.vars(expdata$response_formula)[-1]
+  message("3")
   covariates <- covdata[,covariates.names]
+  message("4")
   treat.var<-exp.data$treat_var
+  message("5")
   compl.var<-exp.data$compl_var
-
+  message("6")
   C.pscore <- predict(complier.mod, covariates, onlySL=TRUE)
-
+  message("7")
   rct.compliers <- data.frame("treatment"=covdata[,treat.var],
                               "real_complier"=covdata[,compl.var],
                               "C.pscore"=C.pscore$pred,
                               row.names = rownames(covdata))
-
+  message("8")
   pred.compliers <- ROCR::prediction(rct.compliers$C.pscore[rct.compliers$
                                                           treatment==1],
                                  rct.compliers$real_complier[rct.compliers$
@@ -54,8 +75,18 @@ complier_predict <- function(complier.mod,exp.data) {
   return(rct.compliers)
   }
 
+#' Title
+#'
+#' @param exp.data
+#' @param exp.compliers
+#' @param family
+#' @param ID
+#' @param SL.library
+#'
+#' @return
 #' @export
-
+#'
+#' @examples
 response_model<-function(exp.data,
                          exp.compliers,
                          family="binomial",
@@ -85,8 +116,19 @@ response_model<-function(exp.data,
   return(response.mod)
 }
 
-#' @export
 
+#' Title
+#'
+#' @param pop.data
+#' @param response.mod
+#' @param id
+#' @param cluster
+#' @param cut.point
+#'
+#' @return
+#' @export
+#'
+#' @examples
 pattc_counterfactuals<- function (pop.data,
                                   response.mod,
                                   id=NULL,
@@ -124,6 +166,26 @@ pattc_counterfactuals<- function (pop.data,
   return(Y.hats)
 }
 
+#' Title
+#'
+#' @param response.formula
+#' @param exp.data
+#' @param pop.data
+#' @param treat.var
+#' @param compl.var
+#' @param createSL
+#' @param ID
+#' @param cluster
+#' @param bootse
+#' @param bootp
+#' @param bootn
+#' @param samedata
+#' @param equivalence
+#'
+#' @return
+#' @export
+#'
+#' @examples
 patt_ensemble <- function(response.formula,
                         exp.data,
                         pop.data,
@@ -153,18 +215,20 @@ patt_ensemble <- function(response.formula,
                    data= exp.data, ID=ID)
   covariates <- all.vars(response.formula)[-1]
   compl.formula<- paste0(compl.var," ~ ",paste0(covariates,collapse = " + "))
-
+  message("Training complier model")
   compl.mod<-complier_mod(expdata,ID=NULL,SL.library=NULL)
-
-  compliers<-complier_predict(compl.mod,exp.data =expdata)
-
+  message("predicting")
+#CHECKHERE
+  compliers<-complier_predict(complier.mod=compl.mod,
+                              exp.data =expdata)
+  message("Training response model")
   response.mod <-  response_model(exp.data=expdata,
                                   exp.compliers=compliers,
                                   family="binomial",
                                   ID=NULL,
                                   SL.library=NULL)
 
-
+  message("Estimating pattc")
   counterfactuals<-pattc_counterfactuals(pop.data=popdata,
                                          response.mod=response.mod,
                                          id=NULL,

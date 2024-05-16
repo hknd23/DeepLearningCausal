@@ -1,3 +1,27 @@
+#' Title
+#'
+#' @param x
+#' @param y
+#' @param c
+#' @param weight
+#' @param weighty
+#' @param weightc
+#' @param cluster
+#' @param clustery
+#' @param clusterc
+#' @param samedata
+#' @param alternative
+#' @param mean1
+#' @param bootse
+#' @param bootp
+#' @param bootn
+#' @param drops
+#' @param equivalence
+#'
+#' @return
+#' @export
+#'
+#' @examples
 WtC <- function (x,
                  y,
                  c=NULL,

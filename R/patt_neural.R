@@ -1,3 +1,17 @@
+#' Title
+#'
+#' @param complier.formula
+#' @param exp.data
+#' @param treat.var
+#' @param algorithm
+#' @param hidden.layer
+#' @param ID
+#' @param stepmax
+#'
+#' @return
+#' @export
+#'
+#' @examples
 neuralnet_complier_mod<-function(complier.formula,
                             exp.data,
                             treat.var,
@@ -22,6 +36,17 @@ neuralnet_complier_mod<-function(complier.formula,
   return(neuralnet.complier.mod)
 }
 
+#' Title
+#'
+#' @param neuralnet.complier.mod
+#' @param exp.data
+#' @param treat.var
+#' @param compl.var
+#'
+#' @return
+#' @export
+#'
+#' @examples
 neuralnet_predict<-function(neuralnet.complier.mod,exp.data,treat.var,compl.var){
 
   neuralnetpredict<-predict(neuralnet.complier.mod,exp.data)
@@ -40,6 +65,20 @@ neuralnet_predict<-function(neuralnet.complier.mod,exp.data,treat.var,compl.var)
   return(neuralnet.compliers)
 }
 
+#' Title
+#'
+#' @param response.formula
+#' @param exp.data
+#' @param neuralnet.compliers
+#' @param compl.var
+#' @param algorithm
+#' @param hidden.layer
+#' @param stepmax
+#'
+#' @return
+#' @export
+#'
+#' @examples
 neuralnet_response_model <- function(response.formula,
                                 exp.data,
                                 neuralnet.compliers,
@@ -69,6 +108,17 @@ neuralnet_response_model <- function(response.formula,
 }
 
 
+#' Title
+#'
+#' @param pop.data
+#' @param neuralnet.response.mod
+#' @param ID
+#' @param cluster
+#'
+#' @return
+#' @export
+#'
+#' @examples
 neuralnet_pattc_counterfactuals<- function (pop.data,
                                        neuralnet.response.mod,
                                        ID=NULL,
@@ -100,6 +150,31 @@ neuralnet_pattc_counterfactuals<- function (pop.data,
 
 }
 
+#' Title
+#'
+#' @param response.formula
+#' @param exp.data
+#' @param pop.data
+#' @param treat.var
+#' @param compl.var
+#' @param compl.algorithm
+#' @param response.algorithm
+#' @param compl.hidden.layer
+#' @param response.hidden.layer
+#' @param compl.stepmax
+#' @param response.stepmax
+#' @param ID
+#' @param cluster
+#' @param bootse
+#' @param bootp
+#' @param bootn
+#' @param samedata
+#' @param equivalence
+#'
+#' @return
+#' @export
+#'
+#' @examples
 patt_neural <- function(response.formula,
                         exp.data,
                         pop.data,

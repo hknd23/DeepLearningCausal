@@ -6,6 +6,7 @@ sapply(paste0("R/",list.files("R/")), source)
 expdata <- read.csv("data/expdata0502.csv")
 popdata <- read.csv("data/popdata0502.csv")
 
+library(SuperLearner)
 
 #########
 #Example Code for ensemble/SL pattc
@@ -85,23 +86,30 @@ expT <- meta_learner(cov.formula = outcome  ~ age + male +
 #####
 #Example code for neural based S and T Learners
 #####
-expS <- meta_learner(cov.formula = outcome  ~ age + male +
+control <- SuperLearner::SuperLearner.CV.control(V=5)
+
+NNexpS <- neuralnet_meta_learner(cov.formula = outcome  ~ age + male +
                        income + education +
                        employed + married +
                        Hindu + job_worry,
                      data = expdata,
-                     control = control,
+                     stepmax=1e+07,
+                     nfolds=5,
+                     algorithm = "rprop+",
+                     hidden.layer=c(4,2),
                      meta.learner.type="S.Learner",
                      treat.var = "trt1")
 
 
 
-expT <- meta_learner(cov.formula = outcome  ~ age + male +
+BBexpT <- neuralnet_meta_learner(cov.formula = outcome  ~ age + male +
                        income + education +
                        employed + married +
                        Hindu + job_worry,
                      data = expdata,
-                     control = control,
+                     stepmax=1e+07,
+                     nfolds=5,
+                     algorithm = "rprop+",
                      meta.learner.type="T.Learner",
                      treat.var = "trt1")
 
