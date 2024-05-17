@@ -1,8 +1,8 @@
-#' Title short description of function
+#' S_T-learner Ensemble
 #'
-#' @description
-#' Some details about the function here
-#'
+#' @description \code{S_T-learner Ensemble} implements the S-learner and T-learner for estimating CATE using the super learner ensemble method.
+#' The super learner in this case includes the following machine learning algorithms: extreme gradient boosting, glmnet (elastic net regression),  
+#' random forest and neural nets.
 #' @param data
 #' @param cov.formula
 #' @param treat.var
