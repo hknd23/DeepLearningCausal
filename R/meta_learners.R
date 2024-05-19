@@ -3,11 +3,11 @@
 #' @description \code{S_T-learner Ensemble} implements the S-learner and T-learner for estimating CATE using the super learner ensemble method.
 #' The super learner in this case includes the following machine learning algorithms: extreme gradient boosting, glmnet (elastic net regression),  
 #' random forest and neural nets.
-#' @param data
+#' @param data list object of data
 #' @param cov.formula
 #' @param treat.var
-#' @param meta.learner.type
-#' @param learners
+#' @param meta.learner.type. This is the S-learner and T-learner model.
+#' @param learners. The super learner ensemble that includes extreme gradient boosting, glmnet, random forest, and neural nets. 
 #' @param nfolds
 #' @param seed
 #'
