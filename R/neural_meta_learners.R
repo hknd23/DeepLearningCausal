@@ -1,7 +1,7 @@
 #' S_T-learner DeepNN
 #'
 #'@description \code{S_T-learner DeepNN} implements the S-learner and T-learner for estimating CATE using Deep Neural Networks.
-#'The Resilient back propagation (Rprop) algorithm is used for training the neural networks.
+#'The Resilient back propagation (Rprop) algorithm is used for training neural networks.
 #' @param data list object of data 
 #' @param cov.formula
 #' @param treat.var
