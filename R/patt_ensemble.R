@@ -1,8 +1,10 @@
-#' Title
+#' PATT_C SL Ensemble 
 #'
-#' @param data
+#' @description \code{PATT_C SL Ensemble} estimates the Population Average Treatment Effect of the Treated from experimental data with noncompliers
+#' using the super learner ensemble that includes extreme gradient boosting, glmnet (elastic net regression), random forest and neural nets. 
+#' @param data list object of data
 #' @param ID
-#' @param SL.library
+#' @param SL.library. Employs extreme gradient boosting, elastic net regression, random forest, and neural nets. 
 #' @param tr
 #'
 #' @return
@@ -33,7 +35,7 @@ complier_mod <- function(data,ID=NULL,SL.library=NULL,tr) {
   return(complier.mod)
 }
 
-#' Title
+#' Predicting Compliance from experimental data
 #'
 #' @param complier.mod
 #' @param exp.data
@@ -75,7 +77,7 @@ complier_predict <- function(complier.mod,exp.data) {
   return(rct.compliers)
   }
 
-#' Title
+#' Modeling Responses from experimental data
 #'
 #' @param exp.data
 #' @param exp.compliers
@@ -117,7 +119,7 @@ response_model<-function(exp.data,
 }
 
 
-#' Title
+#' Assessing counterfactuals from Population Data
 #'
 #' @param pop.data
 #' @param response.mod
@@ -166,7 +168,7 @@ pattc_counterfactuals<- function (pop.data,
   return(Y.hats)
 }
 
-#' Title
+#' PATT_C estimation
 #'
 #' @param response.formula
 #' @param exp.data
