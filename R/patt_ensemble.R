@@ -35,7 +35,7 @@ complier_mod <- function(data,ID=NULL,SL.library=NULL,tr) {
   return(complier.mod)
 }
 
-#' Predicting Compliance from experimental data
+#' Predict Compliance from experimental data
 #'
 #' @param complier.mod
 #' @param exp.data
@@ -77,7 +77,7 @@ complier_predict <- function(complier.mod,exp.data) {
   return(rct.compliers)
   }
 
-#' Modeling Responses from experimental data
+#' Model Responses from experimental data using SL ensemble
 #'
 #' @param exp.data
 #' @param exp.compliers
@@ -119,7 +119,7 @@ response_model<-function(exp.data,
 }
 
 
-#' Assessing counterfactuals from Population Data
+#' Assess Population Data counterfactuals 
 #'
 #' @param pop.data
 #' @param response.mod
@@ -168,7 +168,7 @@ pattc_counterfactuals<- function (pop.data,
   return(Y.hats)
 }
 
-#' PATT_C estimation
+#' Estimate PATT_C using SL ensemble
 #'
 #' @param response.formula
 #' @param exp.data
