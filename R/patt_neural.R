@@ -1,10 +1,12 @@
-#' Title
+#' PATT_C DeepNN
 #'
+#'#' @description \code{PATT_C DeepNN} estimates the Population Average Treatment Effect of the Treated from experimental data with noncompliers
+#' using Deep Neural Networks. The Resilient back propagation (Rprop) algorithm is used for training neural networks.
 #' @param complier.formula
 #' @param exp.data
 #' @param treat.var
 #' @param algorithm
-#' @param hidden.layer
+#' @param hidden.layer. The Resilient back propagation (Rprop) algorithm for training neural networks.
 #' @param ID
 #' @param stepmax
 #'
@@ -36,7 +38,7 @@ neuralnet_complier_mod<-function(complier.formula,
   return(neuralnet.complier.mod)
 }
 
-#' Title
+#' Predicting Compliance from experimental data
 #'
 #' @param neuralnet.complier.mod
 #' @param exp.data
@@ -65,7 +67,7 @@ neuralnet_predict<-function(neuralnet.complier.mod,exp.data,treat.var,compl.var)
   return(neuralnet.compliers)
 }
 
-#' Title
+#' Modeling Responses from experimental data Using Deep NN
 #'
 #' @param response.formula
 #' @param exp.data
@@ -108,7 +110,7 @@ neuralnet_response_model <- function(response.formula,
 }
 
 
-#' Title
+#' Assess Population Data counterfactuals
 #'
 #' @param pop.data
 #' @param neuralnet.response.mod
@@ -150,7 +152,7 @@ neuralnet_pattc_counterfactuals<- function (pop.data,
 
 }
 
-#' Title
+#' Estimate PATT_C using Deep NN
 #'
 #' @param response.formula
 #' @param exp.data
