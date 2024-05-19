@@ -115,4 +115,6 @@ if (!require("remotes")) install.packages("remotes")
 remotes::install_github("X")
 ```
 
-### Example 1
+#### S-Learner Using SL ensemble
+
+#### T-Learner Using SL ensemble
