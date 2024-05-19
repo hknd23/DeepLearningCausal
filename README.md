@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# DNCausalPATT
+# DNetCausalPATT
 
 <!-- badges: start -->
 
@@ -12,7 +12,7 @@
 
 <!-- badges: end -->
 
-**DNCausalPATT** is an R package that provides functions to estimate the Conditional Average Treatment Effects (CATE) 
+**DNetCausalPATT** is an R package that provides functions to estimate the Conditional Average Treatment Effects (CATE) 
 and Population Average Treatment Effects on the Treated (PATT) from experimental or observational data using the 
 Super Learner (SL) ensemble method and Deep neural networks. The package first provides functions to implement meta-learners
 such as the Single-learner (S-learner) and Two-learner (T-learner) described in Künzel et al. (2019) for estimating the CATE.
@@ -20,23 +20,28 @@ The S- and T-learner are each estimated using the SL ensemble method and deep ne
 implement the Ottoboni and Poulos (2020) PATT-C estimator to obtain the PATT from experimental data with noncompliance by using 
 the SL ensemble method and deep neural networks.    
 
-### Why DNCausalPATT?
+### Why DNetCausalPATT?
 
-Answering causal questions is critical for research across both natural and social science. Some of these questions can be 
-addressed via techniques such as randomized clinical trials and A/B testing. Yet the said techniques are not always practical 
-or successful. Substantial effort has thus been invested in recent years to particularly develop stattistical software for causal inference using 
-machine learning algorithms to estimate Conditional Average Treatment Effects (CATE) or Individual Treatment Effects (ITE) 
-from experimental or observational data. (complete para and 2 bullet points here).
+Researchers are increasingly interested to estimate causal effecs, including Conditional Average Treatment Effects (CATE)  
+and Population Average Treatment Effects (PATE), from observational or experimental data using machine learning and deep learning 
+algorithms. A unique advantage of the DNetCausalPATT package is that it provides a united interface for users to estimate both CATE from    
+observational or experimental data as well as Population Average Treatment Effects on the Treated (PATT) from observational and experimental 
+data with noncompliance. Another key benefit is that DNetCausalPATT provides users the choice of estimating CATE and PATT using the super learner
+ensemble and deep neural networks. More specifically,  
 
-### Functions in the DNCausal PATT Package
+-     The super learner ensemble includes extreme gradient boosting, elastic net regression, random forest, neural nets.  
+
+-     Deep Neural Networks training via Resilient back propagation (Rprop) algorithm.
+
+### Functions in the DNetCausal PATT Package
 
 | Function                | Description                                                                                |
 |-------------------------|--------------------------------------------------------------------------------------------|
-| `S-learner_ensemble`    | Implements the S-learner for estimating CATE using the super learner ensemble method.      |
-| `T-learner_ensemble`    | Implements the T-learner for estimating CATE using the super learner ensemble method.      |
-| `metalearner_deepneural`| Implements the S-learner and T-learner for estimating CATE using deep neural networks.     |
-| `PATTC_ensemble`        | Implements the PATT_C estimator for obtaining PATT using the super learner ensemble method.|
-| `PATTC_deepneural`      | Implements the PATT_C estimator for obtaining PATT using deep neural networks.             |
+| `S-learner_ensemble`    | Implements S-learner for estimating CATE using super learner ensemble.                     |
+| `T-learner_ensemble`    | Implements T-learner for estimating CATE using super learner ensemble.                     |
+| `metalearner_deepneural`| Implements S-learner and T-learner for estimating CATE using deep neural networks.         |
+| `PATTC_ensemble`        | Implements PATT_C estimator for obtaining PATT using super learner ensemble.               |
+| `PATTC_deepneural`      | Implements PATT_C estimator for obtaining PATT using deep neural networks.                 |
 
 
 ### Example 1
