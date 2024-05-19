@@ -115,6 +115,14 @@ if (!require("remotes")) install.packages("remotes")
 remotes::install_github("X")
 ```
 
-#### S-Learner Using SL ensemble
+#### S-Learner CATE from super learner ensemble
 
-#### T-Learner Using SL ensemble
+#### T-Learner CATE from super learner ensemble
+
+#### S-Learner CATE via deep neural networks
+
+#### T-Learner CATE via deep neural networks
+
+#### PATT-C from super learner ensemble
+
+#### PATT-C via deep neural networks
