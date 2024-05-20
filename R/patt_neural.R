@@ -1,6 +1,6 @@
 #' PATT_C DeepNN
 #'
-#'#' @description \code{PATT_C DeepNN} estimates the Population Average Treatment Effect of the Treated from experimental data with noncompliers
+#' \code{PATT_C DeepNN} estimates the Population Average Treatment Effect of the Treated from experimental data with noncompliers
 #' using Deep Neural Networks. The Resilient back propagation (Rprop) algorithm is used for training neural networks.
 #' @param complier.formula
 #' @param exp.data

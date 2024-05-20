@@ -1,15 +1,19 @@
-#' S_T-learner DeepNN
+#' ST_learner_DeepNN
 #'
-#'@description \code{S_T-learner DeepNN} implements the S-learner and T-learner for estimating CATE using Deep Neural Networks.
-#'The Resilient back propagation (Rprop) algorithm is used for training neural networks.
-#' @param data list object of data 
-#' @param cov.formula
+#'\code{ST_learner_DeepNN} implements the S-learner and T-learner for estimating
+#'CATE using Deep Neural Networks. The Resilient back propagation (Rprop)
+#'algorithm is used for training neural networks.
+#' @param data list object of data
+#' @param cov.formula formula object for
 #' @param treat.var
-#' @param meta.learner.type. This is the S-learner and T-learner model. 
+#' @param meta.learner.type. This is the S-learner and T-learner model.
 #' @param stepmax
-#' @param nfolds
-#' @param algorithm. The Resilient back propagation (Rprop) algorithm for training neural networks.  
-#' @param hidden.layer
+#' @param nfolds number of folds for cross-validation. Currently supports up to
+#' 5 folds.
+#' @param algorithm a string for the algorithm for the neural network.
+#' Default set to `rprop+`, the Resilient back propagation (Rprop) with weight
+#' backtracking algorithm for training neural networks.
+#' @param hidden.layer vector of
 #' @param seed
 #' @param linear.output
 #'
@@ -17,7 +21,7 @@
 #' @export
 #'
 #' @examples
-neuralnet_meta_learner <- function(data,
+ST_learner_DeepNN <- function(data,
                                    cov.formula,
                                    treat.var,
                                    meta.learner.type,

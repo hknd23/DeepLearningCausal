@@ -1,10 +1,10 @@
-#' PATT_C SL Ensemble 
+#' PATT_C SL Ensemble
 #'
-#' @description \code{PATT_C SL Ensemble} estimates the Population Average Treatment Effect of the Treated from experimental data with noncompliers
-#' using the super learner ensemble that includes extreme gradient boosting, glmnet (elastic net regression), random forest and neural nets. 
+#' \code{PATT_C SL Ensemble} estimates the Population Average Treatment Effect of the Treated from experimental data with noncompliers
+#' using the super learner ensemble that includes extreme gradient boosting, glmnet (elastic net regression), random forest and neural nets.
 #' @param data list object of data
 #' @param ID
-#' @param SL.library. Employs extreme gradient boosting, elastic net regression, random forest, and neural nets. 
+#' @param SL.library. Employs extreme gradient boosting, elastic net regression, random forest, and neural nets.
 #' @param tr
 #'
 #' @return
@@ -119,7 +119,7 @@ response_model<-function(exp.data,
 }
 
 
-#' Assess Population Data counterfactuals 
+#' Assess Population Data counterfactuals
 #'
 #' @param pop.data
 #' @param response.mod

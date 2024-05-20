@@ -1,12 +1,9 @@
-# Creates additional randomForest wrappers changing both mtry and nodesize
-#tuneGrid <- expand.grid(mtry=c(1,5,10), nodesize=c(1,5))
-
-#' Title
+#' create.SL.randomForest
 #'
-#' @param tune
+#'Creates additional randomForest wrappers
+#' @param tune default value set to tune = list(mtry = c(1, 5, 10), nodesize = c(1, 5))
 #'
 #' @return
-#' @export
 #'
 #' @examples
 create.SL.randomForest <- function(tune = list(mtry = c(1, 5, 10), nodesize = c(1, 5))) {
@@ -17,16 +14,12 @@ create.SL.randomForest <- function(tune = list(mtry = c(1, 5, 10), nodesize = c(
   invisible(TRUE)
 }
 
-#' Title
+#' create.SL.knn
 #'
-#' @description
 #' Creates knn wrappers in the global environment with different nearest neighbors.
-#' The default value for k in SL.knn is 10
-#'
-#' @param k
+#' @param k default value set to 10
 #'
 #' @return
-#' @export
 #'
 #' @examples
 create.SL.knn <- function(k = c(20, 30, 40, 50)) {
@@ -37,9 +30,10 @@ create.SL.knn <- function(k = c(20, 30, 40, 50)) {
 }
 
 
-#' Title
+#' create.SL.glmnet
 #'
-#' @param alpha
+#'
+#' @param alpha default value set to  c(0,0.25, 0.50, 0.75)
 #'
 #' @return
 #' @export
