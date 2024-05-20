@@ -2,13 +2,13 @@
 % Please edit documentation in R/superlearners.R
 \name{create.SL.randomForest}
 \alias{create.SL.randomForest}
-\title{Title}
+\title{create.SL.randomForest}
 \usage{
 create.SL.randomForest(tune = list(mtry = c(1, 5, 10), nodesize = c(1, 5)))
 }
 \arguments{
-\item{tune}{}
+\item{tune}{default value set to tune = list(mtry = c(1, 5, 10), nodesize = c(1, 5))}
 }
 \description{
-Title
+Creates additional randomForest wrappers
 }

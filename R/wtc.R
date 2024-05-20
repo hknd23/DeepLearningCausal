@@ -1,4 +1,7 @@
-#' Title
+#' WtC
+#'
+#' @description
+#' Weighted t-test to estimate PATT-C
 #'
 #' @param x
 #' @param y

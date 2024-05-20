@@ -2,14 +2,13 @@
 % Please edit documentation in R/superlearners.R
 \name{create.SL.knn}
 \alias{create.SL.knn}
-\title{Title}
+\title{create.SL.knn}
 \usage{
 create.SL.knn(k = c(20, 30, 40, 50))
 }
 \arguments{
-\item{k}{}
+\item{k}{default value set to 10}
 }
 \description{
 Creates knn wrappers in the global environment with different nearest neighbors.
-The default value for k in SL.knn is 10
 }

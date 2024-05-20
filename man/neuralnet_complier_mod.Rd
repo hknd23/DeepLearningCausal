@@ -20,6 +20,6 @@ neuralnet_complier_mod(
 \item{hidden.layer.}{The Resilient back propagation (Rprop) algorithm for training neural networks.}
 }
 \description{
-#' @description \code{PATT_C DeepNN} estimates the Population Average Treatment Effect of the Treated from experimental data with noncompliers
+\code{PATT_C DeepNN} estimates the Population Average Treatment Effect of the Treated from experimental data with noncompliers
 using Deep Neural Networks. The Resilient back propagation (Rprop) algorithm is used for training neural networks.
 }

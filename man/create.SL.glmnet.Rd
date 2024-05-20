@@ -2,13 +2,13 @@
 % Please edit documentation in R/superlearners.R
 \name{create.SL.glmnet}
 \alias{create.SL.glmnet}
-\title{Title}
+\title{create.SL.glmnet}
 \usage{
 create.SL.glmnet(alpha = c(0, 0.25, 0.5, 0.75))
 }
 \arguments{
-\item{alpha}{}
+\item{alpha}{default value set to  c(0,0.25, 0.50, 0.75)}
 }
 \description{
-Title
+create.SL.glmnet
 }

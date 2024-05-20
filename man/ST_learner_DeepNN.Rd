@@ -20,13 +20,23 @@ ST_learner_DeepNN(
 \arguments{
 \item{data}{list object of data}
 
+\item{cov.formula}{formula object for}
+
+\item{nfolds}{number of folds for cross-validation. Currently supports up to
+5 folds.}
+
+\item{algorithm}{a string for the algorithm for the neural network.
+Default set to \verb{rprop+}, the Resilient back propagation (Rprop) with weight
+backtracking algorithm for training neural networks.}
+
+\item{hidden.layer}{vector of}
+
 \item{linear.output}{}
 
 \item{meta.learner.type.}{This is the S-learner and T-learner model.}
-
-\item{algorithm.}{The Resilient back propagation (Rprop) algorithm for training neural networks.}
 }
 \description{
-\code{ST_learner_DeepNN} implements the S-learner and T-learner for estimating CATE using Deep Neural Networks.
-The Resilient back propagation (Rprop) algorithm is used for training neural networks.
+\code{ST_learner_DeepNN} implements the S-learner and T-learner for estimating
+CATE using Deep Neural Networks. The Resilient back propagation (Rprop)
+algorithm is used for training neural networks.
 }

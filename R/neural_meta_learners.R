@@ -1,36 +1,37 @@
-#' ST_learner_DeepNN
+#' S_T-learner DeepNN
 #'
-#'\code{ST_learner_DeepNN} implements the S-learner and T-learner for estimating
-#'CATE using Deep Neural Networks. The Resilient back propagation (Rprop)
-#'algorithm is used for training neural networks.
-#' @param data list object of data
-#' @param cov.formula formula object for
-#' @param treat.var
-#' @param meta.learner.type. This is the S-learner and T-learner model.
-#' @param stepmax
+#' @description
+#' \code{ST_learner_DeepNN} implements the S-learner and T-learner for estimating
+#' CATE using Deep Neural Networks. The Resilient back propagation (Rprop)
+#' algorithm is used for training neural networks.
+#' @param data \code{data.frame} object of data.
+#' @param cov.formula formula description of the model y ~ x(list of covariates).
+#' @param treat.var string for the name of treatment variable.
+#' @param meta.learner.type string specifying is the S-learner and
+#' \code{"T.Learner"} for the T-learner model.
+#' @param stepmax maximum number of steps for training model.
 #' @param nfolds number of folds for cross-validation. Currently supports up to
 #' 5 folds.
 #' @param algorithm a string for the algorithm for the neural network.
 #' Default set to `rprop+`, the Resilient back propagation (Rprop) with weight
 #' backtracking algorithm for training neural networks.
-#' @param hidden.layer vector of
-#' @param seed
-#' @param linear.output
+#' @param hidden.layer vector of integers specifying layers and number of neurons.
+#' @param linear.output logical specifying regression (TRUE)
+#' or classification (FALSE) model.
 #'
-#' @return
+#' @return vector of CATEs estimated by the meta learners for each observation.
 #' @export
 #'
 #' @examples
 ST_learner_DeepNN <- function(data,
-                                   cov.formula,
-                                   treat.var,
-                                   meta.learner.type,
-                                   stepmax=1e+05,
-                                   nfolds=5,
-                                   algorithm = "rprop+",
-                                   hidden.layer=c(4,2),
-                                   seed=1234,
-                                   linear.output = FALSE){
+                              cov.formula,
+                              treat.var,
+                              meta.learner.type,
+                              stepmax=1e+05,
+                              nfolds=5,
+                              algorithm = "rprop+",
+                              hidden.layer=c(4,2),
+                              linear.output = FALSE){
   cov.formula<-as.formula(cov.formula)
   variables<-all.vars(cov.formula)
   outcome.var<-variables[1]
@@ -45,7 +46,6 @@ ST_learner_DeepNN <- function(data,
   data$ID <- c(1:nrow(data))
   score_meta <- matrix(0,nrow(data),1)
 
-  set.seed(seed)
   folds <- caret::createFolds(data$d,k=nfolds)
 
   for(f in 1:(length(folds))){

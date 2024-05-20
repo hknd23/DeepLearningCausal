@@ -29,14 +29,13 @@ create.SL.knn <- function(k = c(20, 30, 40, 50)) {
   invisible(TRUE)
 }
 
-
 #' create.SL.glmnet
 #'
+#' @description
 #'
 #' @param alpha default value set to  c(0,0.25, 0.50, 0.75)
 #'
 #' @return
-#' @export
 #'
 #' @examples
 create.SL.glmnet <- function(alpha = c(0,0.25, 0.50, 0.75)) {
@@ -56,7 +55,6 @@ create.SL.glmnet <- function(alpha = c(0,0.25, 0.50, 0.75)) {
 #' @param deg.gam
 #'
 #' @return
-#' @export
 #'
 #' @examples
 create.SL.gam <- function(deg.gam = c(3, 4)) {
@@ -93,7 +91,6 @@ create.SL.gbm <- function(distribution = c("bernoulli","adaboost","gaussian")) {
 #' @param ...
 #'
 #' @return
-#' @export
 #'
 #' @examples
 SL.mean <- function (Y, X, newX, family, obsWeights, id, ...)
@@ -116,7 +113,6 @@ SL.mean <- function (Y, X, newX, family, obsWeights, id, ...)
 #' @param ...
 #'
 #' @return
-#' @export
 #'
 #' @examples
 predict.SL.mean <- function (object, newdata, family, X = NULL, Y = NULL, ...)
@@ -126,12 +122,11 @@ predict.SL.mean <- function (object, newdata, family, X = NULL, Y = NULL, ...)
 }
 
 
-#' Title
+#' create.SL
 #'
-#' @param learners
+#' @param learners create ML wrappers for ensemble methods
 #'
 #' @return
-#' @export
 #'
 #' @examples
 create.SL <- function(learners="all")
@@ -155,7 +150,6 @@ print("Created gbm wrapper")
 #' @param SL.library.class
 #'
 #' @return
-#' @export
 #'
 #' @examples
 define.SL.class.library<- function (SL.library.class=c("SL.gbm.adaboost",
@@ -174,8 +168,13 @@ define.SL.class.library<- function (SL.library.class=c("SL.gbm.adaboost",
   return(SL.library.class)
 }
 
-#' @export
+#' define.SL.reg.library
 #'
+#' @param SL.library.reg
+#'
+#' @return
+#'
+#' @examples
 define.SL.reg.library <- function (SL.library.reg=c("SL.gam", # degree=2
                                                       "SL.gam.3",
                                                       "SL.gam.4",

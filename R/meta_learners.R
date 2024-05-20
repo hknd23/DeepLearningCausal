@@ -1,29 +1,35 @@
 #' S_T-learner Ensemble
 #'
-#' \code{S_T-learner Ensemble} implements the S-learner and T-learner for estimating CATE using the super learner ensemble method.
-#' The super learner in this case includes the following machine learning algorithms: extreme gradient boosting, glmnet (elastic net regression),
-#' random forest and neural nets.
-#' @param data list object of data
-#' @param cov.formula
-#' @param treat.var
-#' @param meta.learner.type. This is the S-learner and T-learner model.
-#' @param learners. The super learner ensemble that includes extreme gradient boosting, glmnet, random forest, and neural nets.
-#' @param nfolds
-#' @param seed
+#' @description
+#' \code{ST_learner_ensemble} implements the S-learner and T-learner for
+#' estimating CATE using the super learner ensemble method. The super learner in
+#' this case includes the following machine learning algorithms:
+#' extreme gradient boosting, glmnet (elastic net regression), random forest and
+#' neural nets.
 #'
-#' @return
+#' @param data \code{data.frame} object of data
+#' @param cov.formula formula description of the model y ~ x(list of covariates)
+#' @param treat.var string for the name of treatment variable.
+#' @param meta.learner.type string specifying is the S-learner and
+#' \code{"T.Learner"} for the T-learner model.
+#' @param learners vector for super learner ensemble that includes extreme gradient
+#' boosting, glmnet, random forest, and neural nets.
+#' @param nfolds number of folds for cross-validation. Currently supports up to
+#' 5 folds.
+#'
+#' @return vector of CATEs estimated by the meta learners for each observation.
 #' @export
 #'
 #' @examples
 
-meta_learner <- function(data,
-                        cov.formula,
-                        treat.var,
-                        meta.learner.type,
-                        learners=c("SL.glmnet","SL.xgboost",
+ST_learner_ensemble <- function(data,
+                         cov.formula,
+                         treat.var,
+                         meta.learner.type,
+                         learners=c("SL.glmnet","SL.xgboost",
                                     "SL.ranger","SL.nnet"),
-                        nfolds=5,
-                        seed=1234){
+                         nfolds=5){
+
   control <- SuperLearner::SuperLearner.CV.control(V=5)
 
   cov.formula<-as.formula(cov.formula)

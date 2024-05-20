@@ -1,17 +1,17 @@
 #' PATT_C SL Ensemble
 #'
-#' \code{PATT_C SL Ensemble} estimates the Population Average Treatment Effect of the Treated from experimental data with noncompliers
+#' @description
+#' \code{PATT_C_SL_Ensemble} estimates the Population Average Treatment Effect of the Treated from experimental data with noncompliers
 #' using the super learner ensemble that includes extreme gradient boosting, glmnet (elastic net regression), random forest and neural nets.
 #' @param data list object of data
 #' @param ID
 #' @param SL.library. Employs extreme gradient boosting, elastic net regression, random forest, and neural nets.
-#' @param tr
 #'
 #' @return
 #' @export
 #'
 #' @examples
-complier_mod <- function(data,ID=NULL,SL.library=NULL,tr) {
+complier_mod <- function(data,ID=NULL,SL.library=NULL) {
   if (!is.null(ID)){
     id=ID
   }
@@ -35,8 +35,9 @@ complier_mod <- function(data,ID=NULL,SL.library=NULL,tr) {
   return(complier.mod)
 }
 
+#' complier_predict
+#' @description
 #' Predict Compliance from experimental data
-#'
 #' @param complier.mod
 #' @param exp.data
 #'
@@ -78,6 +79,7 @@ complier_predict <- function(complier.mod,exp.data) {
   }
 
 #' Model Responses from experimental data using SL ensemble
+#' @description
 #'
 #' @param exp.data
 #' @param exp.compliers
@@ -120,6 +122,7 @@ response_model<-function(exp.data,
 
 
 #' Assess Population Data counterfactuals
+#' @description
 #'
 #' @param pop.data
 #' @param response.mod
@@ -168,16 +171,26 @@ pattc_counterfactuals<- function (pop.data,
   return(Y.hats)
 }
 
-#' Estimate PATT_C using SL ensemble
+#' PATT_C SL Ensemble
 #'
-#' @param response.formula
-#' @param exp.data
-#' @param pop.data
-#' @param treat.var
-#' @param compl.var
-#' @param createSL
-#' @param ID
-#' @param cluster
+#' @description
+#' \code{PATT_C_SL_Ensemble} estimates the Population Average Treatment Effect
+#' of the Treated from experimental data with noncompliers
+#' using the super learner ensemble that includes extreme gradient boosting,
+#' glmnet (elastic net regression), random forest and neural nets.
+#'
+#' @param response.formula formula for the effects of covariates on outcome
+#' variable (y ~ x).
+#' @param exp.data `data.frame` object for experimental data. Must include
+#' binary treatment and compliance variable.
+#' @param pop.data `data.frame` object for population data. Must include
+#' binary compliance variable.
+#' @param treat.var string for binary treatment variable.
+#' @param compl.var string for binary compliance variable.
+#' @param createSL logical. If `TRUE` will call on \code{create.SL} to create
+#' SL wrappers.
+#' @param ID string for name of identifier.
+#' @param cluster string for name of cluster variable.
 #' @param bootse
 #' @param bootp
 #' @param bootn
