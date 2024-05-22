@@ -3,8 +3,8 @@
 sapply(paste0("R/",list.files("R/")), source)
 
 #import datasets
-expdata <- read.csv("data/expdata0502.csv")
-popdata <- read.csv("data/popdata0502.csv")
+IND_exp_data <- read.csv("data/IND_exp_data.csv")
+IND_pop_data <- read.csv("data/IND_pop_data.csv")
 
 library(SuperLearner)
 

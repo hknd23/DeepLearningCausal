@@ -9,8 +9,12 @@ Authors@R: c(person(given = "Nguyen K.",
                     role = c("aut","cre"),
                     comment = c(ORCID = "0000-0002-6234-7232")),   
              person(given = "Bumba",
-                    email = "bumba.mukherjee@psu.edu",
                     family = "Mukherjee", 
+                    email = "bumba.mukherjee@psu.edu",
+                    role = c("aut")),
+             person(given = "Irvin (Chen-Yu)",
+                    family = "Lee", 
+                    email = "cvl6079@psu.edu",
                     role = c("aut")))
 Maintainer: Nguyen Huynh <nguyenhuynh831@gmail.com>
 Description: DNetCausalPATT is an R package that provides functions to estimate
@@ -43,3 +47,5 @@ Suggests:
         tidyr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
+Depends: 
+    R (>= 2.10)
