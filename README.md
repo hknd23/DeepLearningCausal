@@ -29,9 +29,9 @@ observational or experimental data as well as Population Average Treatment Effec
 data with noncompliance. Another key benefit is that DNetCausalPATT provides users the choice of estimating CATE and PATT using the super learner
 ensemble and deep neural networks. More specifically,  
 
--     The super learner ensemble includes extreme gradient boosting, elastic net regression, random forest, neural nets.  
+- The super learner ensemble includes extreme gradient boosting, elastic net regression, random forest, neural nets.  
 
--     Deep Neural Networks training via Resilient back propagation (Rprop) algorithm.
+- Deep Neural Networks training via Resilient back propagation (Rprop) algorithm.
 
 ### Functions in the DNetCausal PATT Package
 
