@@ -62,6 +62,8 @@ pattc_neural <- patt_neural(response.formula=outcome ~ age + male +
 #####
 #Example code for ensemble based S and T Learners
 #####
+control <- SuperLearner::SuperLearner.CV.control(V=5)
+
 expS <- meta_learner(cov.formula = outcome  ~ age + male +
                        income + education +
                        employed + married +
@@ -86,7 +88,6 @@ expT <- meta_learner(cov.formula = outcome  ~ age + male +
 #####
 #Example code for neural based S and T Learners
 #####
-control <- SuperLearner::SuperLearner.CV.control(V=5)
 
 NNexpS <- neuralnet_meta_learner(cov.formula = outcome  ~ age + male +
                        income + education +

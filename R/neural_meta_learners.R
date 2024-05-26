@@ -1,3 +1,8 @@
+
+
+
+
+
 #' S_T-learner DeepNN
 #'
 #' @description
@@ -23,6 +28,31 @@
 #' @export
 #'
 #' @examples
+#' # load dataset
+#' data(IND_exp_data)
+#' # estimate CATEs with S Learner
+#' slearner <- ST_learner_DeepNN(cov.formula = exp1_dv1 ~ female + age+ income +
+#'                                             imp_rel + religion + education +
+#'                                             ideol_lr + empl_status + Marital_status +
+#'                                             job_worry,
+#'                               data = expdata,
+#'                               treat.var = "Exp1trt",
+#'                               meta.learner.type="S.Learner",
+#'                               stepmax=1e+08,
+#'                               nfolds=5,
+#'                               algorithm = "rprop+",
+#'                               hidden.layer=c(4,2),
+#'                               linear.output = FALSE)
+#'
+#' #estimate CATEs with T Learner
+#' tlearner <- ST_learner_DeepNN(cov.formula = exp1_dv1 ~ female + age+ income +
+#'                                             imp_rel + religion + education +
+#'                                             ideol_lr + empl_status + Marital_status +
+#'                                             job_worry,
+#'                               data = expdata,
+#'                               treat.var = "trt1",
+#'                               meta.learner.type="T.Learner",
+#'                               linear.output = FALSE)
 ST_learner_DeepNN <- function(data,
                               cov.formula,
                               treat.var,

@@ -3,25 +3,25 @@
 \docType{data}
 \name{IND_pop_data}
 \alias{IND_pop_data}
-\title{Survey Experiment of Leader Perception}
+\title{World Value Survey India Sample}
 \format{
 \subsection{\code{IND_pop_data}}{
 
 A data frame with 11,813 rows and 13 columns:
 \describe{
-\item{female}{Respondent`s sex	Binary (1=Male; Female=2)}
-\item{age}{Can you tell me your year of birth, please? This means you are___years old.	Numeric}
-\item{income}{On a 10-point scale where 1 indicates “lowest income group” and 10 indicates “highest income group” please tell me in what group your household falls in?	Ordinal (1 to 10, where 1=Lowest Income Group to 10=Highest Income Group)}
-\item{imp_rel}{Would you say (religion) is very important, rather important, not very important, not at all important.	Ordinal (1 to 4, where 1=Very important to 4=Not at all important)}
-\item{religion}{Do you belong to a religion or religious denomination? If yes, which one?	Categorical (1 to 5, where 1=Christian; 2=Muslim; 3=Hindu; 4=Buddhist; 5=Sikh; 6=others)}
-\item{education}{What is the highest educational level that you have attained?	Ordinal (1-5, where 1=None to 5=Post-Graduate)}
-\item{ideol_lr}{Please tell me where would you place your views on a 10 point scale where 1 is the ‘left’ and 10 is the ‘right’?	Ordinal (1 to 10, where 1=\link{extreme} left to 10=\link{extreme} right)}
-\item{empl_status}{Are you employed now or not? If yes, then how many hours a week?	Categorical (1 to 7, where 1= Yes, Full time employee to 7=No, unemployed; 8=other)}
-\item{Marital_status}{Are you married?	Categorical (1 to 6, where 1= Married to 6=Single)}
-\item{job_worry}{To what degree are you worried about losing my job or not finding a job	Ordinal (1 to 4, 1= very much to 4= not at all)}
-\item{Exp1trt}{Equivalent to exp1_trt in survey experiment sample	Binary (1=Strong Leader; 2=Centrist Leader)}
-\item{strong_leader}{Having a strong leader who does not have to bother with parliament and elections	Binary (1=High Preference for Strong Leader; 2= Negligible preference for strong leader)}
-\item{exp1_dv_willing}{we all hope that there will not be another war, but if it were to come to that, would you be willing to fight for your country?	Binary (1=Yes; 2=No)}
+\item{Female}{ Respondent’s Sex.}
+\item{Age}{ Age of respondent.}
+\item{Income}{ Income group of Household.}
+\item{Religion}{ Religious denomination}
+\item{Imp_rel}{ Importance of religion in respondent’s life.}
+\item{Education}{ Educational level of respondent.}
+\item{Ideol}{ Political ideology of respondent.}
+\item{Empl_status}{ Employment status and full-time employee.}
+\item{Marital}{ Marital status of respondent.}
+\item{job_worry}{ Concern about job loss.}
+\item{Exp1_trt}{ Binary treatment measure of leader type.}
+\item{Exp1_dv_willing}{ Binary (Yes/No) outcome measure for willingness to fight war.}
+\item{strong_leader}{ Binary measure of preference for strong leader.}
 ...
 }
 }
@@ -33,6 +33,9 @@ Haerpfer, C., Inglehart, R., Moreno, A., Welzel, C., Kizilova, K., Diez-Medrano 
 data(IND_pop_data)
 }
 \description{
-Description of Dataset
+World Value Survey (WVS) Data for India for the following years in which the
+WVS implemented their survey questionnaire in the country: 1995, 2001, 2006,
+2012, and 2022. The variables drawn from the said WVS India data match the
+covariates from the India survey experiment sample.
 }
 \keyword{dataset}

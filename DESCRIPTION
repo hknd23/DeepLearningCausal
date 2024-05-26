@@ -2,7 +2,7 @@ Package: DNetCausalPATT
 Type: Package
 Title: Estimation of Conditional Average Treatment Effects (CATE) and Population 
     Average Treatment Effects on the Treated (PATT)
-Version: 0.0.1
+Version: 0.0.101
 Authors@R: c(person(given = "Nguyen K.",
                     family = "Huynh",
                     email = "khoinguyen.huynh@r.hit-u.ac.jp",
@@ -48,4 +48,4 @@ Suggests:
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Depends: 
-    R (>= 2.10)
+    R (>= 3.5.0)

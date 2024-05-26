@@ -3,25 +3,25 @@
 \docType{data}
 \name{IND_exp_data}
 \alias{IND_exp_data}
-\title{Survey Experiment of Leader Perception}
+\title{Survey Experiment of Support for Populist Policy}
 \format{
 \subsection{\code{IND_exp_data}}{
 
 A data frame with 514 rows and 13 columns:
 \describe{
-\item{female}{gender	Binary (1=Male; Female=2)}
-\item{age}{what is your age?	Numeric}
-\item{income}{What is the total monthly income of your household, including the income of all working adults?	Ordinal (1 to 10 where 1=No income to 10=> Rs. XX/-)}
-\item{imp_rel}{How important is religion in your life?	Ordinal (1 to 4, where 1=Very important to 4=Not at all important)}
-\item{religion}{Do you belong to a religion or religious denomination? If yes, which one?	Categorical (1 to 5, where 1=Christian; 2=Muslim; 3=Hindu; 4=Buddhist; 5=Sikh; 6=others)}
-\item{education}{Could you tell us which of the following education level best matches your education?	Ordinal (1-5, where 1=None to 5=Post-Graduate)}
-\item{ideol_lr}{The number 1 means sympathize very strongly with the left and 10 means sympathize very strongly with the right. Where would you place yourself on this scale?	Ordinal (1 to 10, where 1=\link{extreme} left to 10=\link{extreme} right)}
-\item{empl_status}{what is your current employment status?	Categorical (1 to 7, where 1= Full time employee to 7=Student; 8=other)}
-\item{Marital_status}{What is your marital status?	Categorical (1 to 7, where 1= Single to 7=Civil Union)}
-\item{job_worry}{Choose between more job security with a small pay increase and less job security with a big pay increase, which would you pick?	Ordinal (1 to 5, 1= job security & small pay increase to 5= less jobsecurity & big pay increase )}
-\item{Exp1trt}{Treat 1: Strong leader. Not constrained by parliament. Operates without parliamentary approval. Treat 2: Centrist leader. Constrained by parliament. Seeks parliamentary approval.	Binary (1=Strong Leader; 2=Centrist Leader)}
-\item{exp1_dv1}{What do you think? Would you support your country going to war with country A?	Binary (1=Yes; 2=No)}
-...
+\item{Female}{ Gender.}
+\item{Age}{ Age of participant.}
+\item{Income}{ Monthly household income.}
+\item{Religion}{ Religious denomination}
+\item{Imp_rel}{ Importance of religion in life.}
+\item{Education}{ Educational level of participant.}
+\item{Ideol_lr}{ Political ideology of participant.}
+\item{Empl_status}{ Employment status of participant.}
+\item{Marital_status}{ Marital status of participant.}
+\item{job_worry}{ Concern about job loss.}
+\item{Exp1trt}{ Binary treatment measure of leader type.}
+\item{Exp1_dv1}{ Binary outcome measure for willingness to fight war.}
+#'   ...
 }
 }
 }
@@ -32,6 +32,12 @@ Yadav and Mukherjee (2024)
 data(IND_exp_data)
 }
 \description{
-Description of Dataset
+Survey response data that incorporates a vignette survey experiment. The
+vignette describes an international crisis between country A and B. After
+reading this vignette, respondents are randomly assigned to the control group
+or to one of two treatments: policy prescription to said crisis by strong
+(populist) leader and centrist (non-populist) leader. The respondents are
+then asked whether they are willing to support the policy decision to fight a
+war against country A, which is the dependent variable.
 }
 \keyword{dataset}

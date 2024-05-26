@@ -2,7 +2,6 @@
 
 export(ST_learner_DeepNN)
 export(ST_learner_ensemble)
-export(WtC)
 export(complier_mod)
 export(complier_predict)
 export(neuralnet_complier_mod)

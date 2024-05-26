@@ -30,3 +30,4 @@ WtC(
 \description{
 Weighted t-test to estimate PATT-C
 }
+\keyword{internal}

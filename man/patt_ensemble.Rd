@@ -54,3 +54,31 @@ of the Treated from experimental data with noncompliers
 using the super learner ensemble that includes extreme gradient boosting,
 glmnet (elastic net regression), random forest and neural nets.
 }
+\examples{
+# load datasets
+data(IND_exp_data) #experimental data
+data(IND_pop_data) #population data
+
+#attach SuperLearner package (model will not recognize learner if package is not loaded)
+library(SuperLearner)
+
+specify models and estimate PATTC
+pattc <- patt_ensemble(response.formula = exp1_dv1 ~ female + age+ income +
+                                            imp_rel + religion + education +
+                                            ideol_lr + empl_status + Marital_status +
+                                            job_worry
+                       exp.data = IND_exp_data,
+                       pop.data = IND_pop_data,
+                       treat.var = "trt1",
+                       compl.var = "compl1",
+                       createSL = TRUE,
+                       ID = NULL,
+                       cluster = NULL,
+                       bootse = FALSE,
+                       bootp = FALSE,
+                       bootn = 999,
+                       samedata = FALSE,
+                       equivalence = FALSE)
+
+summary(pattc)
+}

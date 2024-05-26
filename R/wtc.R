@@ -22,7 +22,7 @@
 #' @param equivalence
 #'
 #' @return
-#' @export
+#' @keywords internal
 #'
 #' @examples
 WtC <- function (x,
