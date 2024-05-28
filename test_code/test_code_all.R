@@ -6,6 +6,9 @@ sapply(paste0("R/",list.files("R/")), source)
 IND_exp_data <- read.csv("data/IND_exp_data.csv")
 IND_pop_data <- read.csv("data/IND_pop_data.csv")
 
+expdata <- IND_exp_data
+popdata <- IND_pop_data
+popdata$outcome <- popdata$outcome1
 library(SuperLearner)
 
 #########
@@ -14,7 +17,7 @@ library(SuperLearner)
 #####
 #Example code for neural network pattc
 #####
-pattc_ensemble <- patt_ensemble(response.formula=outcome ~ age + male +
+pattc_ensemble <- patt_ensemble(response.formula = outcome ~ age + male +
                               income + education +
                               employed + married +
                               Hindu + job_worry,
@@ -27,9 +30,7 @@ pattc_ensemble <- patt_ensemble(response.formula=outcome ~ age + male +
                             cluster=NULL,
                             bootse=FALSE,
                             bootp = FALSE,
-                            bootn = 999,
-                            samedata=FALSE,
-                            equivalence = FALSE)
+                            bootn = 999)
 
 
 

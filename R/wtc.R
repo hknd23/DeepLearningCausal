@@ -85,6 +85,7 @@ WtC <- function (x,
   m.bar <- sum(tapply(weight, cluster, FUN=sum, na.rm = TRUE))/n
   x.bar <- tapply(x, cluster, FUN=mean, na.rm = TRUE)
   mx <- sum(x.bar*tapply(weight, cluster, FUN=sum, na.rm = TRUE))/sum(tapply(weight, cluster, FUN=sum, na.rm = TRUE))
+  message("WTC1")
   vx <- (sum(tapply(weight, cluster, FUN=sum, na.rm = TRUE)*x.bar**2)/m.bar - n*Hmisc::wtd.mean(x, weight, na.rm = TRUE)**2)/(n-1)
 
   if (length(y) > 1) {

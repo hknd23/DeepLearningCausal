@@ -4,7 +4,7 @@
 #' Train model using group exposed to treatment with compliance as binary
 #' outcome variable and covariates.
 #'
-#' @param data list object of experimental data.
+#' @param exp.data list object of experimental data.
 #' @param ID string for name of indentifier variable.
 #' @param SL.library. Employs extreme gradient boosting, elastic net regression,
 #' random forest, and neural nets.
@@ -13,7 +13,11 @@
 #' @export
 #'
 #' @examples
-complier_mod <- function(data,ID=NULL,SL.library=NULL) {
+complier_mod <- function(exp.data,
+                         complier.formula,
+                         treat.var,
+                         ID=NULL,
+                         SL.library=NULL) {
   if (!is.null(ID)){
     id = data[,ID]
   }
@@ -21,19 +25,22 @@ complier_mod <- function(data,ID=NULL,SL.library=NULL) {
   {
     SL.library.class <- define.SL.class.library()
   }
-  expdata <- data$expdata
-  covariates <- all.vars(data$response_formula)[-1]
-  compl.var <- data$compl_var
-  treat.var <- data$treat_var
+  exp_data <- exp.data
+  print(complier.formula)
+  covariates <- all.vars(complier.formula)[-1]
+  compl.var <- all.vars(complier.formula)[1]
+  print( covariates)
+  print( compl.var)
 
-  Ycompl<-expdata[which(expdata[,treat.var]==1),compl.var]
-  Xcompl<-expdata[which(expdata[,treat.var]==1),covariates]
+  Ycompl <- exp_data[which(exp_data[, treat.var]==1), compl.var]
+  print(head(Ycompl))
+  Xcompl <- exp_data[which(exp_data[, treat.var]==1), covariates]
 
-  complier.mod <- SuperLearner::SuperLearner(Y=Ycompl,
-                               X=Xcompl,
-                               SL.library=SL.library.class,
-                               id=ID,
-                               family="binomial")
+  complier.mod <- SuperLearner::SuperLearner(Y = Ycompl,
+                                             X = Xcompl,
+                                             SL.library = SL.library.class,
+                                             id = ID,
+                                             family = "binomial")
   return(complier.mod)
 }
 
@@ -48,35 +55,26 @@ complier_mod <- function(data,ID=NULL,SL.library=NULL) {
 #' @export
 #'
 #' @examples
-complier_predict <- function(complier.mod,exp.data) {
-  message("1")
-  covdata <- exp.data$expdata
-  message("2")
-  covariates.names <- all.vars(expdata$response_formula)[-1]
-  message("3")
-  covariates <- covdata[,covariates.names]
-  message("4")
-  treat.var<-exp.data$treat_var
-  message("5")
-  compl.var<-exp.data$compl_var
-  message("6")
-  C.pscore <- predict(complier.mod, covariates, onlySL=TRUE)
-  message("7")
-  rct.compliers <- data.frame("treatment"=covdata[,treat.var],
-                              "real_complier"=covdata[,compl.var],
-                              "C.pscore"=C.pscore$pred,
+complier_predict <- function(complier.mod,
+                             exp.data,
+                             treat.var,
+                             compl.var) {
+  covdata <- exp.data
+  C.pscore <- predict(complier.mod, exp.data, onlySL=TRUE)
+
+  rct.compliers <- data.frame("treatment" = covdata[,treat.var],
+                              "real_complier" = covdata[,compl.var],
+                              "C.pscore" = C.pscore$pred,
                               row.names = rownames(covdata))
-  message("8")
-  pred.compliers <- ROCR::prediction(rct.compliers$C.pscore[rct.compliers$
-                                                          treatment==1],
-                                 rct.compliers$real_complier[rct.compliers$
-                                                               treatment==1])
+  print(head(rct.compliers))
+  pred.compliers <- ROCR::prediction(rct.compliers[which(rct.compliers$treatment==1),]$C.pscore,
+                                 rct.compliers[which(rct.compliers$treatment==1),]$real_complier)
   cost.perf <- ROCR::performance(pred.compliers, "cost")
   opt.cut <- pred.compliers@cutoffs[[1]][which.min(cost.perf@y.values[[1]])]
 
-  rct.compliers$predicted_complier<-ifelse(rct.compliers$treatment==0 &
-                                         rct.compliers$C.pscore>opt.cut,1,0)
-  rct.compliers$compliers_all<-rct.compliers$real_complier+
+  rct.compliers$predicted_complier <- ifelse(rct.compliers$treatment==0 &
+                                         rct.compliers$C.pscore>opt.cut, 1, 0)
+  rct.compliers$compliers_all <- rct.compliers$real_complier +
   rct.compliers$predicted_complier
   return(rct.compliers)
   }
@@ -98,32 +96,53 @@ complier_predict <- function(complier.mod,exp.data) {
 #' @export
 #'
 #' @examples
-response_model<-function(exp.data,
+response_model <- function(response.formula,
+                         exp.data,
+                         compl.var,
                          exp.compliers,
-                         family="binomial",
-                         ID=NULL,
-                         SL.library=NULL){
+                         family = "binomial",
+                         ID = NULL,
+                         SL.library = NULL){
 
   if (family=="binomial" & is.null(SL.library) )  {
     SL.library <- define.SL.class.library()
   }
-  response.var <- all.vars(exp.data$response_formula)[1]
-  covariates <- all.vars(exp.data$response_formula)[-1]
 
-  treat.var <- exp.data$treat_var
-  compl.var <- exp.data$compl_var
-  response.data <- exp.data$expdata
 
-  Y.exp.response <- response.data[,response.var][which(exp.compliers$compliers_all==1)]
-  X.exp.response <- data.frame("complier"=response.data[,compl.var][which(exp.compliers$compliers_all==1)],
-                               response.data[which(exp.compliers$complier==1),covariates])
-  colnames(X.exp.response)<-c(compl.var,covariates)
+  variables <- all.vars(response.formula)
+  print(variables)
+  message("response 1")
+  response.var <- variables[1]
+  print(response.var)
+  message("response 2")
 
-  response.mod <- SuperLearner::SuperLearner(Y=Y.exp.response,
-                               X=X.exp.response,
-                               SL.library=SL.library,
-                               family=family,
-                               id=ID)
+  covariates <- variables[-1]
+  message("response 3")
+
+  .formula <- as.formula(paste0(paste0(response.var, " ~", compl.var, " + "),
+                                paste0(covariates, collapse = " + ")))
+
+  exp.data <- exp.data[, all.vars(.formula)]
+
+  exp.data <- exp.data[, all.vars(.formula)]
+  #exp.data[[response.var]] <- as.factor(exp.data[[response.var]])
+
+  exp.compliers <- exp.data[which(exp.compliers$compliers_all==1),]
+  message("response 4")
+
+###
+  response.data <- exp.data$exp_data
+
+  Y.exp.response <- exp.compliers[, response.var]
+  X.exp.response <- exp.compliers[, c(compl.var, covariates)]
+  #colnames(X.exp.response) <- c(compl.var,covariates)
+  message("response 5")
+
+  response.mod <- SuperLearner::SuperLearner(Y = Y.exp.response,
+                               X = X.exp.response,
+                               SL.library = SL.library,
+                               family = family,
+                               id = ID)
   return(response.mod)
 }
 
@@ -145,35 +164,36 @@ response_model<-function(exp.data,
 #' @examples
 pattc_counterfactuals<- function (pop.data,
                                   response.mod,
-                                  ID=NULL,
-                                  cluster=NULL,
-                                  cut.point=.5){
-  compl.var<-pop.data$compl_var
-  covariates<-all.vars(pop.data$response_formula)[-1]
+                                  ID = NULL,
+                                  cluster = NULL,
+                                  cut.point = .5,
+                                  potential.outcome = TRUE){
+  compl.var <- pop.data$compl_var
+  covariates <- all.vars(pop.data$response_formula)[-1]
 
-  popdata<-pop.data$popdata
-  popdata$c<-popdata[,compl.var]
+  pop_data <- pop.data$pop_data
+  pop_data$c <- pop_data[, compl.var]
 
 
-  pop.tr.counterfactual <- cbind( 1, popdata[which(popdata$c==1),covariates])
-  colnames(pop.tr.counterfactual)<-c(compl.var,covariates)
-  pop.ctrl.counterfactual <- cbind(0,popdata[which(popdata$c==1),covariates])
-  colnames(pop.ctrl.counterfactual)<-c(compl.var,covariates)
+  pop.tr.counterfactual <- cbind( 1, pop_data[which(pop_data$c==1), covariates])
+  colnames(pop.tr.counterfactual) <- c(compl.var, covariates)
+  pop.ctrl.counterfactual <- cbind(0, pop_data[which(pop_data$c==1), covariates])
+  colnames(pop.ctrl.counterfactual) <- c(compl.var, covariates)
 
   Y.pred.1 <- predict(response.mod, pop.tr.counterfactual, onlySL = T)$pred
   Y.pred.0 <- predict(response.mod, pop.ctrl.counterfactual, onlySL = T)$pred
 
   if (potential.outcome) {
-    Y.hat.1 <- ifelse(Y.pred.1>cut.point,1,0)
-    Y.hat.0 <- ifelse(Y.pred.0>cut.point,1,0)
+    Y.hat.1 <- ifelse(Y.pred.1 > cut.point, 1, 0)
+    Y.hat.0 <- ifelse(Y.pred.0 > cut.point, 1, 0)
   } else if (!potential.outcome) {
     Y.hat.1 <- Y.pred.1
     Y.hat.0 <- Y.pred.0
   }
 
   if (!is.null(cluster)){
-    clustervar <- pop.data[,cluster]
-    Y.hats <- data.frame(Y_hat0 = Y.hat.0, Y_hat1 = Y.hat.1, cluster=clustervar)
+    clustervar <- pop.data[, cluster]
+    Y.hats <- data.frame(Y_hat0 = Y.hat.0, Y_hat1 = Y.hat.1, cluster = clustervar)
   } else  {
     Y.hats <- data.frame(Y_hat0 = Y.hat.0, Y_hat1 = Y.hat.1)
   }
@@ -239,10 +259,10 @@ patt_ensemble <- function(response.formula,
                         pop.data,
                         treat.var,
                         compl.var,
-                        createSL=TRUE,
-                        ID=NULL,
-                        cluster=NULL,
-                        bootse=FALSE,
+                        createSL = TRUE,
+                        ID = NULL,
+                        cluster = NULL,
+                        bootse = FALSE,
                         bootp = FALSE,
                         bootn = 999)
 
@@ -251,44 +271,55 @@ patt_ensemble <- function(response.formula,
     create.SL()
   }
 
-  expdata<- expcall(response.formula,
+  exp_data <- expcall(response.formula,
                     treat.var = treat.var,
                     compl.var = compl.var,
-                    data= exp.data, ID=ID)
+                    exp.data = exp.data,
+                    ID=ID)
 
-  popdata<-popcall(response.formula,
+  pop_data<-popcall(response.formula,
                    compl.var = compl.var,
-                   data= exp.data, ID=ID)
+                   pop.data = pop.data,
+                   ID = ID)
 
   covariates <- all.vars(response.formula)[-1]
-  compl.formula<- paste0(compl.var," ~ ",paste0(covariates,collapse = " + "))
+  compl.formula <- paste0(compl.var, " ~ ", paste0(covariates, collapse = " + "))
+  compl.formula <- as.formula(compl.formula)
   message("Training complier model")
-
-  compl.mod<-complier_mod(expdata,ID=NULL,SL.library=NULL)
+  compl.mod <- complier_mod(exp.data = exp_data$exp_data,
+                          treat.var = treat.var,
+                          complier.formula = compl.formula,
+                          ID = NULL,
+                          SL.library = NULL)
   message("predicting")
 #CHECKHERE
-  compliers<-complier_predict(complier.mod=compl.mod,
-                              exp.data =expdata)
+  compliers <- complier_predict(complier.mod = compl.mod,
+                                compl.var = compl.var,
+                              treat.var = treat.var,
+                              exp.data = exp_data$exp_data)
   message("Training response model")
-  response.mod <-  response_model(exp.data=expdata,
-                                  exp.compliers=compliers,
-                                  family="binomial",
-                                  ID=NULL,
-                                  SL.library=NULL)
+  response.mod <-  response_model(response.formula = response.formula,
+                                  exp.data = exp_data$exp_data,
+                                  exp.compliers = compliers,
+                                  compl.var = compl.var,
+                                  family = "binomial",
+                                  ID = NULL,
+                                  SL.library = NULL)
 
   message("Estimating pattc")
-  counterfactuals<-pattc_counterfactuals(pop.data=popdata,
-                                         response.mod=response.mod,
-                                         ID=NULL,
-                                         cluster=NULL,
-                                         cut.point=.5)
+  counterfactuals<-pattc_counterfactuals(pop.data = pop_data,
+                                         response.mod = response.mod,
+                                         ID = NULL,
+                                         cluster = NULL,
+                                         cut.point = .5,
+                                         potential.outcome = TRUE)
 
-  pattc <- WtC(x=counterfactuals$Y_hat1,
-               y=counterfactuals$Y_hat0,
-               bootse=bootse,
+  pattc <- WtC(x = counterfactuals$Y_hat1,
+               y = counterfactuals$Y_hat0,
+               bootse = bootse,
                bootp = bootp,
                bootn = bootn,
-               samedata=FALSE,
+               samedata = FALSE,
                equivalence = FALSE)
 
   return(pattc)

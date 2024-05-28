@@ -40,7 +40,9 @@ Imports:
         glmnet,
         gam,
         e1071,
-        gbm
+        gbm,
+        Hmisc,
+        weights
 Suggests: 
         testthat,
         ggplot2,
