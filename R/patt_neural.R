@@ -21,22 +21,28 @@
 #'
 #' @examples
 neuralnet_complier_mod<-function(complier.formula,
-                            exp.data,
-                            treat.var,
-                            algorithm = "rprop+",
-                            hidden.layer=c(4,2),
-                            ID=NULL,
-                            stepmax=1e+05){
+                                 exp.data,
+                                 treat.var,
+                                 algorithm = "rprop+",
+                                 hidden.layer=c(4,2),
+                                 ID = NULL,
+                                 stepmax = 1e+08){
   if (!is.null(ID)){
     id=ID
   }
   complier.formula <- as.formula(complier.formula)
-  exp.data.vars <- na.omit(exp.data[,c(all.vars(complier.formula),treat.var)])
-  neuralnetdataT <- exp.data.vars[which(exp.data.vars[,treat.var]==1),]
+  #exp.data.vars <- na.omit(exp.data[,c(all.vars(complier.formula),treat.var)])
+  print(head(exp.data[,treat.var]))
+  neuralnetdataT <- exp.data[which(exp.data[,treat.var]==1),]
   compvar <- all.vars(complier.formula)[1]
+  print(head(neuralnetdataT))
+  print(neuralnetdataT[,compvar])
   neuralnetdataT[[compvar]] <- as.factor(neuralnetdataT[[compvar]])
+  print(neuralnetdataT[[compvar]])
+  print(summary(neuralnetdataT[[compvar]]))
+
   neuralnet.complier.mod <- neuralnet::neuralnet(complier.formula,
-                                            data=neuralnetdataT,
+                                            data = neuralnetdataT,
                                             algorithm = algorithm,
                                             hidden = hidden.layer,
                                             linear.output = FALSE,
@@ -64,19 +70,19 @@ neuralnet_predict<-function(neuralnet.complier.mod,
                             treat.var,
                             compl.var){
 
-  neuralnetpredict<-predict(neuralnet.complier.mod,exp.data)
-  neuralnetpredict.max<-max.col(neuralnetpredict)
+  neuralnetpredict <- predict(neuralnet.complier.mod,exp.data)
+  neuralnetpredict.max <- max.col(neuralnetpredict)
 
-  neuralnet.compliers<-data.frame("treatment"=exp.data[,treat.var],
-                             "real_complier"=exp.data[,compl.var],
-                             "NC.pscore"=neuralnetpredict[,1],
-                             "C.pscore"=neuralnetpredict[,2]
+  neuralnet.compliers <- data.frame("treatment" = exp.data[,treat.var],
+                             "real_complier" = exp.data[,compl.var],
+                             "NC.pscore" = neuralnetpredict[,1],
+                             "C.pscore" = neuralnetpredict[,2]
   )
 
-  neuralnet.compliers$predicted_complier<-ifelse(neuralnet.compliers$treatment==0 &
-                                              neuralnetpredict.max==2,1,0)
-  neuralnet.compliers$compliers_all<-as.numeric(as.character(neuralnet.compliers$real_complier))+
-    neuralnet.compliers$predicted_complier
+  neuralnet.compliers$predicted_complier <- ifelse(neuralnet.compliers$treatment==0 &
+                                              neuralnetpredict.max == 2,1,0)
+  neuralnet.compliers$compliers_all <- as.numeric(as.character(neuralnet.compliers$real_complier)) +
+                                              neuralnet.compliers$predicted_complier
   return(neuralnet.compliers)
 }
 
@@ -103,22 +109,22 @@ neuralnet_response_model <- function(response.formula,
                                      neuralnet.compliers,
                                      compl.var,
                                      algorithm = "rprop+",
-                                     hidden.layer=c(4,2),
-                                     stepmax=1e+05){
+                                     hidden.layer = c(4,2),
+                                     stepmax = 1e+08){
 
-  variables<-all.vars(response.formula)
-  responsevar<-variables[1]
-  covariates<-variables[-1]
-
+  variables <- all.vars(response.formula)
+  responsevar <- variables[1]
+  covariates <- variables[-1]
   .formula <- as.formula(paste0(paste0(responsevar," ~",compl.var," + "),
                                 paste0(covariates,collapse = " + ")))
 
   exp.data <- exp.data[,all.vars(.formula)]
+
   exp.data[[responsevar]] <- as.factor(exp.data[[responsevar]])
   exp.compliers <- exp.data[which(neuralnet.compliers$compliers_all==1),]
   neuralnet.response.mod <- neuralnet::neuralnet(.formula,
-                                            data=exp.compliers,
-                                            hidden=hidden.layer,
+                                            data = exp.compliers,
+                                            hidden = hidden.layer,
                                             algorithm = algorithm,
                                             linear.output = FALSE,
                                             stepmax = stepmax)
@@ -149,27 +155,27 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
                                              ID=NULL,
                                              cluster=NULL){
 
-  compl.var <- pop_prep$compl_var
-  covariates <- all.vars(pop_prep$response_formula)[-1]
-  popdata <- pop_prep$popdata
+  compl.var <- pop.data$compl_var
+  covariates <- all.vars(pop.data$response_formula)[-1]
+  popdata <- pop.data$popdata
   popdata$c <- popdata[,compl.var]
 
   pop.tr.counterfactual <- cbind( 1, popdata[which(popdata$c==1),covariates])
   colnames(pop.tr.counterfactual) <- c(compl.var,covariates)
   pop.ctrl.counterfactual <- cbind(0,popdata[which(popdata$c==1),covariates])
-  colnames(pop.ctrl.counterfactual)<-c(compl.var,covariates)
+  colnames(pop.ctrl.counterfactual) <- c(compl.var, covariates)
 
   Y.hat.0 <- predict(neuralnet.response.mod, pop.ctrl.counterfactual)
   Y.hat.1 <- predict(neuralnet.response.mod, pop.tr.counterfactual)
 
-  neuralnetpredict.max.0<-max.col(Y.hat.0)-1
-  neuralnetpredict.max.1<-max.col(Y.hat.1)-1
+  neuralnetpredict.max.0 <- max.col(Y.hat.0) - 1
+  neuralnetpredict.max.1 <- max.col(Y.hat.1) - 1
 
   if (!is.null(cluster)){
     clustervar <- pop.data[,cluster]
     Y.hats <- data.frame( Y_hat0 = neuralnetpredict.max.0,
                           Y_hat1 = neuralnetpredict.max.1,
-                          cluster=clustervar)
+                          cluster = clustervar)
   }
   else
   {Y.hats <- data.frame(Y_hat0 = neuralnetpredict.max.0,
@@ -221,10 +227,9 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #' data(IND_pop_data) #population data
 #'
 #' #attach SuperLearner package (model will not recognize learner if package is not loaded)
-#' library(SuperLearner)
 #'
 #' specify models and estimate PATTC
-#' pattc <- patt_ensemble(response.formula = exp1_dv1 ~ female + age+ income +
+#' pattc <- patt_deep_nn(response.formula = exp1_dv1 ~ female + age+ income +
 #'                                             imp_rel + religion + education +
 #'                                             ideol_lr + empl_status + Marital_status +
 #'                                             job_worry
@@ -254,8 +259,8 @@ patt_deep_nn <- function(response.formula,
                          response.algorithm = "rprop+",
                          compl.hidden.layer = c(4,2),
                          response.hidden.layer = c(4,2),
-                         compl.stepmax = 1e+05,
-                         response.stepmax = 1e+05,
+                         compl.stepmax = 1e+08,
+                         response.stepmax = 1e+08,
                          ID = NULL,
                          cluster = NULL,
                          bootse = FALSE,
@@ -263,41 +268,46 @@ patt_deep_nn <- function(response.formula,
                          bootn = 999)
 
 {
-  expdata<- expcall(response.formula,
+  expdata <- expcall(response.formula,
                      treat.var = treat.var,
                      compl.var = compl.var,
-                     data= exp.data, ID=ID)
-
-  popdata<-popcall(response.formula,
+                    exp.data = exp.data, ID = ID)
+  print(expdata)
+  message("1")
+  print(treat.var)
+  popdata <-popcall(response.formula,
                    compl.var = compl.var,
-                   data= exp.data, ID=ID)
+                   pop.data = pop.data, ID = ID)
+  message("2")
   covariates <- all.vars(response.formula)[-1]
   compl.formula<- paste0(compl.var," ~ ", paste0(covariates,collapse = " + "))
   compl.formula <- as.formula(compl.formula)
+  print(expdata$expdata[,treat.var])
+  message("Training complier model")
   neuralnet.compl.mod <- neuralnet_complier_mod(complier.formula = compl.formula,
-                                    exp.data =expdata$expdata,
+                                    exp.data = expdata$exp_data,
                                     treat.var = treat.var,
                                     stepmax = compl.stepmax)
 
   compliers <- neuralnet_predict(neuralnet.complier.mod = neuralnet.compl.mod,
-                               exp.data = expdata$expdata,
+                               exp.data = expdata$exp_data,
                                treat.var = treat.var,
                                compl.var = compl.var )
-
+  message("Training response model")
   response.mod <- neuralnet_response_model(response.formula = expdata$response_formula,
                                            compl.var = compl.var,
-                                           exp.data = expdata$expdata,
+                                           exp.data = expdata$exp_data,
                                            neuralnet.compliers = compliers,
                                            stepmax = response.stepmax)
 
-  counterfactuals<-neuralnet_pattc_counterfactuals(popdata,nnet_response_model)
+  counterfactuals<-neuralnet_pattc_counterfactuals(popdata, nnet_response_model)
 
   pattc<-WtC(x=counterfactuals$Y_hat1,
              y=counterfactuals$Y_hat0,
              bootse=bootse,
              bootp = bootp,
              bootn = bootn,
-             samedata=FALSE,
+             samedata = FALSE,
              equivalence = FALSE)
 
   return(pattc)

@@ -26,14 +26,10 @@ complier_mod <- function(exp.data,
     SL.library.class <- define.SL.class.library()
   }
   exp_data <- exp.data
-  print(complier.formula)
   covariates <- all.vars(complier.formula)[-1]
   compl.var <- all.vars(complier.formula)[1]
-  print( covariates)
-  print( compl.var)
 
   Ycompl <- exp_data[which(exp_data[, treat.var]==1), compl.var]
-  print(head(Ycompl))
   Xcompl <- exp_data[which(exp_data[, treat.var]==1), covariates]
 
   complier.mod <- SuperLearner::SuperLearner(Y = Ycompl,
@@ -110,14 +106,9 @@ response_model <- function(response.formula,
 
 
   variables <- all.vars(response.formula)
-  print(variables)
-  message("response 1")
   response.var <- variables[1]
-  print(response.var)
-  message("response 2")
 
   covariates <- variables[-1]
-  message("response 3")
 
   .formula <- as.formula(paste0(paste0(response.var, " ~", compl.var, " + "),
                                 paste0(covariates, collapse = " + ")))
