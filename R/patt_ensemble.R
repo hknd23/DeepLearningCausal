@@ -148,6 +148,7 @@ response_model <- function(response.formula,
 #' @param id
 #' @param cluster
 #' @param cut.point
+#' @param potential.outcome
 #'
 #' @return
 #' @export
@@ -282,12 +283,12 @@ patt_ensemble <- function(response.formula,
                           complier.formula = compl.formula,
                           ID = NULL,
                           SL.library = NULL)
-  message("predicting")
 #CHECKHERE
   compliers <- complier_predict(complier.mod = compl.mod,
                                 compl.var = compl.var,
-                              treat.var = treat.var,
-                              exp.data = exp_data$exp_data)
+                                treat.var = treat.var,
+                                exp.data = exp_data$exp_data)
+
   message("Training response model")
   response.mod <-  response_model(response.formula = response.formula,
                                   exp.data = exp_data$exp_data,
@@ -297,8 +298,8 @@ patt_ensemble <- function(response.formula,
                                   ID = NULL,
                                   SL.library = NULL)
 
-  message("Estimating pattc")
-  counterfactuals<-pattc_counterfactuals(pop.data = pop_data,
+  message("Predicting response and estimating PATT-C")
+  counterfactuals <- pattc_counterfactuals(pop.data = pop_data,
                                          response.mod = response.mod,
                                          ID = NULL,
                                          cluster = NULL,

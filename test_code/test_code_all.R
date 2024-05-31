@@ -44,6 +44,7 @@ pattc_ensemble <- patt_ensemble(response.formula = outcome ~ age + male +
 ######
 #Example code for neural network pattc
 #####
+set.seed(123456)
 pattc_neural <- patt_deep_nn(response.formula=outcome ~ age + male +
                               income + education +
                               employed + married +

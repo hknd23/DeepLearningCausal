@@ -39,12 +39,12 @@ expcall <- function(response.formula,
   responsevar <- variables[1]
   covariates <- variables[-1]
 
-  .formula <- as.formula(paste0(paste0(responsevar," ~", treat.var, " + ",
+  .formula <- as.formula(paste0(paste0(responsevar, " ~", treat.var, " + ",
                                        compl.var, " + "),
                                 paste0(covariates, collapse = " + ")))
 
 
-  expmf <- model.frame(.formula,data = newdata)
+  expmf <- model.frame(.formula, data = newdata)
 
   expl<-list(exp_data = expmf,
              response_formula = response.formula,
@@ -97,7 +97,7 @@ popcall <- function(response.formula,
                                        compl.var, " + "),
                                 paste0(covariates,collapse = " + ")))
 
-  popmf <- model.frame(.formula,data=newdata)
+  popmf <- model.frame(.formula, data = newdata)
 
   popl<-list(pop_data = popmf,
              response_formula = response.formula,

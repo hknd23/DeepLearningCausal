@@ -1,8 +1,3 @@
-
-
-
-
-
 #' S_T-learner DeepNN
 #'
 #' @description
@@ -62,57 +57,58 @@ ST_learner_DeepNN <- function(data,
                               algorithm = "rprop+",
                               hidden.layer=c(4,2),
                               linear.output = FALSE){
-  cov.formula<-as.formula(cov.formula)
-  variables<-all.vars(cov.formula)
-  outcome.var<-variables[1]
-  covariates<-variables[-1]
-  data.vars<-data[,c(treat.var,variables)]
+  cov.formula <- as.formula(cov.formula)
+  variables <- all.vars(cov.formula)
+  outcome.var <- variables[1]
+  covariates <- variables[-1]
+  data.vars <- data[,c(treat.var, )]
 
   data.<-na.omit(data.vars)
-  data.$y<-as.factor(data.[,outcome.var])
+  data.$y<-as.factor(data.[, outcome.var])
   data.$d<-data.[,treat.var]
 
-  data<-data.[,c("y","d",covariates)]
+  data<-data.[,c("y", "d", covariates)]
   data$ID <- c(1:nrow(data))
-  score_meta <- matrix(0,nrow(data),1)
+  score_meta <- matrix(0, nrow(data), 1)
 
-  folds <- caret::createFolds(data$d,k=nfolds)
+  folds <- caret::createFolds(data$d, k=nfolds)
 
+  message("Training model for meta learner")
   for(f in 1:(length(folds))){
 
     if(f == 1){
-      data1 <- data[c(folds[[5]],folds[[2]],folds[[3]],folds[[4]]),]
+      data1 <- data[c(folds[[5]], folds[[2]], folds[[3]], folds[[4]]),]
       df_main <- data[folds[[1]],]
     }
     if(f == 2){
-      data1 <- data[c(folds[[1]],folds[[5]],folds[[3]],folds[[4]]),]
+      data1 <- data[c(folds[[1]], folds[[5]], folds[[3]], folds[[4]]),]
       df_main <- data[folds[[2]],]
     }
 
     if(f == 3){
-      data1 <- data[c(folds[[1]],folds[[2]],folds[[5]],folds[[4]]),]
+      data1 <- data[c(folds[[1]], folds[[2]], folds[[5]], folds[[4]]),]
       df_main <- data[folds[[3]],]
     }
 
     if(f == 4){
-      data1 <- data[c(folds[[1]],folds[[2]],folds[[3]],folds[[5]]),]
+      data1 <- data[c(folds[[1]], folds[[2]], folds[[3]], folds[[5]]),]
       df_main <- data[folds[[4]],]
     }
 
     if(f == 5){
-      data1 <- data[c(folds[[1]],folds[[2]],folds[[3]],folds[[4]]),]
+      data1 <- data[c(folds[[1]], folds[[2]], folds[[3]], folds[[4]]),]
       df_main <- data[folds[[5]],]
     }
 
 
     df_aux <- data1
-    s.formula<-paste0("y~ d + ",paste0(covariates,collapse = " + "))
+    s.formula<-paste0("y~ d + ", paste0(covariates, collapse = " + "))
     if(meta.learner.type == "S.Learner"){
       X_train <- (df_aux[,c(covariates,"d")])
       # Train a regression model using the covariates and the treatment variable
       m_mod <- neuralnet::neuralnet(s.formula,
-                                    data=df_aux,
-                                    hidden=hidden.layer,
+                                    data = df_aux,
+                                    hidden = hidden.layer,
                                     algorithm = algorithm,
                                     linear.output = FALSE,
                                     stepmax = stepmax)
@@ -126,7 +122,7 @@ ST_learner_DeepNN <- function(data,
       X_test_1$d <- 1
 
       Y_test_1 <- predict(m_mod,X_test_1)
-      Y_hat_test_1<-max.col(Y_test_1)-1
+      Y_hat_test_1 <- max.col(Y_test_1)-1
       Y_test_0 <- predict(m_mod,X_test_0)
       Y_hat_test_0<-max.col(Y_test_0)-1
 
@@ -140,22 +136,22 @@ ST_learner_DeepNN <- function(data,
 
       # Train a regression model for the treatment observations
       m1_mod <- neuralnet::neuralnet(s.formula,
-                                     data=aux_1,
-                                     hidden=hidden.layer,
+                                     data = aux_1,
+                                     hidden = hidden.layer,
                                      algorithm = algorithm,
                                      linear.output = FALSE,
                                      stepmax = stepmax)
 
       # Train a regression model for the control observations
       m0_mod <- neuralnet::neuralnet(s.formula,
-                                     data=aux_0,
-                                     hidden=hidden.layer,
+                                     data = aux_0,
+                                     hidden = hidden.layer,
                                      algorithm = algorithm,
                                      linear.output = FALSE,
                                      stepmax = stepmax)
 
-      Y_test_0 <- predict(m0_mod,df_main)
-      Y_test_1 <- predict(m1_mod,df_main)
+      Y_test_0 <- predict(m0_mod, df_main)
+      Y_test_1 <- predict(m1_mod, df_main)
 
       Y_hat_test_0<-max.col(Y_test_0)-1
       Y_hat_test_1<-max.col(Y_test_1)-1
@@ -163,7 +159,7 @@ ST_learner_DeepNN <- function(data,
       # Estimate the CATE as the difference between the two models
       score_meta[,1][df_main$ID] = Y_hat_test_1 - Y_hat_test_0
     }
-    if(meta.learner.type %in% c("S.Learner","T.Learner") ==FALSE)
+    if(meta.learner.type %in% c("S.Learner", "T.Learner") ==FALSE)
     {
       stop("Meta Learner not supported")
     }
