@@ -14,11 +14,11 @@
 
 **DNetCausalPATT** is an R package that provides functions to estimate the Conditional Average Treatment Effects (CATE) 
 and Population Average Treatment Effects on the Treated (PATT) from experimental or observational data using the 
-Super Learner (SL) ensemble method and Deep neural networks. The package first provides functions to implement meta-learners
+Super Learner (SL) weighted ensemble method and Deep neural networks. The package first provides functions to implement meta-learners
 such as the Single-learner (S-learner) and Two-learner (T-learner) described in Künzel et al. (2019) for estimating the CATE.
-The S- and T-learner are each estimated using the SL ensemble method and deep neural networks. It then provides functions to 
+The S- and T-learner are each estimated using the SL weighted ensemble and deep neural networks. It then provides functions to 
 implement the Ottoboni and Poulos (2020) PATT-C estimator to obtain the PATT from experimental data with noncompliance by using 
-the SL ensemble method and deep neural networks.    
+the SL weighted ensemble and deep neural networks.    
 
 ### Why DNetCausalPATT?
 
@@ -27,10 +27,10 @@ and Population Average Treatment Effects (PATE), from observational or experimen
 algorithms. A unique advantage of the DNetCausalPATT package is that it provides a united interface for users to estimate both CATE from    
 observational or experimental data as well as Population Average Treatment Effects on the Treated (PATT) from observational and experimental 
 data with noncompliance. Another key benefit is that DNetCausalPATT provides users the choice of estimating CATE and PATT using the super learner
-ensemble and deep neural networks. More specifically,  
+weighted ensemble and deep neural networks. More specifically,  
 
-- The super learner ensemble includes extreme gradient boosting, elastic net regression, random forest, neural nets.  
-
+- The super learner weighted ensemble includes the candidate algorithms: additive regression, gradient boosting, lasso, random forests, and neural nets.cross-valiIt combines algorithms with a convex combination of weights based on minimizing cross-validated error. 
+  
 - Deep Neural Networks training via Resilient back propagation (Rprop) algorithm.
 
 ### Functions in the DNetCausal PATT Package
