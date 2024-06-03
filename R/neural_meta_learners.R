@@ -61,7 +61,7 @@ ST_learner_DeepNN <- function(data,
   variables <- all.vars(cov.formula)
   outcome.var <- variables[1]
   covariates <- variables[-1]
-  data.vars <- data[,c(treat.var, )]
+  data.vars <- data[,c(treat.var, variables)]
 
   data.<-na.omit(data.vars)
   data.$y<-as.factor(data.[, outcome.var])

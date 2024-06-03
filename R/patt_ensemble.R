@@ -23,7 +23,7 @@ complier_mod <- function(exp.data,
   }
   if (is.null(SL.library))
   {
-    SL.library.class <- define.SL.class.library()
+    SL.library <- define.SL.class.library()
   }
   exp_data <- exp.data
   covariates <- all.vars(complier.formula)[-1]
@@ -34,7 +34,7 @@ complier_mod <- function(exp.data,
 
   complier.mod <- SuperLearner::SuperLearner(Y = Ycompl,
                                              X = Xcompl,
-                                             SL.library = SL.library.class,
+                                             SL.library = SL.library,
                                              id = ID,
                                              family = "binomial")
   return(complier.mod)
@@ -62,7 +62,7 @@ complier_predict <- function(complier.mod,
                               "real_complier" = covdata[,compl.var],
                               "C.pscore" = C.pscore$pred,
                               row.names = rownames(covdata))
-  print(head(rct.compliers))
+
   pred.compliers <- ROCR::prediction(rct.compliers[which(rct.compliers$treatment==1),]$C.pscore,
                                  rct.compliers[which(rct.compliers$treatment==1),]$real_complier)
   cost.perf <- ROCR::performance(pred.compliers, "cost")
@@ -119,7 +119,7 @@ response_model <- function(response.formula,
   #exp.data[[response.var]] <- as.factor(exp.data[[response.var]])
 
   exp.compliers <- exp.data[which(exp.compliers$compliers_all==1),]
-  message("response 4")
+
 
 ###
   response.data <- exp.data$exp_data
@@ -127,7 +127,7 @@ response_model <- function(response.formula,
   Y.exp.response <- exp.compliers[, response.var]
   X.exp.response <- exp.compliers[, c(compl.var, covariates)]
   #colnames(X.exp.response) <- c(compl.var,covariates)
-  message("response 5")
+
 
   response.mod <- SuperLearner::SuperLearner(Y = Y.exp.response,
                                X = X.exp.response,
@@ -147,7 +147,6 @@ response_model <- function(response.formula,
 #' @param response.mod trained model from \code{response_model}.
 #' @param id
 #' @param cluster
-#' @param cut.point
 #' @param potential.outcome
 #'
 #' @return
@@ -158,26 +157,45 @@ pattc_counterfactuals<- function (pop.data,
                                   response.mod,
                                   ID = NULL,
                                   cluster = NULL,
-                                  cut.point = .5,
                                   potential.outcome = TRUE){
   compl.var <- pop.data$compl_var
   covariates <- all.vars(pop.data$response_formula)[-1]
+  outcome <- all.vars(pop.data$response_formula)[1]
 
   pop_data <- pop.data$pop_data
   pop_data$c <- pop_data[, compl.var]
+  pop_data$outcome <- pop_data[, outcome]
+  popdata_comp <- pop_data[which(pop_data$c==1),]
 
-
-  pop.tr.counterfactual <- cbind( 1, pop_data[which(pop_data$c==1), covariates])
+  pop.tr.counterfactual <- cbind( rep(1, nrow(popdata_comp)), popdata_comp[, covariates])
   colnames(pop.tr.counterfactual) <- c(compl.var, covariates)
-  pop.ctrl.counterfactual <- cbind(0, pop_data[which(pop_data$c==1), covariates])
+  pop.ctrl.counterfactual <- cbind(rep(0, nrow(popdata_comp)), popdata_comp[, covariates])
   colnames(pop.ctrl.counterfactual) <- c(compl.var, covariates)
 
   Y.pred.1 <- predict(response.mod, pop.tr.counterfactual, onlySL = T)$pred
   Y.pred.0 <- predict(response.mod, pop.ctrl.counterfactual, onlySL = T)$pred
 
+  Y.pred.1p <- data.frame("outcome" = pop_data[which(pop_data$c==1),]$outcome,
+                              "C.pscore" = Y.pred.1)
+
+  Y.pred.1preds <- ROCR::prediction(Y.pred.1p$C.pscore,
+                                     Y.pred.1p$outcome)
+
+  cost.Y1 <- ROCR::performance(Y.pred.1preds, "cost")
+
+  opt.cut.Y1 <- Y.pred.1preds@cutoffs[[1]][which.min(cost.Y1@y.values[[1]])]
+
+  Y.pred.0p <- data.frame("outcome" = pop_data[which(pop_data$c==1),]$outcome,
+                          "C.pscore" = Y.pred.0)
+
+  Y.pred.0preds <- ROCR::prediction(Y.pred.0p$C.pscore,
+                                    Y.pred.0p$outcome)
+  cost.Y0 <- ROCR::performance(Y.pred.0preds, "cost")
+  opt.cut.Y0 <- Y.pred.0preds@cutoffs[[1]][which.min(cost.Y0@y.values[[1]])]
+
   if (potential.outcome) {
-    Y.hat.1 <- ifelse(Y.pred.1 > cut.point, 1, 0)
-    Y.hat.0 <- ifelse(Y.pred.0 > cut.point, 1, 0)
+    Y.hat.1 <- ifelse(Y.pred.1 > opt.cut.Y1, 1, 0)
+    Y.hat.0 <- ifelse(Y.pred.0 > opt.cut.Y0, 1, 0)
   } else if (!potential.outcome) {
     Y.hat.1 <- Y.pred.1
     Y.hat.0 <- Y.pred.0
@@ -252,6 +270,7 @@ patt_ensemble <- function(response.formula,
                         treat.var,
                         compl.var,
                         createSL = TRUE,
+                        SL.library = NULL,
                         ID = NULL,
                         cluster = NULL,
                         bootse = FALSE,
@@ -262,7 +281,7 @@ patt_ensemble <- function(response.formula,
   if (createSL) {
     create.SL()
   }
-
+  SL.library = SL.library
   exp_data <- expcall(response.formula,
                     treat.var = treat.var,
                     compl.var = compl.var,
@@ -275,15 +294,17 @@ patt_ensemble <- function(response.formula,
                    ID = ID)
 
   covariates <- all.vars(response.formula)[-1]
+
   compl.formula <- paste0(compl.var, " ~ ", paste0(covariates, collapse = " + "))
   compl.formula <- as.formula(compl.formula)
   message("Training complier model")
+
   compl.mod <- complier_mod(exp.data = exp_data$exp_data,
                           treat.var = treat.var,
                           complier.formula = compl.formula,
                           ID = NULL,
-                          SL.library = NULL)
-#CHECKHERE
+                          SL.library = SL.library)
+
   compliers <- complier_predict(complier.mod = compl.mod,
                                 compl.var = compl.var,
                                 treat.var = treat.var,
@@ -296,25 +317,39 @@ patt_ensemble <- function(response.formula,
                                   compl.var = compl.var,
                                   family = "binomial",
                                   ID = NULL,
-                                  SL.library = NULL)
+                                  SL.library = SL.library)
 
   message("Predicting response and estimating PATT-C")
   counterfactuals <- pattc_counterfactuals(pop.data = pop_data,
                                          response.mod = response.mod,
                                          ID = NULL,
                                          cluster = NULL,
-                                         cut.point = .5,
                                          potential.outcome = TRUE)
 
-  pattc <- WtC(x = counterfactuals$Y_hat1,
-               y = counterfactuals$Y_hat0,
-               bootse = bootse,
-               bootp = bootp,
-               bootn = bootn,
-               samedata = FALSE,
-               equivalence = FALSE)
+  outcome.var <- all.vars(response.formula)[1]
+  dummy <- length(levels(as.factor(exp_data$exp_data[,outcome.var])) )
 
-  return(pattc)
+  if (dummy==2) {
+    Y_hat1_0s <- sum(counterfactuals$Y_hat0)
+    nY_hat0 <- length(counterfactuals$Y_hat0)
+    Y_hat1_1s <- sum(counterfactuals$Y_hat1)
+    nY_hat1 <- length(counterfactuals$Y_hat1)
+    pattc <- prop.test(c(Y_hat1_0s, Y_hat1_1s), c(nY_hat0,nY_hat1),
+                       alternative = "two.sided", correct = FALSE)
+  }
+  else {
+    pattc <- WtC(x = counterfactuals$Y_hat1,
+                y = counterfactuals$Y_hat0,
+                bootse = bootse,
+                bootp = bootp,
+                bootn = bootn,
+                samedata = FALSE,
+                equivalence = FALSE)
+  }
+  model.out<-list(Complier_model = compl.mod,
+                  Response_model = response.mod,
+                  PATT_C = pattc)
+  return(model.out)
 }
 
 

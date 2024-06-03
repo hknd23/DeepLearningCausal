@@ -187,12 +187,7 @@ create.SL <- function(learners = "all"){
 define.SL.class.library<- function (SL.library.class=c("SL.gbm.adaboost",
                                        "SL.gbm.bernoulli",
                                        "SL.glmnet", # lasso
-                                       "SL.glmnet.0.25",
-                                       "SL.glmnet.0.5",
-                                       "SL.glmnet.0.75",
-                                       "SL.glmnet.0", # ridge
                                        "SL.xgboost",
-                                       "SL.randomForest.1",
                                        "SL.randomForest.3"# nodesize=1 for regression
                                        )){
   SL.library.class = SL.library.class
@@ -207,7 +202,7 @@ define.SL.class.library<- function (SL.library.class=c("SL.gbm.adaboost",
 #' @keywords internal
 #'
 #' @examples
-define.SL.reg.library <- function (SL.library.reg=c("SL.gam", # degree=2
+define.SL.reg.library <- function (SL.library.reg = c("SL.gam", # degree=2
                                                       "SL.gam.3",
                                                       "SL.gam.4",
                                                       "SL.gbm.gaussian",

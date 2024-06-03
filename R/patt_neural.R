@@ -153,14 +153,12 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
   compl.var <- pop.data$compl_var
   covariates <- all.vars(pop.data$response_formula)[-1]
   popdata <- pop.data$pop_data
-  print(pop.data[1])
-  print(head(pop.data$pop_data))
   popdata$c <- popdata[,compl.var]
-  print(popdata[which(popdata$c==1),])
+  popdata_comp <- popdata[which(popdata$c==1),]
 
-  pop.tr.counterfactual <- cbind( 1, popdata[which(popdata$c==1), covariates])
+  pop.tr.counterfactual <- cbind(rep(1, nrow(popdata_comp)), popdata_comp[, covariates])
   colnames(pop.tr.counterfactual) <- c(compl.var, covariates)
-  pop.ctrl.counterfactual <- cbind(0, popdata[which(popdata$c==1), covariates])
+  pop.ctrl.counterfactual <- cbind(rep(0, nrow(popdata_comp)), popdata_comp[, covariates])
   colnames(pop.ctrl.counterfactual) <- c(compl.var, covariates)
 
   Y.hat.0 <- predict(neuralnet.response.mod, pop.ctrl.counterfactual)
@@ -300,13 +298,29 @@ patt_deep_nn <- function(response.formula,
   message("Predicting response and estimating PATT-C")
   counterfactuals <- neuralnet_pattc_counterfactuals(popdata, neural.response.mod)
 
-  pattc <- WtC(x = counterfactuals$Y_hat1,
-             y = counterfactuals$Y_hat0,
-             bootse = bootse,
-             bootp = bootp,
-             bootn = bootn,
-             samedata = FALSE,
-             equivalence = FALSE)
+  outcome.var <- all.vars(response.formula)[1]
+  dummy <- length(levels(as.factor(expdata$exp_data[,outcome.var])) )
 
-  return(pattc)
+  if (dummy==2) {
+    Y_hat1_0s <- sum(counterfactuals$Y_hat0)
+    nY_hat0 <- length(counterfactuals$Y_hat0)
+    Y_hat1_1s <- sum(counterfactuals$Y_hat1)
+    nY_hat1 <- length(counterfactuals$Y_hat1)
+
+    pattc <- prop.test(c(Y_hat1_0s, Y_hat1_1s), c(nY_hat0,nY_hat1),
+                       alternative = "two.sided", correct = FALSE)
+  }
+  else {
+    pattc <- WtC(x = counterfactuals$Y_hat1,
+                 y = counterfactuals$Y_hat0,
+                 bootse = bootse,
+                 bootp = bootp,
+                 bootn = bootn,
+                 samedata = FALSE,
+                 equivalence = FALSE)
+  }
+  model.out<-list(Complier_model = neuralnet.compl.mod,
+                  Response_model = neural.response.mod,
+                  PATT_C = pattc)
+  return(model.out)
 }
