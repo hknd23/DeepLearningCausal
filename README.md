@@ -37,11 +37,10 @@ weighted ensemble and deep neural networks. More specifically,
 
 | Function                | Description                                                                                |
 |-------------------------|--------------------------------------------------------------------------------------------|
-| `S-learner_ensemble`    | Implements S-learner for estimating CATE using super learner ensemble.                     |
-| `T-learner_ensemble`    | Implements T-learner for estimating CATE using super learner ensemble.                     |
-| `metalearner_deepneural`| Implements S-learner and T-learner for estimating CATE using deep neural networks.         |
-| `PATTC_ensemble`        | Implements PATT_C estimator for obtaining PATT using super learner ensemble.               |
-| `PATTC_deepneural`      | Implements PATT_C estimator for obtaining PATT using deep neural networks.                 |
+| `ST_learner_ensemble`   | Estimates CATE for S-learner and T-learner using super learner weighted ensemble.          |
+| `metalearner_deepneural`| Estimates CATE for S-learner and T-learner using deep neural networks.                     |
+| `PATTC_ensemble`        | Estimates PATT_C estimator for obtaining PATT using super learner weighted ensemble.       |
+| `PATTC_deepneural`      | Estimates PATT_C estimator for obtaining PATT using deep neural networks.                  |
 
 
 ### Example 1
