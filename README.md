@@ -29,7 +29,7 @@ observational or experimental data as well as Population Average Treatment Effec
 data with noncompliance. Another key benefit is that DNetCausalPATT provides users the choice of estimating CATE and PATT using the super learner
 weighted ensemble and deep neural networks. More specifically,  
 
-- The super learner weighted ensemble includes the candidate algorithms: additive regression, gradient boosting, lasso, random forests, and neural nets.cross-valiIt combines algorithms with a convex combination of weights based on minimizing cross-validated error. 
+- The super learner weighted ensemble includes the candidate algorithms: additive regression, gradient boosting, lasso, random forests, and neural nets. It combines these algorithms with a convex combination of weights based on minimizing cross-validated error. 
   
 - Deep Neural Networks training via Resilient back propagation (Rprop) algorithm.
 
