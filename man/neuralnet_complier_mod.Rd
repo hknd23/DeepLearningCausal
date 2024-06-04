@@ -11,7 +11,7 @@ neuralnet_complier_mod(
   algorithm = "rprop+",
   hidden.layer = c(4, 2),
   ID = NULL,
-  stepmax = 1e+05
+  stepmax = 1e+08
 )
 }
 \arguments{

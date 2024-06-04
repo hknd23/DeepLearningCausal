@@ -1,15 +1,15 @@
 #' Survey Experiment of Support for Populist Policy
 #'
-#' Survey response data that incorporates a vignette survey experiment. The
-#' vignette describes an international crisis between country A and B. After
-#' reading this vignette, respondents are randomly assigned to the control group
-#' or to one of two treatments: policy prescription to said crisis by strong
-#' (populist) leader and centrist (non-populist) leader. The respondents are
-#' then asked whether they are willing to support the policy decision to fight a
-#' war against country A, which is the dependent variable.
+#' Shortened version of survey response data that incorporates a vignette survey
+#' experiment. The vignette describes an international crisis between country A
+#' and B. After reading this vignette, respondents are randomly assigned to the
+#' control group or to one of two treatments: policy prescription to said crisis
+#' by strong (populist) leader and centrist (non-populist) leader. The
+#' respondents are then asked whether they are willing to support the policy
+#' decision to fight a war against country A, which is the dependent variable.
 #'
 #' @format ## `IND_exp_data`
-#' A data frame with 514 rows and 13 columns:
+#' A data frame with 257 rows and 12 columns:
 #' \describe{
 #'   \item{Female}{ Gender.}
 #'   \item{Age}{ Age of participant.}
@@ -34,13 +34,11 @@
 
 #' World Value Survey India Sample
 #'
-#' World Value Survey (WVS) Data for India for the following years in which the
-#' WVS implemented their survey questionnaire in the country: 1995, 2001, 2006,
-#' 2012, and 2022. The variables drawn from the said WVS India data match the
-#' covariates from the India survey experiment sample.
+#' World Value Survey (WVS) Data for India in 2022. The variables drawn from the
+#' said WVS India data match the covariates from the India survey experiment sample.
 #'
 #' @format ## `IND_pop_data`
-#' A data frame with 11,813 rows and 13 columns:
+#' A data frame with 846 rows and 13 columns:
 #' \describe{
 #'   \item{Female}{ Respondent’s Sex.}
 #'   \item{Age}{ Age of respondent.}

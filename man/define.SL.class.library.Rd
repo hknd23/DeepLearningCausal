@@ -2,18 +2,17 @@
 % Please edit documentation in R/superlearners.R
 \name{define.SL.class.library}
 \alias{define.SL.class.library}
-\title{Title}
+\title{define.SL.class.library}
 \usage{
 define.SL.class.library(
-  SL.library.class = c("SL.gbm.adaboost", "SL.gbm.bernoulli", "SL.glmnet",
-    "SL.glmnet.0.25", "SL.glmnet.0.5", "SL.glmnet.0.75", "SL.glmnet.0", "SL.xgboost",
-    "SL.randomForest.1", "SL.randomForest.3")
+  SL.library.class = c("SL.gbm.adaboost", "SL.gbm.bernoulli", "SL.glmnet", "SL.xgboost",
+    "SL.randomForest.3")
 )
 }
 \arguments{
 \item{SL.library.class}{}
 }
 \description{
-Title
+define.SL.class.library
 }
 \keyword{internal}

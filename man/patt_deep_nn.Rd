@@ -14,8 +14,8 @@ patt_deep_nn(
   response.algorithm = "rprop+",
   compl.hidden.layer = c(4, 2),
   response.hidden.layer = c(4, 2),
-  compl.stepmax = 1e+05,
-  response.stepmax = 1e+05,
+  compl.stepmax = 1e+08,
+  response.stepmax = 1e+08,
   ID = NULL,
   cluster = NULL,
   bootse = FALSE,
@@ -74,33 +74,31 @@ of the Treated from experimental data with noncompliers using Deep Neural
 Networks.
 }
 \examples{
-#' # load datasets
+# load datasets
 data(IND_exp_data) #experimental data
 data(IND_pop_data) #population data
-
-#attach SuperLearner package (model will not recognize learner if package is not loaded)
-library(SuperLearner)
-
 specify models and estimate PATTC
-pattc <- patt_ensemble(response.formula = exp1_dv1 ~ female + age+ income +
-                                            imp_rel + religion + education +
-                                            ideol_lr + empl_status + Marital_status +
-                                            job_worry
-                       exp.data = IND_exp_data,
-                       pop.data = IND_pop_data,
-                       treat.var = "trt1",
-                       compl.var = "compl1",
-                       compl.algorithm = "rprop+",
-                       response.algorithm = "rprop+",
-                       compl.hidden.layer = c(4,2),
-                       response.hidden.layer = c(4,2),
-                       compl.stepmax = 1e+05,
-                       response.stepmax = 1e+05,
-                       ID = NULL,
-                       cluster = NULL,
-                       bootse = FALSE,
-                       bootp = FALSE,
-                       bootn = 999)
+set.seed(123456)
+pattc_neural <- patt_deep_nn(response.formula = outcome ~ age + male +
+                               income + education +
+                               employed + married +
+                               Hindu + job_worry,
+                             exp.data = expdata,
+                             pop.data = popdata,
+                             treat.var = "trt1",
+                             compl.var = "compl1",
+                             compl.algorithm = "rprop+",
+                             response.algorithm = "rprop+",
+                             compl.hidden.layer = c(4,2),
+                             response.hidden.layer = c(4,2),
+                             compl.stepmax = 1e+09,
+                             response.stepmax = 1e+09,
+                             ID = NULL,
+                             cluster = NULL,
+                             bootse = FALSE,
+                             bootp = FALSE,
+                             bootn = 999)
 
 summary(pattc)
+
 }

@@ -7,7 +7,7 @@
 \format{
 \subsection{\code{IND_exp_data}}{
 
-A data frame with 514 rows and 13 columns:
+A data frame with 257 rows and 12 columns:
 \describe{
 \item{Female}{ Gender.}
 \item{Age}{ Age of participant.}
@@ -32,12 +32,12 @@ Yadav and Mukherjee (2024)
 data(IND_exp_data)
 }
 \description{
-Survey response data that incorporates a vignette survey experiment. The
-vignette describes an international crisis between country A and B. After
-reading this vignette, respondents are randomly assigned to the control group
-or to one of two treatments: policy prescription to said crisis by strong
-(populist) leader and centrist (non-populist) leader. The respondents are
-then asked whether they are willing to support the policy decision to fight a
-war against country A, which is the dependent variable.
+Shortened version of survey response data that incorporates a vignette survey
+experiment. The vignette describes an international crisis between country A
+and B. After reading this vignette, respondents are randomly assigned to the
+control group or to one of two treatments: policy prescription to said crisis
+by strong (populist) leader and centrist (non-populist) leader. The
+respondents are then asked whether they are willing to support the policy
+decision to fight a war against country A, which is the dependent variable.
 }
 \keyword{dataset}

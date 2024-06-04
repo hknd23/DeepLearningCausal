@@ -65,7 +65,7 @@ create.SL.glmnet <- function(alpha = c(0,0.25, 0.50, 0.75)) {
 }
 
 
-#' Title
+#' create.SL.gam
 #'
 #' @description
 #' Creates gam wrappers in the global environment with different degrees.
@@ -89,7 +89,7 @@ create.SL.gam <- function(deg.gam = c(3, 4)) {
   invisible(TRUE)
 }
 
-#' Title
+#' create.SL.gbm
 #'
 #' @param distribution
 #'
@@ -109,7 +109,7 @@ create.SL.gbm <- function(distribution = c("bernoulli","adaboost","gaussian")) {
 }
 
 
-#' Title
+#' SL.mean
 #'
 #' @param Y
 #' @param X
@@ -132,7 +132,7 @@ SL.mean <- function (Y, X, newX, family, obsWeights, id, ...){
   return(out)
 }
 
-#' Title
+#' predict.SL.mean
 #'
 #' @param object
 #' @param newdata
@@ -176,7 +176,7 @@ create.SL <- function(learners = "all"){
 }
 
 
-#' Title
+#' define.SL.class.library
 #'
 #' @param SL.library.class
 #'

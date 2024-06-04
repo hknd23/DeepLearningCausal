@@ -7,7 +7,7 @@
 popcall(
   response.formula,
   compl.var,
-  data,
+  pop.data,
   weights = NULL,
   cluster = NULL,
   ID = NULL

@@ -2,7 +2,7 @@
 % Please edit documentation in R/superlearners.R
 \name{SL.mean}
 \alias{SL.mean}
-\title{Title}
+\title{SL.mean}
 \usage{
 SL.mean(Y, X, newX, family, obsWeights, id, ...)
 }
@@ -10,6 +10,6 @@ SL.mean(Y, X, newX, family, obsWeights, id, ...)
 \item{...}{}
 }
 \description{
-Title
+SL.mean
 }
 \keyword{internal}

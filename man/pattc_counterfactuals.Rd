@@ -9,7 +9,7 @@ pattc_counterfactuals(
   response.mod,
   ID = NULL,
   cluster = NULL,
-  cut.point = 0.5
+  potential.outcome = TRUE
 )
 }
 \arguments{
@@ -17,7 +17,7 @@ pattc_counterfactuals(
 
 \item{response.mod}{trained model from \code{response_model}.}
 
-\item{cut.point}{}
+\item{potential.outcome}{}
 }
 \description{
 Create counterfactual datasets in the population for compliers and

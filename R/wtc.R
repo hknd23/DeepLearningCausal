@@ -103,7 +103,7 @@ WtC <- function (x,
       n3 <- length(unique(clusterc))
       m.bar3 <- sum(tapply(weightc, clusterc, FUN=sum, na.rm = TRUE))/n3
       c.bar <- tapply(c, clusterc, FUN=mean, na.rm = TRUE)
-      mc <- sum(c.bar*tapply(weightc, clusterc, FUN=sum, na.rm = TRUE))/sum(tapply(weightc, clusterc, FUN=sum, na.rm = TRUE))
+      mc <- sum(c.bar*tapply(weightc, clusterc, FUN=sum, na.rm = TRUE))/sum(tapply(weightc, clusterc, FUN = sum, na.rm = TRUE))
       vc <- (sum(tapply(weightc, clusterc, FUN=sum, na.rm = TRUE)*c.bar**2)/m.bar3 - n3*Hmisc::wtd.mean(c, weightc, na.rm = TRUE)**2)/(n3-1)
 
       dif <- (mx - my)/mc

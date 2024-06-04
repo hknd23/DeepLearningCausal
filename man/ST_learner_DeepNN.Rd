@@ -52,26 +52,56 @@ algorithm is used for training neural networks.
 # load dataset
 data(IND_exp_data)
 # estimate CATEs with S Learner
-slearner <- ST_learner_DeepNN(cov.formula = exp1_dv1 ~ female + age+ income +
-                                            imp_rel + religion + education +
-                                            ideol_lr + empl_status + Marital_status +
-                                            job_worry,
-                              data = expdata,
-                              treat.var = "Exp1trt",
-                              meta.learner.type="S.Learner",
-                              stepmax=1e+08,
-                              nfolds=5,
-                              algorithm = "rprop+",
-                              hidden.layer=c(4,2),
-                              linear.output = FALSE)
+\donttest{
+slearner_nn <- ST_learner_DeepNN(cov.formula = outcome ~ age +
+                                 income  +
+                                 employed  + job_worry,
+                                 data = expdata,
+                                 treat.var = "trt1",
+                                 meta.learner.type = "S.Learner",
+                                 stepmax=1e+9,
+                                 nfolds=5,
+                                 algorithm = "rprop+",
+                                 hidden.layer = c(4,2),
+                                 linear.output = FALSE)
+# estimate CATEs with T Learner
+tlearner_nn <- ST_learner_DeepNN(cov.formula = outcome ~ age +
+                                  income  +
+                                  employed  + job_worry,
+                                data = expdata,
+                                treat.var = "trt1",
+                                meta.learner.type = "T.Learner",
+                                stepmax = 1e+9,
+                                nfolds = 5,
+                                algorithm = "rprop+",
+                                hidden.layer = c(2,1),
+                                linear.output = FALSE)
+                                }
+\dontrun{
+#Model may not converge with low stepmax
+slearner_nn <- ST_learner_DeepNN(cov.formula = outcome ~ age +
+                                  income  +
+                                  employed  + job_worry,
+                                data = expdata,
+                               treat.var = "trt1",
+                                meta.learner.type="S.Learner",
+                                stepmax=1e+4,
+                                nfolds=5,
+                                algorithm = "rprop+",
+                                hidden.layer=c(4,2),
+                                linear.output = FALSE)
 
-#estimate CATEs with T Learner
-tlearner <- ST_learner_DeepNN(cov.formula = exp1_dv1 ~ female + age+ income +
-                                            imp_rel + religion + education +
-                                            ideol_lr + empl_status + Marital_status +
-                                            job_worry,
-                              data = expdata,
-                              treat.var = "trt1",
-                              meta.learner.type="T.Learner",
-                              linear.output = FALSE)
+#Other learners not supported
+slearner_nn <- ST_learner_DeepNN(cov.formula = outcome ~ age +
+                                 income  +
+                                 employed  + job_worry,
+                                 data = expdata,
+                                 treat.var = "trt1",
+                                 meta.learner.type="R.Learner",
+                                 stepmax=1e+4,
+                                 nfolds=5,
+                                 algorithm = "rprop+",
+                                 hidden.layer=c(4,2),
+                                 linear.output = FALSE)
+                                }
 }

@@ -7,7 +7,7 @@
 \format{
 \subsection{\code{IND_pop_data}}{
 
-A data frame with 11,813 rows and 13 columns:
+A data frame with 846 rows and 13 columns:
 \describe{
 \item{Female}{ Respondent’s Sex.}
 \item{Age}{ Age of respondent.}
@@ -33,9 +33,7 @@ Haerpfer, C., Inglehart, R., Moreno, A., Welzel, C., Kizilova, K., Diez-Medrano 
 data(IND_pop_data)
 }
 \description{
-World Value Survey (WVS) Data for India for the following years in which the
-WVS implemented their survey questionnaire in the country: 1995, 2001, 2006,
-2012, and 2022. The variables drawn from the said WVS India data match the
-covariates from the India survey experiment sample.
+World Value Survey (WVS) Data for India in 2022. The variables drawn from the
+said WVS India data match the covariates from the India survey experiment sample.
 }
 \keyword{dataset}

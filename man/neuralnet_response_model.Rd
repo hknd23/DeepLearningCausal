@@ -11,7 +11,7 @@ neuralnet_response_model(
   compl.var,
   algorithm = "rprop+",
   hidden.layer = c(4, 2),
-  stepmax = 1e+05
+  stepmax = 1e+08
 )
 }
 \arguments{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/superlearners.R
 \name{predict.SL.mean}
 \alias{predict.SL.mean}
-\title{Title}
+\title{predict.SL.mean}
 \usage{
 \method{predict}{SL.mean}(object, newdata, family, X = NULL, Y = NULL, ...)
 }
@@ -10,6 +10,6 @@
 \item{...}{}
 }
 \description{
-Title
+predict.SL.mean
 }
 \keyword{internal}

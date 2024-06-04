@@ -3,3 +3,6 @@
 .RData
 .Ruserdata
 DNetCausalPATT/
+test_code/
+data-raw/
+*.gz

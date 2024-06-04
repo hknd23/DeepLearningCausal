@@ -5,7 +5,9 @@
 \title{Response model from experimental data using SL ensemble}
 \usage{
 response_model(
+  response.formula,
   exp.data,
+  compl.var,
   exp.compliers,
   family = "binomial",
   ID = NULL,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/superlearners.R
 \name{create.SL.gam}
 \alias{create.SL.gam}
-\title{Title}
+\title{create.SL.gam}
 \usage{
 create.SL.gam(deg.gam = c(3, 4))
 }

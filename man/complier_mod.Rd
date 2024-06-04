@@ -4,10 +4,16 @@
 \alias{complier_mod}
 \title{Train complier model using ensemble methods}
 \usage{
-complier_mod(data, ID = NULL, SL.library = NULL)
+complier_mod(
+  exp.data,
+  complier.formula,
+  treat.var,
+  ID = NULL,
+  SL.library = NULL
+)
 }
 \arguments{
-\item{data}{list object of experimental data.}
+\item{exp.data}{list object of experimental data.}
 
 \item{ID}{string for name of indentifier variable.}
 

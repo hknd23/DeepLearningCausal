@@ -4,7 +4,7 @@
 \alias{complier_predict}
 \title{Complier model prediction}
 \usage{
-complier_predict(complier.mod, exp.data)
+complier_predict(complier.mod, exp.data, treat.var, compl.var)
 }
 \arguments{
 \item{complier.mod}{output from trained ensemble superlearner model.}

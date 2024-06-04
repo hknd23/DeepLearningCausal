@@ -8,7 +8,7 @@ expcall(
   response.formula,
   treat.var,
   compl.var,
-  data,
+  exp.data,
   weights = NULL,
   cluster = NULL,
   ID = NULL

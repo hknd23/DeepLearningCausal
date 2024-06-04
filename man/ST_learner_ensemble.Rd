@@ -43,23 +43,36 @@ neural nets.
 # load dataset
 data(IND_exp_data)
 # estimate CATEs with S Learner
-slearner <- ST_learner_ensemble(cov.formula = exp1_dv1 ~ female + age+ income +
-                                            imp_rel + religion + education +
-                                            ideol_lr + empl_status + Marital_status +
-                                            job_worry,
-                              data = expdata,
-                              treat.var = "Exp1trt",
-                              meta.learner.type = "S.Learner",
-                              learners = c("SL.glmnet","SL.xgboost",
-                                         "SL.ranger","SL.nnet"),
-                              nfolds = 5)
+control <- SuperLearner::SuperLearner.CV.control(V=5)
+# estimate CATEs with S Learner
+slearner <- ST_learner_ensemble(cov.formula = outcome ~ age +
+                                  income  +
+                                  employed  + job_worry,
+                                data = expdata,
+                                treat.var = "trt1",
+                                meta.learner.type = "S.Learner",
+                                learners = c("SL.glmnet","SL.xgboost"),
+                                nfolds = 5)
+# estimate CATEs with T Learner
+\donttest{
+tlearner <- ST_learner_ensemble(cov.formula = outcome ~ age +
+                                  income  +
+                                  employed  + job_worry,
+                                data = expdata,
+                                treat.var = "trt1",
+                                meta.learner.type = "T.Learner",
+                                learners = c("SL.glmnet","SL.xgboost"),
+                                nfolds = 5)
+                                }
+\dontrun{
+tlearner <- ST_learner_ensemble(cov.formula = outcome ~ age +
+                                  income  +
+                                  employed  + job_worry,
+                                data = expdata,
+                                treat.var = "trt1",
+                                meta.learner.type = "R.Learner",
+                                learners = c("SL.glmnet","SL.xgboost"),
+                                nfolds = 5)
+                                }
 
-#estimate CATEs with T Learner
-tlearner <- ST_learner_ensemble(cov.formula = exp1_dv1 ~ female + age+ income +
-                                            imp_rel + religion + education +
-                                            ideol_lr + empl_status + Marital_status +
-                                            job_worry,
-                              data = expdata,
-                              treat.var = "trt1",
-                              meta.learner.type = "T.Learner")
 }

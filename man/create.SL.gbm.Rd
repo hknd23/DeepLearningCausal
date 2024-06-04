@@ -2,7 +2,7 @@
 % Please edit documentation in R/superlearners.R
 \name{create.SL.gbm}
 \alias{create.SL.gbm}
-\title{Title}
+\title{create.SL.gbm}
 \usage{
 create.SL.gbm(distribution = c("bernoulli", "adaboost", "gaussian"))
 }
@@ -10,6 +10,6 @@ create.SL.gbm(distribution = c("bernoulli", "adaboost", "gaussian"))
 \item{distribution}{}
 }
 \description{
-Title
+create.SL.gbm
 }
 \keyword{internal}
