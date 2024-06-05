@@ -29,7 +29,7 @@
 #' slearner <- ST_learner_ensemble(cov.formula = outcome ~ age +
 #'                                   income  +
 #'                                   employed  + job_worry,
-#'                                 data = expdata,
+#'                                 data = IND_exp_data,
 #'                                 treat.var = "trt1",
 #'                                 meta.learner.type = "S.Learner",
 #'                                 learners = c("SL.glmnet","SL.xgboost"),
