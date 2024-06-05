@@ -9,7 +9,7 @@ pattc_counterfactuals(
   response.mod,
   ID = NULL,
   cluster = NULL,
-  potential.outcome = TRUE
+  binary.outcome = TRUE
 )
 }
 \arguments{
@@ -17,7 +17,15 @@ pattc_counterfactuals(
 
 \item{response.mod}{trained model from \code{response_model}.}
 
-\item{potential.outcome}{}
+\item{ID}{string fir identifier variable}
+
+\item{cluster}{string for clustering variable}
+
+\item{binary.outcome}{logical specifying whether predicted outcomes are
+proportions or binary (0-1).}
+}
+\value{
+\code{data.frame} object of predicted outcomes of counterfactual groups.
 }
 \description{
 Create counterfactual datasets in the population for compliers and

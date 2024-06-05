@@ -1,4 +1,4 @@
-Package: DNetCausalPATT
+Package: DeepLearningCausal
 Type: Package
 Title: Estimation of Conditional Average Treatment Effects (CATE) and Population 
     Average Treatment Effects on the Treated (PATT)
@@ -12,10 +12,12 @@ Authors@R: c(person(given = "Nguyen K.",
                     family = "Mukherjee", 
                     email = "bumba.mukherjee@psu.edu",
                     role = c("aut")),
+                    comment = c(ORCID = "0000-0002-3453-601X")),  
              person(given = "Irvin (Chen-Yu)",
                     family = "Lee", 
                     email = "cvl6079@psu.edu",
-                    role = c("aut")))
+                    role = c("aut")),
+                    comment = c(ORCID = "0009-0004-5913-8925")))
 Maintainer: Nguyen Huynh <nguyenhuynh831@gmail.com>
 Description: Functions to estimate Conditional Average Treatment Effects (CATE) 
     and Population Average Treatment Effects on the Treated (PATT) from 

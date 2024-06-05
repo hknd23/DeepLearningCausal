@@ -36,6 +36,8 @@ binary compliance variable.}
 \item{createSL}{logical. If \code{TRUE} will call on \code{create.SL} to create
 SL wrappers.}
 
+\item{SL.library}{}
+
 \item{ID}{string for name of identifier.}
 
 \item{cluster}{string for name of cluster variable.}

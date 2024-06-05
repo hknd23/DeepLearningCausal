@@ -1,7 +1,7 @@
-#' S_T-learner Ensemble
+#' Meta_learner_ensemble
 #'
 #' @description
-#' \code{ST_learner_ensemble} implements the S-learner and T-learner for
+#' \code{Meta_learner_ensemble} implements the S-learner and T-learner for
 #' estimating CATE using the super learner ensemble method. The super learner in
 #' this case includes the following machine learning algorithms:
 #' extreme gradient boosting, glmnet (elastic net regression), random forest and
@@ -26,7 +26,7 @@
 #' # estimate CATEs with S Learner
 #' control <- SuperLearner::SuperLearner.CV.control(V=5)
 #' # estimate CATEs with S Learner
-#' slearner <- ST_learner_ensemble(cov.formula = outcome ~ age +
+#' slearner <- Meta_learner_ensemble(cov.formula = outcome ~ age +
 #'                                   income  +
 #'                                   employed  + job_worry,
 #'                                 data = IND_exp_data,
@@ -36,7 +36,7 @@
 #'                                 nfolds = 5)
 #' # estimate CATEs with T Learner
 #' \donttest{
-#' tlearner <- ST_learner_ensemble(cov.formula = outcome ~ age +
+#' tlearner <- Meta_learner_ensemble(cov.formula = outcome ~ age +
 #'                                   income  +
 #'                                   employed  + job_worry,
 #'                                 data = expdata,
@@ -46,7 +46,7 @@
 #'                                 nfolds = 5)
 #'                                 }
 #' \dontrun{
-#' tlearner <- ST_learner_ensemble(cov.formula = outcome ~ age +
+#' tlearner <- Meta_learner_ensemble(cov.formula = outcome ~ age +
 #'                                   income  +
 #'                                   employed  + job_worry,
 #'                                 data = expdata,
@@ -56,7 +56,7 @@
 #'                                 nfolds = 5)
 #'                                 }
 #'
-ST_learner_ensemble <- function(data,
+Meta_learner_ensemble <- function(data,
                                 cov.formula,
                                 treat.var,
                                 meta.learner.type,

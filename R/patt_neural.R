@@ -18,8 +18,7 @@
 #'
 #' @return trained complier model object
 #' @export
-#'
-#' @examples
+
 neuralnet_complier_mod<-function(complier.formula,
                                  exp.data,
                                  treat.var,
@@ -58,8 +57,7 @@ neuralnet_complier_mod<-function(complier.formula,
 #' @return `data.frame` object with true compliers, predicted compliers in the
 #' control group, and all compliers (actual + predicted).
 #' @export
-#'
-#' @examples
+
 neuralnet_predict<-function(neuralnet.complier.mod,
                             exp.data,
                             treat.var,
@@ -97,8 +95,7 @@ neuralnet_predict<-function(neuralnet.complier.mod,
 #'
 #' @return trained response model object
 #' @export
-#'
-#' @examples
+
 neuralnet_response_model <- function(response.formula,
                                      exp.data,
                                      neuralnet.compliers,
@@ -143,8 +140,7 @@ neuralnet_response_model <- function(response.formula,
 #' @return `data.frame` of predicted outcomes of response variable from
 #' counterfactuals.
 #' @export
-#'
-#' @examples
+
 neuralnet_pattc_counterfactuals <- function (pop.data,
                                              neuralnet.response.mod,
                                              ID = NULL,

@@ -14,7 +14,21 @@ popcall(
 )
 }
 \arguments{
-\item{ID}{}
+\item{response.formula}{formula for response equation of binary outcome
+variable and covariates}
+
+\item{compl.var}{string for complier variable}
+
+\item{pop.data}{\code{data.frame} of experimental variable}
+
+\item{weights}{observation weights}
+
+\item{cluster}{clustering variable}
+
+\item{ID}{identifier variable}
+}
+\value{
+list of processed dataset
 }
 \description{
 create list object of population data for easy data processing

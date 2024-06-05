@@ -15,10 +15,16 @@ complier_mod(
 \arguments{
 \item{exp.data}{list object of experimental data.}
 
+\item{complier.formula}{formula to fit compliance model (c ~ x) using
+complier variable and covariates}
+
+\item{treat.var}{string specifying the binary treatment variable}
+
 \item{ID}{string for name of indentifier variable.}
 
-\item{SL.library.}{Employs extreme gradient boosting, elastic net regression,
-random forest, and neural nets.}
+\item{SL.library}{vector of strings for ML classifier algorithms. If left
+\code{NULL} employs extreme gradient boosting, elastic net regression, random
+forest, and neural nets.}
 }
 \value{
 model object of trained model.

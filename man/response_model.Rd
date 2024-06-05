@@ -15,7 +15,12 @@ response_model(
 )
 }
 \arguments{
+\item{response.formula}{formula to fit the response model (y ~ x) using
+binary outcome variable and covariates}
+
 \item{exp.data}{experimental dataset.}
+
+\item{compl.var}{string specifying binary complier variable}
 
 \item{exp.compliers}{\code{data.frame} object of compliers from
 \code{complier_predict}.}

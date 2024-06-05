@@ -7,9 +7,13 @@
 complier_predict(complier.mod, exp.data, treat.var, compl.var)
 }
 \arguments{
-\item{complier.mod}{output from trained ensemble superlearner model.}
+\item{complier.mod}{output from trained ensemble superlearner model}
 
-\item{exp.data}{experimental dataset}
+\item{exp.data}{\code{data.frame} object of experimental dataset}
+
+\item{treat.var}{string specifying the binary treatment variable}
+
+\item{compl.var}{string specifying binary complier variable}
 }
 \value{
 \code{data.frame} object with true compliers, predicted compliers in the

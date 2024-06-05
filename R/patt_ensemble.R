@@ -15,8 +15,7 @@
 #'
 #' @return model object of trained model.
 #' @export
-#'
-#' @examples
+
 complier_mod <- function(exp.data,
                          complier.formula,
                          treat.var,
@@ -56,8 +55,7 @@ complier_mod <- function(exp.data,
 #' @return `data.frame` object with true compliers, predicted compliers in the
 #' control group, and all compliers (actual + predicted).
 #' @export
-#'
-#' @examples
+
 complier_predict <- function(complier.mod,
                              exp.data,
                              treat.var,
@@ -100,8 +98,7 @@ complier_predict <- function(complier.mod,
 #'
 #' @return trained response model.
 #' @export
-#'
-#' @examples
+
 response_model <- function(response.formula,
                          exp.data,
                          compl.var,
@@ -149,13 +146,12 @@ response_model <- function(response.formula,
 #' @param response.mod trained model from \code{response_model}.
 #' @param binary.outcome logical specifying whether predicted outcomes are
 #' proportions or binary (0-1).
-#' @param cluster
-#' @param ID
+#' @param cluster string for clustering variable
+#' @param ID string fir identifier variable
 #'
-#' @return
+#' @return `data.frame` object of predicted outcomes of counterfactual groups.
 #' @export
-#'
-#' @examples
+
 pattc_counterfactuals<- function (pop.data,
                                   response.mod,
                                   ID = NULL,

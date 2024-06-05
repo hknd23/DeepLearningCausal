@@ -1,17 +1,17 @@
 #' create list object of experimental data for easy processing
 #'
-#' @param response.formula
-#' @param treat.var
-#' @param compl.var
-#' @param exp.data
-#' @param weights
-#' @param cluster
-#' @param ID
+#' @param response.formula formula for response equation of binary outcome
+#' variable and covariates
+#' @param treat.var string for binary treatment variable
+#' @param compl.var string for complier variable
+#' @param exp.data `data.frame` of experimental variable
+#' @param weights observation weights
+#' @param cluster clustering variable
+#' @param ID identifier variable
 #'
-#' @return
+#' @return list of processed dataset
 #' @keywords internal
-#'
-#' @examples
+
 expcall <- function(response.formula,
                     treat.var,
                     compl.var,
@@ -57,17 +57,17 @@ expcall <- function(response.formula,
 
 #' create list object of population data for easy data processing
 #'
-#' @param response.formula
-#' @param compl.var
-#' @param pop.data
-#' @param weights
-#' @param cluster
-#' @param ID
+#' @param response.formula formula for response equation of binary outcome
+#' variable and covariates
+#' @param compl.var string for complier variable
+#' @param pop.data `data.frame` of experimental variable
+#' @param weights observation weights
+#' @param cluster clustering variable
+#' @param ID identifier variable
 #'
-#' @return
+#' @return list of processed dataset
 #' @keywords internal
-#'
-#' @examples
+
 popcall <- function(response.formula,
                     compl.var,
                     pop.data,

@@ -5,8 +5,7 @@
 #'
 #' @return
 #' @keywords internal
-#'
-#' @examples
+
 create.SL.randomForest <- function(tune = list(mtry = c(1, 5, 10),
                                                nodesize = c(1, 5))) {
   tuneGrid <- expand.grid(tune, stringsAsFactors = FALSE)
@@ -29,8 +28,7 @@ create.SL.randomForest <- function(tune = list(mtry = c(1, 5, 10),
 #'
 #' @return
 #' @keywords internal
-#'
-#' @examples
+
 create.SL.knn <- function(k = c(20, 30, 40, 50)) {
   for(mm in seq(length(k))){
     eval(parse(text = paste('SL.knn.', k[mm],
@@ -50,8 +48,7 @@ create.SL.knn <- function(k = c(20, 30, 40, 50)) {
 #'
 #' @return
 #' @keywords internal
-#'
-#' @examples
+
 create.SL.glmnet <- function(alpha = c(0,0.25, 0.50, 0.75)) {
   for(mm in seq(length(alpha))){
     eval(parse(text = paste('SL.glmnet.',
@@ -75,8 +72,7 @@ create.SL.glmnet <- function(alpha = c(0,0.25, 0.50, 0.75)) {
 #'
 #' @return
 #' @keywords internal
-#'
-#' @examples
+
 create.SL.gam <- function(deg.gam = c(3, 4)) {
   for(mm in seq(length(deg.gam))){
     eval(parse(text = paste('SL.gam.',
@@ -95,8 +91,7 @@ create.SL.gam <- function(deg.gam = c(3, 4)) {
 #'
 #' @return
 #' @keywords internal
-#'
-#' @examples
+
 create.SL.gbm <- function(distribution = c("bernoulli","adaboost","gaussian")) {
   for(mm in seq(length(distribution))){
     eval(parse(text = paste('SL.gbm.',
@@ -121,8 +116,7 @@ create.SL.gbm <- function(distribution = c("bernoulli","adaboost","gaussian")) {
 #'
 #' @return
 #' @keywords internal
-#'
-#' @examples
+
 SL.mean <- function (Y, X, newX, family, obsWeights, id, ...){
   meanY <- weighted.mean(Y, w = obsWeights)
   pred <- rep.int(meanY, times = nrow(newX))
@@ -143,8 +137,7 @@ SL.mean <- function (Y, X, newX, family, obsWeights, id, ...){
 #'
 #' @return
 #' @keywords internal
-#'
-#' @examples
+
 predict.SL.mean <- function (object, newdata, family, X = NULL, Y = NULL, ...){
   pred <- rep.int(object$object, times = nrow(newdata))
   return(pred)
@@ -157,8 +150,7 @@ predict.SL.mean <- function (object, newdata, family, X = NULL, Y = NULL, ...){
 #'
 #' @return
 #' @keywords internal
-#'
-#' @examples
+
 create.SL <- function(learners = "all"){
   if (learners == "all")
     {
@@ -182,8 +174,7 @@ create.SL <- function(learners = "all"){
 #'
 #' @return
 #' @keywords internal
-#'
-#' @examples
+
 define.SL.class.library<- function (SL.library.class=c("SL.gbm.adaboost",
                                        "SL.gbm.bernoulli",
                                        "SL.glmnet", # lasso
@@ -201,7 +192,7 @@ define.SL.class.library<- function (SL.library.class=c("SL.gbm.adaboost",
 #' @return
 #' @keywords internal
 #'
-#' @examples
+
 define.SL.reg.library <- function (SL.library.reg = c("SL.gam", # degree=2
                                                       "SL.gam.3",
                                                       "SL.gam.4",

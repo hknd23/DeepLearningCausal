@@ -15,7 +15,23 @@ expcall(
 )
 }
 \arguments{
-\item{ID}{}
+\item{response.formula}{formula for response equation of binary outcome
+variable and covariates}
+
+\item{treat.var}{string for binary treatment variable}
+
+\item{compl.var}{string for complier variable}
+
+\item{exp.data}{\code{data.frame} of experimental variable}
+
+\item{weights}{observation weights}
+
+\item{cluster}{clustering variable}
+
+\item{ID}{identifier variable}
+}
+\value{
+list of processed dataset
 }
 \description{
 create list object of experimental data for easy processing

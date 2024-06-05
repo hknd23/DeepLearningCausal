@@ -1,7 +1,7 @@
-#' S_T-learner DeepNN
+#' Meta_learner_DeepNN
 #'
 #' @description
-#' \code{ST_learner_DeepNN} implements the S-learner and T-learner for estimating
+#' \code{Meta_learner_DeepNN} implements the S-learner and T-learner for estimating
 #' CATE using Deep Neural Networks. The Resilient back propagation (Rprop)
 #' algorithm is used for training neural networks.
 #' @param data \code{data.frame} object of data.
@@ -27,10 +27,10 @@
 #' data(IND_exp_data)
 #' # estimate CATEs with S Learner
 #' \donttest{
-#' slearner_nn <- ST_learner_DeepNN(cov.formula = outcome ~ age +
+#' slearner_nn <- Meta_learner_DeepNN(cov.formula = outcome ~ age +
 #'                                  income  +
 #'                                  employed  + job_worry,
-#'                                  data = expdata,
+#'                                  data = IND_exp_data,
 #'                                  treat.var = "trt1",
 #'                                  meta.learner.type = "S.Learner",
 #'                                  stepmax=1e+9,
@@ -39,7 +39,7 @@
 #'                                  hidden.layer = c(4,2),
 #'                                  linear.output = FALSE)
 #' # estimate CATEs with T Learner
-#' tlearner_nn <- ST_learner_DeepNN(cov.formula = outcome ~ age +
+#' tlearner_nn <- Meta_learner_DeepNN(cov.formula = outcome ~ age +
 #'                                   income  +
 #'                                   employed  + job_worry,
 #'                                 data = expdata,
@@ -53,7 +53,7 @@
 #'                                 }
 #' \dontrun{
 #' #Model may not converge with low stepmax
-#' slearner_nn <- ST_learner_DeepNN(cov.formula = outcome ~ age +
+#' slearner_nn <- Meta_learner_DeepNN(cov.formula = outcome ~ age +
 #'                                   income  +
 #'                                   employed  + job_worry,
 #'                                 data = expdata,
@@ -66,7 +66,7 @@
 #'                                 linear.output = FALSE)
 #'
 #' #Other learners not supported
-#' slearner_nn <- ST_learner_DeepNN(cov.formula = outcome ~ age +
+#' slearner_nn <- Meta_learner_DeepNN(cov.formula = outcome ~ age +
 #'                                  income  +
 #'                                  employed  + job_worry,
 #'                                  data = expdata,
@@ -78,7 +78,7 @@
 #'                                  hidden.layer=c(4,2),
 #'                                  linear.output = FALSE)
 #'                                 }
-ST_learner_DeepNN <- function(data,
+Meta_learner_DeepNN <- function(data,
                               cov.formula,
                               treat.var,
                               meta.learner.type,
