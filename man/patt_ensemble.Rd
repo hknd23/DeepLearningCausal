@@ -62,7 +62,7 @@ data(IND_exp_data) #experimental data
 data(IND_pop_data) #population data
 #attach SuperLearner package (model will not recognize learner if package is not loaded)
 library(SuperLearner)
-specify models and estimate PATTC
+#specify models and estimate PATTC
 pattc_ensemble <- patt_ensemble(response.formula = outcome ~ age +
                                  income + education +
                                  employed + job_worry,

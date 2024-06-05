@@ -221,7 +221,7 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #' # load datasets
 #' data(IND_exp_data) #experimental data
 #' data(IND_pop_data) #population data
-#' specify models and estimate PATTC
+#' # specify models and estimate PATTC
 #' set.seed(123456)
 #' pattc_neural <- patt_deep_nn(response.formula = outcome ~ age + male +
 #'                                income + education +

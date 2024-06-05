@@ -5,9 +5,13 @@
 #' outcome variable and covariates.
 #'
 #' @param exp.data list object of experimental data.
+#' @param complier.formula formula to fit compliance model (c ~ x) using
+#' complier variable and covariates
+#' @param treat.var string specifying the binary treatment variable
 #' @param ID string for name of indentifier variable.
-#' @param SL.library. Employs extreme gradient boosting, elastic net regression,
-#' random forest, and neural nets.
+#' @param SL.library vector of strings for ML classifier algorithms. If left
+#' `NULL` employs extreme gradient boosting, elastic net regression, random
+#' forest, and neural nets.
 #'
 #' @return model object of trained model.
 #' @export
@@ -44,8 +48,11 @@ complier_mod <- function(exp.data,
 #' @description
 #' Predict Compliance from control group in experimental data
 #'
-#' @param complier.mod output from trained ensemble superlearner model.
-#' @param exp.data experimental dataset
+#' @param complier.mod output from trained ensemble superlearner model
+#' @param exp.data `data.frame` object of experimental dataset
+#' @param treat.var string specifying the binary treatment variable
+#' @param compl.var string specifying binary complier variable
+#'
 #' @return `data.frame` object with true compliers, predicted compliers in the
 #' control group, and all compliers (actual + predicted).
 #' @export
@@ -81,7 +88,10 @@ complier_predict <- function(complier.mod,
 #' Train response model (response variable as outcome and covariates) from all
 #' compliers (actual + predicted) in experimental data using SL ensemble.
 #'
+#' @param response.formula formula to fit the response model (y ~ x) using
+#' binary outcome variable and covariates
 #' @param exp.data experimental dataset.
+#' @param compl.var string specifying binary complier variable
 #' @param exp.compliers `data.frame` object of compliers from
 #' \code{complier_predict}.
 #' @param family string for `"gaussian"` or `"binomial"`.
@@ -114,20 +124,12 @@ response_model <- function(response.formula,
                                 paste0(covariates, collapse = " + ")))
 
   exp.data <- exp.data[, all.vars(.formula)]
-
-  exp.data <- exp.data[, all.vars(.formula)]
-  #exp.data[[response.var]] <- as.factor(exp.data[[response.var]])
-
   exp.compliers <- exp.data[which(exp.compliers$compliers_all==1),]
 
-
-###
   response.data <- exp.data$exp_data
 
   Y.exp.response <- exp.compliers[, response.var]
   X.exp.response <- exp.compliers[, c(compl.var, covariates)]
-  #colnames(X.exp.response) <- c(compl.var,covariates)
-
 
   response.mod <- SuperLearner::SuperLearner(Y = Y.exp.response,
                                X = X.exp.response,
@@ -145,9 +147,10 @@ response_model <- function(response.formula,
 #'
 #' @param pop.data population dataset
 #' @param response.mod trained model from \code{response_model}.
-#' @param id
+#' @param binary.outcome logical specifying whether predicted outcomes are
+#' proportions or binary (0-1).
 #' @param cluster
-#' @param potential.outcome
+#' @param ID
 #'
 #' @return
 #' @export
@@ -157,7 +160,7 @@ pattc_counterfactuals<- function (pop.data,
                                   response.mod,
                                   ID = NULL,
                                   cluster = NULL,
-                                  potential.outcome = TRUE){
+                                  binary.outcome = TRUE){
   compl.var <- pop.data$compl_var
   covariates <- all.vars(pop.data$response_formula)[-1]
   outcome <- all.vars(pop.data$response_formula)[1]
@@ -193,10 +196,10 @@ pattc_counterfactuals<- function (pop.data,
   cost.Y0 <- ROCR::performance(Y.pred.0preds, "cost")
   opt.cut.Y0 <- Y.pred.0preds@cutoffs[[1]][which.min(cost.Y0@y.values[[1]])]
 
-  if (potential.outcome) {
+  if (binary.outcome) {
     Y.hat.1 <- ifelse(Y.pred.1 > opt.cut.Y1, 1, 0)
     Y.hat.0 <- ifelse(Y.pred.0 > opt.cut.Y0, 1, 0)
-  } else if (!potential.outcome) {
+  } else if (!binary.outcome) {
     Y.hat.1 <- Y.pred.1
     Y.hat.0 <- Y.pred.0
   }
@@ -233,6 +236,7 @@ pattc_counterfactuals<- function (pop.data,
 #' @param bootse logical for bootstrapped standard errors.
 #' @param bootp logical for bootstrapped p values.
 #' @param bootn number of bootstrap sample.
+#' @param SL.library
 #'
 #' @return results of weighted t test as PATTC estimate.
 #' @export
@@ -244,7 +248,7 @@ pattc_counterfactuals<- function (pop.data,
 #' data(IND_pop_data) #population data
 #' #attach SuperLearner package (model will not recognize learner if package is not loaded)
 #' library(SuperLearner)
-#' specify models and estimate PATTC
+#' #specify models and estimate PATTC
 #' pattc_ensemble <- patt_ensemble(response.formula = outcome ~ age +
 #'                                  income + education +
 #'                                  employed + job_worry,
@@ -323,7 +327,7 @@ patt_ensemble <- function(response.formula,
                                          response.mod = response.mod,
                                          ID = NULL,
                                          cluster = NULL,
-                                         potential.outcome = TRUE)
+                                         binary.outcome = TRUE)
 
   outcome.var <- all.vars(response.formula)[1]
   dummy <- length(levels(as.factor(exp_data$exp_data[,outcome.var])) )
