@@ -24,60 +24,57 @@
 #'
 #' @examples
 #' # load dataset
-#' data(IND_exp_data)
+#' data(exp_data)
 #' # estimate CATEs with S Learner
 #' \donttest{
-#' slearner_nn <- Meta_learner_DeepNN(cov.formula = outcome ~ age +
-#'                                  income  +
-#'                                  employed  + job_worry,
-#'                                  data = IND_exp_data,
-#'                                  treat.var = "trt1",
-#'                                  meta.learner.type = "S.Learner",
-#'                                  stepmax=1e+9,
-#'                                  nfolds=5,
-#'                                  algorithm = "rprop+",
-#'                                  hidden.layer = c(4,2),
-#'                                  linear.output = FALSE)
+#' slearner_nn <- Meta_learner_DeepNN(cov.formula = support_war ~ age + income +
+#'                                    employed  + job_loss,
+#'                                    data = exp_data,
+#'                                    treat.var = "strong_leader",
+#'                                    meta.learner.type = "S.Learner",
+#'                                    stepmax = 1e+9,
+#'                                    nfolds = 5,
+#'                                    algorithm = "rprop+",
+#'                                    hidden.layer = c(4,2),
+#'                                    linear.output = FALSE)
 #' # estimate CATEs with T Learner
-#' tlearner_nn <- Meta_learner_DeepNN(cov.formula = outcome ~ age +
+#' tlearner_nn <- Meta_learner_DeepNN(cov.formula = support_war ~ age +
 #'                                   income  +
-#'                                   employed  + job_worry,
-#'                                 data = expdata,
-#'                                 treat.var = "trt1",
-#'                                 meta.learner.type = "T.Learner",
-#'                                 stepmax = 1e+9,
-#'                                 nfolds = 5,
-#'                                 algorithm = "rprop+",
-#'                                 hidden.layer = c(2,1),
-#'                                 linear.output = FALSE)
-#'                                 }
+#'                                   employed  + job_loss,
+#'                                   data = exp_data,
+#'                                   treat.var = "strong_leader",
+#'                                   meta.learner.type = "T.Learner",
+#'                                   stepmax = 1e+9,
+#'                                   nfolds = 5,
+#'                                   algorithm = "rprop+",
+#'                                   hidden.layer = c(2,1),
+#'                                   linear.output = FALSE)
+#'                                   }
 #' \dontrun{
 #' #Model may not converge with low stepmax
-#' slearner_nn <- Meta_learner_DeepNN(cov.formula = outcome ~ age +
-#'                                   income  +
-#'                                   employed  + job_worry,
-#'                                 data = expdata,
-#'                                treat.var = "trt1",
-#'                                 meta.learner.type="S.Learner",
-#'                                 stepmax=1e+4,
-#'                                 nfolds=5,
-#'                                 algorithm = "rprop+",
-#'                                 hidden.layer=c(4,2),
-#'                                 linear.output = FALSE)
+#' slearner_nn <- Meta_learner_DeepNN(cov.formula = support_war ~ age + income +
+#'                                    employed  + job_loss,
+#'                                    data = exp_data,
+#'                                    treat.var = "strong_leader",
+#'                                    meta.learner.type="S.Learner",
+#'                                    stepmax = 1e+4,
+#'                                    nfolds = 5,
+#'                                    algorithm = "rprop+",
+#'                                    hidden.layer = c(4,2),
+#'                                    linear.output = FALSE)
 #'
 #' #Other learners not supported
-#' slearner_nn <- Meta_learner_DeepNN(cov.formula = outcome ~ age +
-#'                                  income  +
-#'                                  employed  + job_worry,
-#'                                  data = expdata,
-#'                                  treat.var = "trt1",
-#'                                  meta.learner.type="R.Learner",
-#'                                  stepmax=1e+4,
-#'                                  nfolds=5,
-#'                                  algorithm = "rprop+",
-#'                                  hidden.layer=c(4,2),
-#'                                  linear.output = FALSE)
-#'                                 }
+#' slearner_nn <- Meta_learner_DeepNN(cov.formula = support_war ~ age + income +
+#'                                    employed  + job_loss,
+#'                                    data = exp_data,
+#'                                    treat.var = "strong_leader",
+#'                                    meta.learner.type = "R.Learner",
+#'                                    stepmax = 1e+4,
+#'                                    nfolds = 5,
+#'                                    algorithm = "rprop+",
+#'                                    hidden.layer = c(4,2),
+#'                                    linear.output = FALSE)
+#'                                    }
 Meta_learner_DeepNN <- function(data,
                               cov.formula,
                               treat.var,
@@ -96,7 +93,7 @@ Meta_learner_DeepNN <- function(data,
   data.vars <- data[,c(treat.var, variables)]
 
   data.<-na.omit(data.vars)
-  data.$y<-as.factor(data.[, outcome.var])
+  data.$y<-as.factor(data.[,outcome.var])
   data.$d<-data.[,treat.var]
 
   data<-data.[,c("y", "d", covariates)]

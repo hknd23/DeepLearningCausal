@@ -215,29 +215,28 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #'
 #' @examples
 #' # load datasets
-#' data(IND_exp_data) #experimental data
-#' data(IND_pop_data) #population data
+#' data(exp_data) #experimental data
+#' data(pop_data) #population data
 #' # specify models and estimate PATTC
 #' set.seed(123456)
-#' pattc_neural <- patt_deep_nn(response.formula = outcome ~ age + male +
-#'                                income + education +
-#'                                employed + married +
-#'                                Hindu + job_worry,
-#'                              exp.data = expdata,
-#'                              pop.data = popdata,
-#'                              treat.var = "trt1",
-#'                              compl.var = "compl1",
-#'                              compl.algorithm = "rprop+",
-#'                              response.algorithm = "rprop+",
-#'                              compl.hidden.layer = c(4,2),
-#'                              response.hidden.layer = c(4,2),
-#'                              compl.stepmax = 1e+09,
-#'                              response.stepmax = 1e+09,
-#'                              ID = NULL,
-#'                              cluster = NULL,
-#'                              bootse = FALSE,
-#'                              bootp = FALSE,
-#'                              bootn = 999)
+#' pattc_neural <- patt_deep_nn(response.formula = support_war ~ age + female +
+#'                                income + education +  employed + married +
+#'                                Hindu + job_loss,
+#'                                exp.data = exp_data,
+#'                                pop.data = pop_data,
+#'                                treat.var = "strong_leader",
+#'                                compl.var = "compliance",
+#'                                compl.algorithm = "rprop+",
+#'                                response.algorithm = "rprop+",
+#'                                compl.hidden.layer = c(4,2),
+#'                                response.hidden.layer = c(4,2),
+#'                                compl.stepmax = 1e+09,
+#'                                response.stepmax = 1e+09,
+#'                                ID = NULL,
+#'                                cluster = NULL,
+#'                                bootse = FALSE,
+#'                                bootp = FALSE,
+#'                                bootn = 999)
 #'
 #' summary(pattc)
 #'

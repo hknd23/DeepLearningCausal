@@ -22,39 +22,36 @@
 #'
 #' @examples
 #' # load dataset
-#' data(IND_exp_data)
+#' data(exp_data)
 #' # estimate CATEs with S Learner
 #' control <- SuperLearner::SuperLearner.CV.control(V=5)
 #' # estimate CATEs with S Learner
-#' slearner <- Meta_learner_ensemble(cov.formula = outcome ~ age +
-#'                                   income  +
-#'                                   employed  + job_worry,
-#'                                 data = IND_exp_data,
-#'                                 treat.var = "trt1",
+#' slearner <- Meta_learner_ensemble(cov.formula = support_war ~ age +
+#'                                   income + employed + job_loss,
+#'                                 data = exp_data,
+#'                                 treat.var = "strong_leader",
 #'                                 meta.learner.type = "S.Learner",
 #'                                 learners = c("SL.glmnet","SL.xgboost"),
 #'                                 nfolds = 5)
 #' # estimate CATEs with T Learner
 #' \donttest{
-#' tlearner <- Meta_learner_ensemble(cov.formula = outcome ~ age +
-#'                                   income  +
-#'                                   employed  + job_worry,
-#'                                 data = expdata,
-#'                                 treat.var = "trt1",
-#'                                 meta.learner.type = "T.Learner",
-#'                                 learners = c("SL.glmnet","SL.xgboost"),
-#'                                 nfolds = 5)
-#'                                 }
+#' tlearner <- Meta_learner_ensemble(cov.formula = support_war ~ age + income +
+#'                                   employed  + job_loss,
+#'                                   data = exp_data,
+#'                                   treat.var = "strong_leader",
+#'                                   meta.learner.type = "T.Learner",
+#'                                   learners = c("SL.glmnet","SL.xgboost"),
+#'                                   nfolds = 5)
+#'                                   }
 #' \dontrun{
-#' tlearner <- Meta_learner_ensemble(cov.formula = outcome ~ age +
-#'                                   income  +
-#'                                   employed  + job_worry,
-#'                                 data = expdata,
-#'                                 treat.var = "trt1",
-#'                                 meta.learner.type = "R.Learner",
-#'                                 learners = c("SL.glmnet","SL.xgboost"),
-#'                                 nfolds = 5)
-#'                                 }
+#' tlearner <- Meta_learner_ensemble(cov.formula = support_war ~ age + income  +
+#'                                                 employed  + job_loss,
+#'                                   data = exp_data,
+#'                                   treat.var = "strong_leader",
+#'                                   meta.learner.type = "R.Learner",
+#'                                   learners = c("SL.glmnet","SL.xgboost"),
+#'                                   nfolds = 5)
+#'                                   }
 #'
 Meta_learner_ensemble <- function(data,
                                 cov.formula,
