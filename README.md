@@ -12,7 +12,7 @@
 
 <!-- badges: end -->
 
-**DNetCausalPATT** is an R package that provides functions to estimate the Conditional Average Treatment Effects (CATE) 
+**DeepLearningCausal** is an R package that provides functions to estimate the Conditional Average Treatment Effects (CATE) 
 and Population Average Treatment Effects on the Treated (PATT) from experimental or observational data using the 
 Super Learner (SL) weighted ensemble method and Deep neural networks. The package first provides functions to implement meta-learners
 such as the Single-learner (S-learner) and Two-learner (T-learner) described in Künzel et al. (2019) for estimating the CATE.
@@ -20,7 +20,7 @@ The S- and T-learner are each estimated using the SL weighted ensemble and deep 
 implement the Ottoboni and Poulos (2020) PATT-C estimator to obtain the PATT from experimental data with noncompliance by using 
 the SL weighted ensemble and deep neural networks.    
 
-### Why DNetCausalPATT?
+### Why DeepLearningCausal?
 
 Researchers are increasingly interested to estimate causal effecs, including Conditional Average Treatment Effects (CATE)  
 and Population Average Treatment Effects (PATE), from observational or experimental data using machine learning and deep learning 
