@@ -79,19 +79,19 @@ the following table.
 
 | **Covariate**     | **Question**                                                                              |   **Response Scale**                |                        
 | ------------------| ----------------------------------------------------------------------------------------- |-------------------------------------|
-| **female**        | Respondent's sex                                                                                        | Binary (1=Male; Female=2)           |
-| **age**           | Can you tell me your year of birth, please? This means you are___years old.                                                                   | Numeric                  |
-| **income**        | On a 10-point scale where 1 indicates “lowest income group” and 10 indicates “highest income group” please tell me in what group your household falls in?|Ordinal (1 to 10, where 1=Lowest Income Group to 10=Highest Income Group)|                     
-| **imp_rel**       |  Would you say  (religion) is very important, rather important, not very important, not at all important. |Ordinal (1 to 4, where 1=Very important to 4=Not at all important)|
-| **religion**      | Do you belong to a religion or religious denomination? If yes, which one?                 |Categorical (1 to 5, where 1=Christian; 2=Muslim; 3=Hindu; 4=Buddhist; 5=Sikh; 6=others)|
-| **education**     | What is the highest educational level that you have attained?     | Ordinal (1-5, where 1=None to 5=Post-Graduate) |
-| **ideol_lr**      | Please tell me where would you place your views on a 10 point scale where 1 is the ‘left’ and 10 is the ‘right’? |Ordinal (1 to 10, where 1=[extreme] left to 10=[extreme] right) |
-| **empl_status**     |    Are you employed now or not? If yes, then how many hours a week?                                      | Categorical (1 to 7, where 1= Yes, Full time employee to 7=No, unemployed; 8=other) |
-| **Marital_status**  | Are you married?                                                           | Categorical (1 to 6, where 1= Married to 6=Single)         |
-| **job_worry**       | To what degree are you worried about losing my job or not finding a job  |Ordinal (1 to 4, 1= very much to 4= not at all)|
-| **Exp1trt**        | Equivalent to exp1_trt in survey experiment sample|Binary (1=Strong Leader; 2=Centrist Leader)     |
-|**strong_leader**|Having a strong leader who does not have to bother with parliament and  elections   | Binary (1=High Preference for Strong Leader; 2= Negligible preference for strong leader)|
-| **exp1_dv_willing**       |  we all hope that there will not be another war, but if it were to come to that, would you be willing to fight for your country?| Binary (1=Yes; 2=No) |
+| **Female**        | Respondent's sex                                                                                        | Binary (1=Male; Female=2)           |
+| **Age**           | Can you tell me your year of birth, please? This means you are___years old.                                                                   | Numeric                  |
+| **Income**        | On a 10-point scale where 1 indicates “lowest income group” and 10 indicates “highest income group” please tell me in what group your household falls in?|Ordinal (1 to 10, where 1=Lowest Income Group to 10=Highest Income Group)|                     
+| **Practicing Religion**       |  Would you say  (religion) is very important, rather important, not very important, not at all important. |Ordinal (1 to 4, where 1=Very important to 4=Not at all important)|
+| **Religion**      | Do you belong to a religion or religious denomination? If yes, which one?                 |Categorical (1 to 5, where 1=Christian; 2=Muslim; 3=Hindu; 4=Buddhist; 5=Sikh; 6=others)|
+| **Education**     | What is the highest educational level that you have attained?     | Ordinal (1-5, where 1=None to 5=Post-Graduate) |
+| **Political Ideology**      | Please tell me where would you place your views on a 10 point scale where 1 is the ‘left’ and 10 is the ‘right’? |Ordinal (1 to 10, where 1=[extreme] left to 10=[extreme] right) |
+| **Employment**     |    Are you employed now or not? If yes, then how many hours a week?                                      | Categorical (1 to 7, where 1= Yes, Full time employee to 7=No, unemployed; 8=other) |
+| **Marital Status**  | Are you married?                                                           | Categorical (1 to 6, where 1= Married to 6=Single)         |
+| **Job Loss**       | To what degree are you worried about losing my job or not finding a job  |Ordinal (1 to 4, 1= very much to 4= not at all)|
+|**Strong Leader**|"I'm going to describe various types of political systems and ask what you think of them as a way of governing India? Having a strong leader who does not have to bother with parliament and  elections." Reponse Coded as "1=Agree" and "0=Not Agree"    | Binary (1=Agree; 0= Not Agree)|
+|**Compliance**| Indicator variable for Nonresponse (proxy for compliance) with binary "Strong Leader" Response| Binary (1=Compliance; 0=Noncompliance)|
+| **Support War**       |  "We all hope that there will not be another war, but if it were to come to that, would you be willing to fight for your country?" Response Coded as "1=Yes" and "0=No" | Binary (1=Yes; 0=No) |
 
 
 ### Dependencies
