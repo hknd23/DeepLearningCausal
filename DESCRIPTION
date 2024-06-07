@@ -53,4 +53,4 @@ Suggests:
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Depends: 
-    R (>= 3.5.0)
+    R (>= 4.1.0)
