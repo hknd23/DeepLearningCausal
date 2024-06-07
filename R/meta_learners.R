@@ -1,7 +1,7 @@
-#' Meta_learner_ensemble
+#' meta_learner_ensemble
 #'
 #' @description
-#' \code{Meta_learner_ensemble} implements the S-learner and T-learner for
+#' \code{meta_learner_ensemble} implements the S-learner and T-learner for
 #' estimating CATE using the super learner ensemble method. The super learner in
 #' this case includes the following machine learning algorithms:
 #' extreme gradient boosting, glmnet (elastic net regression), random forest and
@@ -23,10 +23,13 @@
 #' @examples
 #' # load dataset
 #' data(exp_data)
+#' #load SuperLearner package
+#' library(SuperLearner)
 #' # estimate CATEs with S Learner
 #' control <- SuperLearner::SuperLearner.CV.control(V=5)
 #' # estimate CATEs with S Learner
-#' slearner <- Meta_learner_ensemble(cov.formula = support_war ~ age +
+#' set.seed(123456)
+#' slearner <- meta_learner_ensemble(cov.formula = support_war ~ age +
 #'                                   income + employed + job_loss,
 #'                                 data = exp_data,
 #'                                 treat.var = "strong_leader",
@@ -35,7 +38,8 @@
 #'                                 nfolds = 5)
 #' # estimate CATEs with T Learner
 #' \donttest{
-#' tlearner <- Meta_learner_ensemble(cov.formula = support_war ~ age + income +
+#' set.seed(123456)
+#' tlearner <- meta_learner_ensemble(cov.formula = support_war ~ age + income +
 #'                                   employed  + job_loss,
 #'                                   data = exp_data,
 #'                                   treat.var = "strong_leader",
@@ -44,7 +48,8 @@
 #'                                   nfolds = 5)
 #'                                   }
 #' \dontrun{
-#' tlearner <- Meta_learner_ensemble(cov.formula = support_war ~ age + income  +
+#' set.seed(123456)
+#' tlearner <- meta_learner_ensemble(cov.formula = support_war ~ age + income  +
 #'                                                 employed  + job_loss,
 #'                                   data = exp_data,
 #'                                   treat.var = "strong_leader",
@@ -53,7 +58,7 @@
 #'                                   nfolds = 5)
 #'                                   }
 #'
-Meta_learner_ensemble <- function(data,
+meta_learner_ensemble <- function(data,
                                 cov.formula,
                                 treat.var,
                                 meta.learner.type,

@@ -1,7 +1,7 @@
-#' Meta_learner_DeepNN
+#' meta_learner_DeepNN
 #'
 #' @description
-#' \code{Meta_learner_DeepNN} implements the S-learner and T-learner for estimating
+#' \code{meta_learner_DeepNN} implements the S-learner and T-learner for estimating
 #' CATE using Deep Neural Networks. The Resilient back propagation (Rprop)
 #' algorithm is used for training neural networks.
 #' @param data \code{data.frame} object of data.
@@ -27,7 +27,8 @@
 #' data(exp_data)
 #' # estimate CATEs with S Learner
 #' \donttest{
-#' slearner_nn <- Meta_learner_DeepNN(cov.formula = support_war ~ age + income +
+#' set.seed(123456)
+#' slearner_nn <- meta_learner_DeepNN(cov.formula = support_war ~ age + income +
 #'                                    employed  + job_loss,
 #'                                    data = exp_data,
 #'                                    treat.var = "strong_leader",
@@ -38,7 +39,7 @@
 #'                                    hidden.layer = c(4,2),
 #'                                    linear.output = FALSE)
 #' # estimate CATEs with T Learner
-#' tlearner_nn <- Meta_learner_DeepNN(cov.formula = support_war ~ age +
+#' tlearner_nn <- meta_learner_DeepNN(cov.formula = support_war ~ age +
 #'                                   income  +
 #'                                   employed  + job_loss,
 #'                                   data = exp_data,
@@ -51,8 +52,9 @@
 #'                                   linear.output = FALSE)
 #'                                   }
 #' \dontrun{
+#' set.seed(123456)
 #' #Model may not converge with low stepmax
-#' slearner_nn <- Meta_learner_DeepNN(cov.formula = support_war ~ age + income +
+#' slearner_nn <- meta_learner_DeepNN(cov.formula = support_war ~ age + income +
 #'                                    employed  + job_loss,
 #'                                    data = exp_data,
 #'                                    treat.var = "strong_leader",
@@ -64,7 +66,7 @@
 #'                                    linear.output = FALSE)
 #'
 #' #Other learners not supported
-#' slearner_nn <- Meta_learner_DeepNN(cov.formula = support_war ~ age + income +
+#' slearner_nn <- meta_learner_DeepNN(cov.formula = support_war ~ age + income +
 #'                                    employed  + job_loss,
 #'                                    data = exp_data,
 #'                                    treat.var = "strong_leader",
@@ -75,7 +77,7 @@
 #'                                    hidden.layer = c(4,2),
 #'                                    linear.output = FALSE)
 #'                                    }
-Meta_learner_DeepNN <- function(data,
+meta_learner_DeepNN <- function(data,
                               cov.formula,
                               treat.var,
                               meta.learner.type,

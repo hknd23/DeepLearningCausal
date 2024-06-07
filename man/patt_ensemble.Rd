@@ -60,27 +60,26 @@ glmnet (elastic net regression), random forest and neural nets.
 \examples{
 \donttest{
 # load datasets
-data(IND_exp_data) #experimental data
-data(IND_pop_data) #population data
-#attach SuperLearner package (model will not recognize learner if package is not loaded)
+data(exp_data) #experimental data
+data(pop_data) #population data
+#attach SuperLearner (model will not recognize learner if package is not loaded)
 library(SuperLearner)
 #specify models and estimate PATTC
-pattc_ensemble <- patt_ensemble(response.formula = outcome ~ age +
-                                 income + education +
-                                 employed + job_worry,
-                               exp.data = expdata,
-                              pop.data = popdata,
-                              treat.var= "trt1",
-                              compl.var = "compl1",
-                              createSL = TRUE,
-                              SL.library = c("SL.gbm.adaboost",
-                                             "SL.gbm.bernoulli",
-                                             "SL.glmnet"),
-                              ID = NULL,
-                              cluster = NULL,
-                              bootse = FALSE,
-                              bootp = FALSE,
-                              bootn = 999)
+pattc_ensemble <- patt_ensemble(response.formula = support_war ~ age + income +
+                                education + employed + job_loss,
+                                exp.data = exp_data,
+                                pop.data = pop_data,
+                                treat.var = "strong_leader",
+                                compl.var = "compliance",
+                                createSL = TRUE,
+                                SL.library = c("SL.gbm.adaboost",
+                                               "SL.gbm.bernoulli",
+                                               "SL.glmnet"),
+                                ID = NULL,
+                                cluster = NULL,
+                                bootse = FALSE,
+                                bootp = FALSE,
+                                bootn = 999)
 summary(pattc)
 }
 }

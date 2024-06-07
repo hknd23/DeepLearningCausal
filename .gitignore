@@ -3,7 +3,7 @@
 .RData
 .Ruserdata
 DNetCausalPATT/
-DNetCausalPATT.Rcheck/
+DeepLearningCausal.Rcheck/
 test_code/
 data-raw/
 *.gz
