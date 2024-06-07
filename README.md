@@ -24,9 +24,9 @@ the SL weighted ensemble and deep neural networks.
 
 Researchers are increasingly interested to estimate causal effecs, including Conditional Average Treatment Effects (CATE)  
 and Population Average Treatment Effects (PATE), from observational or experimental data using machine learning and deep learning 
-algorithms. A unique advantage of the DNetCausalPATT package is that it provides a united interface for users to estimate both CATE from    
+algorithms. A unique advantage of the DeepLearningCausal package is that it provides a united interface for users to estimate both CATE from    
 observational or experimental data as well as Population Average Treatment Effects on the Treated (PATT) from observational and experimental 
-data with noncompliance. Another key benefit is that DNetCausalPATT provides users the choice of estimating CATE and PATT using the super learner
+data with noncompliance. Another key benefit of DeepLearningCausal is that it provides users the choice of estimating CATE and PATT using the super learner
 weighted ensemble and deep neural networks. More specifically,  
 
 - The super learner weighted ensemble includes the candidate algorithms: additive regression, gradient boosting, lasso, random forests, and neural nets. It combines these algorithms with a convex combination of weights based on minimizing cross-validated error. 
@@ -37,7 +37,7 @@ weighted ensemble and deep neural networks. More specifically,
 
 | Function                | Description                                                                                |
 |-------------------------|--------------------------------------------------------------------------------------------|
-| `ST_learner_ensemble`   | Estimates CATE for S-learner and T-learner using super learner weighted ensemble.          |
+| `metalearner_ensemble`  | Estimates CATE for S-learner and T-learner using super learner weighted ensemble.          |
 | `metalearner_deepneural`| Estimates CATE for S-learner and T-learner using deep neural networks.                     |
 | `PATTC_ensemble`        | Estimates PATT_C estimator for obtaining PATT using super learner weighted ensemble.       |
 | `PATTC_deepneural`      | Estimates PATT_C estimator for obtaining PATT using deep neural networks.                  |
@@ -56,18 +56,18 @@ dataset also includes numerous other covariates that are summarized in the follo
 
 | **Covariate**     | **Question**                                                                              |   **Response Scale**                |                        
 | ------------------| ----------------------------------------------------------------------------------------- |-------------------------------------|
-| **female**        | gender                                                                                         | Binary (1=Male; Female=2)           |
-| **age**           | what is your age?                                                                              | Numeric                  |
-| **income**        | What is the total monthly income of your household, including the income of all working adults?|Ordinal (1 to 10 where 1=No income to 10=> Rs. XX/-)|                     
+| **Female**        | gender                                                                                         | Binary (1=Male; Female=2)           |
+| **Age**           | what is your age?                                                                              | Numeric                  |
+| **Income**        | What is the total monthly income of your household, including the income of all working adults?|Ordinal (1 to 10 where 1=No income to 10=> Rs.4000000/-)|                     
 | **imp_rel**       | How important is religion in your life?                                                   |Ordinal (1 to 4, where 1=Very important to 4=Not at all important)|
-| **religion**      | Do you belong to a religion or religious denomination? If yes, which one?                 |Categorical (1 to 5, where 1=Christian; 2=Muslim; 3=Hindu; 4=Buddhist; 5=Sikh; 6=others)|
-| **education**     | Could you tell us which of the following education level best matches your education?     | Ordinal (1-5, where 1=None to 5=Post-Graduate) |
-| **ideol_lr**      | The number 1 means sympathize very strongly with the left and 10 means sympathize very strongly with the right. Where would you place yourself on this scale?  |Ordinal (1 to 10, where 1=[extreme] left to 10=[extreme] right) |
-| **empl_status**     | what is your current employment status?                                                 | Categorical (1 to 7, where 1= Full time employee to 7=Student; 8=other) |
-| **Marital_status**  | What is your marital status?                                                            | Categorical (1 to 7, where 1= Single to 7=Civil Union)         |
-| **job_worry**       | Choose between more job security with a small pay increase and less job security with a big pay increase, which would you pick? |Ordinal (1 to 5, 1= job security & small pay increase to 5= less jobsecurity & big pay increase )|
-| **Exp1trt**        | Treat 1: Strong leader. Not constrained by parliament. Operates without parliamentary approval. Treat 2: Centrist leader. Constrained by parliament. Seeks parliamentary approval.|Binary (1=Strong Leader; 2=Centrist Leader)     |
-| **exp1_dv1**       |  What do you think? Would you support your country going to war with country A?           | Binary (1=Yes; 2=No) |
+| **Religion**      | Do you belong to a religion or religious denomination? If yes, which one?                 |Categorical (1 to 5, where 1=Christian; 2=Muslim; 3=Hindu; 4=Buddhist; 5=Sikh; 6=others)|
+| **Education**     | Could you tell us which of the following education level best matches your education?     | Ordinal (1-5, where 1=None to 5=Post-Graduate) |
+| ****      | The number 1 means sympathize very strongly with the left and 10 means sympathize very strongly with the right. Where would you place yourself on this scale?  |Ordinal (1 to 10, where 1=[extreme] left to 10=[extreme] right) |
+| **Employment**     | what is your current employment status?                                                 | Categorical (1 to 7, where 1= Full time employee to 7=Student; 8=other) |
+| **Marital Status**  | What is your marital status?                                                            | Categorical (1 to 7, where 1= Single to 7=Civil Union)         |
+| **Job Loss**       | Choose between more job security with a small pay increase and less job security with a big pay increase, which would you pick? |Ordinal (1 to 5, 1= job security & small pay increase to 5= less jobsecurity & big pay increase )|
+| **Strong Leader**        | Treatment: Strong leader who is not constrained by parliament and perates without parliamentary approval. Reference=Leader constrained by parliament and seeks parliamentary approval.|Binary (1=Strong Leader; 0=Constrained Leader)     |
+| **Support War**       | Dependent variable: What do you think? Would you support your country going to war with country A?           | Binary (1=Yes; 2=No) |
 
 ### Example 2
 We employ two datasets to obtain the PATT from the PATT-C model that is estimated via the super learner ensemble method and deep neural networks respectively. 
