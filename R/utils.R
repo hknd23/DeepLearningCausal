@@ -1,8 +1,10 @@
 #' @importFrom stats as.formula model.frame na.omit predict prop.test pt var weighted.mean
 #' @importFrom utils data
-#' @export
+NULL
 
-#' create list object of experimental data for easy processing
+#' Create list for experimental data
+#' @description
+#' create list object of experimental data for easy data processing
 #'
 #' @param response.formula formula for response equation of binary outcome
 #' variable and covariates
@@ -59,6 +61,8 @@ expcall <- function(response.formula,
   return(expl)
 }
 
+#' Create list for population data
+#' @description
 #' create list object of population data for easy data processing
 #'
 #' @param response.formula formula for response equation of binary outcome
