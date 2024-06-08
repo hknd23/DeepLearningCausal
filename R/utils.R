@@ -1,3 +1,7 @@
+#' @importFrom stats as.formula model.frame na.omit predict prop.test pt var weighted.mean
+#' @importFrom utils data
+#' @export
+
 #' create list object of experimental data for easy processing
 #'
 #' @param response.formula formula for response equation of binary outcome
