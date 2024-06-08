@@ -100,17 +100,17 @@ the following table.
 
 ### Installation
 
-The latest version of the package (`0.1.0`) is available on 
+The latest version of the package (`0.0.101`) is available on 
 
 ``` r
-install.packages("X")
+install.packages("DeepLearningCausal")
 ```
 
 To install the development version from GitHub:
 
 ``` r
 if (!require("remotes")) install.packages("remotes")
-remotes::install_github("X")
+remotes::install_github("hknd23/DeepLearningCausal")
 ```
 
 #### S-Learner CATE from super learner ensemble
