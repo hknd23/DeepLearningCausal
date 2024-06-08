@@ -221,7 +221,7 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #' set.seed(123456)
 #' pattc_neural <- patt_deep_nn(response.formula = support_war ~ age + female +
 #'                                income + education +  employed + married +
-#'                                Hindu + job_loss,
+#'                                hindu + job_loss,
 #'                                exp.data = exp_data,
 #'                                pop.data = pop_data,
 #'                                treat.var = "strong_leader",
