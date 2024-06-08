@@ -98,6 +98,6 @@ pattc_neural <- patt_deep_nn(response.formula = support_war ~ age + female +
                                bootp = FALSE,
                                bootn = 999)
 
-summary(pattc)
+summary(pattc_neural)
 
 }

@@ -238,7 +238,7 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #'                                bootp = FALSE,
 #'                                bootn = 999)
 #'
-#' summary(pattc)
+#' summary(pattc_neural)
 #'
 patt_deep_nn <- function(response.formula,
                          exp.data,
