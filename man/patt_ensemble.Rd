@@ -36,7 +36,7 @@ binary compliance variable.}
 \item{createSL}{logical. If \code{TRUE} will call on \code{create.SL} to create
 SL wrappers.}
 
-\item{SL.library}{}
+\item{SL.library}{vector of names of ML algorithms used for ensemble model.}
 
 \item{ID}{string for name of identifier.}
 
@@ -52,7 +52,7 @@ SL wrappers.}
 results of weighted t test as PATTC estimate.
 }
 \description{
-\code{PATT_C_SL_Ensemble} estimates the Population Average Treatment Effect
+\code{patt_ensemble} estimates the Population Average Treatment Effect
 of the Treated from experimental data with noncompliers
 using the super learner ensemble that includes extreme gradient boosting,
 glmnet (elastic net regression), random forest and neural nets.
