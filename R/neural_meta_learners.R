@@ -38,6 +38,9 @@
 #'                                    algorithm = "rprop+",
 #'                                    hidden.layer = c(4,2),
 #'                                    linear.output = FALSE)
+#'                                    }
+#' \dontrun{
+#' set.seed(123456)
 #' # estimate CATEs with T Learner
 #' tlearner_nn <- meta_learner_DeepNN(cov.formula = support_war ~ age +
 #'                                   income  +
@@ -50,8 +53,7 @@
 #'                                   algorithm = "rprop+",
 #'                                   hidden.layer = c(2,1),
 #'                                   linear.output = FALSE)
-#'                                   }
-#' \dontrun{
+#'
 #' set.seed(123456)
 #' #Model may not converge with low stepmax
 #' slearner_nn <- meta_learner_DeepNN(cov.formula = support_war ~ age + income +
