@@ -62,9 +62,9 @@ meta_learner_ensemble <- function(data,
                                 cov.formula,
                                 treat.var,
                                 meta.learner.type,
-                                learners=c("SL.glmnet", "SL.xgboost",
+                                learners = c("SL.glmnet", "SL.xgboost",
                                            "SL.ranger", "SL.nnet"),
-                                nfolds=5){
+                                nfolds = 5){
 
   control <- SuperLearner::SuperLearner.CV.control(V=5)
 

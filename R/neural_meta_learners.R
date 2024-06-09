@@ -83,10 +83,10 @@ meta_learner_DeepNN <- function(data,
                               cov.formula,
                               treat.var,
                               meta.learner.type,
-                              stepmax=1e+05,
-                              nfolds=5,
+                              stepmax = 1e+05,
+                              nfolds = 5,
                               algorithm = "rprop+",
-                              hidden.layer=c(4,2),
+                              hidden.layer = c(4,2),
                               linear.output = FALSE)
 {
 
@@ -135,9 +135,9 @@ meta_learner_DeepNN <- function(data,
 
 
     df_aux <- data1
-    s.formula<-paste0("y~ d + ", paste0(covariates, collapse = " + "))
+    s.formula<-paste0("y ~ d + ", paste0(covariates, collapse = " + "))
     if(meta.learner.type == "S.Learner"){
-      X_train <- (df_aux[,c(covariates,"d")])
+      X_train <- (df_aux[,c(covariates, "d")])
       # Train a regression model using the covariates and the treatment variable
       m_mod <- neuralnet::neuralnet(s.formula,
                                     data = df_aux,
@@ -151,13 +151,13 @@ meta_learner_DeepNN <- function(data,
       X_test_0$d <- 0
 
       # Set treatment variable to 1
-      X_test_1 <- (df_main[,c(covariates,"d")])
+      X_test_1 <- (df_main[,c(covariates, "d")])
       X_test_1$d <- 1
 
       Y_test_1 <- predict(m_mod,X_test_1)
-      Y_hat_test_1 <- max.col(Y_test_1)-1
+      Y_hat_test_1 <- max.col(Y_test_1) - 1
       Y_test_0 <- predict(m_mod,X_test_0)
-      Y_hat_test_0<-max.col(Y_test_0)-1
+      Y_hat_test_0 <- max.col(Y_test_0) - 1
 
       # Estimate the CATE as the difference between the model with different treatment status
       score_meta[,1][df_main$ID] = Y_hat_test_1 - Y_hat_test_0
@@ -186,13 +186,13 @@ meta_learner_DeepNN <- function(data,
       Y_test_0 <- predict(m0_mod, df_main)
       Y_test_1 <- predict(m1_mod, df_main)
 
-      Y_hat_test_0<-max.col(Y_test_0)-1
-      Y_hat_test_1<-max.col(Y_test_1)-1
+      Y_hat_test_0 <- max.col(Y_test_0) - 1
+      Y_hat_test_1 <- max.col(Y_test_1) - 1
 
       # Estimate the CATE as the difference between the two models
       score_meta[,1][df_main$ID] = Y_hat_test_1 - Y_hat_test_0
     }
-    if(meta.learner.type %in% c("S.Learner", "T.Learner") ==FALSE)
+    if(meta.learner.type %in% c("S.Learner", "T.Learner") == FALSE)
     {
       stop("Meta Learner not supported")
     }
