@@ -39,6 +39,7 @@ Imports:
         xgboost,
         SuperLearner,
         class,
+        caret,
         randomForest,
         glmnet,
         gam,
