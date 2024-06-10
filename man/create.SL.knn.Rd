@@ -9,6 +9,9 @@ create.SL.knn(k = c(20, 30, 40, 50))
 \arguments{
 \item{k}{default value set to 10}
 }
+\value{
+wrapper for KNN learner to be exported to Global Environment
+}
 \description{
 Creates knn wrappers in the global environment with different nearest neighbors.
 }

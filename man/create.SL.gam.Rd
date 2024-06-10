@@ -7,10 +7,12 @@
 create.SL.gam(deg.gam = c(3, 4))
 }
 \arguments{
-\item{deg.gam}{}
+\item{deg.gam}{vector set to  c(3, 4) default}
+}
+\value{
+wrapper for gam learner to be exported to Global Environment
 }
 \description{
 Creates gam wrappers in the global environment with different degrees.
-The default value for deg.gam in SL.gam is 2
 }
 \keyword{internal}

@@ -10,7 +10,10 @@ define.SL.class.library(
 )
 }
 \arguments{
-\item{SL.library.class}{}
+\item{SL.library.class}{vector of ML classifier algorithms}
+}
+\value{
+vector of ML classifier algorithms for superlearner
 }
 \description{
 define.SL.class.library

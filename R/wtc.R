@@ -1,30 +1,30 @@
 #' WtC
 #'
 #' @description
-#' Weighted t-test to estimate PATT-C
+#' Weighted t-test to estimate PATT for numeric outcome variables. For further
+#' details ses: weights::wtd.t.test()
 #'
-#' @param x
-#' @param y
-#' @param c
-#' @param weight
-#' @param weighty
-#' @param weightc
-#' @param cluster
-#' @param clustery
-#' @param clusterc
-#' @param samedata
-#' @param alternative
-#' @param mean1
-#' @param bootse
-#' @param bootp
-#' @param bootn
-#' @param drops
-#' @param equivalence
+#' @param x vector for group 1
+#' @param y vector for group 2
+#' @param c vector for compliance variable
+#' @param weight vector for weights of x
+#' @param weighty vector for weights of y
+#' @param weightc vector for weights of c
+#' @param cluster vector of clusters for x
+#' @param clustery vector of clusters for y
+#' @param clusterc vector of clusters for c
+#' @param samedata logical for whether x and y are from same dataset
+#' @param alternative string of "two.tailed", "greater", or "less"
+#' @param mean1 logical to force weights to have average of 1
+#' @param bootse logical for bootstrapped standard errors
+#' @param bootp logical for bootstrapped p values
+#' @param bootn logical for number of bootstraps
+#' @param drops string for cases of missing data
+#' @param equivalence logical for equivalence test
 #'
-#' @return
+#' @return results of weight t test for PATT
 #' @keywords internal
-#'
-#' @examples
+
 WtC <- function (x,
                  y,
                  c=NULL,

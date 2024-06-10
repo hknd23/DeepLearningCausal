@@ -7,9 +7,25 @@
 SL.mean(Y, X, newX, family, obsWeights, id, ...)
 }
 \arguments{
-\item{...}{}
+\item{Y}{vector for outcome}
+
+\item{X}{vector for predictor variable}
+
+\item{newX}{new data for X}
+
+\item{family}{string for family of model}
+
+\item{obsWeights}{vector of weights of observations}
+
+\item{id}{vector of identifer variable}
+
+\item{...}{unused}
+}
+\value{
+fitted model of SL.mean class
 }
 \description{
-SL.mean
+creates weighted mean superlearner in global environment.
+Currently not used.
 }
 \keyword{internal}

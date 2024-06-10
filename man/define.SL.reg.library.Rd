@@ -11,7 +11,10 @@ define.SL.reg.library(
 )
 }
 \arguments{
-\item{SL.library.reg}{}
+\item{SL.library.reg}{vector of ML regression algorithms}
+}
+\value{
+vector of ML regression algorithms for superlearner
 }
 \description{
 define.SL.reg.library

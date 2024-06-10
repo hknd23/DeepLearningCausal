@@ -7,9 +7,22 @@
 \method{predict}{SL.mean}(object, newdata, family, X = NULL, Y = NULL, ...)
 }
 \arguments{
-\item{...}{}
+\item{object}{\code{SL.mean} class object}
+
+\item{newdata}{new dataset}
+
+\item{family}{regression or classifier}
+
+\item{X}{predictor variable}
+
+\item{Y}{outcome variable}
+
+\item{...}{unused}
+}
+\value{
+predictions of outcome variable
 }
 \description{
-predict.SL.mean
+predict results from \code{SL.mean}. Currently unused.
 }
 \keyword{internal}

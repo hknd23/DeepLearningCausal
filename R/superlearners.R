@@ -1,9 +1,11 @@
 #' create.SL.randomForest
 #'
-#'Creates additional randomForest wrappers
+#' @description
+#'Creates additional randomForest wrappers.
+#'
 #' @param tune default value set to tune = list(mtry = c(1, 5, 10), nodesize = c(1, 5))
 #'
-#' @return
+#' @return wrapper for Random Forest learner to be exported to Global Environment
 #' @keywords internal
 
 create.SL.randomForest <- function(tune = list(mtry = c(1, 5, 10),
@@ -22,11 +24,13 @@ create.SL.randomForest <- function(tune = list(mtry = c(1, 5, 10),
 }
 
 #' create.SL.knn
-#'
+
+#' @description
 #' Creates knn wrappers in the global environment with different nearest neighbors.
+#'
 #' @param k default value set to 10
 #'
-#' @return
+#' @return  wrapper for KNN learner to be exported to Global Environment
 #' @keywords internal
 
 create.SL.knn <- function(k = c(20, 30, 40, 50)) {
@@ -43,10 +47,11 @@ create.SL.knn <- function(k = c(20, 30, 40, 50)) {
 #' create.SL.glmnet
 #'
 #' @description
-#'
+#' Creates glmnet wrappers in the global environment.
+
 #' @param alpha default value set to  c(0,0.25, 0.50, 0.75)
 #'
-#' @return
+#' @return  wrapper for glmnet learner to be exported to Global Environment
 #' @keywords internal
 
 create.SL.glmnet <- function(alpha = c(0,0.25, 0.50, 0.75)) {
@@ -66,11 +71,10 @@ create.SL.glmnet <- function(alpha = c(0,0.25, 0.50, 0.75)) {
 #'
 #' @description
 #' Creates gam wrappers in the global environment with different degrees.
-#' The default value for deg.gam in SL.gam is 2
 #'
-#' @param deg.gam
+#' @param deg.gam vector set to  c(3, 4) default
 #'
-#' @return
+#' @return wrapper for gam learner to be exported to Global Environment
 #' @keywords internal
 
 create.SL.gam <- function(deg.gam = c(3, 4)) {
@@ -87,9 +91,13 @@ create.SL.gam <- function(deg.gam = c(3, 4)) {
 
 #' create.SL.gbm
 #'
-#' @param distribution
+#' @description
+#' Creates gbm wrappers in the global environment.
 #'
-#' @return
+#' @param distribution vector of distribution types, set to
+#' c("bernoulli","adaboost","gaussian") default.
+#'
+#' @return wrapper for gbm learner to be exported to Global Environment
 #' @keywords internal
 
 create.SL.gbm <- function(distribution = c("bernoulli","adaboost","gaussian")) {
@@ -106,15 +114,18 @@ create.SL.gbm <- function(distribution = c("bernoulli","adaboost","gaussian")) {
 
 #' SL.mean
 #'
-#' @param Y
-#' @param X
-#' @param newX
-#' @param family
-#' @param obsWeights
-#' @param id
-#' @param ...
+#' @description creates weighted mean superlearner in global environment.
+#' Currently not used.
 #'
-#' @return
+#' @param Y vector for outcome
+#' @param X vector for predictor variable
+#' @param newX new data for X
+#' @param family string for family of model
+#' @param obsWeights vector of weights of observations
+#' @param id vector of identifer variable
+#' @param ... unused
+#'
+#' @return fitted model of SL.mean class
 #' @keywords internal
 
 SL.mean <- function (Y, X, newX, family, obsWeights, id, ...){
@@ -128,14 +139,16 @@ SL.mean <- function (Y, X, newX, family, obsWeights, id, ...){
 
 #' predict.SL.mean
 #'
-#' @param object
-#' @param newdata
-#' @param family
-#' @param X
-#' @param Y
-#' @param ...
+#' @description predict results from \code{SL.mean}. Currently unused.
 #'
-#' @return
+#' @param object `SL.mean` class object
+#' @param newdata new dataset
+#' @param family regression or classifier
+#' @param X predictor variable
+#' @param Y outcome variable
+#' @param ... unused
+#'
+#' @return predictions of outcome variable
 #' @keywords internal
 
 predict.SL.mean <- function (object, newdata, family, X = NULL, Y = NULL, ...){
@@ -146,9 +159,12 @@ predict.SL.mean <- function (object, newdata, family, X = NULL, Y = NULL, ...){
 
 #' create.SL
 #'
-#' @param learners create ML wrappers for ensemble methods
+#' @description
+#' create and message ML wrappers for ensemble methods.
 #'
-#' @return
+#' @param learners vector of ML wrappers to be used for ensemble method
+#'
+#' @return vector of ML wrappers
 #' @keywords internal
 
 create.SL <- function(learners = "all"){
@@ -170,9 +186,9 @@ create.SL <- function(learners = "all"){
 
 #' define.SL.class.library
 #'
-#' @param SL.library.class
+#' @param SL.library.class vector of ML classifier algorithms
 #'
-#' @return
+#' @return vector of ML classifier algorithms for superlearner
 #' @keywords internal
 
 define.SL.class.library<- function (SL.library.class=c("SL.gbm.adaboost",
@@ -187,9 +203,9 @@ define.SL.class.library<- function (SL.library.class=c("SL.gbm.adaboost",
 
 #' define.SL.reg.library
 #'
-#' @param SL.library.reg
+#' @param SL.library.reg vector of ML regression algorithms
 #'
-#' @return
+#' @return vector of ML regression algorithms for superlearner
 #' @keywords internal
 #'
 

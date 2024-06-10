@@ -25,9 +25,45 @@ WtC(
 )
 }
 \arguments{
-\item{equivalence}{}
+\item{x}{vector for group 1}
+
+\item{y}{vector for group 2}
+
+\item{c}{vector for compliance variable}
+
+\item{weight}{vector for weights of x}
+
+\item{weighty}{vector for weights of y}
+
+\item{weightc}{vector for weights of c}
+
+\item{cluster}{vector of clusters for x}
+
+\item{clustery}{vector of clusters for y}
+
+\item{clusterc}{vector of clusters for c}
+
+\item{samedata}{logical for whether x and y are from same dataset}
+
+\item{alternative}{string of "two.tailed", "greater", or "less"}
+
+\item{mean1}{logical to force weights to have average of 1}
+
+\item{bootse}{logical for bootstrapped standard errors}
+
+\item{bootp}{logical for bootstrapped p values}
+
+\item{bootn}{logical for number of bootstraps}
+
+\item{drops}{string for cases of missing data}
+
+\item{equivalence}{logical for equivalence test}
+}
+\value{
+results of weight t test for PATT
 }
 \description{
-Weighted t-test to estimate PATT-C
+Weighted t-test to estimate PATT for numeric outcome variables. For further
+details ses: weights::wtd.t.test()
 }
 \keyword{internal}

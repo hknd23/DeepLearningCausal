@@ -2,7 +2,7 @@ Package: DeepLearningCausal
 Type: Package
 Title: Estimation of Conditional Average Treatment Effects (CATE) and Population 
     Average Treatment Effects on the Treated (PATT)
-Version: 0.0.101
+Version: 0.0.1
 Authors@R: c(person(given = "Nguyen K.",
                     family = "Huynh",
                     email = "khoinguyen.huynh@r.hit-u.ac.jp",
@@ -36,11 +36,9 @@ Encoding: UTF-8
 LazyData: true
 Imports:
         ROCR,
-        neuralnet,
+        xgboost,
         SuperLearner,
         class,
-        caret,
-        xgboost,
         randomForest,
         glmnet,
         gam,
@@ -56,3 +54,5 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Depends: 
     R (>= 4.1.0)
+URL: https://github.com/hknd23/DeepLearningCausal
+BugReports: https://github.com/hknd23/DeepLearningCausal/issues

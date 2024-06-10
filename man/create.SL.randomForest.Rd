@@ -9,7 +9,10 @@ create.SL.randomForest(tune = list(mtry = c(1, 5, 10), nodesize = c(1, 5)))
 \arguments{
 \item{tune}{default value set to tune = list(mtry = c(1, 5, 10), nodesize = c(1, 5))}
 }
+\value{
+wrapper for Random Forest learner to be exported to Global Environment
+}
 \description{
-Creates additional randomForest wrappers
+Creates additional randomForest wrappers.
 }
 \keyword{internal}

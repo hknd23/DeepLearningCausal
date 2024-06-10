@@ -9,7 +9,10 @@ create.SL.glmnet(alpha = c(0, 0.25, 0.5, 0.75))
 \arguments{
 \item{alpha}{default value set to  c(0,0.25, 0.50, 0.75)}
 }
+\value{
+wrapper for glmnet learner to be exported to Global Environment
+}
 \description{
-create.SL.glmnet
+Creates glmnet wrappers in the global environment.
 }
 \keyword{internal}

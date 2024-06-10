@@ -7,9 +7,12 @@
 create.SL(learners = "all")
 }
 \arguments{
-\item{learners}{create ML wrappers for ensemble methods}
+\item{learners}{vector of ML wrappers to be used for ensemble method}
+}
+\value{
+vector of ML wrappers
 }
 \description{
-create.SL
+create and message ML wrappers for ensemble methods.
 }
 \keyword{internal}

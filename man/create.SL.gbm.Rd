@@ -7,9 +7,13 @@
 create.SL.gbm(distribution = c("bernoulli", "adaboost", "gaussian"))
 }
 \arguments{
-\item{distribution}{}
+\item{distribution}{vector of distribution types, set to
+c("bernoulli","adaboost","gaussian") default.}
+}
+\value{
+wrapper for gbm learner to be exported to Global Environment
 }
 \description{
-create.SL.gbm
+Creates gbm wrappers in the global environment.
 }
 \keyword{internal}
