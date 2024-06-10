@@ -36,9 +36,11 @@ Encoding: UTF-8
 LazyData: true
 Imports:
         ROCR,
-        xgboost,
+        caret,
+        neuralnet,
         SuperLearner,
         class,
+        xgboost,
         randomForest,
         glmnet,
         gam,
