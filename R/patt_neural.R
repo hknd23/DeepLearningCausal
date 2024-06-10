@@ -219,7 +219,7 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #' data(pop_data) #population data
 #' # specify models and estimate PATTC
 #' set.seed(123456)
-#' pattc_neural <- patt_deep_nn(response.formula = support_war ~ age + female +
+#' pattc_neural <- pattc_deepneural(response.formula = support_war ~ age + female +
 #'                                income + education +  employed + married +
 #'                                hindu + job_loss,
 #'                                exp.data = exp_data,
@@ -240,7 +240,7 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #'
 #' summary(pattc_neural)
 #'
-patt_deep_nn <- function(response.formula,
+pattc_deepneural <- function(response.formula,
                          exp.data,
                          pop.data,
                          treat.var,

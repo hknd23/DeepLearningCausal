@@ -212,7 +212,7 @@ pattc_counterfactuals<- function (pop.data,
 #' PATT_C SL Ensemble
 #'
 #' @description
-#' \code{patt_ensemble} estimates the Population Average Treatment Effect
+#' \code{pattc_ensemble} estimates the Population Average Treatment Effect
 #' of the Treated from experimental data with noncompliers
 #' using the super learner ensemble that includes extreme gradient boosting,
 #' glmnet (elastic net regression), random forest and neural nets.
@@ -246,7 +246,7 @@ pattc_counterfactuals<- function (pop.data,
 #' library(SuperLearner)
 #' set.seed(123456)
 #' #specify models and estimate PATTC
-#' pattc_ensemble <- patt_ensemble(response.formula = support_war ~ age + income +
+#' pattc_ensemble <- pattc_ensemble(response.formula = support_war ~ age + income +
 #'                                 education + employed + job_loss,
 #'                                 exp.data = exp_data,
 #'                                 pop.data = pop_data,
@@ -263,7 +263,7 @@ pattc_counterfactuals<- function (pop.data,
 #'                                 bootn = 999)
 #' summary(pattc)
 #' }
-patt_ensemble <- function(response.formula,
+pattc_ensemble <- function(response.formula,
                         exp.data,
                         pop.data,
                         treat.var,

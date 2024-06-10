@@ -1,7 +1,7 @@
-#' meta_learner_ensemble
+#' metalearner_ensemble
 #'
 #' @description
-#' \code{meta_learner_ensemble} implements the S-learner and T-learner for
+#' \code{metalearner_ensemble} implements the S-learner and T-learner for
 #' estimating CATE using the super learner ensemble method. The super learner in
 #' this case includes the following machine learning algorithms:
 #' extreme gradient boosting, glmnet (elastic net regression), random forest and
@@ -29,7 +29,7 @@
 #' control <- SuperLearner::SuperLearner.CV.control(V=5)
 #' # estimate CATEs with S Learner
 #' set.seed(123456)
-#' slearner <- meta_learner_ensemble(cov.formula = support_war ~ age +
+#' slearner <- metalearner_ensemble(cov.formula = support_war ~ age +
 #'                                   income + employed + job_loss,
 #'                                 data = exp_data,
 #'                                 treat.var = "strong_leader",
@@ -39,7 +39,7 @@
 #' # estimate CATEs with T Learner
 #' \donttest{
 #' set.seed(123456)
-#' tlearner <- meta_learner_ensemble(cov.formula = support_war ~ age + income +
+#' tlearner <- metalearner_ensemble(cov.formula = support_war ~ age + income +
 #'                                   employed  + job_loss,
 #'                                   data = exp_data,
 #'                                   treat.var = "strong_leader",
@@ -49,7 +49,7 @@
 #'                                   }
 #' \dontrun{
 #' set.seed(123456)
-#' tlearner <- meta_learner_ensemble(cov.formula = support_war ~ age + income  +
+#' tlearner <- metalearner_ensemble(cov.formula = support_war ~ age + income  +
 #'                                                 employed  + job_loss,
 #'                                   data = exp_data,
 #'                                   treat.var = "strong_leader",
@@ -58,7 +58,7 @@
 #'                                   nfolds = 5)
 #'                                   }
 #'
-meta_learner_ensemble <- function(data,
+metalearner_ensemble <- function(data,
                                 cov.formula,
                                 treat.var,
                                 meta.learner.type,
@@ -115,7 +115,6 @@ meta_learner_ensemble <- function(data,
     if(meta.learner.type == "S.Learner"){
     X_train <- (df_aux[,c(covariates,"d")])
 
-    # Train a regression model using the covariates and the treatment variable
     m_mod <- SuperLearner::SuperLearner(Y = df_aux$y, X = X_train,
                                         SL.library = learners,
                                         verbose = FALSE, method = "method.NNLS",
@@ -129,7 +128,6 @@ meta_learner_ensemble <- function(data,
     X_test_1 <- (df_main[,c(covariates, "d")])
     X_test_1$d <- 1
 
-    # Estimate the CATE as the difference between the model with different treatment status
     score_meta[,1][df_main$ID] = predict(m_mod, X_test_1)$pred - predict(m_mod, X_test_0)$pred
     }
 
@@ -139,7 +137,6 @@ meta_learner_ensemble <- function(data,
     aux_1 <- df_aux[which(df_aux$d == 1),]
     aux_0 <- df_aux[which(df_aux$d == 0),]
 
-    # Train a regression model for the treatment observations
     m1_mod <- SuperLearner(Y = aux_1$y, X = aux_1[,covariates],
                            newX = df_main[,covariates],
                            SL.library = learners,
@@ -149,7 +146,6 @@ meta_learner_ensemble <- function(data,
 
     m1_hat <- m1_mod$SL.predict
 
-    # Train a regression model for the control observations
     m0_mod <- SuperLearner(Y = aux_0$y, X = aux_0[,covariates],
                            newX = df_main[,covariates],
                            SL.library = learners,
@@ -159,7 +155,6 @@ meta_learner_ensemble <- function(data,
 
     m0_hat <- m0_mod$SL.predict
 
-    # Estimate the CATE as the difference between the two models
     score_meta[,1][df_main$ID] = predict(m1_mod, df_main[,covariates])$pred - predict(m0_mod, df_main[,covariates])$pred
     }
     if(meta.learner.type %in% c("S.Learner","T.Learner") == FALSE)
