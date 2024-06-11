@@ -74,6 +74,7 @@ of the Treated from experimental data with noncompliers using Deep Neural
 Networks.
 }
 \examples{
+\donttest{
 # load datasets
 data(exp_data) #experimental data
 data(pop_data) #population data
@@ -99,5 +100,6 @@ pattc_neural <- pattc_deepneural(response.formula = support_war ~ age + female +
                                bootn = 999)
 
 summary(pattc_neural)
+}
 
 }

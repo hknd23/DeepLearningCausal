@@ -140,12 +140,12 @@ metalearner_ensemble <- function(data,
     aux_1 <- df_aux[which(df_aux$d == 1),]
     aux_0 <- df_aux[which(df_aux$d == 0),]
 
-    m1_mod <- SuperLearner(Y = aux_1$y, X = aux_1[,covariates],
-                           newX = df_main[,covariates],
-                           SL.library = learners,
-                           verbose = FALSE,
-                           method = "method.NNLS",
-                           cvControl = control)
+    m1_mod <- SuperLearner::SuperLearner(Y = aux_1$y, X = aux_1[,covariates],
+                                         newX = df_main[,covariates],
+                                         SL.library = learners,
+                                         verbose = FALSE,
+                                         method = "method.NNLS",
+                                         cvControl = control)
 
     m1_hat <- m1_mod$SL.predict
 

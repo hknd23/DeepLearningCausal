@@ -18,7 +18,7 @@ Authors@R: c(person(given = "Nguyen K.",
                     email = "cvl6079@psu.edu",
                     role = c("aut"),
                     comment = c(ORCID = "0009-0004-5913-8925")))
-Maintainer: Nguyen Huynh <nguyenhuynh831@gmail.com>
+Maintainer: Nguyen K. Huynh <khoinguyen.huynh@r.hit-u.ac.jp>
 Description: Functions to estimate Conditional Average Treatment Effects (CATE) 
     and Population Average Treatment Effects on the Treated (PATT) from 
     experimental or observational data using the Super Learner (SL) ensemble 
