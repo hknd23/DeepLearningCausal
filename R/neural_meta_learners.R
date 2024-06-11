@@ -23,7 +23,6 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' # load dataset
 #' data(exp_data)
 #' # estimate CATEs with S Learner
@@ -38,7 +37,7 @@
 #'                                    algorithm = "rprop+",
 #'                                    hidden.layer = c(1),
 #'                                    linear.output = FALSE)
-#'                                    }
+#'
 #' \dontrun{
 #' # load dataset
 #' data(exp_data)

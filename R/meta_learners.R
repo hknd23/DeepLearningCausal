@@ -21,6 +21,7 @@
 #' @export
 #'
 #' @examples
+#' #' \donttest{
 #' # load dataset
 #' data(exp_data)
 #' #load SuperLearner package
@@ -36,8 +37,9 @@
 #'                                 meta.learner.type = "S.Learner",
 #'                                 learners = c("SL.glmnet","SL.xgboost"),
 #'                                 nfolds = 5)
+#'
 #' # estimate CATEs with T Learner
-#' \donttest{
+#'
 #' set.seed(123456)
 #' tlearner <- metalearner_ensemble(cov.formula = support_war ~ age + income +
 #'                                   employed  + job_loss,
