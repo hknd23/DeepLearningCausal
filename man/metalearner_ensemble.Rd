@@ -67,6 +67,7 @@ tlearner <- metalearner_ensemble(cov.formula = support_war ~ age + income +
                                   learners = c("SL.glmnet","SL.xgboost"),
                                   nfolds = 5)
                                   }
+
 \dontrun{
 set.seed(123456)
 tlearner <- metalearner_ensemble(cov.formula = support_war ~ age + income  +
