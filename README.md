@@ -13,19 +13,20 @@
 
 <!-- badges: end -->
 
-**DeepLearningCausal** is an R package that provides functions to estimate the Conditional Average Treatment Effects (CATE) 
-and Population Average Treatment Effects on the Treated (PATT) from experimental or observational data using the 
+**DeepLearningCausal** is an R package that provides functions to estimate the Conditional Average Treatment Effects (CATE)
+and Population Average Treatment Effects on the Treated (PATT) from experimental or observational data using the
 Super Learner (SL) weighted ensemble method and Deep Neural Networks. The package first provides functions to implement meta-learners
 such as the Single-learner (S-learner) and Two-learner (T-learner) for estimating the CATE. These meta-learners are described in Künzel et al. (2019).
-The S- and T-learner are each estimated using the SL weighted ensemble and Deep Neural Networks. It then provides functions to 
-implement the Ottoboni and Poulos (2020) PATT-C estimator to obtain the Population Average Treatment Effects on the Treated (PATT) from experimental and observational data with noncompliance by using the SL weighted ensemble method and Deep Neural Networks.
+The S- and T-learner are each estimated using the SL weighted ensemble and Deep Neural Networks. It then provides functions to
+implement the Ottoboni and Poulos (2020) PATT-C estimator to obtain the Population Average Treatment Effects on the Treated (PATT) from experimental and
+observational data with noncompliance by using the SL weighted ensemble method and Deep Neural Networks.
 
 ### Why DeepLearningCausal?
 
-Researchers are increasingly interested to estimate causal effecs, including Conditional Average Treatment Effects (CATE)  
-and Population Average Treatment Effects (PATE), from observational and experimental data using machine learning and deep learning 
-algorithms. A unique advantage of the DeepLearningCausal package is that it provides a united interface for users to estimate both the CATE from    
-experimental and observational data as well as Population Average Treatment Effects on the Treated (PATT) from experimental and observational 
+Researchers are increasingly interested to estimate causal effecs, including Conditional Average Treatment Effects (CATE)
+and Population Average Treatment Effects (PATE), from observational and experimental data using machine learning and deep learning
+algorithms. A unique advantage of the DeepLearningCausal package is that it provides a united interface for users to estimate both the CATE from
+experimental and observational data as well as Population Average Treatment Effects on the Treated (PATT) from experimental and observational
 data with noncompliance. Another key benefit of DeepLearningCausal is that it provides users the choice of estimating CATE and PATT using the super learner
 weighted ensemble and deep neural networks. More specifically,
 
@@ -45,7 +46,8 @@ weighted ensemble and deep neural networks. More specifically,
 
 ### Example 1
 
-We employ data from a pilot survey response questionnaire (administered online) to obtain the CATE from the S-learner and T-learner models that are each estimated using the super learner weighted ensemble method and deep neural networks respectively. This pilot survey response data incorporates a vignette survey experiment fielded in India. In this experiment, the vignette describes a tense, crisis-like relationship between country A and B and in which the leader of country B proposes the necessity of fighting a war with country A. After reading this vignette, respondents are then randomly assigned to the control group or to a binary treatment assignment that captures the policy prescription to the said international crisis by a strong (populist) leader as opposed to a centrist (non-populist) leader. The recorded vignette screen time latency and manipulation checks permits operationalization of compliance with the treatment assignment. Further, after being randomly assigned to the control group or to the treatment assignment, the respondents are asked whether or not they are willing to support the policy decision to fight a war against country A. In addition to this vignette experiment, the pilot survey response 
+We employ data from a pilot survey response questionnaire (administered online) to obtain the CATE from the S-learner and T-learner models that are each estimated using the super learner weighted ensemble method and deep neural networks respectively. This pilot survey response data incorporates a vignette survey experiment fielded in India. In this experiment, the vignette describes a tense, crisis-like relationship between country A and B and in which the leader of country B proposes the necessity of fighting a war with country A. After reading this vignette,
+respondents are then randomly assigned to the control group or to a binary treatment assignment that captures the policy prescription to the said international crisis by a strong (populist) leader as opposed to a centrist (non-populist) leader. The recorded vignette screen time latency and manipulation checks permits operationalization of compliance with the treatment assignment. Further, after being randomly assigned to the control group or to the treatment assignment, the respondents are asked whether or not they are willing to support the policy decision to fight a war against country A. In addition to this vignette experiment, the pilot survey response 
 dataset also includes numerous other covariates that are summarized in the following table.
 
 | **Covariate**     | **Question**                                                                              |   **Response Scale**                |                        
@@ -104,7 +106,7 @@ The first is the survey response dataset associated with Example 1, which is des
 
 ### Installation
 
-The latest version of the package (`0.0.1`) is available on 
+The latest version of the package (`0.0.1`) is available on
 
 ``` r
 install.packages("DeepLearningCausal")
@@ -129,8 +131,6 @@ The function PATTC_ensemble estimates the PATT for experimental data with noncom
 #### Deep Neural networks for Meta-Learners
 The function metalearner_deepneural estimates CATE for the S- and T-Learner using deep neural networks.
 
-#### Deep Neural Networks for PATT-C Estimator 
+#### Deep Neural Networks for PATT-C Estimator
 The function PATTC_deepneural estimates the PATT for experimental data with noncompliance using deep neural networks.
-
-
 
