@@ -61,6 +61,63 @@
 #' @source Haerpfer, C., Inglehart, R., Moreno, A., Welzel, C., Kizilova, K., Diez-Medrano J., M. Lagos, P. Norris, E. Ponarin & B. Puranen et al. (eds.). 2020. World Values Survey: Round Seven – Country-Pooled Datafile. Madrid, Spain & Vienna, Austria: JD Systems Institute & WVSA Secretariat. <doi.org/10.14281/18241.1>
 "pop_data"
 
+#' Survey Experiment of Support for Populist Policy
+#'
+#' Extended experiment data with 514 observations
+#'
+#' @format ## `exp_data_full`
+#' A data frame with 514 rows and 12 columns:
+#' \describe{
+#'   \item{female}{ Gender.}
+#'   \item{age}{ Age of participant.}
+#'   \item{income}{ Monthly household income.}
+#'   \item{religion}{ Religious denomination}
+#'   \item{practicing_religion}{ Importance of religion in life.}
+#'   \item{education}{ Educational level of participant.}
+#'   \item{political_ideology}{ Political ideology of participant.}
+#'   \item{employment}{ Employment status of participant.}
+#'   \item{marital_status}{ Marital status of participant.}
+#'   \item{job_loss}{ Concern about job loss.}
+#'   \item{strong_leader}{ Binary treatment measure of leader type.}
+#'   \item{support_war}{ Binary outcome measure for willingness to fight war.}
+#'   #'   ...
+#' }
+#' @docType data
+#' @keywords dataset
+#' @name exp_data_full
+#' @usage data(exp_data_full)
+#' @source Yadav and Mukherjee (2024)
+"exp_data_full"
+
+#' World Value Survey India Sample
+#'
+#' Extended World Value Survey (WVS) Data for India in 1995, 2001, 2006, 2012,
+#' and 2022.
+#'
+#' @format ## `pop_data_full`
+#' A data frame with 11,813 rows and 13 columns:
+#' \describe{
+#'   \item{female}{ Respondent’s Sex.}
+#'   \item{age}{ Age of respondent.}
+#'   \item{income}{ income group of Household.}
+#'   \item{religion}{ Religious denomination}
+#'   \item{practicing_religion}{ Importance of religion in respondent’s life.}
+#'   \item{education}{ Educational level of respondent.}
+#'   \item{political_ideology}{ Political ideology of respondent.}
+#'   \item{employment}{ Employment status and full-time employee.}
+#'   \item{marital_status}{ Marital status of respondent.}
+#'   \item{job_loss}{ Concern about job loss.}
+#'   \item{support_war}{ Binary (Yes/No) outcome measure for willingness to fight war.}
+#'   \item{strong_leader}{ Binary measure of preference for strong leader.}
+#'   ...
+#' }
+#' @docType data
+#' @keywords dataset
+#' @name pop_data_full
+#' @usage data(pop_data_full)
+#' @source Haerpfer, C., Inglehart, R., Moreno, A., Welzel, C., Kizilova, K., Diez-Medrano J., M. Lagos, P. Norris, E. Ponarin & B. Puranen et al. (eds.). 2020. World Values Survey: Round Seven – Country-Pooled Datafile. Madrid, Spain & Vienna, Austria: JD Systems Institute & WVSA Secretariat. <doi.org/10.14281/18241.1>
+"pop_data_full"
+
 
 
 
