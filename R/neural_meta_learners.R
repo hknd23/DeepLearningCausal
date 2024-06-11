@@ -23,23 +23,25 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' # load dataset
 #' data(exp_data)
 #' # estimate CATEs with S Learner
-#' \donttest{
 #' set.seed(123456)
 #' slearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age + income +
 #'                                    employed  + job_loss,
 #'                                    data = exp_data,
 #'                                    treat.var = "strong_leader",
 #'                                    meta.learner.type = "S.Learner",
-#'                                    stepmax = 1e+9,
+#'                                    stepmax = 2e+9,
 #'                                    nfolds = 5,
 #'                                    algorithm = "rprop+",
-#'                                    hidden.layer = c(4,2),
+#'                                    hidden.layer = c(2,2),
 #'                                    linear.output = FALSE)
 #'                                    }
 #' \dontrun{
+#' # load dataset
+#' data(exp_data)
 #' set.seed(123456)
 #' # estimate CATEs with T Learner
 #' tlearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +
