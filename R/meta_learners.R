@@ -21,7 +21,7 @@
 #' @export
 #'
 #' @examples
-#' #' \donttest{
+
 #' # load dataset
 #' data(exp_data)
 #' #load SuperLearner package
@@ -37,7 +37,7 @@
 #'                                 meta.learner.type = "S.Learner",
 #'                                 learners = c("SL.glmnet","SL.xgboost"),
 #'                                 nfolds = 5)
-#'
+#' \donttest{
 #' # estimate CATEs with T Learner
 #'
 #' set.seed(123456)
