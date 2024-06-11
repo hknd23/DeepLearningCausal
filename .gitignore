@@ -2,7 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
-DNetCausalPATT/
+DeepLearningCausal/
 DeepLearningCausal.Rcheck/
 test_code/
 data-raw/

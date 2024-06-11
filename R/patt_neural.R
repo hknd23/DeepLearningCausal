@@ -214,6 +214,7 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' # load datasets
 #' data(exp_data) #experimental data
 #' data(pop_data) #population data
@@ -239,6 +240,7 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #'                                bootn = 999)
 #'
 #' summary(pattc_neural)
+#' }
 #'
 pattc_deepneural <- function(response.formula,
                          exp.data,
