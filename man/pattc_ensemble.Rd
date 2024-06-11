@@ -60,22 +60,45 @@ glmnet (elastic net regression), random forest and neural nets.
 \examples{
 \donttest{
 # load datasets
+data(exp_data_full) # full experimental data
 data(exp_data) #experimental data
 data(pop_data) #population data
 #attach SuperLearner (model will not recognize learner if package is not loaded)
 library(SuperLearner)
 set.seed(123456)
 #specify models and estimate PATTC
-pattc_ensemble <- pattc_ensemble(response.formula = support_war ~ age + income +
+pattc <- pattc_ensemble(response.formula = support_war ~ age + income +
+                                education + employed + job_loss,
+                                exp.data = exp_data_full,
+                                pop.data = pop_data,
+                                treat.var = "strong_leader",
+                                compl.var = "compliance",
+                                createSL = TRUE,
+                                SL.library = NULL,
+                                ID = NULL,
+                                cluster = NULL,
+                                bootse = FALSE,
+                                bootp = FALSE,
+                                bootn = 999)
+summary(pattc)
+}
+
+\dontrun{
+# load datasets
+data(exp_data) #experimental data
+data(pop_data) #population data
+#attach SuperLearner (model will not recognize learner if package is not loaded)
+library(SuperLearner)
+set.seed(123456)
+#learners will not work with small training dataset (exp_data)
+pattc <- pattc_ensemble(response.formula = support_war ~ age + income +
                                 education + employed + job_loss,
                                 exp.data = exp_data,
                                 pop.data = pop_data,
                                 treat.var = "strong_leader",
                                 compl.var = "compliance",
                                 createSL = TRUE,
-                                SL.library = c("SL.gbm.adaboost",
-                                               "SL.gbm.bernoulli",
-                                               "SL.glmnet"),
+                                SL.library = NULL,
                                 ID = NULL,
                                 cluster = NULL,
                                 bootse = FALSE,
