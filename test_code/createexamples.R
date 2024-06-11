@@ -33,8 +33,8 @@ IND_exp_ex <- IND_exp_data3[sample(nrow(IND_exp_data3), nrow(IND_exp_data3)/2),]
 IND_pop_ex <- IND_pop_data3[which(IND_pop_data3$year %in% c(2022)),]
 IND_pop_ex2<-IND_pop_ex[sample(nrow(IND_pop_ex), nrow(IND_pop_ex)/2),]
 
-
-
+exp_data_full <- IND_exp_data3
+pop_data_full <- IND_pop_data3
 
 expdata <- IND_exp_ex
 popdata <- IND_pop_ex2

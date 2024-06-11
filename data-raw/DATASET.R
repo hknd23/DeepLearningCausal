@@ -2,3 +2,7 @@
 
 usethis::use_data(pop_data , overwrite = TRUE)
 usethis::use_data(exp_data , overwrite = TRUE)
+
+usethis::use_data(exp_data_full , overwrite = TRUE)
+usethis::use_data(pop_data_full , overwrite = TRUE)
+

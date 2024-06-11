@@ -246,7 +246,7 @@ pattc_counterfactuals<- function (pop.data,
 #' library(SuperLearner)
 #' set.seed(123456)
 #' #specify models and estimate PATTC
-#' pattc_ensemble <- pattc_ensemble(response.formula = support_war ~ age + income +
+#' pattc <- pattc_ensemble(response.formula = support_war ~ age + income +
 #'                                 education + employed + job_loss,
 #'                                 exp.data = exp_data,
 #'                                 pop.data = pop_data,
