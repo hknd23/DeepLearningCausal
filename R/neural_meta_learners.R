@@ -36,7 +36,7 @@
 #'                                    stepmax = 2e+9,
 #'                                    nfolds = 5,
 #'                                    algorithm = "rprop+",
-#'                                    hidden.layer = c(2,2),
+#'                                    hidden.layer = c(1),
 #'                                    linear.output = FALSE)
 #'                                    }
 #' \dontrun{
