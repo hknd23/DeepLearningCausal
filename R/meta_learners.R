@@ -37,9 +37,9 @@
 #'                                 meta.learner.type = "S.Learner",
 #'                                 learners = c("SL.glmnet","SL.xgboost"),
 #'                                 nfolds = 5)
+#'
 #' \donttest{
 #' # estimate CATEs with T Learner
-#'
 #' set.seed(123456)
 #' tlearner <- metalearner_ensemble(cov.formula = support_war ~ age + income +
 #'                                   employed  + job_loss,
