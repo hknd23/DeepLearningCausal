@@ -134,7 +134,7 @@ metalearner_deepneural <- function(data,
       data1 <- data[c(folds[[1]], folds[[2]], folds[[3]], folds[[4]]),]
       df_main <- data[folds[[5]],]
     }
-
+  }
 
     df_aux <- data1
     s.formula<-paste0("y ~ d + ", paste0(covariates, collapse = " + "))
@@ -194,7 +194,7 @@ metalearner_deepneural <- function(data,
     {
       stop("Meta Learner not supported")
     }
-  }
+
 
   return(score_meta)
 }

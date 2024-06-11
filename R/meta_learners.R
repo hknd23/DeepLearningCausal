@@ -109,7 +109,7 @@ metalearner_ensemble <- function(data,
       data1 <- data[c(folds[[1]], folds[[2]], folds[[3]], folds[[4]]),]
       df_main <- data[folds[[5]],]
     }
-
+  }
     df_aux <- data1
 
     if(meta.learner.type == "S.Learner"){
@@ -161,7 +161,7 @@ metalearner_ensemble <- function(data,
     {
       stop("Meta Learner not supported")
     }
-  }
+
 
   return(score_meta)
 }
