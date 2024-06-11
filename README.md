@@ -107,11 +107,11 @@ remotes::install_github("hknd23/DeepLearningCausal")
 ```
 
 #### Super Learner Weighted Ensemble for Meta-learners
-The function metalearner_ensemble permits users to estimate the CATE for the S- and T-Learner using the Super Learner Weighted Ensemble.
+The function metalearner_ensemble estimates the CATE for the S- and T-Learner using the Super Learner Weighted Ensemble.
 
 
 #### Super Learned Weighted Ensemble for PATT-C Estimator
-The function PATTC_ensemble permits users to estimate the PATT for experimental data with noncompliance using the Super Learner Weighted Ensemble.
+The function PATTC_ensemble estimates the PATT for experimental data with noncompliance using the Super Learner Weighted Ensemble.
 
 
 
