@@ -124,6 +124,12 @@ if (!require("remotes")) install.packages("remotes")
 remotes::install_github("hknd23/DeepLearningCausal")
 ```
 
+Or with devtools: 
+
+``` r
+devtools::install_github("hknd23/DeepLearningCausal")
+```
+
 #### Super Learner Weighted Ensemble for Meta-learners
 The function metalearner_ensemble estimates the CATE for the S- and T-Learner using the Super Learner Weighted Ensemble.
 
