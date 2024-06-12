@@ -31,7 +31,7 @@ Description: Functions to estimate Conditional Average Treatment Effects (CATE)
     <doi:10.1515/jci-2018-0035>  PATT-C estimator to obtain the PATT from 
     experimental data with noncompliance by using the SL ensemble method and 
     deep neural networks.
-License: GPL-3 + file LICENSE
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports:
