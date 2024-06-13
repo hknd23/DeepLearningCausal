@@ -19,7 +19,8 @@
 #' @param binary.outcome logical specifying predicted outcome variable will take
 #' binary values or proportions.
 #'
-#' @return vector of CATEs estimated by the meta learners for each observation.
+#' @return `list` of predicted outcome values and CATEs estimated by the meta
+#' learners for each observation.
 #' @export
 #'
 #' @examples
@@ -48,7 +49,7 @@
 #'                                   treat.var = "strong_leader",
 #'                                   meta.learner.type = "T.Learner",
 #'                                   learners = c("SL.glmnet","SL.xgboost"),
-#'                                   nfolds = 5),
+#'                                   nfolds = 5,
 #'                                   binary.outcome = TRUE)
 #'                                   }
 #'
@@ -60,7 +61,7 @@
 #'                                   treat.var = "strong_leader",
 #'                                   meta.learner.type = "R.Learner",
 #'                                   learners = c("SL.glmnet","SL.xgboost"),
-#'                                   nfolds = 5),
+#'                                   nfolds = 5,
 #'                                   binary.outcome = TRUE)
 #'                                   }
 #'
@@ -122,7 +123,8 @@ metalearner_ensemble <- function(data,
 
     if(meta.learner.type == "S.Learner"){
     X_train <- (df_aux[,c(covariates,"d")])
-
+    print(df_aux)
+    print(df_main)
     m_mod <- SuperLearner::SuperLearner(Y = df_aux$y, X = X_train,
                                         SL.library = learners,
                                         verbose = FALSE,
@@ -136,10 +138,12 @@ metalearner_ensemble <- function(data,
     # Set treatment variable to 1
     X_test_1 <- (df_main[,c(covariates, "d")])
     X_test_1$d <- 1
-
-      Y_test_0 <- predict(m_mod, X_test_0)$pred
-      Y_test_1 <- predict(m_mod, X_test_1)$pred
-
+    print(X_test_1)
+    print(X_test_0)
+      Y_test_0 <- predict(object = m_mod, newdata = X_test_0, onlySL = TRUE)$pred
+      Y_test_1 <- predict(object = m_mod, newdata = X_test_1, onlySL = TRUE)$pred
+print(Y_test_0)
+print(Y_test_1)
       if (binary.outcome) {
         Y.pred.1p <- data.frame("outcome" = df_main$y,
                                 "C.pscore" = Y_test_1)
@@ -167,6 +171,14 @@ metalearner_ensemble <- function(data,
       }
 
     score_meta[,1][df_main$ID] = Y_hat_test_1 - Y_hat_test_0
+
+    Y_hats <- data.frame("Y_hat0" = Y_hat_test_0,
+                         "Y_hat1" = Y_hat_test_1)
+
+    learner_out <- list("CATEs" = score_meta,
+                        "Y_hats" = Y_hats,
+                        "Meta_Learner" = meta.learner.type)
+
     }
 
     if(meta.learner.type == "T.Learner"){
@@ -188,8 +200,8 @@ metalearner_ensemble <- function(data,
                                          method = "method.NNLS",
                                          cvControl = control)
 
-    Y_test_0 <- predict(m0_mod, X_test_0)$pred
-    Y_test_1 <- predict(m1_mod, X_test_1)$pred
+    Y_test_0 <- predict(m0_mod, X_test_0, onlySL = TRUE)$pred
+    Y_test_1 <- predict(m1_mod, X_test_1, onlySL = TRUE)$pred
 
     if (binary.outcome) {
       Y.pred.1p <- data.frame("outcome" = df_main$y,
@@ -217,13 +229,20 @@ metalearner_ensemble <- function(data,
       Y_hat_test_0 <- Y_test_0
     }
     score_meta[,1][df_main$ID] = Y_hat_test_1 - Y_hat_test_0
+
+    Y_hats <- data.frame("Y_hat0" = Y_hat_test_0,
+                         "Y_hat1" = Y_hat_test_1)
+
+    learner_out <- list("CATEs" = score_meta,
+                        "Y_hats" = Y_hats,
+                        "Meta_Learner" = meta.learner.type)
+
     }
     if(meta.learner.type %in% c("S.Learner","T.Learner") == FALSE)
     {
       stop("Meta Learner not supported")
     }
 
-
-  return(score_meta)
+  return(learner_out)
 }
 
