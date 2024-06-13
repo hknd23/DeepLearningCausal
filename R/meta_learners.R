@@ -48,7 +48,8 @@
 #'                                   data = exp_data,
 #'                                   treat.var = "strong_leader",
 #'                                   meta.learner.type = "T.Learner",
-#'                                   learners = c("SL.glmnet","SL.xgboost"),
+#'                                   learners = c("SL.xgboost","SL.ranger",
+#'                                                "SL.nnet"),
 #'                                   nfolds = 5,
 #'                                   binary.outcome = TRUE)
 #'                                   }
@@ -74,6 +75,10 @@ metalearner_ensemble <- function(data,
                                 nfolds = 5,
                                 binary.outcome = TRUE)
   {
+  if(meta.learner.type %in% c("S.Learner","T.Learner") == FALSE)
+  {
+    stop("Meta Learner not supported")
+  }
 
   control <- SuperLearner::SuperLearner.CV.control(V=5)
 
@@ -118,17 +123,17 @@ metalearner_ensemble <- function(data,
       data1 <- data[c(folds[[1]], folds[[2]], folds[[3]], folds[[4]]),]
       df_main <- data[folds[[5]],]
     }
-  }
+
     df_aux <- data1
 
     if(meta.learner.type == "S.Learner"){
     X_train <- (df_aux[,c(covariates,"d")])
-    print(df_aux)
-    print(df_main)
+
     m_mod <- SuperLearner::SuperLearner(Y = df_aux$y, X = X_train,
                                         SL.library = learners,
                                         verbose = FALSE,
                                         method = "method.NNLS",
+                                        family = "binomial",
                                         cvControl = control)
 
     # Set treatment variable to 0
@@ -138,12 +143,10 @@ metalearner_ensemble <- function(data,
     # Set treatment variable to 1
     X_test_1 <- (df_main[,c(covariates, "d")])
     X_test_1$d <- 1
-    print(X_test_1)
-    print(X_test_0)
-      Y_test_0 <- predict(object = m_mod, newdata = X_test_0, onlySL = TRUE)$pred
-      Y_test_1 <- predict(object = m_mod, newdata = X_test_1, onlySL = TRUE)$pred
-print(Y_test_0)
-print(Y_test_1)
+
+    Y_test_0 <- predict(object = m_mod, newdata = X_test_0, onlySL = TRUE)$pred
+    Y_test_1 <- predict(object = m_mod, newdata = X_test_1, onlySL = TRUE)$pred
+
       if (binary.outcome) {
         Y.pred.1p <- data.frame("outcome" = df_main$y,
                                 "C.pscore" = Y_test_1)
@@ -177,7 +180,8 @@ print(Y_test_1)
 
     learner_out <- list("CATEs" = score_meta,
                         "Y_hats" = Y_hats,
-                        "Meta_Learner" = meta.learner.type)
+                        "Meta_Learner" = meta.learner.type,
+                        "ml_model" = m_mod)
 
     }
 
@@ -191,6 +195,7 @@ print(Y_test_1)
                                          SL.library = learners,
                                          verbose = FALSE,
                                          method = "method.NNLS",
+                                         family = "binomial",
                                          cvControl = control)
 
     m0_mod <- SuperLearner::SuperLearner(Y = aux_0$y, X = aux_0[,covariates],
@@ -198,10 +203,11 @@ print(Y_test_1)
                                          SL.library = learners,
                                          verbose = FALSE,
                                          method = "method.NNLS",
+                                         family = "binomial",
                                          cvControl = control)
 
-    Y_test_0 <- predict(m0_mod, X_test_0, onlySL = TRUE)$pred
-    Y_test_1 <- predict(m1_mod, X_test_1, onlySL = TRUE)$pred
+    Y_test_0 <- predict(m0_mod, df_main[,covariates], onlySL = TRUE)$pred
+    Y_test_1 <- predict(m1_mod, df_main[,covariates], onlySL = TRUE)$pred
 
     if (binary.outcome) {
       Y.pred.1p <- data.frame("outcome" = df_main$y,
@@ -224,6 +230,7 @@ print(Y_test_1)
 
       Y_hat_test_1 <- ifelse(Y_test_1 > opt.cut.Y1, 1, 0)
       Y_hat_test_0 <- ifelse(Y_test_0 > opt.cut.Y0, 1, 0)
+
     } else if (!binary.outcome) {
       Y_hat_test_1 <- Y_test_1
       Y_hat_test_0 <- Y_test_0
@@ -235,12 +242,10 @@ print(Y_test_1)
 
     learner_out <- list("CATEs" = score_meta,
                         "Y_hats" = Y_hats,
-                        "Meta_Learner" = meta.learner.type)
+                        "Meta_Learner" = meta.learner.type,
+                        "ml_model1" = m1_mod,
+                        "ml_model0" = m0_mod)  }
 
-    }
-    if(meta.learner.type %in% c("S.Learner","T.Learner") == FALSE)
-    {
-      stop("Meta Learner not supported")
     }
 
   return(learner_out)

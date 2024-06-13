@@ -100,6 +100,10 @@ metalearner_deepneural <- function(data,
                               linear.output = FALSE,
                               binary.outcome = TRUE)
 {
+  if(meta.learner.type %in% c("S.Learner", "T.Learner") == FALSE)
+  {
+    stop("Meta Learner not supported")
+  }
 
   cov.formula <- as.formula(cov.formula)
   variables <- all.vars(cov.formula)
@@ -143,7 +147,7 @@ metalearner_deepneural <- function(data,
       data1 <- data[c(folds[[1]], folds[[2]], folds[[3]], folds[[4]]),]
       df_main <- data[folds[[5]],]
     }
-  }
+
 
     df_aux <- data1
     s.formula<-paste0("y ~ d + ", paste0(covariates, collapse = " + "))
@@ -176,6 +180,14 @@ metalearner_deepneural <- function(data,
       }
 
       score_meta[,1][df_main$ID] = Y_hat_test_1 - Y_hat_test_0
+
+      Y_hats <- data.frame("Y_hat0" = Y_hat_test_0,
+                           "Y_hat1" = Y_hat_test_1)
+
+      learner_out <- list("CATEs" = score_meta,
+                          "Y_hats" = Y_hats,
+                          "Meta_Learner" = meta.learner.type,
+                          "ml_model" = m_mod)
     }
     if(meta.learner.type == "T.Learner"){
 
@@ -211,13 +223,17 @@ metalearner_deepneural <- function(data,
       #Y_hat_test_1 <- max.col(Y_test_1) - 1
 
       score_meta[,1][df_main$ID] = Y_hat_test_1 - Y_hat_test_0
-    }
-    if(meta.learner.type %in% c("S.Learner", "T.Learner") == FALSE)
-    {
-      stop("Meta Learner not supported")
-    }
 
+      Y_hats <- data.frame("Y_hat0" = Y_hat_test_0,
+                           "Y_hat1" = Y_hat_test_1)
 
+      learner_out <- list("CATEs" = score_meta,
+                          "Y_hats" = Y_hats,
+                          "Meta_Learner" = meta.learner.type,
+                          "ml_model1" = m1_mod,
+                          "ml_model0" = m0_mod)
+    }
+  }
   return(score_meta)
 }
 

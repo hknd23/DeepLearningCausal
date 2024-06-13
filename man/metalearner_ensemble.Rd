@@ -68,7 +68,8 @@ tlearner <- metalearner_ensemble(cov.formula = support_war ~ age + income +
                                   data = exp_data,
                                   treat.var = "strong_leader",
                                   meta.learner.type = "T.Learner",
-                                  learners = c("SL.glmnet","SL.xgboost"),
+                                  learners = c("SL.xgboost","SL.ranger",
+                                               "SL.nnet"),
                                   nfolds = 5,
                                   binary.outcome = TRUE)
                                   }
