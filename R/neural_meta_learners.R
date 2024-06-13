@@ -170,7 +170,7 @@ metalearner_deepneural <- function(data,
         Y_hat_test_0 <- max.col(Y_test_0) - 1
       } else if (!binary.outcome) {
         Y_hat_test_1 <- Y_test_1[,2]
-        Y_hat_test_0 <- Y.pred.0[,2]
+        Y_hat_test_0 <- Y_test_0[,2]
       }
 
       score_meta[,1][df_main$ID] = Y_hat_test_1 - Y_hat_test_0
@@ -202,7 +202,7 @@ metalearner_deepneural <- function(data,
         Y_hat_test_0 <- max.col(Y_test_0) - 1
       } else if (!binary.outcome) {
         Y_hat_test_1 <- Y_test_1[,2]
-        Y_hat_test_0 <- Y.pred.0[,2]
+        Y_hat_test_0 <- Y_test_0[,2]
       }
 
       #Y_hat_test_0 <- max.col(Y_test_0) - 1
