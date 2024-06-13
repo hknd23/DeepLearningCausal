@@ -174,25 +174,25 @@ pattc_counterfactuals<- function (pop.data,
   Y.pred.1 <- predict(response.mod, pop.tr.counterfactual, onlySL = T)$pred
   Y.pred.0 <- predict(response.mod, pop.ctrl.counterfactual, onlySL = T)$pred
 
-  Y.pred.1p <- data.frame("outcome" = pop_data[which(pop_data$c==1),]$outcome,
-                              "C.pscore" = Y.pred.1)
-
-  Y.pred.1preds <- ROCR::prediction(Y.pred.1p$C.pscore,
-                                     Y.pred.1p$outcome)
-
-  cost.Y1 <- ROCR::performance(Y.pred.1preds, "cost")
-
-  opt.cut.Y1 <- Y.pred.1preds@cutoffs[[1]][which.min(cost.Y1@y.values[[1]])]
-
-  Y.pred.0p <- data.frame("outcome" = pop_data[which(pop_data$c==1),]$outcome,
-                          "C.pscore" = Y.pred.0)
-
-  Y.pred.0preds <- ROCR::prediction(Y.pred.0p$C.pscore,
-                                    Y.pred.0p$outcome)
-  cost.Y0 <- ROCR::performance(Y.pred.0preds, "cost")
-  opt.cut.Y0 <- Y.pred.0preds@cutoffs[[1]][which.min(cost.Y0@y.values[[1]])]
-
   if (binary.outcome) {
+    Y.pred.1p <- data.frame("outcome" = pop_data[which(pop_data$c==1),]$outcome,
+                            "C.pscore" = Y.pred.1)
+
+    Y.pred.1preds <- ROCR::prediction(Y.pred.1p$C.pscore,
+                                      Y.pred.1p$outcome)
+
+    cost.Y1 <- ROCR::performance(Y.pred.1preds, "cost")
+
+    opt.cut.Y1 <- Y.pred.1preds@cutoffs[[1]][which.min(cost.Y1@y.values[[1]])]
+
+    Y.pred.0p <- data.frame("outcome" = pop_data[which(pop_data$c==1),]$outcome,
+                            "C.pscore" = Y.pred.0)
+
+    Y.pred.0preds <- ROCR::prediction(Y.pred.0p$C.pscore,
+                                      Y.pred.0p$outcome)
+    cost.Y0 <- ROCR::performance(Y.pred.0preds, "cost")
+    opt.cut.Y0 <- Y.pred.0preds@cutoffs[[1]][which.min(cost.Y0@y.values[[1]])]
+
     Y.hat.1 <- ifelse(Y.pred.1 > opt.cut.Y1, 1, 0)
     Y.hat.0 <- ifelse(Y.pred.0 > opt.cut.Y0, 1, 0)
   } else if (!binary.outcome) {
@@ -233,8 +233,8 @@ pattc_counterfactuals<- function (pop.data,
 #' @param bootp logical for bootstrapped p values.
 #' @param bootn number of bootstrap sample.
 #' @param SL.library vector of names of ML algorithms used for ensemble model.
-#' @param binary.outcome logical specifying whether predicted outcomes are
-#' proportions or binary (0-1).
+#' @param binary.outcome logical specifying predicted outcome variable will take
+#' binary values or proportions.
 #'
 #' @return results of weighted t test as PATTC estimate.
 #' @export

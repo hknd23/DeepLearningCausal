@@ -13,7 +13,8 @@ metalearner_deepneural(
   nfolds = 5,
   algorithm = "rprop+",
   hidden.layer = c(4, 2),
-  linear.output = FALSE
+  linear.output = FALSE,
+  binary.outcome = TRUE
 )
 }
 \arguments{
@@ -39,6 +40,9 @@ backtracking algorithm for training neural networks.}
 
 \item{linear.output}{logical specifying regression (TRUE)
 or classification (FALSE) model.}
+
+\item{binary.outcome}{logical specifying predicted outcome variable will take
+binary values or proportions.}
 }
 \value{
 vector of CATEs estimated by the meta learners for each observation.
@@ -62,7 +66,8 @@ slearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age + income +
                                    nfolds = 5,
                                    algorithm = "rprop+",
                                    hidden.layer = c(1),
-                                   linear.output = FALSE)
+                                   linear.output = FALSE,
+                                   binary.outcome = TRUE)
 
 \dontrun{
 # load dataset
@@ -79,7 +84,8 @@ tlearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +
                                   nfolds = 5,
                                   algorithm = "rprop+",
                                   hidden.layer = c(2,1),
-                                  linear.output = FALSE)
+                                  linear.output = FALSE,
+                                  binary.outcome = TRUE)
 
 set.seed(123456)
 #Model may not converge with low stepmax
@@ -92,7 +98,8 @@ slearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age + income +
                                    nfolds = 5,
                                    algorithm = "rprop+",
                                    hidden.layer = c(4,2),
-                                   linear.output = FALSE)
+                                   linear.output = FALSE,
+                                   binary.outcome = TRUE)
 
 #Other learners not supported
 slearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +
@@ -104,6 +111,7 @@ slearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +
                                       nfolds = 5,
                                       algorithm = "rprop+",
                                       hidden.layer = c(4,2),
-                                      linear.output = FALSE)
+                                      linear.output = FALSE,
+                                      binary.outcome = TRUE)
                                    }
 }

@@ -136,6 +136,8 @@ neuralnet_response_model <- function(response.formula,
 #' \code{neuralnet_response_model}.
 #' @param ID string for identifier variable.
 #' @param cluster string for clustering variable (currently unused).
+#' @param binary.outcome logical specifying predicted outcome variable will take
+#' binary values or proportions.
 #'
 #' @return `data.frame` of predicted outcomes of response variable from
 #' counterfactuals.
@@ -144,7 +146,8 @@ neuralnet_response_model <- function(response.formula,
 neuralnet_pattc_counterfactuals <- function (pop.data,
                                              neuralnet.response.mod,
                                              ID = NULL,
-                                             cluster = NULL){
+                                             cluster = NULL,
+                                             binary.outcome = TRUE){
 
   compl.var <- pop.data$compl_var
   covariates <- all.vars(pop.data$response_formula)[-1]
@@ -160,8 +163,14 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
   Y.hat.0 <- predict(neuralnet.response.mod, pop.ctrl.counterfactual)
   Y.hat.1 <- predict(neuralnet.response.mod, pop.tr.counterfactual)
 
-  neuralnetpredict.max.0 <- max.col(Y.hat.0) - 1
-  neuralnetpredict.max.1 <- max.col(Y.hat.1) - 1
+  if (binary.outcome) {
+    neuralnetpredict.max.0 <- max.col(Y.hat.0) - 1
+    neuralnetpredict.max.1 <- max.col(Y.hat.1) - 1
+  } else if (!binary.outcome) {
+    neuralnetpredict.max.0 <- Y.hat.0[,2]
+    neuralnetpredict.max.1 <- Y.hat.1[,2]
+  }
+
 
   if (!is.null(cluster)){
     clustervar <- pop.data[,cluster]
@@ -209,6 +218,8 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #' @param bootse logical for bootstrapped standard erros.
 #' @param bootp logical for bootstrapped p values.
 #' @param bootn logical for number of bootstraps.
+#' @param binary.outcome logical specifying predicted outcome variable will take
+#' binary values or proportions.
 #'
 #' @return results of weighted t test as PATTC estimate.
 #' @export
@@ -237,7 +248,8 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #'                                cluster = NULL,
 #'                                bootse = FALSE,
 #'                                bootp = FALSE,
-#'                                bootn = 999)
+#'                                bootn = 999,
+#'                                binary.outcome = TRUE)
 #'
 #' summary(pattc_neural)
 #' }
@@ -257,7 +269,8 @@ pattc_deepneural <- function(response.formula,
                          cluster = NULL,
                          bootse = FALSE,
                          bootp = FALSE,
-                         bootn = 999)
+                         bootn = 999,
+                         binary.outcome = TRUE)
 
 {
   expdata <- expcall(response.formula,
@@ -292,7 +305,9 @@ pattc_deepneural <- function(response.formula,
                                                   neuralnet.compliers = compliers,
                                                   stepmax = response.stepmax)
   message("Predicting response and estimating PATT-C")
-  counterfactuals <- neuralnet_pattc_counterfactuals(popdata, neural.response.mod)
+  counterfactuals <- neuralnet_pattc_counterfactuals(popdata,
+                                                     neural.response.mod,
+                                                     binary.outcome = binary.outcome)
 
   outcome.var <- all.vars(response.formula)[1]
   dummy <- length(levels(as.factor(expdata$exp_data[,outcome.var])) )

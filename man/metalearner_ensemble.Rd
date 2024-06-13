@@ -10,7 +10,8 @@ metalearner_ensemble(
   treat.var,
   meta.learner.type,
   learners = c("SL.glmnet", "SL.xgboost", "SL.ranger", "SL.nnet"),
-  nfolds = 5
+  nfolds = 5,
+  binary.outcome = TRUE
 )
 }
 \arguments{
@@ -45,8 +46,6 @@ data(exp_data)
 #load SuperLearner package
 library(SuperLearner)
 # estimate CATEs with S Learner
-control <- SuperLearner::SuperLearner.CV.control(V=5)
-# estimate CATEs with S Learner
 set.seed(123456)
 slearner <- metalearner_ensemble(cov.formula = support_war ~ age +
                                   income + employed + job_loss,
@@ -54,7 +53,8 @@ slearner <- metalearner_ensemble(cov.formula = support_war ~ age +
                                 treat.var = "strong_leader",
                                 meta.learner.type = "S.Learner",
                                 learners = c("SL.glmnet","SL.xgboost"),
-                                nfolds = 5)
+                                nfolds = 5),
+                                binary.outcome = TRUE)
 
 \donttest{
 # estimate CATEs with T Learner
@@ -65,7 +65,8 @@ tlearner <- metalearner_ensemble(cov.formula = support_war ~ age + income +
                                   treat.var = "strong_leader",
                                   meta.learner.type = "T.Learner",
                                   learners = c("SL.glmnet","SL.xgboost"),
-                                  nfolds = 5)
+                                  nfolds = 5),
+                                  binary.outcome = TRUE)
                                   }
 
 \dontrun{
@@ -76,7 +77,8 @@ tlearner <- metalearner_ensemble(cov.formula = support_war ~ age + income  +
                                   treat.var = "strong_leader",
                                   meta.learner.type = "R.Learner",
                                   learners = c("SL.glmnet","SL.xgboost"),
-                                  nfolds = 5)
+                                  nfolds = 5),
+                                  binary.outcome = TRUE)
                                   }
 
 }

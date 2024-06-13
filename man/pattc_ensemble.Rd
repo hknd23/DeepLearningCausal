@@ -16,7 +16,8 @@ pattc_ensemble(
   cluster = NULL,
   bootse = FALSE,
   bootp = FALSE,
-  bootn = 999
+  bootn = 999,
+  binary.outcome = TRUE
 )
 }
 \arguments{
@@ -47,6 +48,9 @@ SL wrappers.}
 \item{bootp}{logical for bootstrapped p values.}
 
 \item{bootn}{number of bootstrap sample.}
+
+\item{binary.outcome}{logical specifying whether predicted outcomes are
+proportions or binary (0-1).}
 }
 \value{
 results of weighted t test as PATTC estimate.
@@ -79,7 +83,8 @@ pattc <- pattc_ensemble(response.formula = support_war ~ age + income +
                                 cluster = NULL,
                                 bootse = FALSE,
                                 bootp = FALSE,
-                                bootn = 999)
+                                bootn = 999,
+                                binary.outcome = TRUE)
 summary(pattc)
 }
 
@@ -103,7 +108,8 @@ pattc <- pattc_ensemble(response.formula = support_war ~ age + income +
                                 cluster = NULL,
                                 bootse = FALSE,
                                 bootp = FALSE,
-                                bootn = 999)
+                                bootn = 999,
+                                binary.outcome = TRUE)
 summary(pattc)
 }
 }

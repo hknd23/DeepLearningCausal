@@ -16,6 +16,8 @@
 #' boosting, glmnet, random forest, and neural nets.
 #' @param nfolds number of folds for cross-validation. Currently supports up to
 #' 5 folds.
+#' @param binary.outcome logical specifying predicted outcome variable will take
+#' binary values or proportions.
 #'
 #' @return vector of CATEs estimated by the meta learners for each observation.
 #' @export
@@ -34,7 +36,8 @@
 #'                                 treat.var = "strong_leader",
 #'                                 meta.learner.type = "S.Learner",
 #'                                 learners = c("SL.glmnet","SL.xgboost"),
-#'                                 nfolds = 5)
+#'                                 nfolds = 5),
+#'                                 binary.outcome = TRUE)
 #'
 #' \donttest{
 #' # estimate CATEs with T Learner
@@ -45,7 +48,8 @@
 #'                                   treat.var = "strong_leader",
 #'                                   meta.learner.type = "T.Learner",
 #'                                   learners = c("SL.glmnet","SL.xgboost"),
-#'                                   nfolds = 5)
+#'                                   nfolds = 5),
+#'                                   binary.outcome = TRUE)
 #'                                   }
 #'
 #' \dontrun{
@@ -56,7 +60,8 @@
 #'                                   treat.var = "strong_leader",
 #'                                   meta.learner.type = "R.Learner",
 #'                                   learners = c("SL.glmnet","SL.xgboost"),
-#'                                   nfolds = 5)
+#'                                   nfolds = 5),
+#'                                   binary.outcome = TRUE)
 #'                                   }
 #'
 metalearner_ensemble <- function(data,
@@ -65,7 +70,9 @@ metalearner_ensemble <- function(data,
                                 meta.learner.type,
                                 learners = c("SL.glmnet", "SL.xgboost",
                                            "SL.ranger", "SL.nnet"),
-                                nfolds = 5){
+                                nfolds = 5,
+                                binary.outcome = TRUE)
+  {
 
   control <- SuperLearner::SuperLearner.CV.control(V=5)
 
@@ -133,25 +140,25 @@ metalearner_ensemble <- function(data,
       Y_test_0 <- predict(m_mod, X_test_0)$pred
       Y_test_1 <- predict(m_mod, X_test_1)$pred
 
-      Y.pred.1p <- data.frame("outcome" = df_main$y,
-                              "C.pscore" = Y_test_1)
-
-      Y.pred.1preds <- ROCR::prediction(Y.pred.1p$C.pscore,
-                                        Y.pred.1p$outcome)
-
-      cost.Y1 <- ROCR::performance(Y.pred.1preds, "cost")
-
-      opt.cut.Y1 <- Y.pred.1preds@cutoffs[[1]][which.min(cost.Y1@y.values[[1]])]
-
-      Y.pred.0p <- data.frame("outcome" = df_main$y,
-                              "C.pscore" = Y_test_0)
-
-      Y.pred.0preds <- ROCR::prediction(Y.pred.0p$C.pscore,
-                                        Y.pred.0p$outcome)
-      cost.Y0 <- ROCR::performance(Y.pred.0preds, "cost")
-      opt.cut.Y0 <- Y.pred.0preds@cutoffs[[1]][which.min(cost.Y0@y.values[[1]])]
-
       if (binary.outcome) {
+        Y.pred.1p <- data.frame("outcome" = df_main$y,
+                                "C.pscore" = Y_test_1)
+
+        Y.pred.1preds <- ROCR::prediction(Y.pred.1p$C.pscore,
+                                          Y.pred.1p$outcome)
+
+        cost.Y1 <- ROCR::performance(Y.pred.1preds, "cost")
+
+        opt.cut.Y1 <- Y.pred.1preds@cutoffs[[1]][which.min(cost.Y1@y.values[[1]])]
+
+        Y.pred.0p <- data.frame("outcome" = df_main$y,
+                                "C.pscore" = Y_test_0)
+
+        Y.pred.0preds <- ROCR::prediction(Y.pred.0p$C.pscore,
+                                          Y.pred.0p$outcome)
+        cost.Y0 <- ROCR::performance(Y.pred.0preds, "cost")
+        opt.cut.Y0 <- Y.pred.0preds@cutoffs[[1]][which.min(cost.Y0@y.values[[1]])]
+
         Y_hat_test_1 <- ifelse(Y_test_1 > opt.cut.Y1, 1, 0)
         Y_hat_test_0 <- ifelse(Y_test_0 > opt.cut.Y0, 1, 0)
       } else if (!binary.outcome) {
@@ -184,25 +191,25 @@ metalearner_ensemble <- function(data,
     Y_test_0 <- predict(m0_mod, X_test_0)$pred
     Y_test_1 <- predict(m1_mod, X_test_1)$pred
 
-    Y.pred.1p <- data.frame("outcome" = df_main$y,
-                            "C.pscore" = Y_test_1)
-
-    Y.pred.1preds <- ROCR::prediction(Y.pred.1p$C.pscore,
-                                      Y.pred.1p$outcome)
-
-    cost.Y1 <- ROCR::performance(Y.pred.1preds, "cost")
-
-    opt.cut.Y1 <- Y.pred.1preds@cutoffs[[1]][which.min(cost.Y1@y.values[[1]])]
-
-    Y.pred.0p <- data.frame("outcome" = df_main$y,
-                            "C.pscore" = Y_test_0)
-
-    Y.pred.0preds <- ROCR::prediction(Y.pred.0p$C.pscore,
-                                      Y.pred.0p$outcome)
-    cost.Y0 <- ROCR::performance(Y.pred.0preds, "cost")
-    opt.cut.Y0 <- Y.pred.0preds@cutoffs[[1]][which.min(cost.Y0@y.values[[1]])]
-
     if (binary.outcome) {
+      Y.pred.1p <- data.frame("outcome" = df_main$y,
+                              "C.pscore" = Y_test_1)
+
+      Y.pred.1preds <- ROCR::prediction(Y.pred.1p$C.pscore,
+                                        Y.pred.1p$outcome)
+
+      cost.Y1 <- ROCR::performance(Y.pred.1preds, "cost")
+
+      opt.cut.Y1 <- Y.pred.1preds@cutoffs[[1]][which.min(cost.Y1@y.values[[1]])]
+
+      Y.pred.0p <- data.frame("outcome" = df_main$y,
+                              "C.pscore" = Y_test_0)
+
+      Y.pred.0preds <- ROCR::prediction(Y.pred.0p$C.pscore,
+                                        Y.pred.0p$outcome)
+      cost.Y0 <- ROCR::performance(Y.pred.0preds, "cost")
+      opt.cut.Y0 <- Y.pred.0preds@cutoffs[[1]][which.min(cost.Y0@y.values[[1]])]
+
       Y_hat_test_1 <- ifelse(Y_test_1 > opt.cut.Y1, 1, 0)
       Y_hat_test_0 <- ifelse(Y_test_0 > opt.cut.Y0, 1, 0)
     } else if (!binary.outcome) {
