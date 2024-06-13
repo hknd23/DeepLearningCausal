@@ -233,6 +233,8 @@ pattc_counterfactuals<- function (pop.data,
 #' @param bootp logical for bootstrapped p values.
 #' @param bootn number of bootstrap sample.
 #' @param SL.library vector of names of ML algorithms used for ensemble model.
+#' @param binary.outcome logical specifying whether predicted outcomes are
+#' proportions or binary (0-1).
 #'
 #' @return results of weighted t test as PATTC estimate.
 #' @export
@@ -259,7 +261,8 @@ pattc_counterfactuals<- function (pop.data,
 #'                                 cluster = NULL,
 #'                                 bootse = FALSE,
 #'                                 bootp = FALSE,
-#'                                 bootn = 999)
+#'                                 bootn = 999,
+#'                                 binary.outcome = TRUE)
 #' summary(pattc)
 #' }
 #'
@@ -283,7 +286,8 @@ pattc_counterfactuals<- function (pop.data,
 #'                                 cluster = NULL,
 #'                                 bootse = FALSE,
 #'                                 bootp = FALSE,
-#'                                 bootn = 999)
+#'                                 bootn = 999,
+#'                                 binary.outcome = TRUE)
 #' summary(pattc)
 #' }
 pattc_ensemble <- function(response.formula,
@@ -297,7 +301,8 @@ pattc_ensemble <- function(response.formula,
                         cluster = NULL,
                         bootse = FALSE,
                         bootp = FALSE,
-                        bootn = 999)
+                        bootn = 999,
+                        binary.outcome = TRUE)
 
 {
   if (createSL) {
@@ -346,7 +351,7 @@ pattc_ensemble <- function(response.formula,
                                          response.mod = response.mod,
                                          ID = NULL,
                                          cluster = NULL,
-                                         binary.outcome = TRUE)
+                                         binary.outcome = binary.outcome)
 
   outcome.var <- all.vars(response.formula)[1]
   dummy <- length(levels(as.factor(exp_data$exp_data[,outcome.var])) )

@@ -27,8 +27,6 @@
 #' #load SuperLearner package
 #' library(SuperLearner)
 #' # estimate CATEs with S Learner
-#' control <- SuperLearner::SuperLearner.CV.control(V=5)
-#' # estimate CATEs with S Learner
 #' set.seed(123456)
 #' slearner <- metalearner_ensemble(cov.formula = support_war ~ age +
 #'                                   income + employed + job_loss,
@@ -120,7 +118,8 @@ metalearner_ensemble <- function(data,
 
     m_mod <- SuperLearner::SuperLearner(Y = df_aux$y, X = X_train,
                                         SL.library = learners,
-                                        verbose = FALSE, method = "method.NNLS",
+                                        verbose = FALSE,
+                                        method = "method.NNLS",
                                         cvControl = control)
 
     # Set treatment variable to 0
@@ -131,9 +130,10 @@ metalearner_ensemble <- function(data,
     X_test_1 <- (df_main[,c(covariates, "d")])
     X_test_1$d <- 1
 
+
+
     score_meta[,1][df_main$ID] = predict(m_mod, X_test_1)$pred - predict(m_mod, X_test_0)$pred
     }
-
 
     if(meta.learner.type == "T.Learner"){
     # Split the training data into treatment and control observations

@@ -4,6 +4,7 @@
 #' \code{metalearner_deepneural} implements the S-learner and T-learner for estimating
 #' CATE using Deep Neural Networks. The Resilient back propagation (Rprop)
 #' algorithm is used for training neural networks.
+#'
 #' @param data \code{data.frame} object of data.
 #' @param cov.formula formula description of the model y ~ x(list of covariates).
 #' @param treat.var string for the name of treatment variable.
@@ -18,6 +19,8 @@
 #' @param hidden.layer vector of integers specifying layers and number of neurons.
 #' @param linear.output logical specifying regression (TRUE)
 #' or classification (FALSE) model.
+#' @param binary.outcome logical specifying predicted outcome variable will take
+#' binary values or proportions.
 #'
 #' @return vector of CATEs estimated by the meta learners for each observation.
 #' @export
@@ -36,7 +39,8 @@
 #'                                    nfolds = 5,
 #'                                    algorithm = "rprop+",
 #'                                    hidden.layer = c(1),
-#'                                    linear.output = FALSE)
+#'                                    linear.output = FALSE,
+#'                                    binary.outcome = TRUE)
 #'
 #' \dontrun{
 #' # load dataset
@@ -53,7 +57,8 @@
 #'                                   nfolds = 5,
 #'                                   algorithm = "rprop+",
 #'                                   hidden.layer = c(2,1),
-#'                                   linear.output = FALSE)
+#'                                   linear.output = FALSE,
+#'                                   binary.outcome = TRUE)
 #'
 #' set.seed(123456)
 #' #Model may not converge with low stepmax
@@ -66,7 +71,8 @@
 #'                                    nfolds = 5,
 #'                                    algorithm = "rprop+",
 #'                                    hidden.layer = c(4,2),
-#'                                    linear.output = FALSE)
+#'                                    linear.output = FALSE,
+#'                                    binary.outcome = TRUE)
 #'
 #' #Other learners not supported
 #' slearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +
@@ -78,7 +84,8 @@
 #'                                       nfolds = 5,
 #'                                       algorithm = "rprop+",
 #'                                       hidden.layer = c(4,2),
-#'                                       linear.output = FALSE)
+#'                                       linear.output = FALSE,
+#'                                       binary.outcome = TRUE)
 #'                                    }
 metalearner_deepneural <- function(data,
                               cov.formula,
@@ -88,7 +95,8 @@ metalearner_deepneural <- function(data,
                               nfolds = 5,
                               algorithm = "rprop+",
                               hidden.layer = c(4,2),
-                              linear.output = FALSE)
+                              linear.output = FALSE,
+                              binary.outcome = TRUE)
 {
 
   cov.formula <- as.formula(cov.formula)
@@ -155,10 +163,15 @@ metalearner_deepneural <- function(data,
       X_test_1$d <- 1
 
       Y_test_1 <- predict(m_mod,X_test_1)
-      Y_hat_test_1 <- max.col(Y_test_1) - 1
       Y_test_0 <- predict(m_mod,X_test_0)
-      Y_hat_test_0 <- max.col(Y_test_0) - 1
 
+      if (binary.outcome) {
+        Y_hat_test_1 <- max.col(Y_test_1) - 1
+        Y_hat_test_0 <- max.col(Y_test_0) - 1
+      } else if (!binary.outcome) {
+        Y_hat_test_1 <- Y_test_1[,2]
+        Y_hat_test_0 <- Y.pred.0[,2]
+      }
 
       score_meta[,1][df_main$ID] = Y_hat_test_1 - Y_hat_test_0
     }
@@ -184,8 +197,16 @@ metalearner_deepneural <- function(data,
       Y_test_0 <- predict(m0_mod, df_main)
       Y_test_1 <- predict(m1_mod, df_main)
 
-      Y_hat_test_0 <- max.col(Y_test_0) - 1
-      Y_hat_test_1 <- max.col(Y_test_1) - 1
+      if (binary.outcome) {
+        Y_hat_test_1 <- max.col(Y_test_1) - 1
+        Y_hat_test_0 <- max.col(Y_test_0) - 1
+      } else if (!binary.outcome) {
+        Y_hat_test_1 <- Y_test_1[,2]
+        Y_hat_test_0 <- Y.pred.0[,2]
+      }
+
+      #Y_hat_test_0 <- max.col(Y_test_0) - 1
+      #Y_hat_test_1 <- max.col(Y_test_1) - 1
 
       score_meta[,1][df_main$ID] = Y_hat_test_1 - Y_hat_test_0
     }
