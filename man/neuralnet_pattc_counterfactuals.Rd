@@ -8,7 +8,8 @@ neuralnet_pattc_counterfactuals(
   pop.data,
   neuralnet.response.mod,
   ID = NULL,
-  cluster = NULL
+  cluster = NULL,
+  binary.outcome = TRUE
 )
 }
 \arguments{
@@ -20,6 +21,9 @@ neuralnet_pattc_counterfactuals(
 \item{ID}{string for identifier variable.}
 
 \item{cluster}{string for clustering variable (currently unused).}
+
+\item{binary.outcome}{logical specifying predicted outcome variable will take
+binary values or proportions.}
 }
 \value{
 \code{data.frame} of predicted outcomes of response variable from

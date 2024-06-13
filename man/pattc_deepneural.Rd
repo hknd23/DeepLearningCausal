@@ -20,7 +20,8 @@ pattc_deepneural(
   cluster = NULL,
   bootse = FALSE,
   bootp = FALSE,
-  bootn = 999
+  bootn = 999,
+  binary.outcome = TRUE
 )
 }
 \arguments{
@@ -64,6 +65,9 @@ neurons in response model.}
 \item{bootp}{logical for bootstrapped p values.}
 
 \item{bootn}{logical for number of bootstraps.}
+
+\item{binary.outcome}{logical specifying predicted outcome variable will take
+binary values or proportions.}
 }
 \value{
 results of weighted t test as PATTC estimate.
@@ -97,7 +101,8 @@ pattc_neural <- pattc_deepneural(response.formula = support_war ~ age + female +
                                cluster = NULL,
                                bootse = FALSE,
                                bootp = FALSE,
-                               bootn = 999)
+                               bootn = 999,
+                               binary.outcome = TRUE)
 
 summary(pattc_neural)
 }

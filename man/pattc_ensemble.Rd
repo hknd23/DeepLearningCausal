@@ -49,8 +49,8 @@ SL wrappers.}
 
 \item{bootn}{number of bootstrap sample.}
 
-\item{binary.outcome}{logical specifying whether predicted outcomes are
-proportions or binary (0-1).}
+\item{binary.outcome}{logical specifying predicted outcome variable will take
+binary values or proportions.}
 }
 \value{
 results of weighted t test as PATTC estimate.

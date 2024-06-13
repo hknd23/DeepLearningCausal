@@ -29,6 +29,9 @@ boosting, glmnet, random forest, and neural nets.}
 
 \item{nfolds}{number of folds for cross-validation. Currently supports up to
 5 folds.}
+
+\item{binary.outcome}{logical specifying predicted outcome variable will take
+binary values or proportions.}
 }
 \value{
 vector of CATEs estimated by the meta learners for each observation.
@@ -53,7 +56,7 @@ slearner <- metalearner_ensemble(cov.formula = support_war ~ age +
                                 treat.var = "strong_leader",
                                 meta.learner.type = "S.Learner",
                                 learners = c("SL.glmnet","SL.xgboost"),
-                                nfolds = 5),
+                                nfolds = 5,
                                 binary.outcome = TRUE)
 
 \donttest{
