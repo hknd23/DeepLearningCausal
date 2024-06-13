@@ -9,7 +9,7 @@ complier_mod(
   complier.formula,
   treat.var,
   ID = NULL,
-  SL.library = NULL
+  SL.library = c("SL.glmnet", "SL.xgboost", "SL.ranger", "SL.nnet", "SL.glm")
 )
 }
 \arguments{

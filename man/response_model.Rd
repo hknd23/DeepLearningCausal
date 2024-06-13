@@ -11,7 +11,7 @@ response_model(
   exp.compliers,
   family = "binomial",
   ID = NULL,
-  SL.library = NULL
+  SL.library = c("SL.glmnet", "SL.xgboost", "SL.ranger", "SL.nnet", "SL.glm")
 )
 }
 \arguments{
