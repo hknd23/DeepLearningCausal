@@ -130,9 +130,36 @@ metalearner_ensemble <- function(data,
     X_test_1 <- (df_main[,c(covariates, "d")])
     X_test_1$d <- 1
 
+      Y_test_0 <- predict(m_mod, X_test_0)$pred
+      Y_test_1 <- predict(m_mod, X_test_1)$pred
 
+      Y.pred.1p <- data.frame("outcome" = df_main$y,
+                              "C.pscore" = Y_test_1)
 
-    score_meta[,1][df_main$ID] = predict(m_mod, X_test_1)$pred - predict(m_mod, X_test_0)$pred
+      Y.pred.1preds <- ROCR::prediction(Y.pred.1p$C.pscore,
+                                        Y.pred.1p$outcome)
+
+      cost.Y1 <- ROCR::performance(Y.pred.1preds, "cost")
+
+      opt.cut.Y1 <- Y.pred.1preds@cutoffs[[1]][which.min(cost.Y1@y.values[[1]])]
+
+      Y.pred.0p <- data.frame("outcome" = df_main$y,
+                              "C.pscore" = Y_test_0)
+
+      Y.pred.0preds <- ROCR::prediction(Y.pred.0p$C.pscore,
+                                        Y.pred.0p$outcome)
+      cost.Y0 <- ROCR::performance(Y.pred.0preds, "cost")
+      opt.cut.Y0 <- Y.pred.0preds@cutoffs[[1]][which.min(cost.Y0@y.values[[1]])]
+
+      if (binary.outcome) {
+        Y_hat_test_1 <- ifelse(Y_test_1 > opt.cut.Y1, 1, 0)
+        Y_hat_test_0 <- ifelse(Y_test_0 > opt.cut.Y0, 1, 0)
+      } else if (!binary.outcome) {
+        Y_hat_test_1 <- Y_test_1
+        Y_hat_test_0 <- Y_test_0
+      }
+
+    score_meta[,1][df_main$ID] = Y_hat_test_1 - Y_hat_test_0
     }
 
     if(meta.learner.type == "T.Learner"){
@@ -147,8 +174,6 @@ metalearner_ensemble <- function(data,
                                          method = "method.NNLS",
                                          cvControl = control)
 
-    m1_hat <- m1_mod$SL.predict
-
     m0_mod <- SuperLearner::SuperLearner(Y = aux_0$y, X = aux_0[,covariates],
                                          newX = df_main[,covariates],
                                          SL.library = learners,
@@ -156,9 +181,35 @@ metalearner_ensemble <- function(data,
                                          method = "method.NNLS",
                                          cvControl = control)
 
-    m0_hat <- m0_mod$SL.predict
+    Y_test_0 <- predict(m0_mod, X_test_0)$pred
+    Y_test_1 <- predict(m1_mod, X_test_1)$pred
 
-    score_meta[,1][df_main$ID] = predict(m1_mod, df_main[,covariates])$pred - predict(m0_mod, df_main[,covariates])$pred
+    Y.pred.1p <- data.frame("outcome" = df_main$y,
+                            "C.pscore" = Y_test_1)
+
+    Y.pred.1preds <- ROCR::prediction(Y.pred.1p$C.pscore,
+                                      Y.pred.1p$outcome)
+
+    cost.Y1 <- ROCR::performance(Y.pred.1preds, "cost")
+
+    opt.cut.Y1 <- Y.pred.1preds@cutoffs[[1]][which.min(cost.Y1@y.values[[1]])]
+
+    Y.pred.0p <- data.frame("outcome" = df_main$y,
+                            "C.pscore" = Y_test_0)
+
+    Y.pred.0preds <- ROCR::prediction(Y.pred.0p$C.pscore,
+                                      Y.pred.0p$outcome)
+    cost.Y0 <- ROCR::performance(Y.pred.0preds, "cost")
+    opt.cut.Y0 <- Y.pred.0preds@cutoffs[[1]][which.min(cost.Y0@y.values[[1]])]
+
+    if (binary.outcome) {
+      Y_hat_test_1 <- ifelse(Y_test_1 > opt.cut.Y1, 1, 0)
+      Y_hat_test_0 <- ifelse(Y_test_0 > opt.cut.Y0, 1, 0)
+    } else if (!binary.outcome) {
+      Y_hat_test_1 <- Y_test_1
+      Y_hat_test_0 <- Y_test_0
+    }
+    score_meta[,1][df_main$ID] = Y_hat_test_1 - Y_hat_test_0
     }
     if(meta.learner.type %in% c("S.Learner","T.Learner") == FALSE)
     {
