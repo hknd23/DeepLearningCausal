@@ -19,15 +19,14 @@
 complier_mod <- function(exp.data,
                          complier.formula,
                          treat.var,
-                         ID=NULL,
-                         SL.library=NULL) {
+                         ID = NULL,
+                         SL.library = c("SL.glmnet", "SL.xgboost",
+                                        "SL.ranger", "SL.nnet",
+                                        "SL.glm")) {
   if (!is.null(ID)){
     id = data[,ID]
   }
-  if (is.null(SL.library))
-  {
-    SL.library <- define.SL.class.library()
-  }
+
   exp_data <- exp.data
   covariates <- all.vars(complier.formula)[-1]
   compl.var <- all.vars(complier.formula)[1]
@@ -105,12 +104,9 @@ response_model <- function(response.formula,
                          exp.compliers,
                          family = "binomial",
                          ID = NULL,
-                         SL.library = NULL){
-
-  if (family=="binomial" & is.null(SL.library) )  {
-    SL.library <- define.SL.class.library()
-  }
-
+                         SL.library = c("SL.glmnet", "SL.xgboost",
+                                        "SL.ranger", "SL.nnet",
+                                        "SL.glm")){
 
   variables <- all.vars(response.formula)
   response.var <- variables[1]
@@ -256,7 +252,9 @@ pattc_counterfactuals<- function (pop.data,
 #'                                 treat.var = "strong_leader",
 #'                                 compl.var = "compliance",
 #'                                 createSL = TRUE,
-#'                                 SL.library = NULL,
+#'                                 SL.library = c("SL.glmnet", "SL.xgboost",
+#'                                                 "SL.ranger", "SL.nnet",
+#'                                                 "SL.glm"),
 #'                                 ID = NULL,
 #'                                 cluster = NULL,
 #'                                 bootse = FALSE,
@@ -281,7 +279,9 @@ pattc_counterfactuals<- function (pop.data,
 #'                                 treat.var = "strong_leader",
 #'                                 compl.var = "compliance",
 #'                                 createSL = TRUE,
-#'                                 SL.library = NULL,
+#'                                 SL.library = c("SL.glmnet", "SL.xgboost",
+#'                                                 "SL.ranger", "SL.nnet",
+#'                                                 "SL.glm"),
 #'                                 ID = NULL,
 #'                                 cluster = NULL,
 #'                                 bootse = FALSE,
@@ -296,7 +296,9 @@ pattc_ensemble <- function(response.formula,
                         treat.var,
                         compl.var,
                         createSL = TRUE,
-                        SL.library = NULL,
+                        SL.library = c("SL.glmnet", "SL.xgboost",
+                                       "SL.ranger", "SL.nnet",
+                                       "SL.glm"),
                         ID = NULL,
                         cluster = NULL,
                         bootse = FALSE,
