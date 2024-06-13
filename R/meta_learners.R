@@ -36,7 +36,7 @@
 #'                                 treat.var = "strong_leader",
 #'                                 meta.learner.type = "S.Learner",
 #'                                 learners = c("SL.glmnet","SL.xgboost"),
-#'                                 nfolds = 5),
+#'                                 nfolds = 5,
 #'                                 binary.outcome = TRUE)
 #'
 #' \donttest{
