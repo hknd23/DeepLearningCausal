@@ -221,8 +221,6 @@ pattc_counterfactuals<- function (pop.data,
 #' binary compliance variable.
 #' @param treat.var string for binary treatment variable.
 #' @param compl.var string for binary compliance variable.
-#' @param createSL logical. If `TRUE` will call on \code{create.SL} to create
-#' SL wrappers.
 #' @param ID string for name of identifier.
 #' @param cluster string for name of cluster variable.
 #' @param bootse logical for bootstrapped standard errors.
@@ -306,11 +304,7 @@ pattc_ensemble <- function(response.formula,
                         bootn = 999,
                         binary.outcome = TRUE)
 
-{
-  if (createSL) {
-    create.SL()
-  }
-  SL.library = SL.library
+  #SL.library = SL.library
   exp_data <- expcall(response.formula,
                     treat.var = treat.var,
                     compl.var = compl.var,
