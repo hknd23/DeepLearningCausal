@@ -302,9 +302,8 @@ pattc_ensemble <- function(response.formula,
                         bootse = FALSE,
                         bootp = FALSE,
                         bootn = 999,
-                        binary.outcome = TRUE)
+                        binary.outcome = TRUE){
 
-  #SL.library = SL.library
   exp_data <- expcall(response.formula,
                     treat.var = treat.var,
                     compl.var = compl.var,
@@ -359,8 +358,7 @@ pattc_ensemble <- function(response.formula,
     nY_hat1 <- length(counterfactuals$Y_hat1)
     pattc <- prop.test(c(Y_hat1_0s, Y_hat1_1s), c(nY_hat0,nY_hat1),
                        alternative = "two.sided", correct = FALSE)
-  }
-  else {
+  }  else {
     pattc <- WtC(x = counterfactuals$Y_hat1,
                 y = counterfactuals$Y_hat0,
                 bootse = bootse,
