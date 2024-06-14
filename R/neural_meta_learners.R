@@ -22,8 +22,8 @@
 #' @param binary.outcome logical specifying predicted outcome variable will take
 #' binary values or proportions.
 #'
-#' @return vector of CATEs estimated by the meta learners for each observation.
-#' @export
+#' @return `list` of predicted outcome values and CATEs estimated by the meta
+#' learners for each observation.#' @export
 #'
 #' @examples
 #' # load dataset
@@ -234,6 +234,6 @@ metalearner_deepneural <- function(data,
                           "ml_model0" = m0_mod)
     }
   }
-  return(score_meta)
+  return(learner_out)
 }
 
