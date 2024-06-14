@@ -45,6 +45,7 @@ extreme gradient boosting, glmnet (elastic net regression), random forest and
 neural nets.
 }
 \examples{
+\donttest{
 # load dataset
 data(exp_data)
 #load SuperLearner package
@@ -60,7 +61,6 @@ slearner <- metalearner_ensemble(cov.formula = support_war ~ age +
                                 nfolds = 5,
                                 binary.outcome = TRUE)
 
-\donttest{
 # estimate CATEs with T Learner
 set.seed(123456)
 tlearner <- metalearner_ensemble(cov.formula = support_war ~ age + income +
