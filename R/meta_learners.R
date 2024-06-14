@@ -98,7 +98,11 @@ metalearner_ensemble <- function(data,
   folds <- caret::createFolds(data$d, k=nfolds)
   message("Training model for meta learner")
   for(f in 1:(length(folds))){
-
+    pb <- txtProgressBar(min = 0,
+                         max = length(folds),
+                         style = 3,
+                         width = 50,
+                         char = "=")
     if(f == 1){
       data1 <- data[c(folds[[5]], folds[[2]], folds[[3]], folds[[4]]),]
       df_main <- data[folds[[1]],]
@@ -244,9 +248,10 @@ metalearner_ensemble <- function(data,
                         "Meta_Learner" = meta.learner.type,
                         "ml_model1" = m1_mod,
                         "ml_model0" = m0_mod)  }
-
+    Sys.sleep(.05)
+    setTxtProgressBar(pb, f)
     }
-
+  close(pb)
   return(learner_out)
 }
 
