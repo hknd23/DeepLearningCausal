@@ -349,16 +349,14 @@ pattc_ensemble <- function(response.formula,
                                          binary.outcome = binary.outcome)
 
   outcome.var <- all.vars(response.formula)[1]
-  dummy <- length(levels(as.factor(exp_data$exp_data[,outcome.var])) )
-
-  if (dummy==2) {
+  if (binary.outcome) {
     Y_hat1_0s <- sum(counterfactuals$Y_hat0)
     nY_hat0 <- length(counterfactuals$Y_hat0)
     Y_hat1_1s <- sum(counterfactuals$Y_hat1)
     nY_hat1 <- length(counterfactuals$Y_hat1)
     pattc <- prop.test(c(Y_hat1_0s, Y_hat1_1s), c(nY_hat0,nY_hat1),
                        alternative = "two.sided", correct = FALSE)
-  }  else {
+  }  else if (!binary.outcome){
     pattc <- WtC(x = counterfactuals$Y_hat1,
                 y = counterfactuals$Y_hat0,
                 bootse = bootse,

@@ -312,7 +312,7 @@ pattc_deepneural <- function(response.formula,
   outcome.var <- all.vars(response.formula)[1]
   dummy <- length(levels(as.factor(expdata$exp_data[,outcome.var])) )
 
-  if (dummy==2) {
+  if (binary.outcome) {
     Y_hat1_0s <- sum(counterfactuals$Y_hat0)
     nY_hat0 <- length(counterfactuals$Y_hat0)
     Y_hat1_1s <- sum(counterfactuals$Y_hat1)
@@ -321,7 +321,7 @@ pattc_deepneural <- function(response.formula,
     pattc <- prop.test(c(Y_hat1_0s, Y_hat1_1s), c(nY_hat0,nY_hat1),
                        alternative = "two.sided", correct = FALSE)
   }
-  else {
+  else if(!binary.outcome) {
     pattc <- WtC(x = counterfactuals$Y_hat1,
                  y = counterfactuals$Y_hat0,
                  bootse = bootse,
