@@ -24,6 +24,7 @@
 #'
 #' @return `list` of predicted outcome values and CATEs estimated by the meta
 #' learners for each observation.#' @export
+#' @export
 #'
 #' @examples
 #' # load dataset

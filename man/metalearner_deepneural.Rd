@@ -45,7 +45,8 @@ or classification (FALSE) model.}
 binary values or proportions.}
 }
 \value{
-vector of CATEs estimated by the meta learners for each observation.
+\code{list} of predicted outcome values and CATEs estimated by the meta
+learners for each observation.#' @export
 }
 \description{
 \code{metalearner_deepneural} implements the S-learner and T-learner for estimating
