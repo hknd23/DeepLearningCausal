@@ -54,6 +54,7 @@ CATE using Deep Neural Networks. The Resilient back propagation (Rprop)
 algorithm is used for training neural networks.
 }
 \examples{
+\donttest{
 # load dataset
 data(exp_data)
 # estimate CATEs with S Learner
@@ -70,9 +71,8 @@ slearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age + income +
                                    linear.output = FALSE,
                                    binary.outcome = TRUE)
 
-\donttest{
+
 # load dataset
-data(exp_data)
 set.seed(123456)
 # estimate CATEs with T Learner
 tlearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +

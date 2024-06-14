@@ -27,6 +27,7 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' # load dataset
 #' data(exp_data)
 #' # estimate CATEs with S Learner
@@ -43,9 +44,8 @@
 #'                                    linear.output = FALSE,
 #'                                    binary.outcome = TRUE)
 #'
-#' \donttest{
+#'
 #' # load dataset
-#' data(exp_data)
 #' set.seed(123456)
 #' # estimate CATEs with T Learner
 #' tlearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +
