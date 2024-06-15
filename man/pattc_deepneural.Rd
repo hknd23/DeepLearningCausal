@@ -70,7 +70,7 @@ neurons in response model.}
 binary values or proportions.}
 }
 \value{
-results of weighted t test as PATTC estimate.
+results of t test as PATTC estimate.
 }
 \description{
 estimates the Population Average Treatment Effect
