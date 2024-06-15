@@ -56,7 +56,7 @@ slearner <- metalearner_ensemble(cov.formula = support_war ~ age +
                                 data = exp_data,
                                 treat.var = "strong_leader",
                                 meta.learner.type = "S.Learner",
-                                learners = c("SL.glmn"),
+                                learners = c("SL.glm"),
                                 nfolds = 5,
                                 binary.outcome = TRUE)
 \donttest{
