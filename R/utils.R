@@ -1,5 +1,5 @@
 #' @importFrom stats as.formula model.frame na.omit predict prop.test pt var weighted.mean
-#' @importFrom utils data
+#' @importFrom utils data setTxtProgressBar txtProgressBar
 NULL
 
 #' Create list for experimental data
