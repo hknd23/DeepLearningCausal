@@ -153,7 +153,6 @@ metalearner_deepneural <- function(data,
       df_main <- data[folds[[5]],]
     }
 
-
     df_aux <- data1
     s.formula<-paste0("y ~ d + ", paste0(covariates, collapse = " + "))
     if(meta.learner.type == "S.Learner"){

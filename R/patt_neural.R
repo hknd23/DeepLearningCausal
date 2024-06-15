@@ -332,6 +332,7 @@ pattc_deepneural <- function(response.formula,
   }
   model.out<-list(Complier_model = neuralnet.compl.mod,
                   Response_model = neural.response.mod,
+                  pop_counterfactual = counterfactuals,
                   PATT_C = pattc)
   return(model.out)
 }

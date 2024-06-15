@@ -367,6 +367,7 @@ pattc_ensemble <- function(response.formula,
   }
   model.out<-list(Complier_model = compl.mod,
                   Response_model = response.mod,
+                  pop_counterfactual = counterfactuals,
                   PATT_C = pattc)
   return(model.out)
 }
