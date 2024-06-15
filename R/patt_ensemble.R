@@ -244,32 +244,7 @@ pattc_counterfactuals<- function (pop.data,
 #' summary(pattc)
 #' }
 #'
-#' \dontrun{
-#' # load datasets
-#' data(exp_data) #experimental data
-#' data(pop_data) #population data
-#' #attach SuperLearner (model will not recognize learner if package is not loaded)
-#' library(SuperLearner)
-#' set.seed(123456)
-#' #learners will not work with small training dataset (exp_data)
-#' pattc <- pattc_ensemble(response.formula = support_war ~ age + income +
-#'                                 education + employed + job_loss,
-#'                                 exp.data = exp_data,
-#'                                 pop.data = pop_data,
-#'                                 treat.var = "strong_leader",
-#'                                 compl.var = "compliance",
-#'                                 createSL = TRUE,
-#'                                 SL.library = c("SL.glmnet", "SL.xgboost",
-#'                                                 "SL.ranger", "SL.nnet",
-#'                                                 "SL.glm"),
-#'                                 ID = NULL,
-#'                                 cluster = NULL,
-#'                                 bootse = FALSE,
-#'                                 bootp = FALSE,
-#'                                 bootn = 999,
-#'                                 binary.outcome = TRUE)
-#' summary(pattc)
-#' }
+
 pattc_ensemble <- function(response.formula,
                         exp.data,
                         pop.data,
