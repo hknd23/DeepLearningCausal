@@ -38,6 +38,7 @@
 #'                                 learners = c("SL.glm"),
 #'                                 nfolds = 5,
 #'                                 binary.outcome = TRUE)
+#'
 #' \donttest{
 #' # estimate CATEs with T Learner
 #' set.seed(123456)
