@@ -212,7 +212,7 @@ pattc_counterfactuals<- function (pop.data,
 #' @param binary.outcome logical specifying predicted outcome variable will take
 #' binary values or proportions.
 #'
-#' @return results of weighted t test as PATTC estimate.
+#' @return results of t test as PATTC estimate.
 #' @export
 #'
 #' @examples
@@ -339,13 +339,6 @@ pattc_ensemble <- function(response.formula,
     pattc <- prop.test(c(Y_hat1_1s, Y_hat1_0s), c(nY_hat1,nY_hat0),
                        alternative = "two.sided", correct = FALSE)
   }  else if (!binary.outcome){
-    #pattc <- WtC(x = counterfactuals$Y_hat1,
-    #            y = counterfactuals$Y_hat0,
-    #            bootse = bootse,
-    #            bootp = bootp,
-    #            bootn = bootn,
-    #            samedata = FALSE,
-    #            equivalence = FALSE)
     pattc <- t.test(x = counterfactuals$Y_hat1,
                     y = counterfactuals$Y_hat0,
                     alternative = "two.sided")

@@ -221,7 +221,7 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #' @param binary.outcome logical specifying predicted outcome variable will take
 #' binary values or proportions.
 #'
-#' @return results of weighted t test as PATTC estimate.
+#' @return results of t test as PATTC estimate.
 #' @export
 #'
 #' @examples
@@ -318,20 +318,15 @@ pattc_deepneural <- function(response.formula,
     Y_hat1_1s <- sum(counterfactuals$Y_hat1)
     nY_hat1 <- length(counterfactuals$Y_hat1)
 
-    pattc <- prop.test(c(Y_hat1_0s, Y_hat1_1s), c(nY_hat0,nY_hat1),
+    pattc <- prop.test(c(Y_hat1_1s, Y_hat1_0s), c(nY_hat1,nY_hat0),
                        alternative = "two.sided", correct = FALSE)
   }
   else if(!binary.outcome) {
-    pattc <- WtC(x = counterfactuals$Y_hat1,
-                 y = counterfactuals$Y_hat0,
-                 bootse = bootse,
-                 bootp = bootp,
-                 bootn = bootn,
-                 samedata = FALSE,
-                 equivalence = FALSE)
+    pattc <- t.test(x = counterfactuals$Y_hat1,
+                    y = counterfactuals$Y_hat0,
+                    alternative = "two.sided")
   }
-  model.out<-list(Complier_model = neuralnet.compl.mod,
-                  Response_model = neural.response.mod,
+  model.out<-list(complier_prediction = neuralnet.compliers,
                   pop_counterfactual = counterfactuals,
                   PATT_C = pattc)
   return(model.out)
