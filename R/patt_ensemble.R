@@ -336,16 +336,19 @@ pattc_ensemble <- function(response.formula,
     nY_hat0 <- length(counterfactuals$Y_hat0)
     Y_hat1_1s <- sum(counterfactuals$Y_hat1)
     nY_hat1 <- length(counterfactuals$Y_hat1)
-    pattc <- prop.test(c(Y_hat1_0s, Y_hat1_1s), c(nY_hat0,nY_hat1),
+    pattc <- prop.test(c(Y_hat1_1s, Y_hat1_0s), c(nY_hat1,nY_hat0),
                        alternative = "two.sided", correct = FALSE)
   }  else if (!binary.outcome){
-    pattc <- WtC(x = counterfactuals$Y_hat1,
-                y = counterfactuals$Y_hat0,
-                bootse = bootse,
-                bootp = bootp,
-                bootn = bootn,
-                samedata = FALSE,
-                equivalence = FALSE)
+    #pattc <- WtC(x = counterfactuals$Y_hat1,
+    #            y = counterfactuals$Y_hat0,
+    #            bootse = bootse,
+    #            bootp = bootp,
+    #            bootn = bootn,
+    #            samedata = FALSE,
+    #            equivalence = FALSE)
+    pattc <- t.test(x = counterfactuals$Y_hat1,
+                    y = counterfactuals$Y_hat0,
+                    alternative = "two.sided")
   }
   model.out<-list(Complier_model = compl.mod,
                   Response_model = response.mod,
