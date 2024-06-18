@@ -326,7 +326,9 @@ pattc_deepneural <- function(response.formula,
                     y = counterfactuals$Y_hat0,
                     alternative = "two.sided")
   }
-  model.out<-list("complier_prediction" = compliers,
+  model.out<-list("exp_data" = expdata$exp_data,
+                  "pop_data" = popdata$pop_data,
+                  "complier_prediction" = compliers,
                   "pop_counterfactual" = counterfactuals,
                   "PATT_C" = pattc)
   return(model.out)

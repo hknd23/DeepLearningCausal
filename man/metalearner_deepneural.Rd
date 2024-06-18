@@ -89,32 +89,4 @@ tlearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +
                                   binary.outcome = TRUE)
                                   }
 
-\dontrun{
-set.seed(123456)
-#Model may not converge with low stepmax
-slearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age + income +
-                                   employed  + job_loss,
-                                   data = exp_data,
-                                   treat.var = "strong_leader",
-                                   meta.learner.type="S.Learner",
-                                   stepmax = 1e+4,
-                                   nfolds = 5,
-                                   algorithm = "rprop+",
-                                   hidden.layer = c(4,2),
-                                   linear.output = FALSE,
-                                   binary.outcome = TRUE)
-
-#Other learners not supported
-slearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +
-                                      income + employed  + job_loss,
-                                      data = exp_data,
-                                      treat.var = "strong_leader",
-                                      meta.learner.type = "R.Learner",
-                                      stepmax = 1e+4,
-                                      nfolds = 5,
-                                      algorithm = "rprop+",
-                                      hidden.layer = c(4,2),
-                                      linear.output = FALSE,
-                                      binary.outcome = TRUE)
-                                   }
 }
