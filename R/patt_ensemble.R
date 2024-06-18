@@ -260,15 +260,15 @@ pattc_ensemble <- function(response.formula,
                         binary.outcome = TRUE){
 
   exp_data <- expcall(response.formula,
-                    treat.var = treat.var,
-                    compl.var = compl.var,
-                    exp.data = exp.data,
-                    ID=ID)
+                      treat.var = treat.var,
+                      compl.var = compl.var,
+                      exp.data = exp.data,
+                      ID=ID)
 
-  pop_data<-popcall(response.formula,
-                   compl.var = compl.var,
-                   pop.data = pop.data,
-                   ID = ID)
+  pop_data <- popcall(response.formula,
+                      compl.var = compl.var,
+                      pop.data = pop.data,
+                      ID = ID)
 
   covariates <- all.vars(response.formula)[-1]
 
@@ -277,10 +277,10 @@ pattc_ensemble <- function(response.formula,
   message("Training complier model")
 
   compl.mod <- complier_mod(exp.data = exp_data$exp_data,
-                          treat.var = treat.var,
-                          complier.formula = compl.formula,
-                          ID = NULL,
-                          SL.library = SL.library)
+                            treat.var = treat.var,
+                            complier.formula = compl.formula,
+                            ID = NULL,
+                            SL.library = SL.library)
 
   compliers <- complier_predict(complier.mod = compl.mod,
                                 compl.var = compl.var,
@@ -298,10 +298,10 @@ pattc_ensemble <- function(response.formula,
 
   message("Predicting response and estimating PATT-C")
   counterfactuals <- pattc_counterfactuals(pop.data = pop_data,
-                                         response.mod = response.mod,
-                                         ID = NULL,
-                                         cluster = NULL,
-                                         binary.outcome = binary.outcome)
+                                           response.mod = response.mod,
+                                           ID = NULL,
+                                           cluster = NULL,
+                                           binary.outcome = binary.outcome)
 
   outcome.var <- all.vars(response.formula)[1]
   if (binary.outcome) {
