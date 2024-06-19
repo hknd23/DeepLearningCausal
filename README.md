@@ -5,7 +5,7 @@
 
 <!-- badges: start -->
 
-
+[![CRAN](http://www.r-pkg.org/badges/version/DeepLearningCausal)](https://cran.r-project.org/package=DeepLearningCausal)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 ![R build status](https://github.com/hknd23/DeepLearningCausal/actions/workflows/r.yml/badge.svg)
 
