@@ -1,4 +1,4 @@
-#' @importFrom stats as.formula model.frame na.omit predict prop.test pt var weighted.mean t.test
+#' @importFrom stats as.formula model.frame na.omit predict prop.test pt var weighted.mean t.test quantile
 #' @importFrom utils data setTxtProgressBar txtProgressBar
 NULL
 
