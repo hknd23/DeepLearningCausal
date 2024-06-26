@@ -37,7 +37,7 @@
 #'                                 meta.learner.type = "S.Learner",
 #'                                 learners = c("SL.glm"),
 #'                                 nfolds = 5,
-#'                                 binary.outcome = TRUE)
+#'                                 binary.outcome = FALSE)
 #'
 #' \donttest{
 #' # estimate CATEs with T Learner
@@ -50,7 +50,7 @@
 #'                                   learners = c("SL.xgboost","SL.ranger",
 #'                                                "SL.nnet"),
 #'                                   nfolds = 5,
-#'                                   binary.outcome = TRUE)
+#'                                   binary.outcome = FALSE)
 #'                                   }
 #'
 metalearner_ensemble <- function(data,
@@ -60,7 +60,7 @@ metalearner_ensemble <- function(data,
                                 learners = c("SL.glmnet", "SL.xgboost",
                                            "SL.ranger", "SL.nnet"),
                                 nfolds = 5,
-                                binary.outcome = TRUE)
+                                binary.outcome = FALSE)
   {
   if(meta.learner.type %in% c("S.Learner","T.Learner") == FALSE)
   {

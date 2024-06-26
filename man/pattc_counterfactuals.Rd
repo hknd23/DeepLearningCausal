@@ -9,7 +9,7 @@ pattc_counterfactuals(
   response.mod,
   ID = NULL,
   cluster = NULL,
-  binary.outcome = TRUE
+  binary.outcome = FALSE
 )
 }
 \arguments{

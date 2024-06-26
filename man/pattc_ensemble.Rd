@@ -16,7 +16,9 @@ pattc_ensemble(
   bootse = FALSE,
   bootp = FALSE,
   bootn = 999,
-  binary.outcome = TRUE
+  binary.outcome = FALSE,
+  bootstrap = FALSE,
+  nboot = 1000
 )
 }
 \arguments{
@@ -47,6 +49,10 @@ binary compliance variable.}
 
 \item{binary.outcome}{logical specifying predicted outcome variable will take
 binary values or proportions.}
+
+\item{bootstrap}{logical for bootstrapped PATT-C}
+
+\item{nboot}{number of bootstrapped samples}
 }
 \value{
 results of t test as PATTC estimate.
@@ -81,8 +87,26 @@ pattc <- pattc_ensemble(response.formula = support_war ~ age + income +
                                 bootse = FALSE,
                                 bootp = FALSE,
                                 bootn = 999,
-                                binary.outcome = TRUE)
+                                binary.outcome = FALSE)
+
 summary(pattc)
+
+pattc_boot <- pattc_ensemble(response.formula = support_war ~ age + income +
+                                education + employed + job_loss,
+                                exp.data = exp_data_full,
+                                pop.data = pop_data,
+                                treat.var = "strong_leader",
+                                compl.var = "compliance",
+                                SL.library = c("SL.glmnet", "SL.xgboost",
+                                                "SL.ranger", "SL.nnet",
+                                                "SL.glm"),
+                                ID = NULL,
+                                cluster = NULL,
+                                bootse = FALSE,
+                                bootp = FALSE,
+                                bootn = 999,
+                                binary.outcome = FALSE,
+                                boostrap = TRUE)
 }
 
 }

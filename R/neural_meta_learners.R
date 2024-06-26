@@ -42,7 +42,7 @@
 #'                                    algorithm = "rprop+",
 #'                                    hidden.layer = c(1),
 #'                                    linear.output = FALSE,
-#'                                    binary.outcome = TRUE)
+#'                                    binary.outcome = FALSE)
 #'
 #'
 #' # load dataset
@@ -59,7 +59,7 @@
 #'                                   algorithm = "rprop+",
 #'                                   hidden.layer = c(2,1),
 #'                                   linear.output = FALSE,
-#'                                   binary.outcome = TRUE)
+#'                                   binary.outcome = FALSE)
 #'                                   }
 #'
 
@@ -72,7 +72,7 @@ metalearner_deepneural <- function(data,
                               algorithm = "rprop+",
                               hidden.layer = c(4,2),
                               linear.output = FALSE,
-                              binary.outcome = TRUE)
+                              binary.outcome = FALSE)
 {
   if(meta.learner.type %in% c("S.Learner", "T.Learner") == FALSE)
   {

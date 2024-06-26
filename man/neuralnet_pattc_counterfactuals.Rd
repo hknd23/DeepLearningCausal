@@ -9,7 +9,7 @@ neuralnet_pattc_counterfactuals(
   neuralnet.response.mod,
   ID = NULL,
   cluster = NULL,
-  binary.outcome = TRUE
+  binary.outcome = FALSE
 )
 }
 \arguments{

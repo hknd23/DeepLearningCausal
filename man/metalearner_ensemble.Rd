@@ -11,7 +11,7 @@ metalearner_ensemble(
   meta.learner.type,
   learners = c("SL.glmnet", "SL.xgboost", "SL.ranger", "SL.nnet"),
   nfolds = 5,
-  binary.outcome = TRUE
+  binary.outcome = FALSE
 )
 }
 \arguments{
@@ -58,7 +58,7 @@ slearner <- metalearner_ensemble(cov.formula = support_war ~ age +
                                 meta.learner.type = "S.Learner",
                                 learners = c("SL.glm"),
                                 nfolds = 5,
-                                binary.outcome = TRUE)
+                                binary.outcome = FALSE)
 
 \donttest{
 # estimate CATEs with T Learner
@@ -71,7 +71,7 @@ tlearner <- metalearner_ensemble(cov.formula = support_war ~ age + income +
                                   learners = c("SL.xgboost","SL.ranger",
                                                "SL.nnet"),
                                   nfolds = 5,
-                                  binary.outcome = TRUE)
+                                  binary.outcome = FALSE)
                                   }
 
 }

@@ -152,7 +152,7 @@ pattc_counterfactuals<- function (pop.data,
                                   response.mod,
                                   ID = NULL,
                                   cluster = NULL,
-                                  binary.outcome = TRUE){
+                                  binary.outcome = FALSE){
   compl.var <- pop.data$compl_var
   covariates <- all.vars(pop.data$response_formula)[-1]
   outcome <- all.vars(pop.data$response_formula)[1]
@@ -211,6 +211,8 @@ pattc_counterfactuals<- function (pop.data,
 #' @param SL.library vector of names of ML algorithms used for ensemble model.
 #' @param binary.outcome logical specifying predicted outcome variable will take
 #' binary values or proportions.
+#' @param bootstrap logical for bootstrapped PATT-C
+#' @param nboot number of bootstrapped samples
 #'
 #' @return results of t test as PATTC estimate.
 #' @export
@@ -239,8 +241,26 @@ pattc_counterfactuals<- function (pop.data,
 #'                                 bootse = FALSE,
 #'                                 bootp = FALSE,
 #'                                 bootn = 999,
-#'                                 binary.outcome = TRUE)
+#'                                 binary.outcome = FALSE)
+#'
 #' summary(pattc)
+#'
+#' pattc_boot <- pattc_ensemble(response.formula = support_war ~ age + income +
+#'                                 education + employed + job_loss,
+#'                                 exp.data = exp_data_full,
+#'                                 pop.data = pop_data,
+#'                                 treat.var = "strong_leader",
+#'                                 compl.var = "compliance",
+#'                                 SL.library = c("SL.glmnet", "SL.xgboost",
+#'                                                 "SL.ranger", "SL.nnet",
+#'                                                 "SL.glm"),
+#'                                 ID = NULL,
+#'                                 cluster = NULL,
+#'                                 bootse = FALSE,
+#'                                 bootp = FALSE,
+#'                                 bootn = 999,
+#'                                 binary.outcome = FALSE,
+#'                                 boostrap = TRUE)
 #' }
 #'
 
@@ -257,7 +277,9 @@ pattc_ensemble <- function(response.formula,
                         bootse = FALSE,
                         bootp = FALSE,
                         bootn = 999,
-                        binary.outcome = TRUE){
+                        binary.outcome = FALSE,
+                        bootstrap = FALSE,
+                        nboot = 1000){
 
   exp_data <- expcall(response.formula,
                       treat.var = treat.var,
@@ -312,10 +334,31 @@ pattc_ensemble <- function(response.formula,
     pattc <- prop.test(c(Y_hat1_1s, Y_hat1_0s), c(nY_hat1,nY_hat0),
                        alternative = "two.sided", correct = FALSE)
   }  else if (!binary.outcome){
-    pattc <- t.test(x = counterfactuals$Y_hat1,
-                    y = counterfactuals$Y_hat0,
-                    alternative = "two.sided")
-  }
+    if (bootstrap) {
+      bootResults <- matrix(NA, nrow = nboot, ncol = ncol(counterfactuals)+1)
+      for (i in seq_len(nboot)){
+        resample <- sample(1:nrow(counterfactuals),nrow(counterfactuals),replace=T)
+        temp <- counterfactuals[resample,]
+        A <- mean(temp[,1], na.rm=TRUE)
+        B <- mean(temp[,2], na.rm=TRUE)
+        bootResults[i,1] <- A
+        bootResults[i,2] <- B
+        bootResults[i,3] <- (B-A)
+        drop(list())
+      }
+      bootout = data.frame(bootResults[,1], bootResults[,2], bootResults[,3])
+      colnames(bootout) <- c(colnames(counterfactuals),"PATT-C")
+      bootPATTC <- mean(bootout[,3], na.rm=TRUE)
+      results <- c(bootPATTC, quantile(bootout[,3], c(0.025, 0.975)))
+      names(results) <- c("PATT-C", "LCI (2.5%)", "UCI (2.5%)")
+      method <- paste0("Bootstrapped PATT-C with ", nboot," samples")
+      boot.out <- list(method, results)
+      pattc <- boot.out
+    } else if (!bootstrap){
+      pattc <- t.test(x = counterfactuals$Y_hat1,
+                      y = counterfactuals$Y_hat0,
+                      alternative = "two.sided")
+  }}
   model.out<-list("exp_data" = exp_data$exp_data,
                   "pop_data" = pop_data$pop_data,
                   "complier_prediction" = compliers,

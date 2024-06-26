@@ -1,7 +1,7 @@
 Package: DeepLearningCausal
 Type: Package
 Title: Causal Inference with Super Learner and Deep Neural Networks 
-Version: 0.0.102
+Version: 0.0.103
 Authors@R: c(person(given = "Nguyen K.",
                     family = "Huynh",
                     email = "khoinguyen.huynh@r.hit-u.ac.jp",

@@ -14,7 +14,7 @@ metalearner_deepneural(
   algorithm = "rprop+",
   hidden.layer = c(4, 2),
   linear.output = FALSE,
-  binary.outcome = TRUE
+  binary.outcome = FALSE
 )
 }
 \arguments{
@@ -69,7 +69,7 @@ slearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age + income +
                                    algorithm = "rprop+",
                                    hidden.layer = c(1),
                                    linear.output = FALSE,
-                                   binary.outcome = TRUE)
+                                   binary.outcome = FALSE)
 
 
 # load dataset
@@ -86,7 +86,7 @@ tlearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +
                                   algorithm = "rprop+",
                                   hidden.layer = c(2,1),
                                   linear.output = FALSE,
-                                  binary.outcome = TRUE)
+                                  binary.outcome = FALSE)
                                   }
 
 }
