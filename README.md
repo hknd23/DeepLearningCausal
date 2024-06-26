@@ -5,10 +5,10 @@
 
 <!-- badges: start -->
 
-
+[![CRAN](http://www.r-pkg.org/badges/version/DeepLearningCausal)](https://cran.r-project.org/package=DeepLearningCausal)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 ![R build status](https://github.com/hknd23/DeepLearningCausal/actions/workflows/r.yml/badge.svg)
-
+[![](http://cranlogs.r-pkg.org/badges/grand-total/DeepLearningCausal)](https://cran.r-project.org/package=DeepLearningCausal)
 
 
 <!-- badges: end -->
@@ -46,11 +46,10 @@ weighted ensemble and deep neural networks. More specifically,
 
 ### Example 1
 
-We employ data from a pilot survey response questionnaire (administered online) to obtain the CATE from the S-learner and T-learner models that are each estimated using the super learner weighted ensemble method and deep neural networks respectively. This pilot survey response data incorporates a vignette survey experiment fielded in India. In this experiment, the vignette
-describes a tense, crisis-like relationship between country A and B and in which the leader of country B proposes the necessity of fighting a war with country A. After reading this vignette,
-respondents are then randomly assigned to the control group or to a binary treatment assignment that captures the policy prescription to the said international crisis by a strong (populist) leader as opposed to a centrist (non-populist) leader. The recorded vignette screen time latency and manipulation checks permits operationalization of compliance with the treatment
-assignment. Further, after being randomly assigned to the control group or to the treatment assignment, the respondents are asked whether or not they are willing to support the policy decision to fight a war against country A. In addition to this vignette experiment, the pilot survey response 
-dataset also includes numerous other covariates that are summarized in the following table.
+We employ data from a pilot survey response questionnaire (administered online) to obtain the CATE from the S-learner and T-learner models that are each estimated using the super learner weighted ensemble method and deep neural networks respectively. This survey response sample incorporates a vignette survey experiment fielded in India. The vignette describes a crisis scenario between country A and B. In this scenario, the leader of country B proposes the necessity of fighting a war with country A. After reading this vignette,
+respondents are then randomly assigned to the control group or to a binary treatment indicator variable (labeled as "strong leader") that captures a hawkish policy prescription to the said international crisis by a strong populist leader (as opposed to a centrist, non-populist) leader. 
+
+After being randomly assigned to the control group or to the treatment, the respondents are asked whether or not they are willing to support the policy decision to fight a war against country A. This generates the "support war" dependent variable which is coded as 1 for respondents who support the policy decision of fighting a war against country A; it is coded as 0 otherwise. We also recorded the vignette screen time latency and conducted factual manipulation checks to assess the engagement of respondents--or, in other words, compliance--with the treatment. This permits operationalization of the binary "compliance" coded as 1 for respondents who understood and followed the instructions associated with the strong leader treatment and thus fully complied with this treatment; it is coded as 0 for “noncompliers”. Further, in addition to this compliance indicator and the treatment indicator variable described above, the survey response dataset also includes numerous other covariates summarized in the following table.
 
 | **Covariate**     | **Question**                                                                              |   **Response Scale**                |                        
 | ------------------| ----------------------------------------------------------------------------------------- |-------------------------------------|
