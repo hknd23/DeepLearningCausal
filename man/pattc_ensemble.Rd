@@ -79,8 +79,7 @@ pattc <- pattc_ensemble(response.formula = support_war ~ age + income +
                                 pop.data = pop_data,
                                 treat.var = "strong_leader",
                                 compl.var = "compliance",
-                                SL.library = c("SL.xgboost", "SL.nnet",
-                                               "SL.glm"),
+                                SL.library = c("SL.xgboost", "SL.nnet"),
                                 ID = NULL,
                                 cluster = NULL,
                                 bootse = FALSE,
@@ -96,15 +95,14 @@ pattc_boot <- pattc_ensemble(response.formula = support_war ~ age + income +
                                 pop.data = pop_data,
                                 treat.var = "strong_leader",
                                 compl.var = "compliance",
-                                SL.library = c("SL.xgboost", "SL.nnet",
-                                               "SL.glm"),
+                                SL.library = c("SL.xgboost", "SL.nnet"),
                                 ID = NULL,
                                 cluster = NULL,
                                 bootse = FALSE,
                                 bootp = FALSE,
                                 bootn = 999,
                                 binary.outcome = FALSE,
-                                boostrap = TRUE)
+                                bootsrap = TRUE)
 }
 
 }
