@@ -230,7 +230,7 @@ pattc_counterfactuals<- function (pop.data,
 #'                                 pop.data = pop_data,
 #'                                 treat.var = "strong_leader",
 #'                                 compl.var = "compliance",
-#'                                 SL.library = c("SL.xgboost", "SL.nnet"),
+#'                                 SL.library = c("SL.glm", "SL.nnet"),
 #'                                 ID = NULL,
 #'                                 cluster = NULL,
 #'                                 binary.outcome = FALSE)
@@ -243,11 +243,11 @@ pattc_counterfactuals<- function (pop.data,
 #'                                 pop.data = pop_data,
 #'                                 treat.var = "strong_leader",
 #'                                 compl.var = "compliance",
-#'                                 SL.library = c("SL.xgboost", "SL.nnet"),
+#'                                 SL.library = c("SL.glm", "SL.nnet"),
 #'                                 ID = NULL,
 #'                                 cluster = NULL,
 #'                                 binary.outcome = FALSE,
-#'                                 bootsrap = TRUE,
+#'                                 bootstrap = TRUE,
 #'                                 nboot = 1000)
 #' }
 #'
