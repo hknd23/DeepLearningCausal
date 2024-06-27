@@ -360,9 +360,18 @@ pattc_deepneural <- function(response.formula,
       boot.out <- list(method, results)
       pattc <- boot.out
     } else if (!bootstrap){
-      pattc <- t.test(x = counterfactuals$Y_hat1,
-                      y = counterfactuals$Y_hat0,
-                      alternative = "two.sided")
+      pattc_t <- t.test(x = counterfactuals$Y_hat1,
+                        y = counterfactuals$Y_hat0,
+                        alternative = "two.sided")
+      conf_int <- pattc_t$conf.int[1:2]
+      diff <- pattc_t$estimate[1] - pattc_t$estimate[2]
+      estimate <- c(diff, conf_int)
+      names(estimate) <- c("PATT-C", "LCI (2.5%)", "UCI (2.5%)")
+      statistic <- c(pattc_t$statistic, pattc_t$p.value)
+      names(statistic) <- c("t","p_value")
+      pattc <-list(estimate,
+                   pattc_t$method,
+                   statistic)
     }}
   model.out<-list("exp_data" = expdata$exp_data,
                   "pop_data" = popdata$pop_data,
