@@ -205,14 +205,11 @@ pattc_counterfactuals<- function (pop.data,
 #' @param compl.var string for binary compliance variable.
 #' @param ID string for name of identifier.
 #' @param cluster string for name of cluster variable.
-#' @param bootse logical for bootstrapped standard errors.
-#' @param bootp logical for bootstrapped p values.
-#' @param bootn number of bootstrap sample.
 #' @param SL.library vector of names of ML algorithms used for ensemble model.
 #' @param binary.outcome logical specifying predicted outcome variable will take
 #' binary values or proportions.
 #' @param bootstrap logical for bootstrapped PATT-C
-#' @param nboot number of bootstrapped samples
+#' @param nboot number of bootstrapped samples. Only used if `bootstrap = FALSE`
 #'
 #' @return results of t test as PATTC estimate.
 #' @export
@@ -236,9 +233,6 @@ pattc_counterfactuals<- function (pop.data,
 #'                                 SL.library = c("SL.xgboost", "SL.nnet"),
 #'                                 ID = NULL,
 #'                                 cluster = NULL,
-#'                                 bootse = FALSE,
-#'                                 bootp = FALSE,
-#'                                 bootn = 999,
 #'                                 binary.outcome = FALSE)
 #'
 #' summary(pattc)
@@ -252,11 +246,9 @@ pattc_counterfactuals<- function (pop.data,
 #'                                 SL.library = c("SL.xgboost", "SL.nnet"),
 #'                                 ID = NULL,
 #'                                 cluster = NULL,
-#'                                 bootse = FALSE,
-#'                                 bootp = FALSE,
-#'                                 bootn = 999,
 #'                                 binary.outcome = FALSE,
-#'                                 bootsrap = TRUE)
+#'                                 bootsrap = TRUE,
+#'                                 nboot = 1000)
 #' }
 #'
 
@@ -270,9 +262,6 @@ pattc_ensemble <- function(response.formula,
                                        "SL.glm"),
                         ID = NULL,
                         cluster = NULL,
-                        bootse = FALSE,
-                        bootp = FALSE,
-                        bootn = 999,
                         binary.outcome = FALSE,
                         bootstrap = FALSE,
                         nboot = 1000){

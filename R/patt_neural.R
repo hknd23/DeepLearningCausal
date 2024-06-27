@@ -215,9 +215,6 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #' @param response.stepmax maximum number of steps for response model
 #' @param ID string for identifier variable
 #' @param cluster string for cluster variable.
-#' @param bootse logical for bootstrapped standard erros.
-#' @param bootp logical for bootstrapped p values.
-#' @param bootn logical for number of bootstraps.
 #' @param binary.outcome logical specifying predicted outcome variable will take
 #' binary values or proportions.
 #' @param bootstrap logical for bootstrapped PATT-C
@@ -248,9 +245,6 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #'                                response.stepmax = 1e+09,
 #'                                ID = NULL,
 #'                                cluster = NULL,
-#'                                bootse = FALSE,
-#'                                bootp = FALSE,
-#'                                bootn = 999,
 #'                                binary.outcome = FALSE)
 #'
 #' summary(pattc_neural)
@@ -270,9 +264,6 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #'                                response.stepmax = 1e+09,
 #'                                ID = NULL,
 #'                                cluster = NULL,
-#'                                bootse = FALSE,
-#'                                bootp = FALSE,
-#'                                bootn = 999,
 #'                                binary.outcome = FALSE,
 #'                                bootstrap = TRUE,
 #'                                nboot = 2000)
