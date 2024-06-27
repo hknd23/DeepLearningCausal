@@ -18,9 +18,6 @@ pattc_deepneural(
   response.stepmax = 1e+08,
   ID = NULL,
   cluster = NULL,
-  bootse = FALSE,
-  bootp = FALSE,
-  bootn = 999,
   binary.outcome = FALSE,
   bootstrap = FALSE,
   nboot = 1000
@@ -65,7 +62,7 @@ neurons in response model.}
 \item{binary.outcome}{logical specifying predicted outcome variable will take
 binary values or proportions.}
 
-\item{bootstrap}{logical for bootstrapped PATT-C}
+\item{bootstrap}{logical for bootstrapped PATT-C.}
 
 \item{nboot}{number of bootstrapped samples}
 }

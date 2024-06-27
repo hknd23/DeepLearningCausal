@@ -208,8 +208,9 @@ pattc_counterfactuals<- function (pop.data,
 #' @param SL.library vector of names of ML algorithms used for ensemble model.
 #' @param binary.outcome logical specifying predicted outcome variable will take
 #' binary values or proportions.
-#' @param bootstrap logical for bootstrapped PATT-C
-#' @param nboot number of bootstrapped samples. Only used if `bootstrap = FALSE`
+#' @param bootstrap logical for bootstrapped PATT-C.
+#' @param nboot number of bootstrapped samples. Only used with
+#' `bootstrap = FALSE`
 #'
 #' @return results of t test as PATTC estimate.
 #' @export
@@ -316,8 +317,18 @@ pattc_ensemble <- function(response.formula,
     nY_hat0 <- length(counterfactuals$Y_hat0)
     Y_hat1_1s <- sum(counterfactuals$Y_hat1)
     nY_hat1 <- length(counterfactuals$Y_hat1)
-    pattc <- prop.test(c(Y_hat1_1s, Y_hat1_0s), c(nY_hat1,nY_hat0),
+    pattc_xsq <- prop.test(c(Y_hat1_1s, Y_hat1_0s), c(nY_hat1,nY_hat0),
                        alternative = "two.sided", correct = FALSE)
+
+    conf_int <- pattc_xsq$conf.int[1:2]
+    diff <- pattc_xsq$estimate[1] - pattc_xsq$estimate[2]
+    estimate <- c(diff, conf_int)
+    names(estimate) <- c("PATT-C", "LCI (2.5%)", "UCI (2.5%)")
+    statistic <- c(pattc_xsq$statistic, pattc_xsq$p.value)
+    names(statistic) <- c("X_squared","p_value")
+    pattc <-list(estimate,
+                 pattc_xsq$method,
+                 statistic)
   }  else if (!binary.outcome){
     if (bootstrap) {
       bootResults <- matrix(NA, nrow = nboot, ncol = ncol(counterfactuals)+1)
@@ -343,6 +354,7 @@ pattc_ensemble <- function(response.formula,
       pattc_t <- t.test(x = counterfactuals$Y_hat1,
                       y = counterfactuals$Y_hat0,
                       alternative = "two.sided")
+
       conf_int <- pattc_t$conf.int[1:2]
       diff <- pattc_t$estimate[1] - pattc_t$estimate[2]
       estimate <- c(diff, conf_int)

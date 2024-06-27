@@ -217,7 +217,7 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #' @param cluster string for cluster variable.
 #' @param binary.outcome logical specifying predicted outcome variable will take
 #' binary values or proportions.
-#' @param bootstrap logical for bootstrapped PATT-C
+#' @param bootstrap logical for bootstrapped PATT-C.
 #' @param nboot number of bootstrapped samples
 #'
 #' @return results of t test as PATTC estimate.
@@ -282,9 +282,6 @@ pattc_deepneural <- function(response.formula,
                          response.stepmax = 1e+08,
                          ID = NULL,
                          cluster = NULL,
-                         bootse = FALSE,
-                         bootp = FALSE,
-                         bootn = 999,
                          binary.outcome = FALSE,
                          bootstrap = FALSE,
                          nboot = 1000)
@@ -335,8 +332,18 @@ pattc_deepneural <- function(response.formula,
     Y_hat1_1s <- sum(counterfactuals$Y_hat1)
     nY_hat1 <- length(counterfactuals$Y_hat1)
 
-    pattc <- prop.test(c(Y_hat1_1s, Y_hat1_0s), c(nY_hat1,nY_hat0),
+    pattc_xsq <- prop.test(c(Y_hat1_1s, Y_hat1_0s), c(nY_hat1,nY_hat0),
                        alternative = "two.sided", correct = FALSE)
+
+    conf_int <- pattc_xsq$conf.int[1:2]
+    diff <- pattc_xsq$estimate[1] - pattc_xsq$estimate[2]
+    estimate <- c(diff, conf_int)
+    names(estimate) <- c("PATT-C", "LCI (2.5%)", "UCI (2.5%)")
+    statistic <- c(pattc_xsq$statistic, pattc_xsq$p.value)
+    names(statistic) <- c("X_squared","p_value")
+    pattc <-list(estimate,
+                 pattc_xsq$method,
+                 statistic)
   }
   else if (!binary.outcome){
     if (bootstrap) {

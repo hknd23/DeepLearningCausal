@@ -41,9 +41,10 @@ binary compliance variable.}
 \item{binary.outcome}{logical specifying predicted outcome variable will take
 binary values or proportions.}
 
-\item{bootstrap}{logical for bootstrapped PATT-C}
+\item{bootstrap}{logical for bootstrapped PATT-C.}
 
-\item{nboot}{number of bootstrapped samples. Only used if \code{bootstrap = FALSE}}
+\item{nboot}{number of bootstrapped samples. Only used with
+\code{bootstrap = FALSE}}
 }
 \value{
 results of t test as PATTC estimate.
