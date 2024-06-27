@@ -13,9 +13,6 @@ pattc_ensemble(
   SL.library = c("SL.glmnet", "SL.xgboost", "SL.ranger", "SL.nnet", "SL.glm"),
   ID = NULL,
   cluster = NULL,
-  bootse = FALSE,
-  bootp = FALSE,
-  bootn = 999,
   binary.outcome = FALSE,
   bootstrap = FALSE,
   nboot = 1000
@@ -41,18 +38,12 @@ binary compliance variable.}
 
 \item{cluster}{string for name of cluster variable.}
 
-\item{bootse}{logical for bootstrapped standard errors.}
-
-\item{bootp}{logical for bootstrapped p values.}
-
-\item{bootn}{number of bootstrap sample.}
-
 \item{binary.outcome}{logical specifying predicted outcome variable will take
 binary values or proportions.}
 
 \item{bootstrap}{logical for bootstrapped PATT-C}
 
-\item{nboot}{number of bootstrapped samples}
+\item{nboot}{number of bootstrapped samples. Only used if \code{bootstrap = FALSE}}
 }
 \value{
 results of t test as PATTC estimate.
@@ -82,9 +73,6 @@ pattc <- pattc_ensemble(response.formula = support_war ~ age + income +
                                 SL.library = c("SL.xgboost", "SL.nnet"),
                                 ID = NULL,
                                 cluster = NULL,
-                                bootse = FALSE,
-                                bootp = FALSE,
-                                bootn = 999,
                                 binary.outcome = FALSE)
 
 summary(pattc)
@@ -98,11 +86,9 @@ pattc_boot <- pattc_ensemble(response.formula = support_war ~ age + income +
                                 SL.library = c("SL.xgboost", "SL.nnet"),
                                 ID = NULL,
                                 cluster = NULL,
-                                bootse = FALSE,
-                                bootp = FALSE,
-                                bootn = 999,
                                 binary.outcome = FALSE,
-                                bootsrap = TRUE)
+                                bootsrap = TRUE,
+                                nboot = 1000)
 }
 
 }
