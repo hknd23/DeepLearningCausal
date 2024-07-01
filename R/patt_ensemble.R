@@ -365,13 +365,43 @@ pattc_ensemble <- function(response.formula,
                    pattc_t$method,
                    statistic)
   }}
-  model.out<-list("exp_data" = exp_data$exp_data,
+  model.out<-list("call" = response.formula,
+                  "treat_var" = treat.var,
+                  "compl_var" =  compl.var,
+                  "SL_Library" =  SL.Library,
+                  "exp_data" = exp_data$exp_data,
                   "pop_data" = pop_data$pop_data,
                   "complier_prediction" = compliers,
                   "pop_counterfactual" = counterfactuals,
                   "PATT_C" = pattc)
   return(model.out)
+  class(model.out)<-"pattc_ensemble"
 }
+
+#' print.pattc_ensemble
+#'
+#' @description
+#' Print method for \code{pattc_ensemble}
+#' @param model `pattc_ensemble` class object from \code{pattc_ensemble}
+#' @param ... additional parameter
+#'
+#' @return
+#' @export
+#'
+#' @examples
+print.pattc_ensemble <- function(model, ...){
+  cat('Method:\n')
+  print(model$PATT_C[[1]])
+  cat('Call:\n')
+  print(model$response_formula)
+  cat('Treatment Variable: ', model$treat_var)
+  cat('Compliance Variable: ', model$compl_var)
+  cat('SL Algorithm:\n')
+  print(model$SL_Library)
+  cat('Estimate:\n')
+  print(model$PATT_C[[2]])
+}
+
 
 
 
