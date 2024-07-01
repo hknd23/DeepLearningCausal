@@ -98,7 +98,7 @@ pattc_neural <- pattc_deepneural(response.formula = support_war ~ age + female +
                                cluster = NULL,
                                binary.outcome = FALSE)
 
-summary(pattc_neural)
+print(pattc_neural)
 
 pattc_neural_boot <- pattc_deepneural(response.formula = support_war ~ age + female +
                                income + education +  employed + married +
@@ -118,6 +118,9 @@ pattc_neural_boot <- pattc_deepneural(response.formula = support_war ~ age + fem
                                binary.outcome = FALSE,
                                bootstrap = TRUE,
                                nboot = 2000)
+
+print(pattc_neural_boot)
+
 }
 
 }

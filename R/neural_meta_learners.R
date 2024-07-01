@@ -44,6 +44,7 @@
 #'                                    linear.output = FALSE,
 #'                                    binary.outcome = FALSE)
 #'
+#' print(slearner_nn)
 #'
 #' # load dataset
 #' set.seed(123456)
@@ -60,6 +61,8 @@
 #'                                   hidden.layer = c(2,1),
 #'                                   linear.output = FALSE,
 #'                                   binary.outcome = FALSE)
+#'
+#' print(tlearner_nn)
 #'                                   }
 #'
 
@@ -204,7 +207,11 @@ metalearner_deepneural <- function(data,
       Y_hats <- data.frame("Y_hat0" = Y_hat_test_0,
                            "Y_hat1" = Y_hat_test_1)
 
-      learner_out <- list("CATEs" = score_meta,
+      learner_out <- list("call" = cov.formula,
+                          "treat_var" = treat.var,
+                          "algorithm" = algorithm,
+                          "hidden_layer" = hidden.layer,
+                          "CATEs" = score_meta,
                           "Y_hats" = Y_hats,
                           "Meta_Learner" = meta.learner.type,
                           "ml_model1" = m1_mod,
@@ -214,6 +221,35 @@ metalearner_deepneural <- function(data,
     setTxtProgressBar(pb, f)
   }
   close(pb)
+  class(learner_out) <- "metalearner_deepneural"
   return(learner_out)
+}
+
+#' print.metalearner_deepneural
+#'
+#' @description
+#' Print method for \code{metalearner_deepneural}
+#' @param model `metalearner_deepneural` class object from \code{metalearner_deepneural}
+#' @param ... additional parameter
+#'
+#' @return list of model results
+#' @export
+#'
+
+print.pattc_ensemble <- function(x, ...){
+  cat("Method:\n")
+  cat("Ensemble Meta Learner\n")
+  cat(x$Meta_Learner)
+  cat("Call:\n")
+  cat(x$call)
+  cat("\n")
+  cat("Treatment Variable: ", x$treat_var)
+  cat("\n")
+  cat("Neural Network Algorithm: ",x$algorithm)
+  cat("\n")
+  cat("Hidden Layers: ",x$hidden_layer)
+  cat("\n")
+  cat("CATEs percentiles:\n")
+  print(quantile(x$CATEs, c(.10 ,.25, .50 ,.75, .90)))
 }
 

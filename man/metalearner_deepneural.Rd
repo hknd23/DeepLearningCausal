@@ -71,6 +71,7 @@ slearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age + income +
                                    linear.output = FALSE,
                                    binary.outcome = FALSE)
 
+print(slearner_nn)
 
 # load dataset
 set.seed(123456)
@@ -87,6 +88,8 @@ tlearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +
                                   hidden.layer = c(2,1),
                                   linear.output = FALSE,
                                   binary.outcome = FALSE)
+
+print(tlearner_nn)
                                   }
 
 }

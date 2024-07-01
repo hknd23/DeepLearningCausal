@@ -236,7 +236,7 @@ pattc_counterfactuals<- function (pop.data,
 #'                                 cluster = NULL,
 #'                                 binary.outcome = FALSE)
 #'
-#' summary(pattc)
+#' print(pattc)
 #'
 #' pattc_boot <- pattc_ensemble(response.formula = support_war ~ age + income +
 #'                                 education + employed + job_loss,
@@ -250,8 +250,9 @@ pattc_counterfactuals<- function (pop.data,
 #'                                 binary.outcome = FALSE,
 #'                                 bootstrap = TRUE,
 #'                                 nboot = 1000)
-#' }
+#' print(pattc_boot)
 #'
+#' }
 
 pattc_ensemble <- function(response.formula,
                         exp.data,
@@ -386,21 +387,27 @@ pattc_ensemble <- function(response.formula,
 #' @param model `pattc_ensemble` class object from \code{pattc_ensemble}
 #' @param ... additional parameter
 #'
-#' @return
+#' @return #' @return list of model results
 #' @export
 #'
-#' @examples
+#'
 print.pattc_ensemble <- function(x, ...){
-  cat('Method:\n')
-  print(x$PATT_C[[1]])
-  cat('Call:\n')
-  print(x$response_formula)
-  cat('Treatment Variable: ', x$treat_var)
-  cat('Compliance Variable: ', x$compl_var)
-  cat('SL Algorithm:\n')
-  print(x$SL_library)
-  cat('Estimate:\n')
-  print(x$PATT_C[[2]])
+  cat("Method:\n")
+  cat("Super Learner Ensemble PATT-C\n")
+  cat("Call:\n")
+  cat(x$call)
+  cat("\n")
+  cat("Treatment Variable: ", x$treat_var)
+  cat("\n")
+  cat("Compliance Variable: ", x$compl_var)
+  cat("\n")
+  cat("SL Algorithms:\n")
+  cat(x$SL_library)
+  cat("\n")
+  cat("Estimate:\n")
+  cat(x$PATT_C[[1]])
+  cat("\n")
+  cat(x$PATT_C[[2]])
 }
 
 

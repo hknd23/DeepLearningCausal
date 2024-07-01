@@ -247,7 +247,7 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #'                                cluster = NULL,
 #'                                binary.outcome = FALSE)
 #'
-#' summary(pattc_neural)
+#' print(pattc_neural)
 #'
 #' pattc_neural_boot <- pattc_deepneural(response.formula = support_war ~ age + female +
 #'                                income + education +  employed + married +
@@ -267,6 +267,9 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #'                                binary.outcome = FALSE,
 #'                                bootstrap = TRUE,
 #'                                nboot = 2000)
+#'
+#' print(pattc_neural_boot)
+#'
 #' }
 #'
 pattc_deepneural <- function(response.formula,
@@ -380,10 +383,56 @@ pattc_deepneural <- function(response.formula,
                    pattc_t$method,
                    statistic)
     }}
-  model.out<-list("exp_data" = expdata$exp_data,
+  model.out<-list("call" = response.formula,
+                  "treat_var" = treat.var,
+                  "compl_var" =  compl.var,
+                  "compl_algorithm" = compl.algorithm,
+                  "response_algorithm" = response.algorithm,
+                  "compl_hidden_layer" = compl.hidden.layer,
+                  "response_hidden_layer" = response.hidden.layer,
+                  "compl_stepmax" = compl.stepmax,
+                  "response_stepmax" = compl.stepmax,
+                  "exp_data" = expdata$exp_data,
                   "pop_data" = popdata$pop_data,
                   "complier_prediction" = compliers,
                   "pop_counterfactual" = counterfactuals,
                   "PATT_C" = pattc)
+
+  class(model.out)<-"pattc_deepneural"
   return(model.out)
+}
+
+#' print.pattc_deepneural
+#'
+#' @description
+#' Print method for \code{pattc_deepneural}
+#' @param model `pattc_deepneural` class object from \code{pattc_deepneural}
+#' @param ... additional parameter
+#'
+#' @return list of model results
+#' @export
+#'
+
+print.pattc_ensemble <- function(x, ...){
+  cat("Method:\n")
+  cat("Deep Neural PATT-C\n")
+  cat("Call:\n")
+  cat(x$call)
+  cat("\n")
+  cat("Treatment Variable: ", x$treat_var)
+  cat("\n")
+  cat("Compliance Variable: ", x$compl_var)
+  cat("\n")
+  cat("Neural Network Algorithm:\n")
+  cat("Compliance Model: ",x$compl_algorithm)
+  cat("; Response Model: ",x$response_algorithm)
+  cat("\n")
+  cat("Hidden Layers:\n")
+  cat("Compliance Model: ",x$compl_hidden_layer)
+  cat("; Response Model: ",x$response_hidden_layer)
+  cat("\n")
+  cat("Estimate:\n")
+  cat(x$PATT_C[[1]])
+  cat("\n")
+  cat(x$PATT_C[[2]])
 }

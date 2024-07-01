@@ -76,7 +76,7 @@ pattc <- pattc_ensemble(response.formula = support_war ~ age + income +
                                 cluster = NULL,
                                 binary.outcome = FALSE)
 
-summary(pattc)
+print(pattc)
 
 pattc_boot <- pattc_ensemble(response.formula = support_war ~ age + income +
                                 education + employed + job_loss,
@@ -90,6 +90,7 @@ pattc_boot <- pattc_ensemble(response.formula = support_war ~ age + income +
                                 binary.outcome = FALSE,
                                 bootstrap = TRUE,
                                 nboot = 1000)
-}
+print(pattc_boot)
 
+}
 }

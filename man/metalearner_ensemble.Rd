@@ -59,6 +59,7 @@ slearner <- metalearner_ensemble(cov.formula = support_war ~ age +
                                 learners = c("SL.glm"),
                                 nfolds = 5,
                                 binary.outcome = FALSE)
+print(slearner)
 
 \donttest{
 # estimate CATEs with T Learner
@@ -72,6 +73,8 @@ tlearner <- metalearner_ensemble(cov.formula = support_war ~ age + income +
                                                "SL.nnet"),
                                   nfolds = 5,
                                   binary.outcome = FALSE)
+
+print(tlearner)
                                   }
 
 }
