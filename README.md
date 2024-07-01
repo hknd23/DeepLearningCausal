@@ -143,8 +143,6 @@ We illustrate the functionality of **DeepLearningCausal** using the two survey r
 The CATE estimation results obtained from the S- and T-learner is displayed as follows: 
 <<Irvin, add the two CATE estimation figures here from the S- and T-learner that Nguyen extracted and which is in the word file (see page 7) that I had sent earlier)
 
-#### Deep Neural networks for Meta-Learners
-The function metalearner_deepneural estimates CATE for the S- and T-Learner using deep neural networks.
 
 #### Super Learned Weighted Ensemble for PATT-C Estimator
 `PATTC_ensemble` estimates the PATT for experimental data with noncompliance using the Super Learner Weighted Ensemble. The example below shows the applicability of this function for a small number of observations (N) from the two survey response datasets described earlier.
@@ -154,6 +152,10 @@ The function metalearner_deepneural estimates CATE for the S- and T-Learner usin
 The results from estimating the PATT from the PATT_C estimator is illustrated below: 
 <<Irvin, add the PATTC estimation figure here from the word file (see page 9) that I had sent earlier)
 
+#### Deep Neural networks for Meta-Learners
+`metalearner_deepneural` estimates the CATE from the S- and T-Learner using deep neural networks.
+
+
 #### Deep Neural Networks for PATT-C Estimator
-The function PATTC_deepneural estimates the PATT for experimental data with noncompliance using deep neural networks.
+`PATTC_deepneural` estimates the PATT from the PATT-C estimator for experimental data with noncompliance using deep neural networks.
 
