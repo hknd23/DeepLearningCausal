@@ -129,17 +129,30 @@ Or with devtools:
 devtools::install_github("hknd23/DeepLearningCausal")
 ```
 
-#### Super Learner Weighted Ensemble for Meta-learners
-The function metalearner_ensemble estimates the CATE for the S- and T-Learner using the Super Learner Weighted Ensemble.
+#### Using the Package
 
+We illustrate the functionality of **DeepLearningCausal** using the two survey response datasets summarized above. The data from these two survey response datasets is included and briefly described in the manual's package 
 
-#### Super Learned Weighted Ensemble for PATT-C Estimator
-The function PATTC_ensemble estimates the PATT for experimental data with noncompliance using the Super Learner Weighted Ensemble.
+#### Super Learner Weighted Ensemble for Meta-Leaners
 
+`metalearner_ensemble` estimates the CATE from the S-learner and T-learner using the super learner weighted ensemble. To allow for easy replication, the example below shows the applicability of this function for a small number of observations (N) from our survey sample that incorporates a survey experiment.
 
+`metalearner_ensemble` for the S-learner with N=50(?) is here <<Nguyen, add the link to the example with few observations for the S-learner where it states *here*>>
+`metalearner_ensemble` for the T-learner with N=50 is here <<Nguyen, add the link to the example with few observations for the S-learner where it states *here*>>
+
+The CATE estimation results obtained from the S- and T-learner is displayed as follows: 
+<<Irvin, add the two CATE estimation figures here from the S- and T-learner that Nguyen extracted and which is in the word file (see page 7) that I had sent earlier)
 
 #### Deep Neural networks for Meta-Learners
 The function metalearner_deepneural estimates CATE for the S- and T-Learner using deep neural networks.
+
+#### Super Learned Weighted Ensemble for PATT-C Estimator
+`PATTC_ensemble` estimates the PATT for experimental data with noncompliance using the Super Learner Weighted Ensemble. The example below shows the applicability of this function for a small number of observations (N) from the two survey response datasets described earlier.
+
+`PATTC_ensemble` is here <<Nguyen, add the link to the example with few observations for the PATT_C where it states *here*>>
+
+The results from estimating the PATT from the PATT_C estimator is illustrated below: 
+<<Irvin, add the PATTC estimation figure here from the word file (see page 9) that I had sent earlier)
 
 #### Deep Neural Networks for PATT-C Estimator
 The function PATTC_deepneural estimates the PATT for experimental data with noncompliance using deep neural networks.
