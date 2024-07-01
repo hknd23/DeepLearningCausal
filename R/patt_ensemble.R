@@ -366,7 +366,7 @@ pattc_ensemble <- function(response.formula,
                    pattc_t$method,
                    statistic)
   }}
-  model.out<-list("call" = response.formula,
+  model.out<-list("formula" = response.formula,
                   "treat_var" = treat.var,
                   "compl_var" =  compl.var,
                   "SL_library" =  SL.library,
@@ -394,8 +394,8 @@ pattc_ensemble <- function(response.formula,
 print.pattc_ensemble <- function(x, ...){
   cat("Method:\n")
   cat("Super Learner Ensemble PATT-C\n")
-  cat("Call:\n")
-  cat(x$call)
+  cat("Formula:\n")
+  cat(deparse(x$formula))
   cat("\n")
   cat("Treatment Variable: ", x$treat_var)
   cat("\n")

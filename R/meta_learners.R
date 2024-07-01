@@ -234,7 +234,7 @@ metalearner_ensemble <- function(data,
     Y_hats <- data.frame("Y_hat0" = Y_hat_test_0,
                          "Y_hat1" = Y_hat_test_1)
 
-    learner_out <- list("call" = cov.formula,
+    learner_out <- list("formula" = cov.formula,
                         "treat_var" = treat.var,
                         "CATEs" = score_meta,
                         "Y_hats" = Y_hats,
@@ -266,8 +266,8 @@ print.pattc_ensemble <- function(x, ...){
   cat("Method:\n")
   cat("Ensemble Meta Learner\n")
   cat(x$Meta_Learner)
-  cat("Call:\n")
-  cat(x$call)
+  cat("Formula:\n")
+  cat(deparse(x$formula))
   cat("\n")
   cat("Treatment Variable: ", x$treat_var)
   cat("\n")

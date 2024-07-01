@@ -383,7 +383,7 @@ pattc_deepneural <- function(response.formula,
                    pattc_t$method,
                    statistic)
     }}
-  model.out<-list("call" = response.formula,
+  model.out<-list("formula" = response.formula,
                   "treat_var" = treat.var,
                   "compl_var" =  compl.var,
                   "compl_algorithm" = compl.algorithm,
@@ -416,8 +416,8 @@ pattc_deepneural <- function(response.formula,
 print.pattc_ensemble <- function(x, ...){
   cat("Method:\n")
   cat("Deep Neural PATT-C\n")
-  cat("Call:\n")
-  cat(x$call)
+  cat("Formula:\n")
+  cat(deparse(x$formula))
   cat("\n")
   cat("Treatment Variable: ", x$treat_var)
   cat("\n")
