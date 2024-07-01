@@ -374,8 +374,9 @@ pattc_ensemble <- function(response.formula,
                   "complier_prediction" = compliers,
                   "pop_counterfactual" = counterfactuals,
                   "PATT_C" = pattc)
-  return(model.out)
+
   class(model.out)<-"pattc_ensemble"
+  return(model.out)
 }
 
 #' print.pattc_ensemble
@@ -389,17 +390,17 @@ pattc_ensemble <- function(response.formula,
 #' @export
 #'
 #' @examples
-print.pattc_ensemble <- function(model, ...){
+print.pattc_ensemble <- function(x, ...){
   cat('Method:\n')
-  print(model$PATT_C[[1]])
+  print(x$PATT_C[[1]])
   cat('Call:\n')
-  print(model$response_formula)
-  cat('Treatment Variable: ', model$treat_var)
-  cat('Compliance Variable: ', model$compl_var)
+  print(x$response_formula)
+  cat('Treatment Variable: ', x$treat_var)
+  cat('Compliance Variable: ', x$compl_var)
   cat('SL Algorithm:\n')
-  print(model$SL_library)
+  print(x$SL_library)
   cat('Estimate:\n')
-  print(model$PATT_C[[2]])
+  print(x$PATT_C[[2]])
 }
 
 
