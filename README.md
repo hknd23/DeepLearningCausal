@@ -138,6 +138,7 @@ We illustrate the functionality of **DeepLearningCausal** using the two survey r
 `metalearner_ensemble` estimates the CATE from the S-learner and T-learner using the super learner weighted ensemble. To allow for easy replication, the example below shows the applicability of this function for a small number of observations (N) from our survey sample that incorporates a survey experiment.
 
 `metalearner_ensemble` for the S-learner with N=50(?) is here <<Nguyen, add the link to the example with few observations for the S-learner where it states *here*>>
+
 `metalearner_ensemble` for the T-learner with N=50 is here <<Nguyen, add the link to the example with few observations for the S-learner where it states *here*>>
 
 The CATE estimation results obtained from the S- and T-learner is displayed as follows: 
