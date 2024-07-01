@@ -368,7 +368,7 @@ pattc_ensemble <- function(response.formula,
   model.out<-list("call" = response.formula,
                   "treat_var" = treat.var,
                   "compl_var" =  compl.var,
-                  "SL_Library" =  SL.Library,
+                  "SL_library" =  SL.library,
                   "exp_data" = exp_data$exp_data,
                   "pop_data" = pop_data$pop_data,
                   "complier_prediction" = compliers,
@@ -397,7 +397,7 @@ print.pattc_ensemble <- function(model, ...){
   cat('Treatment Variable: ', model$treat_var)
   cat('Compliance Variable: ', model$compl_var)
   cat('SL Algorithm:\n')
-  print(model$SL_Library)
+  print(model$SL_library)
   cat('Estimate:\n')
   print(model$PATT_C[[2]])
 }
