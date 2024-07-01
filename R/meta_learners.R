@@ -255,7 +255,7 @@ metalearner_ensemble <- function(data,
 #'
 #' @description
 #' Print method for \code{metalearner_ensemble}
-#' @param model `metalearner_ensemble` class object from \code{metalearner_ensemble}
+#' @param x `metalearner_ensemble` class object from \code{metalearner_ensemble}
 #' @param ... additional parameter
 #'
 #' @return list of model results

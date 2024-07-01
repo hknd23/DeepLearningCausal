@@ -229,7 +229,7 @@ metalearner_deepneural <- function(data,
 #'
 #' @description
 #' Print method for \code{metalearner_deepneural}
-#' @param model `metalearner_deepneural` class object from \code{metalearner_deepneural}
+#' @param x `metalearner_deepneural` class object from \code{metalearner_deepneural}
 #' @param ... additional parameter
 #'
 #' @return list of model results

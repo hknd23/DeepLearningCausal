@@ -14,16 +14,16 @@
 \method{print}{pattc_ensemble}(x, ...)
 }
 \arguments{
-\item{...}{additional parameter}
+\item{x}{\code{pattc_deepneural} class object from \code{pattc_deepneural}}
 
-\item{model}{\code{pattc_deepneural} class object from \code{pattc_deepneural}}
+\item{...}{additional parameter}
 }
 \value{
 list of model results
 
 list of model results
 
-#' @return list of model results
+list of model results
 
 list of model results
 }

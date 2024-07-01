@@ -384,10 +384,10 @@ pattc_ensemble <- function(response.formula,
 #'
 #' @description
 #' Print method for \code{pattc_ensemble}
-#' @param model `pattc_ensemble` class object from \code{pattc_ensemble}
+#' @param x `pattc_ensemble` class object from \code{pattc_ensemble}
 #' @param ... additional parameter
 #'
-#' @return #' @return list of model results
+#' @return list of model results
 #' @export
 #'
 #'

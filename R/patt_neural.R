@@ -406,7 +406,7 @@ pattc_deepneural <- function(response.formula,
 #'
 #' @description
 #' Print method for \code{pattc_deepneural}
-#' @param model `pattc_deepneural` class object from \code{pattc_deepneural}
+#' @param x `pattc_deepneural` class object from \code{pattc_deepneural}
 #' @param ... additional parameter
 #'
 #' @return list of model results
