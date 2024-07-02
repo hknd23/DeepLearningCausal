@@ -7,3 +7,5 @@ DeepLearningCausal.Rcheck/
 test_code/
 data-raw/
 *.gz
+CRAN-SUBMISSION
+cran-comments.md

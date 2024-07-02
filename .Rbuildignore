@@ -1,7 +1,10 @@
 ^.*\.Rproj$
+^.*\.RDS$
 ^\.Rproj\.user$
 ^data-raw$
 ^test_code$
 ^.github$
 ^DeepLearningCausal
 ^LICENSE
+^CRAN-SUBMISSION$
+^cran-comments\.md$

@@ -262,7 +262,7 @@ metalearner_ensemble <- function(data,
 #' @export
 #'
 
-print.pattc_ensemble <- function(x, ...){
+print.metalearner_ensemble <- function(x, ...){
   cat("Method:\n")
   cat("Ensemble Meta Learner\n")
   cat(x$Meta_Learner)

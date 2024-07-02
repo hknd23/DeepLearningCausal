@@ -405,7 +405,7 @@ print.pattc_ensemble <- function(x, ...){
   cat(x$SL_library)
   cat("\n")
   cat("Estimate:\n")
-  cat(x$PATT_C[[1]])
+  print(x$PATT_C[[1]])
   cat("\n")
   cat(x$PATT_C[[2]])
 }

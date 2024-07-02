@@ -413,7 +413,7 @@ pattc_deepneural <- function(response.formula,
 #' @export
 #'
 
-print.pattc_ensemble <- function(x, ...){
+print.pattc_deepneural <- function(x, ...){
   cat("Method:\n")
   cat("Deep Neural PATT-C\n")
   cat("Formula:\n")
@@ -432,7 +432,7 @@ print.pattc_ensemble <- function(x, ...){
   cat("; Response Model: ",x$response_hidden_layer)
   cat("\n")
   cat("Estimate:\n")
-  cat(x$PATT_C[[1]])
+  print(x$PATT_C[[1]])
   cat("\n")
   cat(x$PATT_C[[2]])
 }

@@ -236,7 +236,7 @@ metalearner_deepneural <- function(data,
 #' @export
 #'
 
-print.pattc_ensemble <- function(x, ...){
+print.metalearner_deepneural <- function(x, ...){
   cat("Method:\n")
   cat("Ensemble Meta Learner\n")
   cat(x$Meta_Learner)
