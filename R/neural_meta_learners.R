@@ -215,7 +215,8 @@ metalearner_deepneural <- function(data,
                           "Y_hats" = Y_hats,
                           "Meta_Learner" = meta.learner.type,
                           "ml_model1" = m1_mod,
-                          "ml_model0" = m0_mod)
+                          "ml_model0" = m0_mod,
+                          "data" = data)
     }
     Sys.sleep(.05)
     setTxtProgressBar(pb, f)
@@ -238,14 +239,13 @@ metalearner_deepneural <- function(data,
 
 print.metalearner_deepneural <- function(x, ...){
   cat("Method:\n")
-  cat("Ensemble Meta Learner\n")
-  cat(x$Meta_Learner)
+  cat("Deep Neural ", x$Meta_Learner)
   cat("Formula:\n")
   cat(deparse(x$formula))
   cat("\n")
   cat("Treatment Variable: ", x$treat_var)
   cat("\n")
-  cat("Neural Network Algorithm: ",x$algorithm)
+  cat("Neural Network Algorithm: ", x$algorithm)
   cat("\n")
   cat("Hidden Layers: ",x$hidden_layer)
   cat("\n")

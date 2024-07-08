@@ -9,7 +9,7 @@ metalearner_ensemble(
   cov.formula,
   treat.var,
   meta.learner.type,
-  learners = c("SL.glmnet", "SL.xgboost", "SL.ranger", "SL.nnet"),
+  SL.learners = c("SL.glmnet", "SL.xgboost", "SL.ranger", "SL.nnet"),
   nfolds = 5,
   binary.outcome = FALSE
 )
@@ -24,7 +24,7 @@ metalearner_ensemble(
 \item{meta.learner.type}{string specifying is the S-learner and
 \code{"T.Learner"} for the T-learner model.}
 
-\item{learners}{vector for super learner ensemble that includes extreme gradient
+\item{SL.learners}{vector for super learner ensemble that includes extreme gradient
 boosting, glmnet, random forest, and neural nets.}
 
 \item{nfolds}{number of folds for cross-validation. Currently supports up to
@@ -56,7 +56,7 @@ slearner <- metalearner_ensemble(cov.formula = support_war ~ age +
                                 data = exp_data,
                                 treat.var = "strong_leader",
                                 meta.learner.type = "S.Learner",
-                                learners = c("SL.glm"),
+                                SL.learners = c("SL.glm"),
                                 nfolds = 5,
                                 binary.outcome = FALSE)
 print(slearner)
@@ -69,7 +69,7 @@ tlearner <- metalearner_ensemble(cov.formula = support_war ~ age + income +
                                   data = exp_data,
                                   treat.var = "strong_leader",
                                   meta.learner.type = "T.Learner",
-                                  learners = c("SL.xgboost","SL.ranger",
+                                  SL.learners = c("SL.xgboost","SL.ranger",
                                                "SL.nnet"),
                                   nfolds = 5,
                                   binary.outcome = FALSE)
