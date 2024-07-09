@@ -166,11 +166,12 @@ metalearner_deepneural <- function(data,
 
       learner_out <- list("formula" = cov.formula,
                           "treat_var" = treat.var,
+                          "algorithm" = algorithm,
+                          "hidden_layer" = hidden.layer,
                           "CATEs" = score_meta,
                           "Y_hats" = Y_hats,
                           "Meta_Learner" = meta.learner.type,
                           "ml_model" = m_mod,
-                          "SL_learners" = SL.learners,
                           "data" = data)
     }
     if(meta.learner.type == "T.Learner"){
