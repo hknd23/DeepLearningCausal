@@ -172,11 +172,14 @@ metalearner_ensemble <- function(data,
     Y_hats <- data.frame("Y_hat0" = Y_hat_test_0,
                          "Y_hat1" = Y_hat_test_1)
 
-    learner_out <- list("CATEs" = score_meta,
+    learner_out <- list("formula" = cov.formula,
+                        "treat_var" = treat.var,
+                        "CATEs" = score_meta,
                         "Y_hats" = Y_hats,
                         "Meta_Learner" = meta.learner.type,
-                        "ml_model" = m_mod)
-
+                        "ml_model" = m_mod,
+                        "SL_learners" = SL.learners,
+                        "data" = data)
     }
 
     if(meta.learner.type == "T.Learner"){
