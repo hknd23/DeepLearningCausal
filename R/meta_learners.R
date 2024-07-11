@@ -274,9 +274,6 @@ print.metalearner_ensemble <- function(x, ...){
   cat("\n")
   cat("Treatment Variable: ", x$treat_var)
   cat("\n")
-  cat("SL Algorithms:\n")
-  cat(x$SL_learners)
-  cat("\n")
   cat("CATEs percentiles:\n")
   print(quantile(x$CATEs, c(.10 ,.25, .50 ,.75, .90)))
 }

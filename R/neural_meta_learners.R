@@ -250,10 +250,6 @@ print.metalearner_deepneural <- function(x, ...){
   cat("\n")
   cat("Treatment Variable: ", x$treat_var)
   cat("\n")
-  cat("Neural Network Algorithm: ", x$algorithm)
-  cat("\n")
-  cat("Hidden Layers: ",x$hidden_layer)
-  cat("\n")
   cat("CATEs percentiles:\n")
   print(quantile(x$CATEs, c(.10 ,.25, .50 ,.75, .90)))
 }
