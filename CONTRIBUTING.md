@@ -13,14 +13,14 @@ and the contribution process easy and effective. We will reciprocate by fixing b
 
 We treat the open-source community with respect and hold ourselves as well as other
 contributors to high standards of communication. By contributing to this project, you agree to
-uphold our following [Code of Conduct]():
+uphold our following [Code of Conduct](https://github.com/hknd23/DeepLearningCausal/blob/main/code_of_conduct.md):
 
 - Focusing on what is best for the community.
 - Respect differing viewpoints and accept constructive criticisms.
 - Avoid conduct that could reasonably be considered inappropriate in a professional setting.
 
 Our responsibilities as maintainers include the right to remove, edit, or reject comments,
-commits, code, issues, and other contributions that are not aligned to this [Code of Conduct](https://github.com/hknd23/DeepLearningCausal/blob/main/CODE_OF_CONDUCT.md).
+commits, code, issues, and other contributions that are not aligned to this [Code of Conduct](https://github.com/hknd23/DeepLearningCausal/blob/main/code_of_conduct.md).
 
 ## Bug Reports
 
