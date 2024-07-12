@@ -9,3 +9,4 @@ data-raw/
 *.gz
 CRAN-SUBMISSION
 cran-comments.md
+*.RDS

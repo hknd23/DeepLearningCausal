@@ -10,7 +10,7 @@ pattc_ensemble(
   pop.data,
   treat.var,
   compl.var,
-  SL.library = c("SL.glmnet", "SL.xgboost", "SL.ranger", "SL.nnet", "SL.glm"),
+  SL.learners = c("SL.glmnet", "SL.xgboost", "SL.ranger", "SL.nnet", "SL.glm"),
   ID = NULL,
   cluster = NULL,
   binary.outcome = FALSE,
@@ -32,7 +32,7 @@ binary compliance variable.}
 
 \item{compl.var}{string for binary compliance variable.}
 
-\item{SL.library}{vector of names of ML algorithms used for ensemble model.}
+\item{SL.learners}{vector of names of ML algorithms used for ensemble model.}
 
 \item{ID}{string for name of identifier.}
 
@@ -71,7 +71,7 @@ pattc <- pattc_ensemble(response.formula = support_war ~ age + income +
                                 pop.data = pop_data,
                                 treat.var = "strong_leader",
                                 compl.var = "compliance",
-                                SL.library = c("SL.glm", "SL.nnet"),
+                                SL.learners = c("SL.glm", "SL.nnet"),
                                 ID = NULL,
                                 cluster = NULL,
                                 binary.outcome = FALSE)
@@ -84,7 +84,7 @@ pattc_boot <- pattc_ensemble(response.formula = support_war ~ age + income +
                                 pop.data = pop_data,
                                 treat.var = "strong_leader",
                                 compl.var = "compliance",
-                                SL.library = c("SL.glm", "SL.nnet"),
+                                SL.learners = c("SL.glm", "SL.nnet"),
                                 ID = NULL,
                                 cluster = NULL,
                                 binary.outcome = FALSE,

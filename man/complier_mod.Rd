@@ -9,7 +9,7 @@ complier_mod(
   complier.formula,
   treat.var,
   ID = NULL,
-  SL.library = c("SL.glmnet", "SL.xgboost", "SL.ranger", "SL.nnet", "SL.glm")
+  SL.learners = c("SL.glmnet", "SL.xgboost", "SL.ranger", "SL.nnet", "SL.glm")
 )
 }
 \arguments{
@@ -22,7 +22,7 @@ complier variable and covariates}
 
 \item{ID}{string for name of indentifier variable.}
 
-\item{SL.library}{vector of strings for ML classifier algorithms. If left
+\item{SL.learners}{vector of strings for ML classifier algorithms. If left
 \code{NULL} employs extreme gradient boosting, elastic net regression, random
 forest, and neural nets.}
 }

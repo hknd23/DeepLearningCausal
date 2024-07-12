@@ -11,7 +11,7 @@ response_model(
   exp.compliers,
   family = "binomial",
   ID = NULL,
-  SL.library = c("SL.glmnet", "SL.xgboost", "SL.ranger", "SL.nnet", "SL.glm")
+  SL.learners = c("SL.glmnet", "SL.xgboost", "SL.ranger", "SL.nnet", "SL.glm")
 )
 }
 \arguments{
@@ -29,7 +29,7 @@ binary outcome variable and covariates}
 
 \item{ID}{string for identifier variable.}
 
-\item{SL.library}{vector of names of ML algorithms used for ensemble model.}
+\item{SL.learners}{vector of names of ML algorithms used for ensemble model.}
 }
 \value{
 trained response model.
