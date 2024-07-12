@@ -126,7 +126,7 @@ response_model <- function(response.formula,
 
   response.mod <- SuperLearner::SuperLearner(Y = Y.exp.response,
                                X = X.exp.response,
-                               SL.learners = SL.learners,
+                               SL.library = SL.learners,
                                family = family,
                                id = ID)
   return(response.mod)
