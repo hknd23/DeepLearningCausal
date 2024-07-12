@@ -7,10 +7,12 @@
 popcall(
   response.formula,
   compl.var,
+  treat.var,
   pop.data,
   weights = NULL,
   cluster = NULL,
-  ID = NULL
+  ID = NULL,
+  patt = TRUE
 )
 }
 \arguments{
@@ -19,6 +21,8 @@ variable and covariates}
 
 \item{compl.var}{string for complier variable}
 
+\item{treat.var}{string for treatmet variable}
+
 \item{pop.data}{\code{data.frame} of experimental variable}
 
 \item{weights}{observation weights}
@@ -26,6 +30,8 @@ variable and covariates}
 \item{cluster}{clustering variable}
 
 \item{ID}{identifier variable}
+
+\item{patt}{logical for patt, subsetting population treated observations}
 }
 \value{
 list of processed dataset

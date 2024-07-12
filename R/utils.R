@@ -72,17 +72,24 @@ expcall <- function(response.formula,
 #' @param weights observation weights
 #' @param cluster clustering variable
 #' @param ID identifier variable
-#'
+#' @param treat.var string for treatmet variable
+#' @param patt logical for patt, subsetting population treated observations
 #' @return list of processed dataset
 #' @keywords internal
 
 popcall <- function(response.formula,
                     compl.var,
+                    treat.var,
                     pop.data,
                     weights = NULL,
                     cluster = NULL,
-                    ID = NULL)
+                    ID = NULL,
+                    patt = TRUE)
 {
+  if (patt){
+    pop.data$Treat <- pop.data[,treat.var]
+    pop.data <- pop.data[which(pop.data$Treat==1),]
+  }
   if (!is.null(ID)){
     rownames(pop.data) <- pop.data[,ID]
   }

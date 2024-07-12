@@ -276,6 +276,7 @@ pattc_ensemble <- function(response.formula,
 
   pop_data <- popcall(response.formula,
                       compl.var = compl.var,
+                      treat.var = treat.var,
                       pop.data = pop.data,
                       ID = ID)
 

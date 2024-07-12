@@ -298,6 +298,7 @@ pattc_deepneural <- function(response.formula,
 
   popdata <-popcall(response.formula,
                     compl.var = compl.var,
+                    treat.var = treat.var,
                     pop.data = pop.data,
                     ID = ID)
 
