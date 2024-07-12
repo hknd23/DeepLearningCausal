@@ -36,7 +36,7 @@ complier_mod <- function(exp.data,
 
   complier.mod <- SuperLearner::SuperLearner(Y = Ycompl,
                                              X = Xcompl,
-                                             SL.learners = SL.learners,
+                                             SL.library = SL.learners,
                                              id = ID,
                                              family = "binomial")
   return(complier.mod)
