@@ -149,7 +149,7 @@ The CATE estimation results obtained from the S- and T-learner is displayed as f
 #### Super Learned Weighted Ensemble for PATT-C Estimator
 `PATTC_ensemble` estimates the PATT for experimental data with noncompliance using the Super Learner Weighted Ensemble. The example below shows the applicability of this function for a small number of observations (N) from the two survey response datasets described earlier.
 
-`PATTC_ensemble` is [here](/tutorial.md#deep-ensemble-patt-c).
+`PATTC_ensemble` is [here](/tutorial.md#ensemble-patt-c).
 
 The results from estimating the PATT from the PATT_C estimator are illustrated below: 
 <<Irvin, add the PATTC estimation figure here from the word file (see page 9) that I had sent earlier)
