@@ -91,6 +91,7 @@ data.frame(tlearner_en$CATEs) %>% ggplot( aes(x= tlearner_en.CATEs)) +
   geom_histogram(alpha = 0.6, position = 'identity')+
   xlab("CATEs (S Learner)")+ylab("")
 ```
+
 ## Deep Neural Meta Learners
 
 ### Deep Neural S Learner
@@ -136,6 +137,7 @@ data.frame(tlearner_nn$CATEs) %>% ggplot( aes(x= tlearner_nn.CATEs)) +
   geom_histogram(alpha = 0.6, position = 'identity')+
   xlab("CATEs (S Learner)")+ylab("")
 ```
+
 ## Ensemble PATT-C
 
 ```{r pattcen, warning=FALSE}
@@ -168,6 +170,7 @@ patt_en_preds %>%
   theme(legend.position = "bottom")+
   theme(legend.title=element_blank())
 ```
+
 ### Bootstrapped Ensemble PATT-C
 
 For bootstrapped PATT-C users can specify arguments `bootstrap = TRUE` and number
@@ -186,6 +189,7 @@ pattc_en_b <- pattc_ensemble(response.formula = response_formula,
             bootstrap = TRUE, nboot = 5000)
 print(pattc_en_b)
 ```
+
 ## Deep Neural PATT-C
 
 ```{r nnpatt}
@@ -217,6 +221,7 @@ patt_nn_preds %>%
   theme(legend.position = "bottom")+
   theme(legend.title=element_blank())
 ```
+
 ### Bootstrapped Deep Neural PATT-C
 
 For bootstrapped PATT-C, use `bootstrap = TRUE` and number of iterations with `nboot = 5000`. 
