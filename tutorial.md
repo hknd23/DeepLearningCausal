@@ -178,8 +178,7 @@ data.frame(tlearner_en$CATEs) %>% ggplot( aes(x= tlearner_en.CATEs)) +
 
 ![](tutorial_files/figure-gfm/visualst-2.png)<!-- -->
 
-## Deep Neural
-Meta Learners
+## Deep Neural Meta Learners
 
 ### Deep Neural S Learner
 
