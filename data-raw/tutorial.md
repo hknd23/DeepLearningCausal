@@ -56,7 +56,7 @@ print(slearner_en)
 
 ## Deep Neural Meta Learners
 
-```{r nnslearner}
+```r
 slearner_nn <- metalearner_deepneural(cov.formula = response_formula,
                data = exp_data_full, treat.var = "strong_leader",
                meta.learner.type = "S.Learner",
@@ -69,7 +69,7 @@ print(slearner_nn)
 
 For the T Learner, use `meta.learner.type = "T.Learner"`: 
 
-```{r nntlearner, echo=FALSE}
+```r
 tlearner_nn <- metalearner_deepneural(cov.formula = response_formula,
                data = exp_data_full, treat.var = "strong_leader",
                meta.learner.type = "T.Learner", stepmax = 1e+9, 
@@ -81,7 +81,7 @@ print(tlearner_nn)
 
 ## Ensemble PATT-C
 
-```{r nnmeta}
+```r
 pattc_en <- pattc_ensemble(response.formula = response_formula,
             exp.data = exp_data_full, pop.data = pop_data_full,
             treat.var = "strong_leader", compl.var = "compliance",
