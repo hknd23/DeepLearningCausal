@@ -11,65 +11,6 @@ package.
 devtools::install_github("hknd23/DeepLearningCausal",force = TRUE)
 ```
 
-    ## Downloading GitHub repo hknd23/DeepLearningCausal@HEAD
-
-    ## stringi   (1.7.8  -> 1.8.4 ) [CRAN]
-    ## cli       (3.6.0  -> 3.6.3 ) [CRAN]
-    ## purrr     (1.0.1  -> 1.0.2 ) [CRAN]
-    ## glue      (1.6.2  -> 1.7.0 ) [CRAN]
-    ## rlang     (1.1.0  -> 1.1.4 ) [CRAN]
-    ## broom     (1.0.0  -> 1.0.6 ) [CRAN]
-    ## fs        (1.5.2  -> 1.6.4 ) [CRAN]
-    ## cachem    (1.0.6  -> 1.1.0 ) [CRAN]
-    ## yaml      (2.3.5  -> 2.3.9 ) [CRAN]
-    ## xfun      (0.31   -> 0.45  ) [CRAN]
-    ## fastmap   (1.1.0  -> 1.2.0 ) [CRAN]
-    ## digest    (0.6.33 -> 0.6.36) [CRAN]
-    ## knitr     (1.39   -> 1.48  ) [CRAN]
-    ## rmarkdown (2.14   -> 2.27  ) [CRAN]
-
-    ## Installing 14 packages: stringi, cli, purrr, glue, rlang, broom, fs, cachem, yaml, xfun, fastmap, digest, knitr, rmarkdown
-
-    ## Installing packages into 'C:/Users/nguye/AppData/Local/R/win-library/4.2'
-    ## (as 'lib' is unspecified)
-
-    ## 
-    ##   There are binary versions available but the source versions are later:
-    ##           binary source needs_compilation
-    ## stringi    1.8.3  1.8.4              TRUE
-    ## cli        3.6.2  3.6.3              TRUE
-    ## rlang      1.1.3  1.1.4              TRUE
-    ## broom      1.0.5  1.0.6             FALSE
-    ## fs         1.6.3  1.6.4              TRUE
-    ## cachem     1.0.8  1.1.0              TRUE
-    ## yaml       2.3.8  2.3.9              TRUE
-    ## xfun        0.43   0.45              TRUE
-    ## fastmap    1.1.1  1.2.0              TRUE
-    ## digest    0.6.35 0.6.36              TRUE
-    ## knitr       1.46   1.48             FALSE
-    ## rmarkdown   2.26   2.27             FALSE
-    ## 
-    ## package 'purrr' successfully unpacked and MD5 sums checked
-    ## package 'glue' successfully unpacked and MD5 sums checked
-    ## 
-    ## The downloaded binary packages are in
-    ##  C:\Users\nguye\AppData\Local\Temp\RtmpmuGP6B\downloaded_packages
-
-    ## installing the source packages 'stringi', 'cli', 'rlang', 'broom', 'fs', 'cachem', 'yaml', 'xfun', 'fastmap', 'digest', 'knitr', 'rmarkdown'
-
-    ## ── R CMD build ─────────────────────────────────────────────────────────────────
-    ##          checking for file 'C:\Users\nguye\AppData\Local\Temp\RtmpmuGP6B\remotes305c379c620f\hknd23-DeepLearningCausal-365acae/DESCRIPTION' ...  ✔  checking for file 'C:\Users\nguye\AppData\Local\Temp\RtmpmuGP6B\remotes305c379c620f\hknd23-DeepLearningCausal-365acae/DESCRIPTION'
-    ##       ─  preparing 'DeepLearningCausal': (455ms)
-    ##    checking DESCRIPTION meta-information ...  ✔  checking DESCRIPTION meta-information
-    ##       ─  checking for LF line-endings in source and make files and shell scripts
-    ##   ─  checking for empty or unneeded directories
-    ##   ─  building 'DeepLearningCausal_0.0.104.tar.gz'
-    ##      
-    ## 
-
-    ## Installing package into 'C:/Users/nguye/AppData/Local/R/win-library/4.2'
-    ## (as 'lib' is unspecified)
-
 ``` r
 library(DeepLearningCausal)
 ```
@@ -235,8 +176,9 @@ data.frame(tlearner_en$CATEs) %>% ggplot( aes(x= tlearner_en.CATEs)) +
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
-![](tutorial_files/figure-gfm/visualst-2.png)<!-- --> \## Deep Neural
-Meta Learners
+![](tutorial_files/figure-gfm/visualst-2.png)<!-- -->
+
+## Deep Neural Meta Learners
 
 ### Deep Neural S Learner
 
@@ -321,8 +263,9 @@ data.frame(tlearner_nn$CATEs) %>% ggplot( aes(x= tlearner_nn.CATEs)) +
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
-![](tutorial_files/figure-gfm/visualstnn-2.png)<!-- --> \## Ensemble
-PATT-C
+![](tutorial_files/figure-gfm/visualstnn-2.png)<!-- -->
+
+## Ensemble PATT-C
 
 ``` r
 library(DeepLearningCausal)
@@ -378,8 +321,9 @@ patt_en_preds %>%
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
-![](tutorial_files/figure-gfm/pattcenv-1.png)<!-- --> \### Bootstrapped
-Ensemble PATT-C
+![](tutorial_files/figure-gfm/pattcenv-1.png)<!-- --> 
+
+### Bootstrapped Ensemble PATT-C
 
 For bootstrapped PATT-C users can specify arguments `bootstrap = TRUE`
 and number of iterations with `nboot = 5000` (default is 1000).
@@ -474,7 +418,9 @@ patt_nn_preds %>%
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
-![](tutorial_files/figure-gfm/pattcnnv-1.png)<!-- --> \### Bootstrapped
+![](tutorial_files/figure-gfm/pattcnnv-1.png)<!-- --> 
+
+### Bootstrapped
 Deep Neural PATT-C
 
 For bootstrapped PATT-C, use `bootstrap = TRUE` and number of iterations
