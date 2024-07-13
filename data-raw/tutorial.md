@@ -54,13 +54,11 @@ slearner_en <- metalearner_ensemble(cov.formula = response_formula,
 
     ## Training model for meta learner
 
-    ##   |                                                          |                                                  |   0%
-
     ## Loading required namespace: xgboost
 
     ## Loading required namespace: ranger
 
-    ##   |                                                          |==========                                        |  20%  |                                                          |                                                  |   0%  |                                                          |====================                              |  40%  |                                                          |                                                  |   0%  |                                                          |==============================                    |  60%  |                                                          |                                                  |   0%  |                                                          |========================================          |  80%  |                                                          |                                                  |   0%  |                                                          |==================================================| 100%
+    ## |==================================================| 100%
 
 ``` r
 print(slearner_en)
@@ -87,7 +85,7 @@ tlearner_en <- metalearner_ensemble(cov.formula = response_formula,
 
     ## Training model for meta learner
 
-    ##   |                                                          |                                                  |   0%  |                                                          |==========                                        |  20%  |                                                          |                                                  |   0%  |                                                          |====================                              |  40%  |                                                          |                                                  |   0%  |                                                          |==============================                    |  60%  |                                                          |                                                  |   0%  |                                                          |========================================          |  80%  |                                                          |                                                  |   0%  |                                                          |==================================================| 100%
+    ## |==================================================| 100%
 
 ``` r
 print(slearner_en)
@@ -114,7 +112,7 @@ slearner_nn <- metalearner_deepneural(cov.formula = response_formula,
 
     ## Training model for meta learner
 
-    ##   |                                                          |                                                  |   0%  |                                                          |==========                                        |  20%  |                                                          |====================                              |  40%  |                                                          |==============================                    |  60%  |                                                          |========================================          |  80%  |                                                          |==================================================| 100%
+    ## |==================================================| 100%
 
 ``` r
 print(slearner_nn)
@@ -132,7 +130,7 @@ For the T Learner, use `meta.learner.type = "T.Learner"`:
 
     ## Training model for meta learner
 
-    ##   |                                                          |                                                  |   0%  |                                                          |==========                                        |  20%  |                                                          |====================                              |  40%  |                                                          |==============================                    |  60%  |                                                          |========================================          |  80%  |                                                          |==================================================| 100%
+    ## |==================================================| 100%
 
     ## Method:
     ## Deep Neural  T.LearnerFormula:
@@ -155,48 +153,6 @@ pattc_en <- pattc_ensemble(response.formula = response_formula,
     ## Training complier model
 
     ## Training response model
-
-    ## Warning: glm.fit: algorithm did not converge
-
-    ## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
-
-    ## Warning: glm.fit: algorithm did not converge
-
-    ## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
-
-    ## Warning: glm.fit: algorithm did not converge
-
-    ## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
-
-    ## Warning: glm.fit: algorithm did not converge
-
-    ## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
-
-    ## Warning: glm.fit: algorithm did not converge
-
-    ## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
-
-    ## Warning: glm.fit: algorithm did not converge
-
-    ## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
-
-    ## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
-
-    ## Warning: glm.fit: algorithm did not converge
-
-    ## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
-
-    ## Warning: glm.fit: algorithm did not converge
-
-    ## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
-
-    ## Warning: glm.fit: algorithm did not converge
-
-    ## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
-
-    ## Warning: glm.fit: algorithm did not converge
-
-    ## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
 
     ## Predicting response and estimating PATT-C
 
