@@ -350,7 +350,7 @@ pattc_ensemble <- function(response.formula,
       results <- c(bootPATTC, quantile(bootout[,3], c(0.025, 0.975)))
       names(results) <- c("PATT-C", "LCI (2.5%)", "UCI (2.5%)")
       method <- paste0("Bootstrapped PATT-C with ", nboot," samples")
-      boot.out <- list(method, results)
+      boot.out <- list(results, method)
       pattc <- boot.out
     } else if (!bootstrap){
       pattc_t <- t.test(x = counterfactuals$Y_hat1,
