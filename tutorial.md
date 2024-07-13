@@ -265,8 +265,7 @@ data.frame(tlearner_nn$CATEs) %>% ggplot( aes(x= tlearner_nn.CATEs)) +
 
 ![](tutorial_files/figure-gfm/visualstnn-2.png)<!-- -->
 
-## Ensemble
-PATT-C
+## Ensemble PATT-C
 
 ``` r
 library(DeepLearningCausal)
@@ -324,8 +323,7 @@ patt_en_preds %>%
 
 ![](tutorial_files/figure-gfm/pattcenv-1.png)<!-- --> 
 
-### Bootstrapped
-Ensemble PATT-C
+### Bootstrapped Ensemble PATT-C
 
 For bootstrapped PATT-C users can specify arguments `bootstrap = TRUE`
 and number of iterations with `nboot = 5000` (default is 1000).
