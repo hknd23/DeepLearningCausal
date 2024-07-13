@@ -43,7 +43,7 @@ library(SuperLearner)
 set.seed(123456)
 ```
 
-## Import Datasets and Model Speficication
+## Import Datasets and Model Specification
 
 ``` r
 data("exp_data")
