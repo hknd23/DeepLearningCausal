@@ -137,9 +137,9 @@ We illustrate the functionality of **DeepLearningCausal** using the two survey r
 
 `metalearner_ensemble` estimates the CATE from the S-learner and T-learner using the super learner weighted ensemble. To allow for easy replication, the example below shows the applicability of this function for a small number of observations (N) from our survey sample that incorporates a survey experiment.
 
-`metalearner_ensemble` for the S-learner with N=50(?) is [here](blob/main/tutorial.md#ensemble-s-learner).
+`metalearner_ensemble` for the S-learner with N=50(?) is [here](/tutorial.md#ensemble-s-learner).
 
-`metalearner_ensemble` for the T-learner with N=50 is [here](blob/main/tutorial.md#ensemble-t-learner).
+`metalearner_ensemble` for the T-learner with N=50 is [here](/tutorial.md#ensemble-t-learner).
 
 
 The CATE estimation results obtained from the S- and T-learner is displayed as follows: 
@@ -157,12 +157,12 @@ The results from estimating the PATT from the PATT_C estimator are illustrated b
 #### Deep Neural networks for Meta-Learners
 `metalearner_deepneural` estimates the CATE from the S- and T-Learner using deep neural networks.
 
-`metalearner_deepneural` for the S-learner with N=50(?) is [here](blob/main/tutorial.md#deep-neural-s-learner).
+`metalearner_deepneural` for the S-learner with N=50(?) is [here](/tutorial.md#deep-neural-s-learner).
 
-`metalearner_deepneural` for the T-learner with N=50 is [here](blob/main/tutorial.md#deep-neural-t-learner).
+`metalearner_deepneural` for the T-learner with N=50 is [here](/tutorial.md#deep-neural-t-learner).
 
 #### Deep Neural Networks for PATT-C Estimator
 `PATTC_deepneural` estimates the PATT from the PATT-C estimator for experimental data with noncompliance using deep neural networks.
 
-[here](blob/main/tutorial.md#deep-neural-s-learner).
+[here](/tutorial.md#deep-neural-s-learner).
 
