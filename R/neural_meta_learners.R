@@ -245,6 +245,7 @@ metalearner_deepneural <- function(data,
 print.metalearner_deepneural <- function(x, ...){
   cat("Method:\n")
   cat("Deep Neural ", x$Meta_Learner)
+  cat("\n")
   cat("Formula:\n")
   cat(deparse(x$formula))
   cat("\n")

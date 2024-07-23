@@ -269,6 +269,7 @@ metalearner_ensemble <- function(data,
 print.metalearner_ensemble <- function(x, ...){
   cat("Method:\n")
   cat("Ensemble ", x$Meta_Learner)
+  cat("\n")
   cat("Formula:\n")
   cat(deparse(x$formula))
   cat("\n")
