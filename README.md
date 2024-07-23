@@ -179,4 +179,5 @@ The results from estimating the PATT from the PATT_C estimator are illustrated b
 
 ### References
 
+Tibshirani J, Athey S, Sverdrup E, Wager S. 2023. grf: Generalized random forests.	DOI: 10.32614/CRAN.package.grf
 
