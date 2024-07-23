@@ -177,3 +177,6 @@ The results from estimating the PATT from the PATT_C estimator are illustrated b
 
 ![](tutorial_files/figure-gfm/pattcnnv-1.png)<!-- --> 
 
+### References
+
+
