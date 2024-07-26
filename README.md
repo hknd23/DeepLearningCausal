@@ -175,10 +175,7 @@ The results from estimating the PATT from the PATT_C estimator are illustrated b
 ![](tutorial_files/figure-gfm/pattcnnv-1.png)<!-- --> 
 
 ### References
+Künzel, S. R., J.S. Sekhon, P.J. Bickel, and B. Yu, B. 2019. “Metalearners for estimating heterogeneous treatment effects using machine  learning.” Proceedings of the National Academy of Science, 116, 4156–4165. DOI: https://doi.org/10.1073/pnas.1804597116 
 
-Tibshirani J, Athey S, Sverdrup E, Wager S. 2023. grf: Generalized random forests.	DOI: 10.32614/CRAN.package.grf
-
-Künzel, S. R., J.S. Sekhon, P.J. Bickel, and B. Yu, B. 2019. “Metalearners for estimating heterogeneous treatment effects using machine  learning.” Proceedings of the National Academy of Science, 116, 4156–4165. https://doi.org/10.1073/pnas.1804597116 
-
-Ottoboni K.N. and J.V. Populos. 2020. “Estimating population average treatment effects from experiments with noncompliance” Journal of Causal Inference 8:108-130. https://www.degruyter.com/document/doi/10.1515/jci-2018-0035/html 
+Ottoboni K.N. and J.V. Populos. 2020. “Estimating population average treatment effects from experiments with noncompliance” Journal of Causal Inference 8:108-130. DOI: https://www.degruyter.com/document/doi/10.1515/jci-2018-0035/html 
 
