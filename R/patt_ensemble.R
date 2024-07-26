@@ -203,14 +203,17 @@ pattc_counterfactuals<- function (pop.data,
 #' binary compliance variable.
 #' @param treat.var string for binary treatment variable.
 #' @param compl.var string for binary compliance variable.
-#' @param ID string for name of identifier.
-#' @param cluster string for name of cluster variable.
-#' @param SL.learners vector of names of ML algorithms used for ensemble model.
+#' @param ID string for name of identifier. (currently not used)
+#' @param cluster string for name of cluster variable. (currently not used)
 #' @param binary.outcome logical specifying predicted outcome variable will take
 #' binary values or proportions.
 #' @param bootstrap logical for bootstrapped PATT-C.
 #' @param nboot number of bootstrapped samples. Only used with
 #' `bootstrap = FALSE`
+#' @param compl.SL.learners vector of names of ML algorithms used for compliance
+#' model.
+#' @param response.SL.learners vector of names of ML algorithms used for response
+#' model.
 #'
 #' @return `pattc_ensemble` object of results of t test as PATTC estimate.
 #' @export
@@ -231,7 +234,8 @@ pattc_counterfactuals<- function (pop.data,
 #'                                 pop.data = pop_data,
 #'                                 treat.var = "strong_leader",
 #'                                 compl.var = "compliance",
-#'                                 SL.learners = c("SL.glm", "SL.nnet"),
+#'                                 compl.SL.learners = c("SL.glm", "SL.nnet"),
+#'                                 response.SL.learners = c("SL.glm", "SL.nnet"),
 #'                                 ID = NULL,
 #'                                 cluster = NULL,
 #'                                 binary.outcome = FALSE)
@@ -259,9 +263,12 @@ pattc_ensemble <- function(response.formula,
                         pop.data,
                         treat.var,
                         compl.var,
-                        SL.learners = c("SL.glmnet", "SL.xgboost",
+                        compl.SL.learners = c("SL.glmnet", "SL.xgboost",
                                        "SL.ranger", "SL.nnet",
                                        "SL.glm"),
+                        response.SL.learners = c("SL.glmnet", "SL.xgboost",
+                                        "SL.ranger", "SL.nnet",
+                                        "SL.glm"),
                         ID = NULL,
                         cluster = NULL,
                         binary.outcome = FALSE,
@@ -290,7 +297,7 @@ pattc_ensemble <- function(response.formula,
                             treat.var = treat.var,
                             complier.formula = compl.formula,
                             ID = NULL,
-                            SL.learners = SL.learners)
+                            SL.learners = compl.SL.learners)
 
   compliers <- complier_predict(complier.mod = compl.mod,
                                 compl.var = compl.var,
@@ -304,7 +311,7 @@ pattc_ensemble <- function(response.formula,
                                   compl.var = compl.var,
                                   family = "binomial",
                                   ID = NULL,
-                                  SL.learners = SL.learners)
+                                  SL.learners = response.SL.learners)
 
   message("Predicting response and estimating PATT-C")
   counterfactuals <- pattc_counterfactuals(pop.data = pop_data,
@@ -370,7 +377,8 @@ pattc_ensemble <- function(response.formula,
   model.out<-list("formula" = response.formula,
                   "treat_var" = treat.var,
                   "compl_var" =  compl.var,
-                  "SL_library" =  SL.learners,
+                  "compl_SL_library" =  compl.SL.learners,
+                  "response_SL_library" =  response.SL.learners,
                   "exp_data" = exp_data$exp_data,
                   "pop_data" = pop_data$pop_data,
                   "complier_prediction" = compliers,

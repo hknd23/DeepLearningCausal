@@ -280,7 +280,8 @@ set.seed(123456)
 pattc_en <- pattc_ensemble(response.formula = response_formula,
             exp.data = exp_data, pop.data = pop_data,
             treat.var = "strong_leader", compl.var = "compliance",
-            SL.learners = SLlearners,
+            compl.SL.learners = SLlearners,
+            response.SL.learners = SLlearners,
             binary.outcome = FALSE, bootstrap = FALSE)
 ```
 
