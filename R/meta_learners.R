@@ -19,7 +19,7 @@
 #' @param binary.outcome logical specifying predicted outcome variable will take
 #' binary values or proportions.
 #'
-#' @return `list` of predicted outcome values and CATEs estimated by the meta
+#' @return `metalearner_ensemble` of predicted outcome values and CATEs estimated by the meta
 #' learners for each observation.
 #' @export
 #'

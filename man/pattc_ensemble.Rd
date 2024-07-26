@@ -47,7 +47,7 @@ binary values or proportions.}
 \code{bootstrap = FALSE}}
 }
 \value{
-results of t test as PATTC estimate.
+\code{pattc_ensemble} object of results of t test as PATTC estimate.
 }
 \description{
 \code{pattc_ensemble} estimates the Population Average Treatment Effect

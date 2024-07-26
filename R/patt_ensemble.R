@@ -212,7 +212,7 @@ pattc_counterfactuals<- function (pop.data,
 #' @param nboot number of bootstrapped samples. Only used with
 #' `bootstrap = FALSE`
 #'
-#' @return results of t test as PATTC estimate.
+#' @return `pattc_ensemble` object of results of t test as PATTC estimate.
 #' @export
 #'
 #' @examples
@@ -377,7 +377,7 @@ pattc_ensemble <- function(response.formula,
                   "pop_counterfactual" = counterfactuals,
                   "PATT_C" = pattc)
 
-  class(model.out)<-"pattc_ensemble"
+  class(model.out) <- "pattc_ensemble"
   return(model.out)
 }
 

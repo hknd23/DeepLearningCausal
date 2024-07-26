@@ -34,7 +34,7 @@ boosting, glmnet, random forest, and neural nets.}
 binary values or proportions.}
 }
 \value{
-\code{list} of predicted outcome values and CATEs estimated by the meta
+\code{metalearner_ensemble} of predicted outcome values and CATEs estimated by the meta
 learners for each observation.
 }
 \description{

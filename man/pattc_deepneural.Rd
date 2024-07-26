@@ -67,7 +67,7 @@ binary values or proportions.}
 \item{nboot}{number of bootstrapped samples}
 }
 \value{
-results of t test as PATTC estimate.
+\code{pattc_deepneural} class object of results of t test as PATTC estimate.
 }
 \description{
 estimates the Population Average Treatment Effect

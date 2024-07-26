@@ -220,7 +220,7 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #' @param bootstrap logical for bootstrapped PATT-C.
 #' @param nboot number of bootstrapped samples
 #'
-#' @return results of t test as PATTC estimate.
+#' @return `pattc_deepneural` class object of results of t test as PATTC estimate.
 #' @export
 #'
 #' @examples
