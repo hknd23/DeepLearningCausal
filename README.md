@@ -135,7 +135,7 @@ The tutorial for `metalearner_ensemble` for the S-learner is [here](/tutorial.md
 
 The tutorial for `metalearner_ensemble` for the T-learner is [here](/tutorial.md#ensemble-t-learner).
 
-The estimated CATE for the T-learner and S-learner obtained via ensemble learning can be displayed by using XX: 
+The estimated CATE for the T-learner and S-learner obtained via ensemble learning can be displayed by using ggplot2 in R: 
 
 ![](tutorial_files/figure-gfm/visualstnn-1.png)<!-- -->
 ![](tutorial_files/figure-gfm/visualstnn-2.png)<!-- -->
@@ -146,7 +146,7 @@ The function `PATTC_ensemble` estimates the PATT-C model (i.e. estimating PATT f
 
 The tutorial for the `PATTC_ensemble` for the PATT-C model is [here](/tutorial.md#ensemble-patt-c).
 
-The estimated PATT from the PATT_C model using ensemble learning can be illustrated by using XX: 
+The estimated PATT from the PATT_C model using ensemble learning can be illustrated by using ggplot2: 
 ![](tutorial_files/figure-gfm/pattcenv-1.png)<!-- --> 
 
 
@@ -163,7 +163,7 @@ The function `PATTC_deepneural` estimates the PATT from the PATT-C model for exp
 
 The tutorial for `PATTC_deepneural` is [here](/tutorial.md#deep-neural-patt-c).
 
-The estimated PATT from the PATT_C model using deep neural networks can be illustrated by using XX:
+The estimated PATT from the PATT_C model using deep neural networks can be illustrated by using ggplot2:
 
 ![](tutorial_files/figure-gfm/pattcnnv-1.png)<!-- --> 
 
