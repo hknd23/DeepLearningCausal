@@ -122,46 +122,48 @@ devtools::install_github("hknd23/DeepLearningCausal")
 
 #### Using the Package
 
-We illustrate the functionality of **DeepLearningCausal** using the two survey response datasets summarized above. The data from these two survey response datasets is included and briefly described in the manual's package 
+We illustrate the functionality of **DeepLearningCausal** using the two survey response datasets summarized above. The data from these two survey response datasets is included and briefly described in the manual for the package. 
 
 #### Ensemble Learning for Meta-Leaners
 
-`metalearner_ensemble` estimates the CATE from the S-learner and T-learner using the super learner weighted ensemble. To allow for easy replication, the example below shows the applicability of this function for a small number of observations (N) from our survey sample that incorporates a survey experiment.
+The function `metalearner_ensemble` in the package estimates the CATE from the two meta-learner models, the S-learner and T-learner, using ensemble learning. To allow for easy replication, the example below shows via a tutorial the applicability of this function for a small number of observations (N) from our survey response dataset in Example 1 that incorporates a survey experiment.
 
-`metalearner_ensemble` for the S-learner with N=50(?) is [here](/tutorial.md#ensemble-s-learner).
+The tutorial for `metalearner_ensemble` for the S-learner is [here](/tutorial.md#ensemble-s-learner).
 
 ![](tutorial_files/figure-gfm/visualst-1.png)<!-- -->
 ![](tutorial_files/figure-gfm/visualst-2.png)<!-- -->
 
-`metalearner_ensemble` for the T-learner with N=50 is [here](/tutorial.md#ensemble-t-learner).
+The tutorial for `metalearner_ensemble` for the T-learner is [here](/tutorial.md#ensemble-t-learner).
 
-
-The CATE estimation results obtained from the S- and T-learner is displayed as follows: 
+The estimated CATE for the T-learner and S-learner obtained via ensemble learning can be displayed by using XX: 
 
 ![](tutorial_files/figure-gfm/visualstnn-1.png)<!-- -->
 ![](tutorial_files/figure-gfm/visualstnn-2.png)<!-- -->
 
 
 #### Ensemble Learning for PATT-C Estimator
-`PATTC_ensemble` estimates the PATT for experimental data with noncompliance using the Super Learner Weighted Ensemble. The example below shows the applicability of this function for a small number of observations (N) from the two survey response datasets described earlier.
+The function `PATTC_ensemble` estimates the PATT-C model (i.e. estimating PATT for experimental data in which some units do not comply with the treatment) using ensemble learning. The example below shows via a tutorial the applicability of this function for a small number of observations (N) using both the survey response dataset in Example 1 and the Word Values Survey (WVS) response dataset in Example 2.
 
-`PATTC_ensemble` is [here](/tutorial.md#ensemble-patt-c).
+The tutorial for the `PATTC_ensemble` for the PATT-C model is [here](/tutorial.md#ensemble-patt-c).
 
-The results from estimating the PATT from the PATT_C estimator are illustrated below: 
+The estimated PATT from the PATT_C model using ensemble learning can be illustrated by using XX: 
 ![](tutorial_files/figure-gfm/pattcenv-1.png)<!-- --> 
 
 
 #### Deep Neural networks for Meta-Learners
-`metalearner_deepneural` estimates the CATE from the S- and T-Learner using deep neural networks.
+The function `metalearner_deepneural` in the package estimates the CATE from the two meta-learner models, the S-learner and T-learner, using deep neural networks. The example below shows via a tutorial the applicability of this function for a small number of observations (N) from our survey response (specifically, survey experiment) dataset in Example 1.
 
-`metalearner_deepneural` for the S-learner with N=50(?) is [here](/tutorial.md#deep-neural-s-learner).
 
-`metalearner_deepneural` for the T-learner with N=50 is [here](/tutorial.md#deep-neural-t-learner).
+The tutorial for `metalearner_deepneural` for the S-learner is [here](/tutorial.md#deep-neural-s-learner).
+
+The tutorial for `metalearner_deepneural` for the T-learner is [here](/tutorial.md#deep-neural-t-learner).
 
 #### Deep Neural Networks for PATT-C Estimator
-`PATTC_deepneural` estimates the PATT from the PATT-C estimator for experimental data with noncompliance using deep neural networks.
+The function `PATTC_deepneural` estimates the PATT from the PATT-C model for experimental data (in settings with noncompliance) using deep neural networks. The tutorial in the example below shows thw applicability of this function for a small number of observations using both the survey response dataset in Example 1 and the WVS response dataset in Example 2. 
 
-[here](/tutorial.md#deep-neural-patt-c).
+The tutorial for `PATTC_deepneural` is [here](/tutorial.md#deep-neural-patt-c).
+
+The estimated PATT from the PATT_C model using deep neural networks can be illustrated by using XX:
 
 ![](tutorial_files/figure-gfm/pattcnnv-1.png)<!-- --> 
 
