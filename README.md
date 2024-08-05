@@ -12,23 +12,18 @@
 <!-- badges: end -->
 
 **DeepLearningCausal** is an R package that provides functions to estimate the Conditional Average Treatment Effects (CATE)
-and Population Average Treatment Effects on the Treated (PATT) from experimental or observational data using the
-Super Learner (SL) weighted ensemble method and Deep Neural Networks. The package first provides functions to implement meta-learners
-such as the Single-learner (S-learner) and Two-learner (T-learner) for estimating the CATE. These meta-learners are described in Künzel et al. (2019).
-The S- and T-learner are each estimated using the SL weighted ensemble and Deep Neural Networks. It then provides functions to
-implement the Ottoboni and Poulos (2020) PATT-C estimator to obtain the Population Average Treatment Effects on the Treated (PATT) from experimental and
-observational data with noncompliance by using the SL weighted ensemble method and Deep Neural Networks.
+and Population Average Treatment Effects on the Treated (PATT) from experimental and observational data using both
+ensemble learning and deep learning (specifically, deep neural networks) methods. The package first provides functions to implement two meta-learner models,
+the Single-learner (S-learner) and Two-learner (T-learner) model, for estimating the CATE using ensemble and deep learning methods. These meta-learners are described in Künzel et al. (2019). It then provides functions to implement the Ottoboni and Poulos (2020) PATT-C estimator to obtain the Population Average Treatment Effects on the Treated (PATT) from experimental and observational data with noncompliance by also ensemble and deep learning methods.
 
 ### Why DeepLearningCausal?
 
 Researchers are increasingly interested to estimate causal effecs, including Conditional Average Treatment Effects (CATE)
-and Population Average Treatment Effects (PATE), from observational and experimental data using machine learning and deep learning
-algorithms. A unique advantage of the DeepLearningCausal package is that it provides a united interface for users to estimate both the CATE from
+and Population Average Treatment Effects (PATE), from observational and experimental data using machine learning (ML) and deep learning. A unique advantage of the DeepLearningCausal package is that it provides a single user-friendly pacakge that users can employ to estimate the CATE from
 experimental and observational data as well as Population Average Treatment Effects on the Treated (PATT) from experimental and observational
-data with noncompliance. Another key benefit of DeepLearningCausal is that it provides users the choice of estimating CATE and PATT using the super learner
-weighted ensemble and deep neural networks. More specifically,
+data with noncompliance. Another key benefit of DeepLearningCausal is that it provides users the choice of estimating CATE and PATT using both ensemble learning and deep neural networks. More specifically,
 
-- The super learner weighted ensemble includes the candidate algorithms: additive regression, gradient boosting, lasso, random forests, and neural nets. It combines these algorithms with a convex combination of weights based on minimizing cross-validated error.
+- Ensemble learning includes the candidate algorithms: gradient boosted trees, lasso, random forests, and neural nets. It combines these algorithms with a convex combination of weights based on minimizing cross-validated error.These algorithms are drawn from the 42 different ML methods in SuperLearner package developed by Polley et al. (2024). 
   
 - Deep Neural Networks training via Resilient back propagation (Rprop) algorithm.
 
@@ -44,10 +39,10 @@ weighted ensemble and deep neural networks. More specifically,
 
 ### Example 1
 
-We employ data from a pilot survey response questionnaire (administered online) to obtain the CATE from the S-learner and T-learner models that are each estimated using the super learner weighted ensemble method and deep neural networks respectively. This survey response sample incorporates a vignette survey experiment fielded in India. The vignette describes a crisis scenario between country A and B. In this scenario, the leader of country B proposes the necessity of fighting a war with country A. After reading this vignette,
-respondents are then randomly assigned to the control group or to a binary treatment indicator variable (labeled as "strong leader") that captures a hawkish policy prescription to the said international crisis by a strong populist leader (as opposed to a centrist, non-populist) leader. 
+We employ data from a pilot survey response questionnaire (administered online) to obtain the CATE from the S-learner and T-learner models that are each estimated using ensemble learning and deep neural networks. This survey response sample incorporates a vignette survey experiment fielded in India. The vignette describes a crisis scenario between country A and B where the leader of country B proposes the necessity of fighting a war with country A. After reading this vignette,
+respondents are then randomly assigned to the control group or to a binary treatment "strong leader" indicator variable. The treatment variable captures a hawkish policy prescription to the said international crisis by a strong populist leader as opposed to a centrist, non-populist leader. 
 
-After being randomly assigned to the control group or to the treatment, the respondents are asked whether or not they are willing to support the policy decision to fight a war against country A. This generates the "support war" dependent variable which is coded as 1 for respondents who support the policy decision of fighting a war against country A; it is coded as 0 otherwise. We also recorded the vignette screen time latency and conducted factual manipulation checks to assess the engagement of respondents--or, in other words, compliance--with the treatment. This permits operationalization of the binary "compliance" coded as 1 for respondents who understood and followed the instructions associated with the strong leader treatment and thus fully complied with this treatment; it is coded as 0 for “noncompliers”. Further, in addition to this compliance indicator and the treatment indicator variable described above, the survey response dataset also includes numerous other covariates summarized in the following table.
+After being randomly assigned to the control group or the treatment, the respondents are asked whether or not they are willing to support the policy decision to fight a war against country A. This generates the binary "support war" dependent variable coded as 1 for respondents who support the policy decision of fighting a war against country A; it is coded as 0 otherwise. We also recorded the vignette screen time latency and conducted factual manipulation checks to assess the engagement of respondents--or, in other words, compliance--with the treatment. This permits operationalization of the binary "compliance" coded as 1 for respondents who understood and followed the instructions associated with the strong leader treatment and thus fully complied with this treatment; it is coded as 0 for “noncompliers”. The survey response dataset also includes numerous other covariates summarized in the following table.
 
 | **Covariate**     | **Question**                                                                              |   **Response Scale**                |                        
 | ------------------| ----------------------------------------------------------------------------------------- |-------------------------------------|
@@ -66,11 +61,9 @@ After being randomly assigned to the control group or to the treatment, the resp
 | **Support War**       | Dependent variable: What do you think? Would you support your country going to war with country A?           | Binary (1=Yes; 2=No) |
 
 ### Example 2
-We employ two datasets to obtain the PATT from the PATT-C model that is estimated via the super learner ensemble method and deep neural networks respectively. 
-The first is the survey response dataset associated with Example 1, which is described above and summarized in Table 1. The second is the World Value Survey (WVS) Data for India for  the following years in which the WVS implemented their survey questionnaire in the country: 1995, 2001, 2006, 2012, and 2022. The WVS data in this case serves as a representative population-level survey response dataset that includes responses to several questions by respondents. The WVS data includes questions that measure demographic information, dispositional features, and 
-attitudinal characteristics. As such, the attitudinal characteristics measures responses to questions about political and social attributes as well as attitudes toward economic policy and democratic institutions. Importantly, the WVS India data includes questions that--similar to the survey response data in example 1--permits us to operationalize whether respondents (i) 
-"support war" that serves as the outcome measure (dependent variable), and (ii) agree with policy prescriptions offered by a hypothetical strong (populist) leader to address foreign policy crises which, in turn, serves as a proxy for the treatment variable in the representative population-level survey data. The WVS data for India also includes information such as nonresponses 
-to the question about attitudes toward the strong leader's policy prescription which served as a proxy to measure compliance in this dataset. Furthermore, the WVS India data employed to estimate the PATT-C model includes responses to questions that directly match the operationalized covariates from our India survey response data summarized above. These questions in the WVS data and the responses to these questions that permit us to operationalize the covariates in this data are summarized in the following table.
+We employ two datasets to obtain the PATT from the PATT-C model that is also estimated via ensemble learning and deep neural networks.  The first is the survey response dataset for example 1 that was described above. The second is the World Value Survey (WVS) Data for India for the following years in which the WVS implemented their survey questionnaire in the country: 1995, 2001, 2006, 2012, and 2022. The WVS data in this case serves as a representative population-level survey response dataset that includes responses to several questions by respondents that measures their demographic information, dispositional features, and attitudinal characteristics. Importantly, the WVS India data includes questions that permits us to operationalize whether respondents (i)  "support war" that serves as the outcome measure (dependent variable), and (ii) agree with policy prescriptions offered by a hypothetical strong (populist) leader to address foreign policy crises which, in turn, serves as a proxy for the treatment variable in the representative population-level survey data. 
+
+The WVS data for India also includes information such as nonresponses  to the question about attitudes toward the strong leader's policy prescription which served as a proxy to measure compliance in this dataset. Furthermore, the WVS India data employed to estimate the PATT-C model includes responses to questions that directly match the operationalized covariates from our India survey response data summarized above. These questions in the WVS data and the responses to these questions that permit us to operationalize the covariates in this data are summarized in the following table.
 
 | **Covariate**     | **Question**                                                                              |   **Response Scale**                |                        
 | ------------------| ----------------------------------------------------------------------------------------- |-------------------------------------|
@@ -131,7 +124,7 @@ devtools::install_github("hknd23/DeepLearningCausal")
 
 We illustrate the functionality of **DeepLearningCausal** using the two survey response datasets summarized above. The data from these two survey response datasets is included and briefly described in the manual's package 
 
-#### Super Learner Weighted Ensemble for Meta-Leaners
+#### Ensemble Learning for Meta-Leaners
 
 `metalearner_ensemble` estimates the CATE from the S-learner and T-learner using the super learner weighted ensemble. To allow for easy replication, the example below shows the applicability of this function for a small number of observations (N) from our survey sample that incorporates a survey experiment.
 
@@ -149,7 +142,7 @@ The CATE estimation results obtained from the S- and T-learner is displayed as f
 ![](tutorial_files/figure-gfm/visualstnn-2.png)<!-- -->
 
 
-#### Super Learned Weighted Ensemble for PATT-C Estimator
+#### Ensemble Learning for PATT-C Estimator
 `PATTC_ensemble` estimates the PATT for experimental data with noncompliance using the Super Learner Weighted Ensemble. The example below shows the applicability of this function for a small number of observations (N) from the two survey response datasets described earlier.
 
 `PATTC_ensemble` is [here](/tutorial.md#ensemble-patt-c).
@@ -176,4 +169,6 @@ The results from estimating the PATT from the PATT_C estimator are illustrated b
 Künzel, S. R., J.S. Sekhon, P.J. Bickel, and B. Yu, B. 2019. “Metalearners for estimating heterogeneous treatment effects using machine  learning.” Proceedings of the National Academy of Science, 116, 4156–4165. DOI: https://doi.org/10.1073/pnas.1804597116 
 
 Ottoboni K.N. and J.V. Populos. 2020. “Estimating population average treatment effects from experiments with noncompliance” Journal of Causal Inference 8:108-130. DOI: https://www.degruyter.com/document/doi/10.1515/jci-2018-0035/html 
+
+Polley P., LeDell E., Kennedy C., Lendle S., Laan VDM. 2024. SuperLearner: Super Learner Prediction. DOI:\\https://cran.r-project.org/web/packages/SuperLearner/index.html
 
