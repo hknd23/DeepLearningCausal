@@ -142,8 +142,7 @@ slearner_en <- metalearner_ensemble(cov.formula = response_formula,
                data = exp_data,
                treat.var = "strong_leader",
                meta.learner.type = "S.Learner",
-               SL.learners = SLlearners,
-               binary.outcome = FALSE)
+               SL.learners = SLlearners)
 ```
 
 The tutorial for `metalearner_ensemble` for the S-learner is [here](/tutorial.md#ensemble-s-learner).
@@ -163,8 +162,7 @@ pattc_en <- pattc_ensemble(response.formula = response_formula,
             exp.data = exp_data, pop.data = pop_data,
             treat.var = "strong_leader", compl.var = "compliance",
             compl.SL.learners = SLlearners,
-            response.SL.learners = SLlearners,
-            binary.outcome = FALSE, bootstrap = FALSE)
+            response.SL.learners = SLlearners)
 ```
 
 The tutorial for the `PATTC_ensemble` for the PATT-C model is [here](/tutorial.md#ensemble-patt-c).
@@ -180,8 +178,7 @@ The function `metalearner_deepneural` in the package estimates the CATE from the
 slearner_nn <- metalearner_deepneural(cov.formula = response_formula,
                data = exp_data, treat.var = "strong_leader",
                meta.learner.type = "S.Learner", stepmax = 1e+9, 
-               hidden.layer = c(2, 2), linear.output = FALSE,
-               binary.outcome = FALSE)
+               hidden.layer = c(2, 2), linear.output = FALSE)
 ```
 
 The estimated CATE for the T-learner and S-learner obtained via deep neural network can be displayed by using ggplot2 in R: 
@@ -202,8 +199,7 @@ pattc_nn <- pattc_deepneural(response.formula = response_formula,
             treat.var = "strong_leader", compl.var = "compliance",
             compl.hidden.layer = c(2, 2),
             response.hidden.layer = c(2, 2),
-            compl.stepmax = 1e+09, response.stepmax = 1e+09,
-            binary.outcome = FALSE)
+            compl.stepmax = 1e+09, response.stepmax = 1e+09)
 ```
 
 The tutorial for `PATTC_deepneural` is [here](/tutorial.md#deep-neural-patt-c).
