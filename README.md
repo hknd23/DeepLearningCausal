@@ -128,6 +128,24 @@ We illustrate the functionality of **DeepLearningCausal** using the two survey r
 
 The function `metalearner_ensemble` in the package estimates the CATE from the two meta-learner models, the S-learner and T-learner, using ensemble learning. To allow for easy replication, the example below shows via a tutorial the applicability of this function for a small number of observations (N) from our survey response dataset in Example 1 that incorporates a survey experiment.
 
+``` r
+library(DeepLearningCausal)
+data("exp_data")
+library(SuperLearner)
+
+response_formula <- support_war ~ age + female + education + income +
+                    employed + job_loss + hindu + political_ideology
+SLlearners = c("SL.xgboost", "SL.ranger", "SL.nnet","SL.glm")
+set.seed(123456)
+
+slearner_en <- metalearner_ensemble(cov.formula = response_formula,
+               data = exp_data,
+               treat.var = "strong_leader",
+               meta.learner.type = "S.Learner",
+               SL.learners = SLlearners,
+               binary.outcome = FALSE)
+```
+
 The tutorial for `metalearner_ensemble` for the S-learner is [here](/tutorial.md#ensemble-s-learner).
 
 ![](tutorial_files/figure-gfm/visualst-1.png)<!-- -->
@@ -135,14 +153,19 @@ The tutorial for `metalearner_ensemble` for the S-learner is [here](/tutorial.md
 
 The tutorial for `metalearner_ensemble` for the T-learner is [here](/tutorial.md#ensemble-t-learner).
 
-The estimated CATE for the T-learner and S-learner obtained via ensemble learning can be displayed by using ggplot2 in R: 
-
-![](tutorial_files/figure-gfm/visualstnn-1.png)<!-- -->
-![](tutorial_files/figure-gfm/visualstnn-2.png)<!-- -->
 
 
 #### Ensemble Learning for PATT-C Estimator
 The function `PATTC_ensemble` estimates the PATT-C model (i.e. estimating PATT for experimental data in which some units do not comply with the treatment) using ensemble learning. The example below shows via a tutorial the applicability of this function for a small number of observations (N) using both the survey response dataset in Example 1 and the Word Values Survey (WVS) response dataset in Example 2.
+
+```r
+pattc_en <- pattc_ensemble(response.formula = response_formula,
+            exp.data = exp_data, pop.data = pop_data,
+            treat.var = "strong_leader", compl.var = "compliance",
+            compl.SL.learners = SLlearners,
+            response.SL.learners = SLlearners,
+            binary.outcome = FALSE, bootstrap = FALSE)
+```
 
 The tutorial for the `PATTC_ensemble` for the PATT-C model is [here](/tutorial.md#ensemble-patt-c).
 
@@ -150,9 +173,21 @@ The estimated PATT from the PATT_C model using ensemble learning can be illustra
 ![](tutorial_files/figure-gfm/pattcenv-1.png)<!-- --> 
 
 
-#### Deep Neural networks for Meta-Learners
+#### Deep Neural Network for Meta-Learners
 The function `metalearner_deepneural` in the package estimates the CATE from the two meta-learner models, the S-learner and T-learner, using deep neural networks. The example below shows via a tutorial the applicability of this function for a small number of observations (N) from our survey response (specifically, survey experiment) dataset in Example 1.
 
+``` r
+slearner_nn <- metalearner_deepneural(cov.formula = response_formula,
+               data = exp_data, treat.var = "strong_leader",
+               meta.learner.type = "S.Learner", stepmax = 1e+9, 
+               hidden.layer = c(2, 2), linear.output = FALSE,
+               binary.outcome = FALSE)
+```
+
+The estimated CATE for the T-learner and S-learner obtained via deep neural network can be displayed by using ggplot2 in R: 
+
+![](tutorial_files/figure-gfm/visualstnn-1.png)<!-- -->
+![](tutorial_files/figure-gfm/visualstnn-2.png)<!-- -->
 
 The tutorial for `metalearner_deepneural` for the S-learner is [here](/tutorial.md#deep-neural-s-learner).
 
@@ -160,6 +195,16 @@ The tutorial for `metalearner_deepneural` for the T-learner is [here](/tutorial.
 
 #### Deep Neural Networks for PATT-C Estimator
 The function `PATTC_deepneural` estimates the PATT from the PATT-C model for experimental data (in settings with noncompliance) using deep neural networks. The tutorial in the example below shows thw applicability of this function for a small number of observations using both the survey response dataset in Example 1 and the WVS response dataset in Example 2. 
+
+```r
+pattc_nn <- pattc_deepneural(response.formula = response_formula,
+            exp.data = exp_data, pop.data = pop_data,
+            treat.var = "strong_leader", compl.var = "compliance",
+            compl.hidden.layer = c(2, 2),
+            response.hidden.layer = c(2, 2),
+            compl.stepmax = 1e+09, response.stepmax = 1e+09,
+            binary.outcome = FALSE)
+```
 
 The tutorial for `PATTC_deepneural` is [here](/tutorial.md#deep-neural-patt-c).
 
