@@ -162,8 +162,6 @@ data.frame(slearner_en$CATEs) %>% ggplot( aes(x= slearner_en.CATEs)) +
   xlab("CATEs (S Learner)")+ylab("")
 ```
 
-    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-
 ![](tutorial_files/figure-gfm/visualst-1.png)<!-- -->
 
 ``` r
@@ -171,8 +169,6 @@ data.frame(tlearner_en$CATEs) %>% ggplot( aes(x= tlearner_en.CATEs)) +
   geom_histogram(alpha = 0.6, position = 'identity')+
   xlab("CATEs (T Learner)")+ylab("")
 ```
-
-    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
 ![](tutorial_files/figure-gfm/visualst-2.png)<!-- -->
 
@@ -250,12 +246,15 @@ data.frame(slearner_nn$CATEs) %>% ggplot( aes(x= slearner_nn.CATEs)) +
   geom_histogram(alpha = 0.6, position = 'identity') +
   xlab("CATEs (S Learner)")+ylab("")
 ```
+![](tutorial_files/figure-gfm/visualstnn-1.png)<!-- -->
 
 ``` r
 data.frame(tlearner_nn$CATEs) %>% ggplot( aes(x= tlearner_nn.CATEs)) +
   geom_histogram(alpha = 0.6, position = 'identity')+
   xlab("CATEs (T Learner)")+ylab("")
 ```
+
+![](tutorial_files/figure-gfm/visualstnn-2.png)<!-- -->
 
 ## Ensemble PATT-C
 
@@ -311,6 +310,8 @@ patt_en_preds %>%
   theme(legend.position = "bottom")+
   theme(legend.title=element_blank())
 ```
+
+![](tutorial_files/figure-gfm/pattcenv-1.png)<!-- -->
 
 ### Bootstrapped Ensemble PATT-C
 
@@ -405,6 +406,8 @@ patt_nn_preds %>%
   theme(legend.position = "bottom")+
   theme(legend.title=element_blank())
 ```
+
+![](tutorial_files/figure-gfm/pattcnnv-1.png)<!-- -->
 
 ### Bootstrapped Deep Neural PATT-C
 
