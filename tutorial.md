@@ -8,8 +8,8 @@ This is the tutorial for the main functions in the `DeepLearningCausal`
 package.
 
 ``` r
-devtools::install_github("hknd23/DeepLearningCausal",force = TRUE)
-```
+devtools::install_github("hknd23/DeepLearningCausal", force = TRUE)
+``` 
 
 ``` r
 install.packages("DeepLearningCausal")
@@ -60,7 +60,7 @@ library(SuperLearner)
 
 response_formula <- support_war ~ age + female + education + income +
                     employed + job_loss + hindu + political_ideology
-SLlearners = c("SL.xgboost", "SL.ranger", "SL.nnet","SL.glm")
+SLlearners = c("SL.xgboost", "SL.ranger", "SL.nnet", "SL.glm")
 set.seed(123456)
 
 slearner_en <- metalearner_ensemble(cov.formula = response_formula,
@@ -105,7 +105,7 @@ library(SuperLearner)
 
 response_formula <- support_war ~ age + female + education + income +
                     employed + job_loss + hindu + political_ideology
-SLlearners = c("SL.xgboost", "SL.ranger", "SL.nnet","SL.glm")
+SLlearners = c("SL.xgboost", "SL.ranger", "SL.nnet", "SL.glm")
 set.seed(123456)
 
 tlearner_en <- metalearner_ensemble(cov.formula = response_formula,
@@ -142,19 +142,6 @@ library(ggplot2)
 ``` r
 library(dplyr)
 ```
-
-    ## Warning: package 'dplyr' was built under R version 4.2.3
-
-    ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
 
 ``` r
 data.frame(slearner_en$CATEs) %>% ggplot( aes(x= slearner_en.CATEs)) +
