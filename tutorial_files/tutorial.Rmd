@@ -83,13 +83,13 @@ print(slearner_en)
 library(ggplot2)
 library(dplyr)
 
-data.frame(tlearner_en$CATEs) %>% ggplot( aes(x= tlearner_en.CATEs)) +
+data.frame(slearner_en$CATEs) %>% ggplot( aes(x= slearner_en.CATEs)) +
   geom_histogram(alpha = 0.6, position = 'identity') +
-  xlab("CATEs (T Learner)")+ylab("")
+  xlab("CATEs (S Learner)")+ylab("")
 
 data.frame(tlearner_en$CATEs) %>% ggplot( aes(x= tlearner_en.CATEs)) +
   geom_histogram(alpha = 0.6, position = 'identity')+
-  xlab("CATEs (S Learner)")+ylab("")
+  xlab("CATEs (T Learner)")+ylab("")
 ```
 
 ## Deep Neural Meta Learners
@@ -131,11 +131,11 @@ library(ggplot2)
 
 data.frame(slearner_nn$CATEs) %>% ggplot( aes(x= slearner_nn.CATEs)) +
   geom_histogram(alpha = 0.6, position = 'identity') +
-  xlab("CATEs (T Learner)")+ylab("")
+  xlab("CATEs (S Learner)")+ylab("")
 
 data.frame(tlearner_nn$CATEs) %>% ggplot( aes(x= tlearner_nn.CATEs)) +
   geom_histogram(alpha = 0.6, position = 'identity')+
-  xlab("CATEs (S Learner)")+ylab("")
+  xlab("CATEs (T Learner)")+ylab("")
 ```
 
 ## Ensemble PATT-C
@@ -153,7 +153,8 @@ set.seed(123456)
 pattc_en <- pattc_ensemble(response.formula = response_formula,
             exp.data = exp_data, pop.data = pop_data,
             treat.var = "strong_leader", compl.var = "compliance",
-            SL.learners = SLlearners,
+            compl.SL.learners = SLlearners,
+            response.SL.learners = SLlearners,
             binary.outcome = FALSE, bootstrap = FALSE)
 print(pattc_en)
 ```
@@ -184,7 +185,8 @@ set.seed(123456)
 pattc_en_b <- pattc_ensemble(response.formula = response_formula,
             exp.data = exp_data, pop.data = pop_data,
             treat.var = "strong_leader", compl.var = "compliance",
-            SL.learners = SLlearners,
+            compl.SL.learners = SLlearners,
+            response.SL.learners = SLlearners,
             binary.outcome = FALSE, 
             bootstrap = TRUE, nboot = 5000)
 print(pattc_en_b)
@@ -232,13 +234,13 @@ response_formula <- support_war ~ age + female + education + income +
 set.seed(123456)
 
 pattc_nn_b <- pattc_deepneural(response.formula = response_formula,
-            exp.data = exp_data, pop.data = pop_data,
-            treat.var = "strong_leader", compl.var = "compliance",
-            compl.hidden.layer = c(2, 2),
-            response.hidden.layer = c(2, 2),
-            compl.stepmax = 1e+09, response.stepmax = 1e+09,
-            binary.outcome = FALSE, 
-            bootstrap = TRUE, nboot = 5000)
+              exp.data = exp_data, pop.data = pop_data,
+              treat.var = "strong_leader", compl.var = "compliance",
+              compl.hidden.layer = c(2, 2),
+              response.hidden.layer = c(2, 2),
+              compl.stepmax = 1e+09, response.stepmax = 1e+09,
+              binary.outcome = FALSE, 
+              bootstrap = TRUE, nboot = 5000)
 print(pattc_nn_b)
 ```
 
