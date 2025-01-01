@@ -13,8 +13,7 @@
 
 **DeepLearningCausal** is an R package that provides functions to estimate the Conditional Average Treatment Effects (CATE)
 and Population Average Treatment Effects on the Treated (PATT) from experimental and observational data using both
-ensemble learning and deep learning (specifically, deep neural networks) methods. The package first provides functions to implement two meta-learner models,
-the Single-learner (S-learner) and Two-learner (T-learner) model, for estimating the CATE using ensemble and deep learning methods. These meta-learners are described in Künzel et al. (2019). It then provides functions to implement the Ottoboni and Poulos (2020) PATT-C estimator to obtain the Population Average Treatment Effects on the Treated (PATT) from experimental and observational data with noncompliance by also ensemble and deep learning methods.
+ensemble learning and deep learning (specifically, deep neural networks) methods. The package first provides functions to implement three meta-learner models---the Single-learner (S-learner), Two-learner (T-learner) model, and the Cross-Leaner (X-learner) model---for estimating the CATE using ensemble and deep learning methods. These meta-learners are described in Künzel et al. (2019). It then provides functions to implement the Ottoboni and Poulos (2020) PATT-C estimator to obtain the Population Average Treatment Effects on the Treated (PATT) from experimental and observational data with noncompliance by also ensemble and deep learning methods.
 
 ### Why DeepLearningCausal?
 
@@ -31,15 +30,15 @@ data with noncompliance. Another key benefit of DeepLearningCausal is that it pr
 
 | Function                | Description                                                                                |
 |-------------------------|--------------------------------------------------------------------------------------------|
-| `metalearner_ensemble`  | Estimates CATE for S-learner and T-learner using super learner weighted ensemble.          |
-| `metalearner_deepneural`| Estimates CATE for S-learner and T-learner using deep neural networks.                     |
+| `metalearner_ensemble`  | Estimates CATE for S-learner, T-learner and X-learner using super learner weighted ensemble.|
+| `metalearner_deepneural`| Estimates CATE for S-learner, T-learner and X-learner using deep neural networks.          |
 | `PATTC_ensemble`        | Estimates PATT_C estimator for obtaining PATT using super learner weighted ensemble.       |
 | `PATTC_deepneural`      | Estimates PATT_C estimator for obtaining PATT using deep neural networks.                  |
 
 
 ### Example 1
 
-We employ data from a pilot survey response questionnaire (administered online) to obtain the CATE from the S-learner and T-learner models that are each estimated using ensemble learning and deep neural networks. This survey response sample incorporates a vignette survey experiment fielded in India. The vignette describes a crisis scenario between country A and B where the leader of country B proposes the necessity of fighting a war with country A. After reading this vignette,
+We employ data from a pilot survey response questionnaire (administered online) to obtain the CATE from the S-learner, T-learner and X-learner models that are each estimated using ensemble learning and deep neural networks. This survey response sample incorporates a vignette survey experiment fielded in India. The vignette describes a crisis scenario between country A and B where the leader of country B proposes the necessity of fighting a war with country A. After reading this vignette,
 respondents are then randomly assigned to the control group or to a binary treatment "strong leader" indicator variable. The treatment variable captures a hawkish policy prescription to the said international crisis by a strong populist leader as opposed to a centrist, non-populist leader. 
 
 After being randomly assigned to the control group or the treatment, the respondents are asked whether or not they are willing to support the policy decision to fight a war against country A. This generates the binary "support war" dependent variable coded as 1 for respondents who support the policy decision of fighting a war against country A; it is coded as 0 otherwise. We also recorded the vignette screen time latency and conducted factual manipulation checks to assess the engagement of respondents--or, in other words, compliance--with the treatment. This permits operationalization of the binary "compliance" coded as 1 for respondents who understood and followed the instructions associated with the strong leader treatment and thus fully complied with this treatment; it is coded as 0 for “noncompliers”. The survey response dataset also includes numerous other covariates summarized in the following table.
@@ -151,6 +150,7 @@ Once the model finishes, the CATEs are stored in the element `slearner_en$CATEs`
 
 The tutorial for `metalearner_ensemble` for the S-learner is [here](/tutorial.md#ensemble-s-learner).
 The tutorial for `metalearner_ensemble` for the T-learner is [here](/tutorial.md#ensemble-t-learner).
+The tutorial for `metalearner_ensemble` for the X-learner is
 
 #### Ensemble Learning for PATT-C Estimator
 The function `PATTC_ensemble` estimates the PATT-C model (i.e. estimating PATT for experimental data in which some units do not comply with the treatment) using ensemble learning. The example below shows via a tutorial the applicability of this function for a small number of observations (N) using both the survey response dataset in Example 1 and the Word Values Survey (WVS) response dataset in Example 2.
@@ -186,6 +186,8 @@ The tutorial for `metalearner_deepneural` for the T-learner is [here](/tutorial.
 
 ![](tutorial_files/figure-gfm/visualstnn-1.png)<!-- -->
 ![](tutorial_files/figure-gfm/visualstnn-2.png)<!-- -->
+
+The tutorial for `metalearner_deepneural` for the X-learner is
 
 #### Deep Neural Networks for PATT-C Estimator
 The function `PATTC_deepneural` estimates the PATT from the PATT-C model for experimental data (in settings with noncompliance) using deep neural networks. The tutorial in the example below shows thw applicability of this function for a small number of observations using both the survey response dataset in Example 1 and the WVS response dataset in Example 2. 
