@@ -10,3 +10,4 @@ data-raw/
 CRAN-SUBMISSION
 cran-comments.md
 *.RDS
+*.Rproj
