@@ -22,7 +22,8 @@ metalearner_ensemble(
 \item{treat.var}{string for the name of treatment variable.}
 
 \item{meta.learner.type}{string specifying is the S-learner and
-\code{"T.Learner"} for the T-learner model.}
+\code{"T.Learner"} for the T-learner model.
+\code{"X.Learner"} for the X-learner model.}
 
 \item{SL.learners}{vector for super learner ensemble that includes extreme gradient
 boosting, glmnet, random forest, and neural nets.}
@@ -38,7 +39,7 @@ binary values or proportions.}
 learners for each observation.
 }
 \description{
-\code{metalearner_ensemble} implements the S-learner and T-learner for
+\code{metalearner_ensemble} implements the S-learner, T-learner, and X-learner for
 estimating CATE using the super learner ensemble method. The super learner in
 this case includes the following machine learning algorithms:
 extreme gradient boosting, glmnet (elastic net regression), random forest and
@@ -76,5 +77,20 @@ tlearner <- metalearner_ensemble(cov.formula = support_war ~ age + income +
 
 print(tlearner)
                                   }
+
+\donttest{
+# estimate CATEs with X Learner
+set.seed(123456)
+xlearner <- metalearner_ensemble(cov.formula = support_war ~ age + income + employed  + job_loss,
+                                 data = exp_data,
+                                 treat.var = "strong_leader",
+                                 meta.learner.type = "X.Learner",
+                                 SL.learners = c("SL.glmnet","SL.xgboost", "SL.ranger","SL.nnet"),
+                                 nfolds = 5,
+                                 binary.outcome = TRUE)
+
+print(xlearner)
+                                  }
+
 
 }
