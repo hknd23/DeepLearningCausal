@@ -1,22 +1,21 @@
 Package: DeepLearningCausal
 Type: Package
 Title: Causal Inference with Super Learner and Deep Neural Networks 
-Version: 0.0.104
+Version: 0.0.105
 Authors@R: c(person(given = "Nguyen K.",
                     family = "Huynh",
                     email = "khoinguyen.huynh@r.hit-u.ac.jp",
-                    role = c("aut","cre"),
+                    role = c("aut", "cre"),
                     comment = c(ORCID = "0000-0002-6234-7232")),   
              person(given = "Bumba",
                     family = "Mukherjee", 
                     email = "bumba.mukherjee@psu.edu",
                     role = c("aut"),
                     comment = c(ORCID = "0000-0002-3453-601X")),  
-             person(given = "Irvin (Chen-Yu)",
-                    family = "Lee", 
-                    email = "cvl6079@psu.edu",
-                    role = c("aut"),
-                    comment = c(ORCID = "0009-0004-5913-8925")))
+             person(given = "Yang",
+                    family = "Yang", 
+                    email = "yky5272@psu.edu",
+                    role = c("aut")))
 Maintainer: Nguyen K. Huynh <khoinguyen.huynh@r.hit-u.ac.jp>
 Description: Functions to estimate Conditional Average Treatment Effects (CATE) 
     and Population Average Treatment Effects on the Treated (PATT) from 
