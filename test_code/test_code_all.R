@@ -34,7 +34,6 @@ data(pop_data_full) #population data
                                  pop.data = pop_data,
                                  treat.var = "strong_leader",
                                  compl.var = "compliance",
-                                 createSL = TRUE,
                                  SL.library = c(NULL),
                                  ID = NULL,
                                  cluster = NULL,

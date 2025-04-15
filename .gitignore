@@ -11,3 +11,4 @@ CRAN-SUBMISSION
 cran-comments.md
 *.RDS
 *.Rproj
+/test_code

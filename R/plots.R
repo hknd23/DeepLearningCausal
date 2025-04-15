@@ -19,10 +19,22 @@ hte_plot <- function(model_obj,
     if(class(model_obj) %in% c("metalearner_ensemble",
                                "metalearner_deepneural")){
       all_vars <- all.vars(model_obj$formula)
-      y_var <- all_vars[1]
       x_var_names <- all_vars[-1]
       x_vars <- model_obj$data[,c(x_var_names)]
       rownames(x_vars) <- 1:nrow(x_vars)
+      y_var <- model_obj$CATEs
+    } else if (class(model_obj) %in% c("pattc_ensemble",
+                                       "metalearner_deepneural")){
+      all_vars <- all.vars(model_obj$formula)
+      y_var <- all_vars[1]
+      x_var_names <- all_vars[-1]
+
+      compliers <- model_obj$pop_data[which(
+        model_obj$pop_data[,model_obj$compl_var]==1),]
+      rownames(compliers) <- 1:nrow(compliers)
+      x_vars <- compliers[,c(x_var_names)]
+      y_var <- data.frame( count_diff =  model_obj$pop_counterfactual[,2] -
+                            model_obj$pop_counterfactual[,1])
     }
 
     lowers <- list()
@@ -48,8 +60,8 @@ hte_plot <- function(model_obj,
     for (i in 1:length(x_var_names)) {
       lowers[[i]] <- x_vars[which(x_vars[,i] <= cuts[i]),]
       highers[[i]] <- x_vars[which(x_vars[,i] > cuts[i]),]
-      lowers_y[[i]] <- model_obj$CATEs[as.numeric(rownames(lowers[[i]])),]
-      highers_y[[i]] <- model_obj$CATEs[as.numeric(rownames(highers[[i]])),]
+      lowers_y[[i]] <- y_var[as.numeric(rownames(lowers[[i]])),]
+      highers_y[[i]] <- y_var[as.numeric(rownames(highers[[i]])),]
       if (boot) {
         lowers_boot_means <- rep(NA, n_boot)
         highers_boot_means <- rep(NA, n_boot)
