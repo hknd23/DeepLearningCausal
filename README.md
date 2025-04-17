@@ -32,8 +32,10 @@ data with noncompliance. Another key benefit of DeepLearningCausal is that it pr
 |-------------------------|--------------------------------------------------------------------------------------------|
 | `metalearner_ensemble`  | Estimates CATE for S-learner, T-learner and X-learner using super learner weighted ensemble.|
 | `metalearner_deepneural`| Estimates CATE for S-learner, T-learner and X-learner using deep neural networks.          |
-| `PATTC_ensemble`        | Estimates PATT_C estimator for obtaining PATT using super learner weighted ensemble.       |
-| `PATTC_deepneural`      | Estimates PATT_C estimator for obtaining PATT using deep neural networks.                  |
+| `pattc_ensemble`        | Estimates PATT_C estimator for obtaining PATT using super learner weighted ensemble.       |
+| `pattc_deepneural`      | Estimates PATT_C estimator for obtaining PATT using deep neural networks.                  |
+| `pattc_deepneural`      | Estimates PATT_C estimator for obtaining PATT using deep neural networks.                  |
+
 
 
 ### Example 1
@@ -143,7 +145,7 @@ slearner_en <- metalearner_ensemble(cov.formula = response_formula,
                meta.learner.type = "S.Learner",
                SL.learners = SLlearners)
 ```
-Once the model finishes, the CATEs are stored in the element `slearner_en$CATEs` and can be extracted for visualization using `ggplot2`:
+Once the model finishes, the CATEs are stored in the element `slearner_en$CATEs` and can be extracted for visualization using `plot()`:
 
 ![](tutorial_files/figure-gfm/visualst-1.png)<!-- -->
 ![](tutorial_files/figure-gfm/visualst-2.png)<!-- -->
