@@ -63,7 +63,6 @@
 #'                                   binary.outcome = FALSE)
 #'
 #' print(tlearner_nn)
-#'                                   }
 #'
 #' # load dataset
 #' set.seed(123456)

@@ -4,20 +4,40 @@
 #' Produces plot to illustrate sub-group Heterogeneous Treatment Effects (HTE)
 #' of estimated CATEs from \code{metalearner_ensemble} and
 #' \code{metalearner_deepneural}, as well as PATT-C from \code{pattc_ensemble}
-#' and \code{pattc_neural}
+#' and \code{pattc_neural}.
 #'
 #' @param model_obj estimated model from \code{metalearner_ensemble},
-#'  \code{metalearner_deepneural}, \code{pattc_ensemble}, or \code{pattc_neural}
-#' @param custom_labels
-#' @param boot
-#' @param n_boot
-#' @param cut_points
-#' @param zero_int
+#'  \code{metalearner_deepneural}, \code{pattc_ensemble}, or \code{pattc_neural}.
+#' @param custom_labels character vector for the names of subgroups.
+#' @param boot logical for bootstrapped HTE 95% intervals.
+#' @param n_boot number of bootstrap iterations. Only used with boot = TRUE.
+#' @param cut_points numeric vector for cut-off points to generate subgroups from
+#' covariates. If left blank a vector generated from median values will be used.
+#' @param zero_int logical for vertical line at 0 x intercept.
 #'
-#' @returns
+#' @returns \code{ggplot} object illustrating subgroup HTE and 95% confidence
+#' intervals.
 #' @export
 #'
 #' @examples
+#' \donttest{
+#' load dataset
+#' set.seed(123456)
+#' # estimate CATEs with X Learner
+#' xlearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +
+#'                                   income  + employed  + job_loss,
+#'                                   data = exp_data,
+#'                                   treat.var = "strong_leader",
+#'                                   meta.learner.type = "X.Learner",
+#'                                   stepmax = 2e+9,
+#'                                   nfolds = 5,
+#'                                   algorithm = "rprop+",
+#'                                   hidden.layer = c(3),
+#'                                   linear.output = FALSE,
+#'                                   binary.outcome = FALSE)
+#'
+#' print(xlearner_nn)
+#'                                   }
 hte_plot <- function(model_obj,
                      boot = TRUE,
                      n_boot = 1000,
@@ -142,7 +162,7 @@ hte_plot <- function(model_obj,
         title = "",
         x = "",
         y = ""
-      ) + geom_vline(xintercept = zero_int, linetype = "dashed", color = "grey70")
+      ) + geom_vline(xintercept = x_int, linetype = "dashed", color = "grey70")
     return(ht_plot)
 }
 
@@ -152,10 +172,10 @@ hte_plot <- function(model_obj,
 #' Uses \code{plot()} to generate histogram of ditribution of CATEs or predicted
 #' outcomes from  \code{metalearner_deepneural}
 #'
-#' @param model_obj \code{metalearner_deepneural} model object
-#' @param type "CATEs" or "predict"
+#' @param model_obj \code{metalearner_deepneural} model object.
+#' @param type "CATEs" or "predict".
 #'
-#' @returns \code{ggplot} object
+#' @returns \code{ggplot} object.
 #' @export
 #'
 #' @import ggplot2
@@ -214,29 +234,6 @@ plot.metalearner_ensemble <- function(model_obj,
       theme(legend.title=element_blank())
   }
   return(meta_plot)
-}
-
-#' Title
-#'
-#' @param model_obj
-#'
-#' @returns
-#' @export
-#'
-#' @examples
-plot.pattc_ensemble <- function(model_obj)
-{
-  patt_preds <-  rbind(data.frame("predictions" = model_obj$pop_counterfactual[,1],
-                                  type = "Y_hat0"),
-                       data.frame("predictions" = model_obj$pop_counterfactual[,2],
-                                  type = "Y_hat1"))
-  pattc_plot <- patt_preds %>%
-    ggplot( aes(x = predictions, fill = type)) +
-    geom_histogram(alpha = 0.6, position = 'identity')+
-    xlab("")+ylab("")+
-    theme(legend.position = "bottom")+
-    theme(legend.title=element_blank())
-  return(pattc_plot)
 }
 
 #' plot.pattc_deepneural

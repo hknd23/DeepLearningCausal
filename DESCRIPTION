@@ -45,12 +45,12 @@ Imports:
         e1071,
         gbm,
         Hmisc,
+        ggplot2, 
+        dplyr,
         weights
 Suggests: 
         testthat,
-        ggplot2,
-        tidyr,
-        dplyr
+        tidyr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Depends: 
