@@ -21,7 +21,7 @@
 #'
 #' @examples
 #' \donttest{
-#' load dataset
+#' # load dataset
 #' set.seed(123456)
 #' # estimate CATEs with X Learner
 #' xlearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +
