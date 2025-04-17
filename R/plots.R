@@ -146,21 +146,25 @@ hte_plot <- function(model_obj,
     return(ht_plot)
 }
 
-#' Title
+#' plot.metalearner_deepneural
 #'
-#' @param model_obj
-#' @param type
+#' @description
+#' Uses \code{plot()} to generate histogram of ditribution of CATEs or predicted
+#' outcomes from  \code{metalearner_deepneural}
 #'
-#' @returns
+#' @param model_obj \code{metalearner_deepneural} model object
+#' @param type "CATEs" or "predict"
+#'
+#' @returns \code{ggplot} object
 #' @export
 #'
-#' @examples
+#' @import ggplot2
 plot.metalearner_deepneural <- function(model_obj,
                      type = "CATEs")
 {
   if (type == "CATEs"){
   meta_plot <- data.frame(model_obj$CATEs) %>%
-    ggplot( aes(x= model_obj.CATEs)) +
+    ggplot(aes(x= model_obj.CATEs)) +
     geom_histogram(alpha = 0.6, position = 'identity')+
     xlab("CATEs (T Learner)")+ylab("")
   } else if (type == "predict") {
@@ -177,15 +181,19 @@ plot.metalearner_deepneural <- function(model_obj,
   return(meta_plot)
 }
 
-#' Title
+#' plot.metalearner_ensemble
 #'
-#' @param model_obj
-#' @param type
+#' @description
+#' Uses \code{plot()} to generate histogram of ditribution of CATEs or predicted
+#' outcomes from  \code{metalearner_ensemble}
 #'
-#' @returns
+#' @param model_obj \code{metalearner_ensemble} model object
+#' @param type "CATEs" or "predict"
+#'
+#' @returns \code{ggplot} object
 #' @export
 #'
-#' @examples
+#' @import ggplot2
 plot.metalearner_ensemble <- function(model_obj,
                                         type = "CATEs")
 {
@@ -219,9 +227,9 @@ plot.metalearner_ensemble <- function(model_obj,
 plot.pattc_ensemble <- function(model_obj)
 {
   patt_preds <-  rbind(data.frame("predictions" = model_obj$pop_counterfactual[,1],
-                                     type = "Y_hat0"),
-                          data.frame("predictions" = model_obj$pop_counterfactual[,2],
-                                     type = "Y_hat1"))
+                                  type = "Y_hat0"),
+                       data.frame("predictions" = model_obj$pop_counterfactual[,2],
+                                  type = "Y_hat1"))
   pattc_plot <- patt_preds %>%
     ggplot( aes(x = predictions, fill = type)) +
     geom_histogram(alpha = 0.6, position = 'identity')+
@@ -231,15 +239,19 @@ plot.pattc_ensemble <- function(model_obj)
   return(pattc_plot)
 }
 
-#' Title
+#' plot.pattc_deepneural
 #'
-#' @param model_obj
+#' @description
+#' Uses \code{plot()} to generate histogram of ditribution of CATEs or predicted
+#' outcomes from  \code{pattc_deepneural}
 #'
-#' @returns
+#' @param model_obj \code{pattc_deepneural} model object
+#'
+#' @returns \code{ggplot} object
 #' @export
 #'
-#' @examples
-plot.pattc_ensemble <- function(model_obj)
+#' @import ggplot2
+plot.pattc_deepneural <- function(model_obj)
 {
   patt_preds <-  rbind(data.frame("predictions" = model_obj$pop_counterfactual[,1],
                                   type = "Y_hat0"),
@@ -254,15 +266,19 @@ plot.pattc_ensemble <- function(model_obj)
   return(pattc_plot)
 }
 
-#' Title
+#' plot.pattc_ensemble
 #'
-#' @param model_obj
+#' @description
+#' Uses \code{plot()} to generate histogram of ditribution of CATEs or predicted
+#' outcomes from  \code{pattc_ensemble}
 #'
-#' @returns
+#' @param model_obj \code{pattc_ensemble} model object
+#'
+#' @returns \code{ggplot} object
 #' @export
 #'
-#' @examples
-plot.pattc_deepneural <- function(model_obj)
+#' @import ggplot2
+plot.pattc_ensemble <- function(model_obj)
 {
   patt_preds <-  rbind(data.frame("predictions" = model_obj$pop_counterfactual[,1],
                                   type = "Y_hat0"),
