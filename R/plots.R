@@ -1,20 +1,30 @@
-#' Title
+#' hte_plot
 #'
-#' @param model_obj
+#' @description
+#' Produces plot to illustrate sub-group Heterogeneous Treatment Effects (HTE)
+#' of estimated CATEs from \code{metalearner_ensemble} and
+#' \code{metalearner_deepneural}, as well as PATT-C from \code{pattc_ensemble}
+#' and \code{pattc_neural}
+#'
+#' @param model_obj estimated model from \code{metalearner_ensemble},
+#'  \code{metalearner_deepneural}, \code{pattc_ensemble}, or \code{pattc_neural}
 #' @param custom_labels
 #' @param boot
 #' @param n_boot
 #' @param cut_points
+#' @param zero_int
 #'
 #' @returns
 #' @export
 #'
 #' @examples
 hte_plot <- function(model_obj,
-    custom_labels = NULL,
-    boot = TRUE,
-    n_boot = 1000,
-    cut_points = NULL)
+                     boot = TRUE,
+                     n_boot = 1000,
+                     cut_points = NULL,
+                     custom_labels = NULL,
+                     zero_int = TRUE
+                    )
 {
     if(class(model_obj) %in% c("metalearner_ensemble",
                                "metalearner_deepneural")){
@@ -119,7 +129,11 @@ hte_plot <- function(model_obj,
       }
       sorted_df$var_name <- as.character(custom_labels)
     }
-
+    if (zero_int){
+      x_int <- 0
+    } else if (!zero_int) {
+      x_int <- NULL
+    }
     ht_plot <- ggplot(sorted_df, aes(y = var_name, x = means)) +
       geom_point() +
       geom_errorbarh(aes(xmin = X2.5., xmax = X97.5.), height = 0.2) +
@@ -128,7 +142,7 @@ hte_plot <- function(model_obj,
         title = "",
         x = "",
         y = ""
-      ) + geom_vline(xintercept = 0, linetype = "dashed", color = "grey70")
+      ) + geom_vline(xintercept = zero_int, linetype = "dashed", color = "grey70")
     return(ht_plot)
 }
 
@@ -192,4 +206,73 @@ plot.metalearner_ensemble <- function(model_obj,
       theme(legend.title=element_blank())
   }
   return(meta_plot)
+}
+
+#' Title
+#'
+#' @param model_obj
+#'
+#' @returns
+#' @export
+#'
+#' @examples
+plot.pattc_ensemble <- function(model_obj)
+{
+  patt_preds <-  rbind(data.frame("predictions" = model_obj$pop_counterfactual[,1],
+                                     type = "Y_hat0"),
+                          data.frame("predictions" = model_obj$pop_counterfactual[,2],
+                                     type = "Y_hat1"))
+  pattc_plot <- patt_preds %>%
+    ggplot( aes(x = predictions, fill = type)) +
+    geom_histogram(alpha = 0.6, position = 'identity')+
+    xlab("")+ylab("")+
+    theme(legend.position = "bottom")+
+    theme(legend.title=element_blank())
+  return(pattc_plot)
+}
+
+#' Title
+#'
+#' @param model_obj
+#'
+#' @returns
+#' @export
+#'
+#' @examples
+plot.pattc_ensemble <- function(model_obj)
+{
+  patt_preds <-  rbind(data.frame("predictions" = model_obj$pop_counterfactual[,1],
+                                  type = "Y_hat0"),
+                       data.frame("predictions" = model_obj$pop_counterfactual[,2],
+                                  type = "Y_hat1"))
+  pattc_plot <- patt_preds %>%
+    ggplot( aes(x = predictions, fill = type)) +
+    geom_histogram(alpha = 0.6, position = 'identity')+
+    xlab("")+ylab("")+
+    theme(legend.position = "bottom")+
+    theme(legend.title=element_blank())
+  return(pattc_plot)
+}
+
+#' Title
+#'
+#' @param model_obj
+#'
+#' @returns
+#' @export
+#'
+#' @examples
+plot.pattc_deepneural <- function(model_obj)
+{
+  patt_preds <-  rbind(data.frame("predictions" = model_obj$pop_counterfactual[,1],
+                                  type = "Y_hat0"),
+                       data.frame("predictions" = model_obj$pop_counterfactual[,2],
+                                  type = "Y_hat1"))
+  pattc_plot <- patt_preds %>%
+    ggplot( aes(x = predictions, fill = type)) +
+    geom_histogram(alpha = 0.6, position = 'identity')+
+    xlab("")+ylab("")+
+    theme(legend.position = "bottom")+
+    theme(legend.title=element_blank())
+  return(pattc_plot)
 }
