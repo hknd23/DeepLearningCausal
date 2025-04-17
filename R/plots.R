@@ -79,7 +79,7 @@ hte_plot <- function(model_obj,
     mean_highers_temp <- rep(NA, n_boot)
 
     if (is.null(cut_points)) {
-      cuts <- sapply(x_vars, median,na.rm = TRUE)
+      cuts <- sapply(x_vars, stats::median,na.rm = TRUE)
     } else {
       if (length(cut_points) !=  length(x_var_names)) {
         stop(paste0("length of cut_points must be ", length(x_var_names)))
