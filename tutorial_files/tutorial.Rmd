@@ -127,15 +127,9 @@ print(tlearner_nn)
 
 
 ```{r visualstnn}
-library(ggplot2)
+plot(slearner_nn)
 
-data.frame(slearner_nn$CATEs) %>% ggplot( aes(x= slearner_nn.CATEs)) +
-  geom_histogram(alpha = 0.6, position = 'identity') +
-  xlab("CATEs (S Learner)")+ylab("")
-
-data.frame(tlearner_nn$CATEs) %>% ggplot( aes(x= tlearner_nn.CATEs)) +
-  geom_histogram(alpha = 0.6, position = 'identity')+
-  xlab("CATEs (T Learner)")+ylab("")
+plot(tlearner_nn)
 ```
 
 ## Ensemble PATT-C
@@ -160,16 +154,7 @@ print(pattc_en)
 ```
 
 ```{r pattcenv, warning=FALSE}
-library(ggplot2)
-patt_en_preds <-  rbind(data.frame("predictions" = pattc_en$pop_counterfactual[,1],
-                                   type = "Y_hat0"),
-                        data.frame("predictions" = pattc_en$pop_counterfactual[,2],
-                                   type = "Y_hat1"))
-patt_en_preds %>%
-  ggplot( aes(x = predictions, fill = type)) +
-  geom_histogram(alpha = 0.6, position = 'identity')+xlab("Predicted Outcome")+ylab("")+
-  theme(legend.position = "bottom")+
-  theme(legend.title=element_blank())
+plot(pattc_en)
 ```
 
 ### Bootstrapped Ensemble PATT-C
@@ -210,18 +195,7 @@ print(pattc_nn)
 ```
 
 ```{r pattcnnv, warning=FALSE}
-library(ggplot2)
-patt_nn_preds <-  rbind(data.frame("predictions" = pattc_nn$pop_counterfactual[,1],
-                                   type = "Y_hat0"),
-                        data.frame("predictions" = pattc_nn$pop_counterfactual[,2],
-                                   type = "Y_hat1"))
-
-patt_nn_preds %>%
-  ggplot( aes(x = predictions, fill = type)) +
-  geom_histogram(alpha = 0.6, position = 'identity')+
-  xlab("Predicted Outcome")+ylab("")+
-  theme(legend.position = "bottom")+
-  theme(legend.title=element_blank())
+plot(pattc_nn)
 ```
 
 ### Bootstrapped Deep Neural PATT-C
