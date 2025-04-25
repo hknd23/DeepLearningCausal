@@ -35,6 +35,7 @@ data with noncompliance. Another key benefit of DeepLearningCausal is that it pr
 | `pattc_ensemble`        | Estimates PATT_C estimator for obtaining PATT using super learner weighted ensemble.       |
 | `pattc_deepneural`      | Estimates PATT_C estimator for obtaining PATT using deep neural networks.                  |
 | `pattc_deepneural`      | Estimates PATT_C estimator for obtaining PATT using deep neural networks.                  |
+| `hte_plot`              | Plot subgroups Heterogeneous Treatment Effects using CATEs or PATT-C predictions.          |
 
 
 
@@ -152,7 +153,7 @@ Once the model finishes, the CATEs are stored in the element `slearner_en$CATEs`
 
 The tutorial for `metalearner_ensemble` for the S-learner is [here](/tutorial.md#ensemble-s-learner).
 The tutorial for `metalearner_ensemble` for the T-learner is [here](/tutorial.md#ensemble-t-learner).
-The tutorial for `metalearner_ensemble` for the X-learner is
+The tutorial for `metalearner_ensemble` for the X-learner is [here](/tutorial.md#ensemble-x-learner).
 
 #### Ensemble Learning for PATT-C Estimator
 The function `PATTC_ensemble` estimates the PATT-C model (i.e. estimating PATT for experimental data in which some units do not comply with the treatment) using ensemble learning. The example below shows via a tutorial the applicability of this function for a small number of observations (N) using both the survey response dataset in Example 1 and the Word Values Survey (WVS) response dataset in Example 2.
@@ -186,10 +187,11 @@ The tutorial for `metalearner_deepneural` for the S-learner is [here](/tutorial.
 
 The tutorial for `metalearner_deepneural` for the T-learner is [here](/tutorial.md#deep-neural-t-learner).
 
+The tutorial for `metalearner_deepneural` for the X-learner is [here](/tutorial.md#deep-neural-x-learner).
+
+
 ![](tutorial_files/figure-gfm/visualstnn-1.png)<!-- -->
 ![](tutorial_files/figure-gfm/visualstnn-2.png)<!-- -->
-
-The tutorial for `metalearner_deepneural` for the X-learner is
 
 #### Deep Neural Networks for PATT-C Estimator
 The function `PATTC_deepneural` estimates the PATT from the PATT-C model for experimental data (in settings with noncompliance) using deep neural networks. The tutorial in the example below shows thw applicability of this function for a small number of observations using both the survey response dataset in Example 1 and the WVS response dataset in Example 2. 
