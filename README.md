@@ -148,10 +148,14 @@ slearner_en <- metalearner_ensemble(cov.formula = response_formula,
 ```
 
 #### Plotting Treatment Effects From Meta-Learners Ensemble 
-Once the model finishes, the CATEs are stored in the element `slearner_en$CATEs` and can be extracted for visualization using `plot()`:
+The **DeepLearningCausal** package includes features and functions that enables users to extract and illustrate three types of plots from the CATEs obtained from the meta-learner models that estimated with ensemble learning. First, users can visualize the distribution of the estimated CATEs from the meta-learner models. For instance, once the S- and T-Learner models are estimated via ensemble learning, the CATEs from these models are stored in the element `slearner_en$CATEs` and can be extracted for visualization using `plot()`:
 
 ![](tutorial_files/figure-gfm/visualst-1.png)<!-- -->
 ![](tutorial_files/figure-gfm/visualst-2.png)<!-- -->
+
+Second, users can call the function `marginal_plot` to extract the marginal effect of their treatment indicator on the outcome measure from the meta-learner models in this case. For example, once the CATE from the S-Learner model is estimated using ensemble learning, the `marginal_plot` function can be employed to obtain and illustrate the marginal effect of the "Strong Leader" treatment on "Support War" from this model as follows:
+
+Third, the `hte_plot` function in the package enables users to obtain and illustrate heterogeneous treatment effects that can help them identify whether the treatment effect of interest varies significantly across different subgroups in their data. As an example, after estimating the CATE from the T-Learner model with ensemble learning, we employed the `hte_plot` function to assess whether the treatment effect of the Strong Leader indicator on Support War differs for three key subgroup indicators in our survey experiment data summarized in example 1: gender, age, and education. Doing so generates the plot,     
 
 #### Tutorials for Meta-Learners Ensemble 
 
@@ -170,8 +174,16 @@ pattc_en <- pattc_ensemble(response.formula = response_formula,
             response.SL.learners = SLlearners)
 ```
 #### Plotting Treatment Effects From PATT-C Ensemble
-The estimated PATT from the PATT_C model using ensemble learning can be illustrated by using ggplot2: 
+Our package includes features and functions that enables users to extract and illustrate from the PATT_C model (estimated via ensemble learning) the following: the distribution of the estimated PATT , the marginal effect of the PATT estimate of Strong Leader, and heterogeneous treatment effects to assess and visualize whether the PATT varies significantly across different subgroups identified in our example with respect to gender, age, education.
+
+The distribution of the estimated PATT uusing ggplot2 is given as:
 ![](tutorial_files/figure-gfm/pattcenv-1.png)<!-- --> 
+
+The marginal effect of the PATT estimate of Strong Leader using the `marginal_plot' function is:
+
+Heterogenous Treatment Effects obtained from PATT estimating for the following subgroups using the `hte_plot` function is illustrated as:
+
+
 
 #### Tutorial for PATT-C Ensemble 
 The tutorial for the `PATTC_ensemble` for the PATT-C model is [here](/tutorial.md#ensemble-patt-c).
