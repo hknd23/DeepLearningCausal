@@ -23,7 +23,6 @@
 #' \donttest{
 #' # load dataset
 #' set.seed(123456)
-#' # estimate CATEs with X Learner
 #' xlearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +
 #'                                   income  + employed  + job_loss,
 #'                                   data = exp_data,
@@ -36,8 +35,9 @@
 #'                                   linear.output = FALSE,
 #'                                   binary.outcome = FALSE)
 #'
-#' print(xlearner_nn)
+#' hte_plot(xlearner_nn)
 #'                                   }
+#'                     
 hte_plot <- function(model_obj,
                      boot = TRUE,
                      n_boot = 1000,
