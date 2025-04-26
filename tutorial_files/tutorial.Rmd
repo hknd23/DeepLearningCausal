@@ -256,8 +256,5 @@ Subgroup analyses using CATEs from meta learners and PATT-C predictions can be p
 ```{r htes}
 hte_plot(xlearner_nn, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
          n_boot = 1000)
-
-hte_plot(pattc_nn, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
-         n_boot = 1000)
 ```
 
