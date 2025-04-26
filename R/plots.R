@@ -14,9 +14,10 @@
 #' @param cut_points numeric vector for cut-off points to generate subgroups from
 #' covariates. If left blank a vector generated from median values will be used.
 #' @param zero_int logical for vertical line at 0 x intercept.
-#'
 #' @returns \code{ggplot} object illustrating subgroup HTE and 95% confidence
 #' intervals.
+#' @importFrom magrittr %>%
+#' @import ggplot2
 #' @export
 #'
 #' @examples
@@ -177,7 +178,7 @@ hte_plot <- function(model_obj,
 #'
 #' @returns \code{ggplot} object.
 #' @export
-#'
+#' @importFrom magrittr %>%
 #' @import ggplot2
 plot.metalearner_deepneural <- function(model_obj,
                      type = "CATEs")
@@ -212,7 +213,7 @@ plot.metalearner_deepneural <- function(model_obj,
 #'
 #' @returns \code{ggplot} object
 #' @export
-#'
+#' @importFrom magrittr %>%
 #' @import ggplot2
 plot.metalearner_ensemble <- function(model_obj,
                                         type = "CATEs")
@@ -246,7 +247,7 @@ plot.metalearner_ensemble <- function(model_obj,
 #'
 #' @returns \code{ggplot} object
 #' @export
-#'
+#' @importFrom magrittr %>%
 #' @import ggplot2
 plot.pattc_deepneural <- function(model_obj)
 {
@@ -273,7 +274,7 @@ plot.pattc_deepneural <- function(model_obj)
 #'
 #' @returns \code{ggplot} object
 #' @export
-#'
+#' @importFrom magrittr %>%
 #' @import ggplot2
 plot.pattc_ensemble <- function(model_obj)
 {

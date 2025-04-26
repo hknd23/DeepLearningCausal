@@ -148,7 +148,7 @@ plot(tlearner_nn)
 ### Deep Neural X Learner
 For the X Learner, use `meta.learner.type = "X.Learner"`: 
 
-```{r nntlearner}
+```{r nnxlearner}
 response_formula <- support_war ~ age + female + education + income +
                     employed + job_loss + hindu + political_ideology
 set.seed(123456)
