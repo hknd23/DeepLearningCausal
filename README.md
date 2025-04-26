@@ -189,6 +189,8 @@ slearner_nn <- metalearner_deepneural(cov.formula = response_formula,
 ```
 #### Plotting Treatment Effects From Deep Neural Meta-Learners
 The estimated CATE for the T-learner and S-learner obtained via deep neural network can be displayed by using ggplot2 in R: 
+![](tutorial_files/figure-gfm/visualstnn-1.png)<!-- -->
+![](tutorial_files/figure-gfm/visualstnn-2.png)<!-- -->
 
 #### Tutorials for Deep Neural Meta-Learners 
 The tutorial for `metalearner_deepneural` for the S-learner is [here](/tutorial.md#deep-neural-s-learner).
@@ -196,11 +198,6 @@ The tutorial for `metalearner_deepneural` for the S-learner is [here](/tutorial.
 The tutorial for `metalearner_deepneural` for the T-learner is [here](/tutorial.md#deep-neural-t-learner).
 
 The tutorial for `metalearner_deepneural` for the X-learner is [here](/tutorial.md#deep-neural-x-learner).
-
-
-![](tutorial_files/figure-gfm/visualstnn-1.png)<!-- -->
-![](tutorial_files/figure-gfm/visualstnn-2.png)<!-- -->
-
 
 
 #### Deep Neural Networks for PATT-C Estimator
