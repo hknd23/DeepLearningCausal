@@ -186,7 +186,7 @@ plot.metalearner_deepneural <- function(model_obj,
   if (type == "CATEs"){
   meta_plot <- ggplot(data.frame(model_obj$CATEs), aes(x= model_obj.CATEs)) +
     geom_histogram(alpha = 0.6, position = 'identity')+
-    xlab("CATEs (T Learner)")+ylab("")
+    xlab("CATEs")+ylab("")
   } else if (type == "predict") {
     meta_preds <-  rbind(data.frame("predictions" = model_obj$Y_hats[,1],
                                        type = "Y_hat0"),
@@ -220,7 +220,7 @@ plot.metalearner_ensemble <- function(model_obj,
   if (type == "CATEs"){
     meta_plot <-  ggplot(data.frame(model_obj$CATEs),  aes(x= model_obj.CATEs)) +
       geom_histogram(alpha = 0.6, position = 'identity')+
-      xlab("CATEs (T Learner)")+ylab("")
+      xlab("CATEs")+ylab("")
   } else if (type == "predict") {
     meta_preds <-  rbind(data.frame("predictions" = model_obj$Y_hats[,1],
                                     type = "Y_hat0"),
