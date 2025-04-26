@@ -184,8 +184,7 @@ plot.metalearner_deepneural <- function(model_obj,
                      type = "CATEs")
 {
   if (type == "CATEs"){
-  meta_plot <- data.frame(model_obj$CATEs) %>%
-    ggplot(aes(x= model_obj.CATEs)) +
+  meta_plot <- ggplot(data.frame(model_obj$CATEs), aes(x= model_obj.CATEs)) +
     geom_histogram(alpha = 0.6, position = 'identity')+
     xlab("CATEs (T Learner)")+ylab("")
   } else if (type == "predict") {
@@ -193,9 +192,9 @@ plot.metalearner_deepneural <- function(model_obj,
                                        type = "Y_hat0"),
                             data.frame("predictions" = model_obj$Y_hats[,2],
                                        type = "Y_hat1"))
-    meta_plot <- meta_preds %>%
-      ggplot( aes(x = predictions, fill = type)) +
-      geom_histogram(alpha = 0.6, position = 'identity')+xlab("Predicted Outcome")+ylab("")+
+    meta_plot <-  ggplot(meta_preds,  aes(x = predictions, fill = type)) +
+      geom_histogram(alpha = 0.6, position = 'identity')+
+      xlab("Predicted Outcome")+ylab("")+
       theme(legend.position = "bottom")+
       theme(legend.title=element_blank())
   }
@@ -219,8 +218,7 @@ plot.metalearner_ensemble <- function(model_obj,
                                         type = "CATEs")
 {
   if (type == "CATEs"){
-    meta_plot <- data.frame(model_obj$CATEs) %>%
-      ggplot( aes(x= model_obj.CATEs)) +
+    meta_plot <-  ggplot(data.frame(model_obj$CATEs),  aes(x= model_obj.CATEs)) +
       geom_histogram(alpha = 0.6, position = 'identity')+
       xlab("CATEs (T Learner)")+ylab("")
   } else if (type == "predict") {
@@ -228,8 +226,7 @@ plot.metalearner_ensemble <- function(model_obj,
                                     type = "Y_hat0"),
                          data.frame("predictions" = model_obj$Y_hats[,2],
                                     type = "Y_hat1"))
-    meta_plot <- meta_preds %>%
-      ggplot( aes(x = predictions, fill = type)) +
+    meta_plot <- ggplot(meta_preds, aes(x = predictions, fill = type)) +
       geom_histogram(alpha = 0.6, position = 'identity')+xlab("Predicted Outcome")+ylab("")+
       theme(legend.position = "bottom")+
       theme(legend.title=element_blank())
@@ -255,8 +252,7 @@ plot.pattc_deepneural <- function(model_obj)
                                   type = "Y_hat0"),
                        data.frame("predictions" = model_obj$pop_counterfactual[,2],
                                   type = "Y_hat1"))
-  pattc_plot <- patt_preds %>%
-    ggplot( aes(x = predictions, fill = type)) +
+  pattc_plot <-  ggplot(patt_preds,  aes(x = predictions, fill = type)) +
     geom_histogram(alpha = 0.6, position = 'identity')+
     xlab("")+ylab("")+
     theme(legend.position = "bottom")+
@@ -282,8 +278,7 @@ plot.pattc_ensemble <- function(model_obj)
                                   type = "Y_hat0"),
                        data.frame("predictions" = model_obj$pop_counterfactual[,2],
                                   type = "Y_hat1"))
-  pattc_plot <- patt_preds %>%
-    ggplot( aes(x = predictions, fill = type)) +
+  pattc_plot <-  ggplot(patt_preds, aes(x = predictions, fill = type)) +
     geom_histogram(alpha = 0.6, position = 'identity')+
     xlab("")+ylab("")+
     theme(legend.position = "bottom")+
