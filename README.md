@@ -122,7 +122,7 @@ Or with devtools:
 devtools::install_github("hknd23/DeepLearningCausal")
 ```
 
-#### Using the Package
+#### Using the Package: Ensemble Learning
 
 We illustrate the functionality of **DeepLearningCausal** using the two survey response datasets summarized above. The data from these two survey response datasets is included and briefly described in the manual for the package. 
 
