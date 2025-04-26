@@ -12,13 +12,12 @@
 <!-- badges: end -->
 
 **DeepLearningCausal** is an R package that provides functions to estimate the Conditional Average Treatment Effects (CATE)
-and Population Average Treatment Effects on the Treated (PATT) from experimental and observational data using both
-ensemble learning and deep learning (specifically, deep neural networks) methods. The package first provides functions to implement three meta-learner models---the Single-learner (S-learner), Two-learner (T-learner) model, and the Cross-Learner (X-learner) model---for estimating the CATE using ensemble and deep learning methods. These meta-learners are described in Künzel et al. (2019). It then provides functions to implement the Ottoboni and Poulos (2020) PATT-C estimator to obtain the Population Average Treatment Effects on the Treated (PATT) from experimental and observational data with noncompliance by also ensemble and deep learning methods.
+and Population Average Treatment Effects on the Treated (PATT) from experimental and observational data using both ensemble learning and deep learning (specifically, deep neural networks) methods. First, the package provides functions to implement three meta-learner models for estimating the CATE using ensemble and deep learning methods: the Single-learner (S-learner), Two-learner (T-learner), and the Cross-Learner (X-learner) models described in Künzel et al. (2019). Second, "DeepLearningCausal" provides functions to implement the Ottoboni and Poulos (2020) PATT-C estimator to obtain via ensemble and deep learning methods the Population Average Treatment Effects on the Treated from experimental and observational data with noncompliance. Third, the package provides functions that users can employ to illustrate and analyze not only the treatment indicator's marginal effect from the meta-learner and PATT-C estimator but also heterogeneous treatment effects from the said estimators for subgroup analysis.   
 
 ### Why DeepLearningCausal?
 
 Researchers are increasingly interested to estimate causal effecs, including Conditional Average Treatment Effects (CATE)
-and Population Average Treatment Effects (PATE), from observational and experimental data using machine learning (ML) and deep learning. A unique advantage of the DeepLearningCausal package is that it provides a single user-friendly pacakge that users can employ to estimate the CATE from
+and Population Average Treatment Effects, from observational and experimental data using machine learning (ML) and deep learning. A unique advantage of the DeepLearningCausal package is that it provides a single user-friendly pacakge that users can employ to estimate the CATE from
 experimental and observational data as well as Population Average Treatment Effects on the Treated (PATT) from experimental and observational
 data with noncompliance. Another key benefit of DeepLearningCausal is that it provides users the choice of estimating CATE and PATT using both ensemble learning and deep neural networks. More specifically,
 
@@ -35,7 +34,9 @@ data with noncompliance. Another key benefit of DeepLearningCausal is that it pr
 | `pattc_ensemble`        | Estimates PATT_C estimator for obtaining PATT using super learner weighted ensemble.       |
 | `pattc_deepneural`      | Estimates PATT_C estimator for obtaining PATT using deep neural networks.                  |
 | `pattc_deepneural`      | Estimates PATT_C estimator for obtaining PATT using deep neural networks.                  |
-| `hte_plot`              | Plot subgroups Heterogeneous Treatment Effects using CATEs or PATT-C predictions.          |
+| `hte_plot`              | Plots Heterogeneous Treatment Effects extracted from the meta-learner and PATT-C models.   |
+| `marginal_plot`         | Plots Marginal Effects for the treatment indicator from the meta-learner and PATT-C models.|
+
 
 
 
