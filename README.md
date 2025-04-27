@@ -33,7 +33,6 @@ data with noncompliance. Another key benefit of DeepLearningCausal is that it pr
 | `metalearner_deepneural`| Estimates CATE for S-learner, T-learner and X-learner using deep neural networks.          |
 | `pattc_ensemble`        | Estimates PATT_C estimator for obtaining PATT using super learner weighted ensemble.       |
 | `pattc_deepneural`      | Estimates PATT_C estimator for obtaining PATT using deep neural networks.                  |
-| `pattc_deepneural`      | Estimates PATT_C estimator for obtaining PATT using deep neural networks.                  |
 | `hte_plot`              | Plots Heterogeneous Treatment Effects extracted from the meta-learner and PATT-C models.   |
 | `marginal_plot`         | Plots Marginal Effects for the treatment indicator from the meta-learner and PATT-C models.|
 
@@ -155,7 +154,7 @@ The **DeepLearningCausal** package includes features and functions that enables 
 
 Second, users can call the function `marginal_plot` to extract the marginal effect of their treatment indicator on the outcome measure from the meta-learner models in this case. For example, once the CATE from the S-Learner model is estimated using ensemble learning, the `marginal_plot` function can be employed to obtain and illustrate the marginal effect of the "Strong Leader" treatment on "Support War" from this model as follows:
 
-Third, the `hte_plot` function in the package enables users to obtain and illustrate heterogeneous treatment effects that can help them identify whether the treatment effect of interest varies significantly across different subgroups in their data. As an example, after estimating the CATE from the T-Learner model with ensemble learning, we employed the `hte_plot` function to assess whether the treatment effect of the Strong Leader indicator on Support War differs for three key subgroup indicators in our survey experiment data summarized in example 1: gender, age, and education. Doing so generates the plot,     
+Third, the `hte_plot` function in the package enables users to obtain and illustrate heterogeneous treatment effects that can help them identify whether the treatment effect of interest varies significantly across different subgroups in their data. As an example, after estimating the CATE from the T-Learner model with ensemble learning, we employed the `hte_plot` function to assess whether the treatment effect of the Strong Leader indicator on Support War differs for three key subgroup indicators in our survey experiment data summarized in example 1: gender, age, and education. Doing so generates the figure,     
 
 #### Tutorials for Meta-Learners Ensemble 
 
@@ -174,14 +173,12 @@ pattc_en <- pattc_ensemble(response.formula = response_formula,
             response.SL.learners = SLlearners)
 ```
 #### Plotting Treatment Effects From PATT-C Ensemble
-Our package includes features and functions that enables users to extract and illustrate from the PATT_C model (estimated via ensemble learning) the following: the distribution of the estimated PATT , the marginal effect of the PATT estimate of Strong Leader, and heterogeneous treatment effects to assess and visualize whether the PATT varies significantly across different subgroups identified in our example with respect to gender, age, education.
-
-The distribution of the estimated PATT uusing ggplot2 is given as:
+Our package includes features and functions that enables users to extract and illustrate from the PATT_C model (estimated via ensemble learning) the following: the distribution of the estimated PATT , the marginal effect of the PATT estimate of Strong Leader, and heterogeneous treatment effects to assess and visualize whether the PATT varies significantly across different subgroups identified in our example with respect to gender, age, education. The distribution of the estimated PATT can be illustrated from the PATT-C estimated via ensemble learning using `plot()`:
 ![](tutorial_files/figure-gfm/pattcenv-1.png)<!-- --> 
 
-The marginal effect of the PATT estimate of Strong Leader using the `marginal_plot' function is:
+The marginal effect of the PATT estimate of "Strong Leader" on "Support War" from the PATT-C (ensemble learning) model using the `marginal_plot' function is:
 
-Heterogenous Treatment Effects obtained from PATT estimating for the following subgroups using the `hte_plot` function is illustrated as:
+Heterogenous Treatment Effects obtained from the PATT estimate of *Strong Leader* is illustrated for the following three subgroups using the `hte_plot` function:
 
 
 
@@ -191,7 +188,7 @@ The tutorial for the `PATTC_ensemble` for the PATT-C model is [here](/tutorial.m
 ### Using the Package: Deep Neural Networks
 
 #### Deep Neural Networks for Meta-Learners
-The function `metalearner_deepneural` in the package estimates the CATE from the two meta-learner models, the S-learner and T-learner, using deep neural networks. The example below shows via a tutorial the applicability of this function for a small number of observations (N) from our survey response (specifically, survey experiment) dataset in Example 1.
+The function `metalearner_deepneural` in the package estimates the CATE from the two meta-learner models, the S-learner and T-learner, using deep neural networks. The example below shows via a tutorial the applicability of this function for a small number of observations (*N*) from our survey response (specifically, survey experiment) dataset in Example 1.
 
 ``` r
 slearner_nn <- metalearner_deepneural(cov.formula = response_formula,
@@ -200,9 +197,12 @@ slearner_nn <- metalearner_deepneural(cov.formula = response_formula,
                hidden.layer = c(2, 2), linear.output = FALSE)
 ```
 #### Plotting Treatment Effects From Deep Neural Meta-Learners
-The estimated CATE for the T-learner and S-learner obtained via deep neural network can be displayed by using ggplot2 in R: 
+The **DeepLearningCausal** package enables users to illustrate the distribution of the CATE obtained from the  S-, T- and X-learner models that are estimated via deep neural networks. For example, users can visualize the distribution of the CATE from the S- and T-learner models estimated via deep neural networks using `plot()`:
 ![](tutorial_files/figure-gfm/visualstnn-1.png)<!-- -->
 ![](tutorial_files/figure-gfm/visualstnn-2.png)<!-- -->
+
+Users can employ the `marginal_plot` function to plot the marginal effect of the treatment indicator of interest on the outcome measure that is obtained from the S-, T- and X-learner models in the package that are each estimated by using deep neural networks. For the sake of brevity, we illustrate the marginal effect of the *Strong Leader* treatment on *Support War* from the S-Learner model estimated using deep neural networks **here**. The `hte_plot` function also enables users to extract and illustrate heterogeneous treatment effects associated with the CATE obtained from the three meta-learner models in the package that are each estimated by using deep neural networks. As an example, we demonstrate the heterogeneous treatment effects (for three subgroups) obtained from the S-Learner model estimated via deep neural networks **here**. 
+
 
 #### Tutorials for Deep Neural Meta-Learners 
 The tutorial for `metalearner_deepneural` for the S-learner is [here](/tutorial.md#deep-neural-s-learner).
@@ -225,13 +225,14 @@ pattc_nn <- pattc_deepneural(response.formula = response_formula,
 ```
 
 #### Plotting Treatment Effects From Deep Neural PATT-C Estimator
-The estimated PATT from the PATT_C model using deep neural networks can be illustrated by using ggplot2:
-
+The distribution of the PATT obtained from the PATT-C models that is estimated via deep neural networks can be visualized by using The estimated PATT from the PATT_C model using deep neural networks can be illustrated by using `plot()`:
 ![](tutorial_files/figure-gfm/pattcnnv-1.png)<!-- --> 
+
+Users can employ the `marginal_plot` function to plot the marginal effect of the treatment variable (in our example, *strong leader*) on the outcome measure (e.g. *support war*) from the PATT-C model that is estimated by using deep neural networks, which is available **here**.The `hte_plot` function enables users to extract and illustrate heterogeneous treatment effects associated with the PATT obtained from the PATT-C model that is estimated by using deep neural networks. Using the said function, the heterogeneous treatment effects for three subgroups obtained from the PATT-C model estimated via deep neural networks is available **here**. 
 
 #### Tutorial for Deep Neural PATT-C Estimator 
 
-The tutorial for `PATTC_deepneural` is [here](/tutorial.md#deep-neural-patt-c).
+The tutorial for `pattc_deepneural` for the PATT-C model estimated using deep neural networks is available [here](/tutorial.md#deep-neural-patt-c).
 
 ### References
 Künzel, S. R., J.S. Sekhon, P.J. Bickel, and B. Yu, B. 2019. “Metalearners for estimating heterogeneous treatment effects using machine  learning.” Proceedings of the National Academy of Science, 116, 4156–4165. DOI: https://doi.org/10.1073/pnas.1804597116 
