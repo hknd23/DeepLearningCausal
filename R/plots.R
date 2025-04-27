@@ -55,7 +55,7 @@ hte_plot <- function(model_obj,
       rownames(x_vars) <- 1:nrow(x_vars)
       y_var <- model_obj$CATEs
     } else if (class(model_obj) %in% c("pattc_ensemble",
-                                       "metalearner_deepneural")){
+                                       "pattc_deepneural")){
       all_vars <- all.vars(model_obj$formula)
       y_var <- all_vars[1]
       x_var_names <- all_vars[-1]
