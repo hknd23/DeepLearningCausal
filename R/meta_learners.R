@@ -145,7 +145,9 @@ metalearner_ensemble <- function(data,
                                             SL.library = SL.learners,
                                             verbose = FALSE,
                                             method = "method.NNLS",
-                                            family = "binomial",
+                                            family = ifelse(binary.outcome, 
+                                                            "binomial", 
+                                                            "gaussian"),
                                             cvControl = control)
         
         # Set treatment variable to 0
@@ -212,7 +214,9 @@ metalearner_ensemble <- function(data,
                                              SL.library = SL.learners,
                                              verbose = FALSE,
                                              method = "method.NNLS",
-                                             family = "binomial",
+                                             family = ifelse(binary.outcome, 
+                                                             "binomial", 
+                                                             "gaussian"),
                                              cvControl = control)
         
         m0_mod <- SuperLearner::SuperLearner(Y = aux_0$y, 
@@ -221,7 +225,9 @@ metalearner_ensemble <- function(data,
                                              SL.library = SL.learners,
                                              verbose = FALSE,
                                              method = "method.NNLS",
-                                             family = "binomial",
+                                             family = ifelse(binary.outcome, 
+                                                             "binomial", 
+                                                             "gaussian"),
                                              cvControl = control)
         
         Y_test_0 <- predict(m0_mod, df_main[,covariates], onlySL = TRUE)$pred
@@ -281,7 +287,8 @@ metalearner_ensemble <- function(data,
     set.seed(123456)
     
     for (f in seq_along(folds)) {
-      pb <- txtProgressBar(min = 0, max = length(folds), style = 3, width = 50, char = "=")
+      pb <- txtProgressBar(min = 0, max = length(folds), 
+                           style = 3, width = 50, char = "=")
       
       if (f == 1) {
         data1 <- data[c(folds[[5]], folds[[2]], folds[[3]], folds[[4]]), ]
@@ -331,7 +338,9 @@ metalearner_ensemble <- function(data,
                                            SL.library = SL.learners,
                                            verbose = FALSE, 
                                            method = "method.NNLS", 
-                                           family = ifelse(binary.outcome, "binomial", "gaussian"),
+                                           family = ifelse(binary.outcome, 
+                                                           "binomial", 
+                                                           "gaussian"),
                                            cvControl = control)
       m1_hat <- m1_mod$SL.predict
       
@@ -340,7 +349,9 @@ metalearner_ensemble <- function(data,
                              SL.library = SL.learners,
                              verbose = FALSE, 
                              method = "method.NNLS", 
-                             family = ifelse(binary.outcome, "binomial", "gaussian"),
+                             family = ifelse(binary.outcome, 
+                                             "binomial", 
+                                             "gaussian"),
                              cvControl = control)
       m0_hat <- m0_mod$SL.predict
       
