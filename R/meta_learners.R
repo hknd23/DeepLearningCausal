@@ -206,7 +206,8 @@ metalearner_ensemble <- function(data,
         aux_1 <- df_aux[which(df_aux$d == 1),]
         aux_0 <- df_aux[which(df_aux$d == 0),]
         
-        m1_mod <- SuperLearner::SuperLearner(Y = aux_1$y, X = aux_1[,covariates],
+        m1_mod <- SuperLearner::SuperLearner(Y = aux_1$y, 
+                                             X = aux_1[,covariates],
                                              newX = df_main[,covariates],
                                              SL.library = SL.learners,
                                              verbose = FALSE,
@@ -214,7 +215,8 @@ metalearner_ensemble <- function(data,
                                              family = "binomial",
                                              cvControl = control)
         
-        m0_mod <- SuperLearner::SuperLearner(Y = aux_0$y, X = aux_0[,covariates],
+        m0_mod <- SuperLearner::SuperLearner(Y = aux_0$y, 
+                                             X = aux_0[,covariates],
                                              newX = df_main[,covariates],
                                              SL.library = SL.learners,
                                              verbose = FALSE,
@@ -305,10 +307,14 @@ metalearner_ensemble <- function(data,
       df_aux <- data1
       
       # Train propensity score model
-      p_mod <- SuperLearner::SuperLearner(Y = df_aux$d, X = df_aux[, c(covariates)],
-                                          newX = df_main[, c(covariates)], SL.library = SL.learners,
-                                          verbose = FALSE, method = "method.NNLS",
-                                          family = binomial(), cvControl = control)
+      p_mod <- SuperLearner::SuperLearner(Y = df_aux$d, 
+                                          X = df_aux[, c(covariates)],
+                                          newX = df_main[, c(covariates)], 
+                                          SL.library = SL.learners,
+                                          verbose = FALSE, 
+                                          method = "method.NNLS",
+                                          family = binomial(), 
+                                          cvControl = control)
       
       p_hat <- p_mod$SL.predict
       p_hat <- ifelse(p_hat < 0.025, 0.025, ifelse(p_hat > 0.975, 0.975, p_hat)) # Overlap bounding
@@ -319,16 +325,21 @@ metalearner_ensemble <- function(data,
       aux_1 <- df_aux[df_aux$d == 1, ]
       aux_0 <- df_aux[df_aux$d == 0, ]
       
-      m1_mod <- SuperLearner::SuperLearner(Y = aux_1$y, X = aux_1[, c(covariates)],
-                                           newX = df_main[, c(covariates)], SL.library = SL.learners,
-                                           verbose = FALSE, method = "method.NNLS", 
+      m1_mod <- SuperLearner::SuperLearner(Y = aux_1$y, 
+                                           X = aux_1[, c(covariates)],
+                                           newX = df_main[, c(covariates)], 
+                                           SL.library = SL.learners,
+                                           verbose = FALSE, 
+                                           method = "method.NNLS", 
                                            family = ifelse(binary.outcome, "binomial", "gaussian"),
                                            cvControl = control)
       m1_hat <- m1_mod$SL.predict
       
       m0_mod <- SuperLearner(Y = aux_0$y, X = aux_0[, c(covariates)],
-                             newX = df_main[, c(covariates)], SL.library = SL.learners,
-                             verbose = FALSE, method = "method.NNLS", 
+                             newX = df_main[, c(covariates)], 
+                             SL.library = SL.learners,
+                             verbose = FALSE, 
+                             method = "method.NNLS", 
                              family = ifelse(binary.outcome, "binomial", "gaussian"),
                              cvControl = control)
       m0_hat <- m0_mod$SL.predict
@@ -351,8 +362,10 @@ metalearner_ensemble <- function(data,
     a1 <- tryCatch({
       tau1_mod <- SuperLearner::SuperLearner(Y = pseudo_all[,1][data$d==1], 
                                              X = data[data$d == 1, c(covariates)], 
-                                             newX = data[,covariates], SL.library = SL.learners,
-                                             verbose = FALSE, method = "method.NNLS",
+                                             newX = data[,covariates], 
+                                             SL.library = SL.learners,
+                                             verbose = FALSE, 
+                                             method = "method.NNLS",
                                              cvControl = control)
       score_tau1<-tau1_mod$SL.predict
       a1 <- score_tau1
@@ -368,8 +381,10 @@ metalearner_ensemble <- function(data,
     a0 <- tryCatch({
       tau0_mod <- SuperLearner::SuperLearner(Y = pseudo_all[, 1][data$d == 0],
                                              X = data[data$d == 0, c(covariates)],
-                                             newX = data[, c(covariates)], SL.library = SL.learners,
-                                             verbose = FALSE, method = "method.NNLS", 
+                                             newX = data[, c(covariates)], 
+                                             SL.library = SL.learners,
+                                             verbose = FALSE,
+                                             method = "method.NNLS", 
                                              cvControl = control)
       score_tau0 <- tau0_mod$SL.predict
       a0 <- score_tau0
@@ -389,7 +404,8 @@ metalearner_ensemble <- function(data,
     learner_out <- list("formula" = cov.formula,
                         "treat_var" = treat.var,
                         "CATEs" = score_meta,
-                        "Y_hats" = data.frame("Y_hat0" = score_tau0, "Y_hat1" = score_tau1),
+                        "Y_hats" = data.frame("Y_hat0" = score_tau0, 
+                                              "Y_hat1" = score_tau1),
                         "Meta_Learner" = meta.learner.type,
                         "Prop_score"=pseudo_all[, 2],
                         "SL_learners" = SL.learners,
