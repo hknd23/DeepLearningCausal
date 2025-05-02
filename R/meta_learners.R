@@ -502,36 +502,45 @@ metalearner_ensemble <- function(data,
       pseudo_all[,1][df_main$ID] <- pseudo_outcome
       pseudo_all[,2][df_main$ID] <- weights
     }
-    
+    pseudo_all <- as.data.frame(pseudo_all)
     res_combined_r <- matrix(NA,nrow(data),5)
     
+    set_data <- split(data, cut(1:nrow(data), breaks = 10))
+    set_pseudo <- split(pseudo_all, cut(1:nrow(pseudo_all), breaks = 10))
+    set_index <- split(1:nrow(data), cut(1:nrow(data), breaks = 10))
+
+    ##do.call(rbind, set_data[1:5])
+    ##do.call(rbind, set_data[6:10])
+    
+    
     for(l in 1:10){
-      set <- seq.int(from=1, to=nrow(data)+1, length.out = 11)
       if(l <= 5){
-        r_mod_cf <- SuperLearner(Y = pseudo_all[(set[l]:set[l+1]-1), 2],
-                                 X = data[(set[l]:set[l+1]-1),covariates], 
-                                 newX = data[(set[6]:set[11] - 1), covariates], 
+        r_mod_cf <- SuperLearner(Y = set_pseudo[[l]][, 2],
+                                 X = set_data[[l]][,covariates], 
+                                 newX = do.call(rbind, 
+                                                set_data[6:10])[,covariates], 
                                  SL.library = SL.learners,
                                  verbose = FALSE, 
                                  method = "method.NNLS",
-                                 obsWeights = pseudo_all[(set[l]:set[l+1]-1),3],
+                                 obsWeights = set_pseudo[[l]][, 3],
                                  cvControl = control)
         
         score_r_1_cf <- r_mod_cf$SL.predict
-        res_combined_r[(set[6]:set[11] - 1), l] <- score_r_1_cf
-      }
-      if(l  >5){
-        r_mod_cf <- SuperLearner(Y = pseudo_all[(set[l]:set[l + 1] - 1), 2],
-                                 X = data[(set[l]:set[l + 1] - 1), covariates], 
-                                 newX = data[(set[1]:set[6] - 1), covariates], 
+        res_combined_r[unlist(set_index[6:10]), l] <- score_r_1_cf
+              }
+      if(l  > 5){
+        r_mod_cf <- SuperLearner(Y = set_pseudo[[l]][, 2],
+                                 X = set_data[[l]][,covariates], 
+                                 newX = do.call(rbind, 
+                                                set_data[1:5])[,covariates], 
                                  SL.library = SL.learners,
                                  verbose = FALSE, 
                                  method = "method.NNLS",
-                                 obsWeights = pseudo_all[(set[l]:set[l+1]-1),3],
+                                 obsWeights = set_pseudo[[l]][, 3],
                                  cvControl = control)
         
         score_r_0_cf <- r_mod_cf$SL.predict
-        res_combined_r[(set[1]:set[6] - 1), (l - 5)] <- score_r_0_cf
+        res_combined_r[unlist(set_index[1:5]), (l - 5)] <- score_r_0_cf
       }
     }
     score_meta <- rowMeans(res_combined_r)
