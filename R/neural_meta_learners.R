@@ -174,8 +174,8 @@ metalearner_deepneural <- function(data,
         Y_hat_test_1 <- max.col(Y_test_1) - 1
         Y_hat_test_0 <- max.col(Y_test_0) - 1
       } else if (!binary.outcome) {
-        Y_hat_test_1 <- Y_test_1[,2]
-        Y_hat_test_0 <- Y_test_0[,2]
+        Y_hat_test_1 <- Y_test_1
+        Y_hat_test_0 <- Y_test_0
       }
 
       score_meta[,1][df_main$ID] = Y_hat_test_1 - Y_hat_test_0
@@ -219,8 +219,8 @@ metalearner_deepneural <- function(data,
         Y_hat_test_1 <- max.col(Y_test_1) - 1
         Y_hat_test_0 <- max.col(Y_test_0) - 1
       } else if (!binary.outcome) {
-        Y_hat_test_1 <- Y_test_1[,2]
-        Y_hat_test_0 <- Y_test_0[,2]
+        Y_hat_test_1 <- Y_test_1
+        Y_hat_test_0 <- Y_test_0
       }
 
       #Y_hat_test_0 <- max.col(Y_test_0) - 1
@@ -411,4 +411,3 @@ print.metalearner_deepneural <- function(x, ...){
   cat("CATEs percentiles:\n")
   print(quantile(x$CATEs, c(.10 ,.25, .50 ,.75, .90)))
 }
-

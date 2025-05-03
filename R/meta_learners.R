@@ -507,32 +507,30 @@ metalearner_ensemble <- function(data,
     set_pseudo <- split(pseudo_all, cut(1:nrow(pseudo_all), breaks = 10))
     set_index <- split(1:nrow(data), cut(1:nrow(data), breaks = 10))
 
-    
-    
     for(l in 1:10){
       if(l <= 5){
-        r_mod_cf <- SuperLearner(Y = set_pseudo[[l]][, 2],
+        r_mod_cf <- SuperLearner(Y = set_pseudo[[l]][, 1],
                                  X = set_data[[l]][,covariates], 
                                  newX = do.call(rbind, 
                                                 set_data[6:10])[,covariates], 
                                  SL.library = SL.learners,
                                  verbose = FALSE, 
                                  method = "method.NNLS",
-                                 obsWeights = set_pseudo[[l]][, 3],
+                                 obsWeights = set_pseudo[[l]][, 2],
                                  cvControl = control)
         
         score_r_1_cf <- r_mod_cf$SL.predict
         res_combined_r[unlist(set_index[6:10]), l] <- score_r_1_cf
               }
       if(l  > 5){
-        r_mod_cf <- SuperLearner(Y = set_pseudo[[l]][, 2],
+        r_mod_cf <- SuperLearner(Y = set_pseudo[[l]][, 1],
                                  X = set_data[[l]][,covariates], 
                                  newX = do.call(rbind, 
                                                 set_data[1:5])[,covariates], 
                                  SL.library = SL.learners,
                                  verbose = FALSE, 
                                  method = "method.NNLS",
-                                 obsWeights = set_pseudo[[l]][, 3],
+                                 obsWeights = set_pseudo[[l]][, 2],
                                  cvControl = control)
         
         score_r_0_cf <- r_mod_cf$SL.predict
