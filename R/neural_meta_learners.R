@@ -100,7 +100,7 @@ metalearner_deepneural <- function(data,
   {
     stop("Meta Learner not supported")
   }
-  print("RRR")
+
   cov.formula <- as.formula(cov.formula)
   variables <- all.vars(cov.formula)
   outcome.var <- variables[1]
@@ -148,7 +148,7 @@ metalearner_deepneural <- function(data,
         data1 <- data[c(folds[[1]], folds[[2]], folds[[3]], folds[[4]]),]
         df_main <- data[folds[[5]],]
       }
-      print("RRR")
+
       df_aux <- data1
       s.formula<-paste0("y ~ d + ", paste0(covariates, collapse = " + "))
       
@@ -386,9 +386,9 @@ metalearner_deepneural <- function(data,
                         "hidden_layer" = hidden.layer,
                         "data" = data)
   }
-  print("RRR")
+
   if(meta.learner.type == "R.Learner"){
-    print("RRR")
+
     data$ID <- c(1:nrow(data))
     pseudo_all <- matrix(NA, nrow(data), 2)
     ID_pseudo <- 1:nrow(data)
@@ -429,7 +429,7 @@ metalearner_deepneural <- function(data,
       p_hat <- ifelse(p_hat < 0.025, 0.025, 
                       ifelse(p_hat > .975, .975, p_hat))
       
-      print("RRR2")
+
       m_mod <- neuralnet::neuralnet(s.formula, data = df_aux, 
                                     hidden = hidden.layer,
                                     algorithm = algorithm, 
@@ -448,7 +448,7 @@ metalearner_deepneural <- function(data,
       pseudo_all[,1][df_main$ID] <- pseudo_outcome
       pseudo_all[,2][df_main$ID] <- weights
     }
-    print("RRR3")
+
     pseudo_all <- as.data.frame(pseudo_all)
     res_combined_r <- matrix(NA,nrow(data),5)
     
@@ -482,7 +482,7 @@ metalearner_deepneural <- function(data,
                                          algorithm = algorithm, 
                                          linear.output = FALSE,
                                          stepmax = stepmax)
-        print("RRR4")
+
         score_r_0_cf <- predict(r_mod_cf, 
                                 do.call(rbind, set_data[1:5]))
         res_combined_r[unlist(set_index[1:5]), (l - 5)] <- score_r_0_cf
@@ -490,7 +490,7 @@ metalearner_deepneural <- function(data,
     }
     score_meta <- rowMeans(res_combined_r)
     head(score_r_0_cf)
-    print("RRR5")
+
     learner_out <- list("formula" = cov.formula,
                         "treat_var" = treat.var,
                         "CATEs" = score_meta,
