@@ -291,8 +291,6 @@ metalearner_ensemble <- function(data,
     ID_pseudo <- 1:nrow(data)
     pseudo_all <- cbind(pseudo_all, ID_pseudo)
     
-    set.seed(123456)
-    
     for (f in seq_along(folds)) {
       pb <- txtProgressBar(min = 0, max = length(folds), 
                            style = 3, width = 50, char = "=")
@@ -440,7 +438,6 @@ metalearner_ensemble <- function(data,
     
     ##### # 5-fold sample splitting
     # Sample splitting
-    set.seed(1234)
     folds <- caret::createFolds(data$d, k = 5)
     for(f in 1:(length(folds))){
       if(f == 1){
@@ -477,7 +474,7 @@ metalearner_ensemble <- function(data,
                             cvControl = control)
       
       p_hat <- p_mod$SL.predict
-      p_hat = ifelse(p_hat < 0.025, 0.025, 
+      p_hat <- ifelse(p_hat < 0.025, 0.025, 
                      ifelse(p_hat > .975, .975, p_hat))
       # Train a regression model 
       m_mod <- SuperLearner(Y = df_aux$y,
@@ -502,6 +499,7 @@ metalearner_ensemble <- function(data,
       pseudo_all[,1][df_main$ID] <- pseudo_outcome
       pseudo_all[,2][df_main$ID] <- weights
     }
+    
     pseudo_all <- as.data.frame(pseudo_all)
     res_combined_r <- matrix(NA,nrow(data),5)
     
@@ -509,8 +507,6 @@ metalearner_ensemble <- function(data,
     set_pseudo <- split(pseudo_all, cut(1:nrow(pseudo_all), breaks = 10))
     set_index <- split(1:nrow(data), cut(1:nrow(data), breaks = 10))
 
-    ##do.call(rbind, set_data[1:5])
-    ##do.call(rbind, set_data[6:10])
     
     
     for(l in 1:10){

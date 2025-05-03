@@ -107,7 +107,7 @@ metalearner_deepneural <- function(data,
   data.vars <- data[,c(treat.var, variables)]
 
   data.<-na.omit(data.vars)
-  data.$y<-as.factor(data.[,outcome.var])
+  data.$y <- data.[,outcome.var]
   data.$d<-data.[,treat.var]
 
   data<-data.[,c("y", "d", covariates)]
@@ -279,7 +279,9 @@ metalearner_deepneural <- function(data,
 
       s.formula <- paste0("d ~ ", paste0(covariates, collapse = " + "))
       p_mod <- neuralnet::neuralnet(s.formula, data = df_aux, hidden = 3,
-                                    algorithm = algorithm, linear.output = FALSE, stepmax = stepmax)
+                                    algorithm = algorithm, 
+                                    linear.output = FALSE, 
+                                    stepmax = stepmax)
       p_hat <- predict(p_mod, df_main[, covariates])
       p_hat <- ifelse(p_hat < 0.025, 0.025, ifelse(p_hat > 0.975, 0.975, p_hat))
       pseudo_all[, 2][df_main$ID] <- p_hat
@@ -287,8 +289,18 @@ metalearner_deepneural <- function(data,
       aux_1 <- df_aux[df_aux$d == 1, ]
       aux_0 <- df_aux[df_aux$d == 0, ]
 
-      m1_mod <- neuralnet::neuralnet(s.formula, data = aux_1, hidden = hidden.layer, algorithm = algorithm, linear.output = FALSE, stepmax = stepmax)
-      m0_mod <- neuralnet::neuralnet(s.formula, data = aux_0, hidden = hidden.layer, algorithm = algorithm, linear.output = FALSE, stepmax = stepmax)
+      m1_mod <- neuralnet::neuralnet(s.formula, 
+                                     data = aux_1, 
+                                     hidden = hidden.layer, 
+                                     algorithm = algorithm, 
+                                     linear.output = FALSE, 
+                                     stepmax = stepmax)
+      m0_mod <- neuralnet::neuralnet(s.formula, 
+                                     data = aux_0, 
+                                     hidden = hidden.layer, 
+                                     algorithm = algorithm, 
+                                     linear.output = FALSE, 
+                                     stepmax = stepmax)
 
       m1_hat <- predict(m1_mod, df_main[, covariates])
       m0_hat <- predict(m0_mod, df_main[, covariates])
@@ -364,7 +376,8 @@ metalearner_deepneural <- function(data,
     learner_out <- list("formula" = cov.formula,
                         "treat_var" = treat.var,
                         "CATEs" = score_meta,
-                        "Y_hats" = data.frame("Y_hat0" = score_tau0, "Y_hat1" = score_tau1),
+                        "Y_hats" = data.frame("Y_hat0" = score_tau0, 
+                                              "Y_hat1" = score_tau1),
                         "Meta_Learner" = meta.learner.type,
                         "Prop_score" = pseudo_all[, 2],
                         "algorithm" = algorithm,
