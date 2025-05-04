@@ -111,7 +111,7 @@ print(slearner_en)
     ## Treatment Variable:  strong_leader
     ## CATEs percentiles:
     ##          10%          25%          50%          75%          90% 
-    ## -0.080797294 -0.038553500 -0.005370921  0.012809736  0.028659600
+    ## -0.076262701 -0.040008369 -0.014439272  0.002268024  0.015567830
 
 ``` r
 plot(slearner_en)
@@ -178,7 +178,7 @@ print(tlearner_en)
     ## Treatment Variable:  strong_leader
     ## CATEs percentiles:
     ##         10%         25%         50%         75%         90% 
-    ## -0.22988514 -0.09762369 -0.00153812  0.06944965  0.15572093
+    ## -0.29729330 -0.17103482 -0.01630189  0.12513166  0.24472082
 
 ``` r
 plot(tlearner_en)
@@ -226,8 +226,8 @@ print(xlearner_en)
     ## support_war ~ age + female + education + income + employed +      job_loss + hindu + political_ideology
     ## Treatment Variable:  strong_leader
     ## CATEs percentiles:
-    ##         10%         25%         50%         75%         90% 
-    ## -0.40304486 -0.24239673 -0.04533516  0.21475522  0.32371884
+    ##          10%          25%          50%          75%          90% 
+    ## -0.321925986 -0.204619693 -0.002196558  0.200960648  0.338349922
 
 ``` r
 plot(xlearner_en)
@@ -236,6 +236,68 @@ plot(xlearner_en)
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
 ![](tutorial_files/figure-gfm/enxlearner-1.png)<!-- -->
+
+### Ensemble R Learner
+
+For the R Learner, use `meta.learner.type = "R.Learner"`:
+
+``` r
+library(DeepLearningCausal)
+data("exp_data")
+library(SuperLearner)
+
+response_formula <- support_war ~ age + female + education + income +
+                    employed + job_loss + hindu + political_ideology
+SLlearners = c("SL.xgboost", "SL.ranger", "SL.nnet","SL.glm")
+set.seed(123456)
+
+rlearner_en <- metalearner_ensemble(cov.formula = response_formula,
+               data = exp_data,
+               treat.var = "strong_leader",
+               meta.learner.type = "R.Learner",
+               SL.learners = SLlearners,
+               binary.outcome = FALSE)
+```
+
+    ## Training model for meta learner
+
+    ## Training R-Learner
+
+    ## Warning: All algorithms have zero weight
+
+    ## Warning: All metalearner coefficients are zero, predictions will all be equal to
+    ## 0
+
+    ## Warning: All algorithms have zero weight
+
+    ## Warning: All metalearner coefficients are zero, predictions will all be equal to
+    ## 0
+
+    ## Warning: All algorithms have zero weight
+
+    ## Warning: All metalearner coefficients are zero, predictions will all be equal to
+    ## 0
+
+``` r
+print(rlearner_en)
+```
+
+    ## Method:
+    ## Ensemble  R.Learner
+    ## Formula:
+    ## support_war ~ age + female + education + income + employed +      job_loss + hindu + political_ideology
+    ## Treatment Variable:  strong_leader
+    ## CATEs percentiles:
+    ##         10%         25%         50%         75%         90% 
+    ## -0.29282097 -0.05778792  0.06441878  0.20019096  0.29779638
+
+``` r
+plot(rlearner_en)
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](tutorial_files/figure-gfm/enrlearner-1.png)<!-- -->
 
 ## Deep Neural Meta Learners
 
@@ -268,8 +330,8 @@ print(slearner_nn)
     ## support_war ~ age + female + education + income + employed +      job_loss + hindu + political_ideology
     ## Treatment Variable:  strong_leader
     ## CATEs percentiles:
-    ## 10% 25% 50% 75% 90% 
-    ##   0   0   0   0   0
+    ##           10%           25%           50%           75%           90% 
+    ## -3.269107e-04 -2.386980e-15  0.000000e+00  0.000000e+00  2.243824e-17
 
 ``` r
 plot(slearner_nn)
@@ -310,7 +372,7 @@ print(tlearner_nn)
     ## Treatment Variable:  strong_leader
     ## CATEs percentiles:
     ##         10%         25%         50%         75%         90% 
-    ## -0.39385285 -0.18827734 -0.05463520  0.04525315  0.37286898
+    ## -0.41257255 -0.22998191 -0.03369596  0.27655069  0.43668666
 
 ``` r
 plot(tlearner_nn)
@@ -359,7 +421,45 @@ plot(xlearner_nn)
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
-![](tutorial_files/figure-gfm/nnxlearner-1.png)<!-- -->
+![](tutorial_files/figure-gfm/nnxlearner-1.png)<!-- --> \### Deep Neural
+R Learner For the R Learner, use `meta.learner.type = "R.Learner"`:
+
+``` r
+response_formula <- support_war ~ age + female + education + income +
+                    employed + job_loss + hindu + political_ideology
+set.seed(123456)
+
+rlearner_nn <- metalearner_deepneural(cov.formula = response_formula,
+               data = exp_data, treat.var = "strong_leader",
+               meta.learner.type = "R.Learner", stepmax = 1e+9, 
+               hidden.layer = c(2, 2), linear.output = FALSE,
+               binary.outcome = FALSE)
+```
+
+    ## Training model for meta learner
+
+    ##   |                                                          |                                                  |   0%
+
+``` r
+print(rlearner_nn)
+```
+
+    ## Method:
+    ## Deep Neural  R.Learner
+    ## Formula:
+    ## support_war ~ age + female + education + income + employed +      job_loss + hindu + political_ideology
+    ## Treatment Variable:  strong_leader
+    ## CATEs percentiles:
+    ##       10%       25%       50%       75%       90% 
+    ## 0.3376702 0.3884123 0.3944477 0.4828897 0.5621279
+
+``` r
+plot(rlearner_nn)
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](tutorial_files/figure-gfm/nnrlearner-1.png)<!-- -->
 
 ## Ensemble PATT-C
 
@@ -543,7 +643,9 @@ print(pattc_nn_b)
 ## Subgroup HTE Plots
 
 Subgroup analyses using CATEs from meta learners and PATT-C predictions
-can be performed using `hte_plot`:
+can be performed using `hte_plot`. `cut_points` specifies the cut-off
+points for subgroups. If a covariate is binary, the value for its cut
+off should be between 0-1.
 
 ``` r
 hte_plot(xlearner_nn, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
@@ -551,3 +653,10 @@ hte_plot(xlearner_nn, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
 ```
 
 ![](tutorial_files/figure-gfm/htes-1.png)<!-- -->
+
+``` r
+hte_plot(pattc_nn, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
+         n_boot = 1000)
+```
+
+![](tutorial_files/figure-gfm/hte_patt-1.png)<!-- -->
