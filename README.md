@@ -161,10 +161,10 @@ Third, the `hte_plot` function in the package enables users to obtain and illust
 
 #### Tutorials for Meta-Learners Ensemble 
 
-The tutorial for `metalearner_ensemble` for the R-learner is [here]()
 The tutorial for `metalearner_ensemble` for the S-learner is [here](/tutorial.md#ensemble-s-learner).
 The tutorial for `metalearner_ensemble` for the T-learner is [here](/tutorial.md#ensemble-t-learner).
 The tutorial for `metalearner_ensemble` for the X-learner is [here](/tutorial.md#ensemble-x-learner).
+The tutorial for `metalearner_ensemble` for the R-learner is [here](/tutorial.md#ensemble-r-learner)
 
 #### Ensemble Learning for PATT-C Estimator
 The function `PATTC_ensemble` estimates the PATT-C model (i.e. estimating PATT for experimental data in which some units do not comply with the treatment) using ensemble learning. The example below shows via a tutorial the applicability of this function for a small number of observations (N) using both the survey response dataset in Example 1 and the Word Values Survey (WVS) response dataset in Example 2.
@@ -178,6 +178,7 @@ pattc_en <- pattc_ensemble(response.formula = response_formula,
 ```
 #### Plotting Treatment Effects From PATT-C Ensemble
 Our package includes features and functions that enables users to extract and illustrate from the PATT_C model (estimated via ensemble learning) the following: the distribution of the estimated PATT , the marginal effect of the PATT estimate of Strong Leader, and heterogeneous treatment effects to assess and visualize whether the PATT varies significantly across different subgroups identified in our example with respect to gender, age, education. The distribution of the estimated PATT can be illustrated from the PATT-C estimated via ensemble learning using `plot()`:
+
 ![](tutorial_files/figure-gfm/pattcenv-1.png)<!-- --> 
 
 The marginal effect of the PATT estimate of "Strong Leader" on "Support War" from the PATT-C (ensemble learning) model using the `marginal_plot' function is:
@@ -202,6 +203,7 @@ slearner_nn <- metalearner_deepneural(cov.formula = response_formula,
 ```
 #### Plotting Treatment Effects From Deep Neural Meta-Learners
 The **DeepLearningCausal** package enables users to illustrate the distribution of the CATE obtained from the  S-, T- X-learner, and R-learner models that are estimated via deep neural networks. For example, users can visualize the distribution of the CATE from the S- and T-learner models estimated via deep neural networks using `plot()`:
+
 ![](tutorial_files/figure-gfm/visualstnn-1.png)<!-- -->
 ![](tutorial_files/figure-gfm/visualstnn-2.png)<!-- -->
 
@@ -214,6 +216,8 @@ The tutorial for `metalearner_deepneural` for the S-learner is [here](/tutorial.
 The tutorial for `metalearner_deepneural` for the T-learner is [here](/tutorial.md#deep-neural-t-learner).
 
 The tutorial for `metalearner_deepneural` for the X-learner is [here](/tutorial.md#deep-neural-x-learner).
+
+The tutorial for `metalearner_deepneural` for the R-learner is [here](/tutorial.md#deep-neural-r-learner).
 
 
 #### Deep Neural Networks for PATT-C Estimator
@@ -230,6 +234,7 @@ pattc_nn <- pattc_deepneural(response.formula = response_formula,
 
 #### Plotting Treatment Effects From Deep Neural PATT-C Estimator
 The distribution of the PATT obtained from the PATT-C models that is estimated via deep neural networks can be visualized by using The estimated PATT from the PATT_C model using deep neural networks can be illustrated by using `plot()`:
+
 ![](tutorial_files/figure-gfm/pattcnnv-1.png)<!-- --> 
 
 Users can employ the `marginal_plot` function to plot the marginal effect of the treatment variable (in our example, *strong leader*) on the outcome measure (e.g. *support war*) from the PATT-C model that is estimated by using deep neural networks, which is available **here**.The `hte_plot` function enables users to extract and illustrate heterogeneous treatment effects associated with the PATT obtained from the PATT-C model that is estimated by using deep neural networks. Using the said function, the heterogeneous treatment effects for three subgroups obtained from the PATT-C model estimated via deep neural networks is available **here**. 
