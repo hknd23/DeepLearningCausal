@@ -97,8 +97,11 @@ The WVS data for India also includes information such as nonresponses  to the qu
 - e1071
 - gbm
 - Hmisc
+- ggplot2
+- dplyr
+- tidyr
+- magrittr
 - weights
-
 
 ### Installation
 
