@@ -488,7 +488,7 @@ metalearner_deepneural <- function(data,
         res_combined_r[unlist(set_index[1:5]), (l - 5)] <- score_r_0_cf
       }
     }
-    score_meta <- rowMeans(res_combined_r)
+    score_meta[, 1] <- rowMeans(res_combined_r)
     head(score_r_0_cf)
 
     learner_out <- list("formula" = cov.formula,
