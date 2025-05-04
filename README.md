@@ -12,7 +12,7 @@
 <!-- badges: end -->
 
 **DeepLearningCausal** is an R package that provides functions to estimate the Conditional Average Treatment Effects (CATE)
-and Population Average Treatment Effects on the Treated (PATT) from experimental and observational data using both ensemble learning and deep learning (specifically, deep neural networks) methods. First, the package provides functions to implement three meta-learner models for estimating the CATE using ensemble and deep learning methods: the Single-learner (S-learner), Two-learner (T-learner), and the Cross-Learner (X-learner) models described in Künzel et al. (2019). Second, "DeepLearningCausal" provides functions to implement the Ottoboni and Poulos (2020) PATT-C estimator to obtain via ensemble and deep learning methods the Population Average Treatment Effects on the Treated from experimental and observational data with noncompliance. The package also includes features that enable users to visualize the distribution of the estimated CATEs from the meta-learner models as well as the PATT from the PATT-C estimator. Third, DeepLearningCausal provides functions that users can employ to illustrate and analyze not only the treatment indicator's marginal effect from the meta-learner and PATT-C estimator but also heterogeneous treatment effects from the said estimators for subgroup analysis.   
+and Population Average Treatment Effects on the Treated (PATT) from experimental and observational data using both ensemble learning and deep learning (specifically, deep neural networks) methods. First, the package provides functions to implement three meta-learner models for estimating the CATE using ensemble and deep learning methods: the R-learner, Single-learner (S-learner), Two-learner (T-learner), and the Cross-Learner (X-learner) models described in Künzel et al. (2019) as well as Nie and Wager (2021). Second, "DeepLearningCausal" provides functions to implement the Ottoboni and Poulos (2020) PATT-C estimator to obtain via ensemble and deep learning methods the Population Average Treatment Effects on the Treated from experimental and observational data with noncompliance. The package also includes features that enable users to visualize the distribution of the estimated CATEs from the meta-learner models as well as the PATT from the PATT-C estimator. Third, DeepLearningCausal provides functions that users can employ to illustrate and analyze not only the treatment indicator's marginal effect from the meta-learner and PATT-C estimator but also heterogeneous treatment effects from the said estimators for subgroup analysis.   
 
 ### Why DeepLearningCausal?
 
@@ -27,14 +27,14 @@ data with noncompliance. Another key benefit of DeepLearningCausal is that it pr
 
 ### Functions in DeepLearnerCausal Package
 
-| Function                | Description                                                                                |
-|-------------------------|--------------------------------------------------------------------------------------------|
-| `metalearner_ensemble`  | Estimates CATE for S-learner, T-learner and X-learner using super learner weighted ensemble.|
-| `metalearner_deepneural`| Estimates CATE for S-learner, T-learner and X-learner using deep neural networks.          |
-| `pattc_ensemble`        | Estimates PATT_C estimator for obtaining PATT using super learner weighted ensemble.       |
-| `pattc_deepneural`      | Estimates PATT_C estimator for obtaining PATT using deep neural networks.                  |
-| `hte_plot`              | Plots Heterogeneous Treatment Effects extracted from the meta-learner and PATT-C models.   |
-| `marginal_plot`         | Plots Marginal Effects for the treatment indicator from the meta-learner and PATT-C models.|
+| Function                | Description                                                                                             |
+|-------------------------|---------------------------------------------------------------------------------------------------------|
+| `metalearner_ensemble`  | Estimates CATE for R-Learner, S-learner, T-learner, and X-learner using super learner weighted ensemble.|
+| `metalearner_deepneural`| Estimates CATE for R-Learner, S-learner, T-learner and X-learner using deep neural networks.            |
+| `pattc_ensemble`        | Estimates PATT_C estimator for obtaining PATT using super learner weighted ensemble.                    |
+| `pattc_deepneural`      | Estimates PATT_C estimator for obtaining PATT using deep neural networks.                               |
+| `hte_plot`              | Plots Heterogeneous Treatment Effects extracted from the meta-learner and PATT-C models.                |
+| `marginal_plot`         | Plots Marginal Effects for the treatment indicator from the meta-learner and PATT-C models.             |
 
 
 
@@ -127,7 +127,7 @@ We illustrate the functionality of **DeepLearningCausal** using the two survey r
 
 #### Ensemble Learning for Meta-Leaners
 
-The function `metalearner_ensemble` in the package estimates the CATE from the two meta-learner models, the S-learner and T-learner, using ensemble learning. To allow for easy replication, the example below shows via a tutorial the applicability of this function for a small number of observations (N) from our survey response dataset in Example 1 that incorporates a survey experiment.
+The function `metalearner_ensemble` in the package estimates the CATE from the following four meta-learner models using ensemble learning: the R-learner, S-learner, T-learner and X-learner. To allow for easy replication, the example below shows via a tutorial the applicability of this function for a small number of observations (N) from our survey response dataset in Example 1 that incorporates a survey experiment.
 
 ``` r
 library(DeepLearningCausal)
@@ -147,7 +147,7 @@ slearner_en <- metalearner_ensemble(cov.formula = response_formula,
 ```
 
 #### Plotting Treatment Effects From Meta-Learners Ensemble 
-The **DeepLearningCausal** package includes features and functions that enables users to extract and illustrate three types of plots from the CATEs obtained from the meta-learner models that estimated with ensemble learning. First, users can visualize the distribution of the estimated CATEs from the meta-learner models. For instance, once the S- and T-Learner models are estimated via ensemble learning, the CATEs from these models are stored in the element `slearner_en$CATEs` and can be extracted for visualization using `plot()`:
+The **DeepLearningCausal** package includes features and functions that enables users to extract and illustrate three types of plots from the CATEs obtained from the meta-learner models that are estimated with ensemble learning. First, users can visualize the distribution of the estimated CATEs from the meta-learner models. For instance, once the S- and T-Learner models are estimated via ensemble learning, the CATEs from these models are stored in the element `slearner_en$CATEs` and can be extracted for visualization using `plot()`:
 
 ![](tutorial_files/figure-gfm/visualst-1.png)<!-- -->
 ![](tutorial_files/figure-gfm/visualst-2.png)<!-- -->
@@ -158,6 +158,7 @@ Third, the `hte_plot` function in the package enables users to obtain and illust
 
 #### Tutorials for Meta-Learners Ensemble 
 
+The tutorial for `metalearner_ensemble` for the R-learner is [here]()
 The tutorial for `metalearner_ensemble` for the S-learner is [here](/tutorial.md#ensemble-s-learner).
 The tutorial for `metalearner_ensemble` for the T-learner is [here](/tutorial.md#ensemble-t-learner).
 The tutorial for `metalearner_ensemble` for the X-learner is [here](/tutorial.md#ensemble-x-learner).
@@ -236,6 +237,8 @@ The tutorial for `pattc_deepneural` for the PATT-C model estimated using deep ne
 
 ### References
 Künzel, S. R., J.S. Sekhon, P.J. Bickel, and B. Yu, B. 2019. “Metalearners for estimating heterogeneous treatment effects using machine  learning.” Proceedings of the National Academy of Science, 116, 4156–4165. DOI: https://doi.org/10.1073/pnas.1804597116 
+
+Nie, X., and S. Wager. 2021. "Quasi-oracle estimation of heterogeneous treatment effects." Biometrika, 108(2):299–319. DOI: https://academic.oup.com/biomet/article-abstract/108/2/299/5911092 
 
 Ottoboni K.N. and J.V. Populos. 2020. “Estimating population average treatment effects from experiments with noncompliance” Journal of Causal Inference 8:108-130. DOI: https://www.degruyter.com/document/doi/10.1515/jci-2018-0035/html 
 
