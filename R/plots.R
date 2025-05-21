@@ -180,13 +180,61 @@ hte_plot <- function(model_obj,
 #' @export
 #' @importFrom magrittr %>%
 #' @import ggplot2
-plot.metalearner_deepneural <- function(model_obj,
-                     type = "CATEs")
+plot.metalearner_deepneural <- function(model_obj, 
+                                        conf_level = 0.95, 
+                                        type = "CATEs")
 {
   if (type == "CATEs"){
-  meta_plot <- ggplot(data.frame(model_obj$CATEs), aes(x= model_obj.CATEs)) +
-    geom_histogram(alpha = 0.6, position = 'identity')+
-    xlab("CATEs")+ylab("")
+    cates <- model_obj[["CATEs"]]
+    if (!is.matrix(cates) && !is.data.frame(cates)) {
+      stop("model_obj[['CATEs']] must be a matrix or data frame")
+    }
+    if (ncol(cates) != 1) {
+      stop("This version supports only 1 group (1 column in CATEs)")
+    }
+    if (conf_level <= 0 || conf_level >= 1) {
+      stop("conf_level must be between 0 and 1")
+    }
+    
+    cate_vals <- cates[, 1]
+    mean_cate <- mean(cate_vals, na.rm = TRUE)
+    sd_cate   <- sd(cate_vals, na.rm = TRUE)
+    a <- qnorm(1 - (1 - conf_level) / 2)
+    
+    lower <- mean_cate - a * sd_cate
+    upper <- mean_cate + a * sd_cate
+    color <- ifelse(lower < 0 & upper > 0, "red", "black")
+    
+    df_summary <- data.frame(
+      Mean = mean_cate,
+      Lower = lower,
+      Upper = upper,
+      Color = color
+    )
+    
+    x_min <- floor(min(lower, min(cate_vals))) - 1
+    x_max <- ceiling(max(upper, max(cate_vals))) + 1
+    
+    meta_plot <- ggplot() +
+      geom_density(data = data.frame(CATE = cate_vals),
+                   aes(x = CATE, y = ..density..),
+                   fill = "gray90", color = "black",
+                   alpha = 0.7, linewidth = 0.5) +
+      geom_vline(xintercept = 0, linetype = "dotted", color = "gray30") +
+      geom_point(data = df_summary, aes(x = Mean, y = 0), size = 2) +
+      geom_errorbarh(data = df_summary, 
+                     aes(xmin = Lower, xmax = Upper,
+                         y = 0, color = Color), 
+                     height = 0.1) +
+      scale_color_identity() +
+      xlim(x_min, x_max) +
+      labs(
+        title = paste0("CATE Distribution with ", round(conf_level * 100), 
+                       "% Confidence Interval"),
+        x = "CATE",
+        y = "Density"
+      ) +
+      theme_minimal()
   } else if (type == "predict") {
     meta_preds <-  rbind(data.frame("predictions" = model_obj$Y_hats[,1],
                                        type = "Y_hat0"),
@@ -215,21 +263,71 @@ plot.metalearner_deepneural <- function(model_obj,
 #' @importFrom magrittr %>%
 #' @import ggplot2
 plot.metalearner_ensemble <- function(model_obj,
-                                        type = "CATEs")
+                                      conf_level = 0.95,
+                                      type = "CATEs")
 {
   if (type == "CATEs"){
-    meta_plot <-  ggplot(data.frame(model_obj$CATEs),  aes(x= model_obj.CATEs)) +
-      geom_histogram(alpha = 0.6, position = 'identity')+
-      xlab("CATEs")+ylab("")
+    cates <- model_obj[["CATEs"]]
+    if (!is.matrix(cates) && !is.data.frame(cates)) {
+      stop("model_obj[['CATEs']] must be a matrix or data frame")
+    }
+    if (ncol(cates) != 1) {
+      stop("This version supports only 1 group (1 column in CATEs)")
+    }
+    if (conf_level <= 0 || conf_level >= 1) {
+      stop("conf_level must be between 0 and 1")
+    }
+    
+    cate_vals <- cates[, 1]
+    mean_cate <- mean(cate_vals, na.rm = TRUE)
+    sd_cate   <- sd(cate_vals, na.rm = TRUE)
+    a <- qnorm(1 - (1 - conf_level) / 2)
+    
+    lower <- mean_cate - a * sd_cate
+    upper <- mean_cate + a * sd_cate
+    color <- ifelse(lower < 0 & upper > 0, "red", "black")
+    
+    df_summary <- data.frame(
+      Mean = mean_cate,
+      Lower = lower,
+      Upper = upper,
+      Color = color
+    )
+    
+    x_min <- floor(min(lower, min(cate_vals))) - 1
+    x_max <- ceiling(max(upper, max(cate_vals))) + 1
+    
+    p <- ggplot() +
+      geom_density(data = data.frame(CATE = cate_vals),
+                   aes(x = CATE, y = ..density..),
+                   fill = "gray90", color = "black",
+                   alpha = 0.7, linewidth = 0.5) +
+      geom_vline(xintercept = 0, linetype = "dotted", color = "gray30") +
+      geom_point(data = df_summary, aes(x = Mean, y = 0), size = 2) +
+      geom_errorbarh(data = df_summary, aes(xmin = Lower, xmax = Upper, y = 0, 
+                                            color = Color), height = 0.1) +
+      scale_color_identity() +
+      xlim(x_min, x_max) +
+      labs(
+        title = paste0("CATE Distribution with ", 
+                       round(conf_level * 100), 
+                       "% Confidence Interval"),
+        x = "CATE",
+        y = "Density"
+      ) +
+      theme_minimal()
+    
+    return(p)
   } else if (type == "predict") {
     meta_preds <-  rbind(data.frame("predictions" = model_obj$Y_hats[,1],
                                     type = "Y_hat0"),
                          data.frame("predictions" = model_obj$Y_hats[,2],
                                     type = "Y_hat1"))
     meta_plot <- ggplot(meta_preds, aes(x = predictions, fill = type)) +
-      geom_histogram(alpha = 0.6, position = 'identity')+xlab("Predicted Outcome")+ylab("")+
-      theme(legend.position = "bottom")+
-      theme(legend.title=element_blank())
+                 geom_histogram(alpha = 0.6, position = 'identity') + 
+                 xlab("Predicted Outcome")+ylab("") +
+                 theme(legend.position = "bottom") +
+                 theme(legend.title=element_blank())
   }
   return(meta_plot)
 }
@@ -300,7 +398,6 @@ plot.pattc_ensemble <- function(model_obj)
 #' @import ggplot2
 plot.CATEs_ci <- function(model_obj, conf_level = 0.95) {
   cates <- model_obj[["CATEs"]]
-  
   if (!is.matrix(cates) && !is.data.frame(cates)) {
     stop("model_obj[['CATEs']] must be a matrix or data frame")
   }
