@@ -11,15 +11,11 @@
 [![](http://cranlogs.r-pkg.org/badges/grand-total/DeepLearningCausal)](https://cran.r-project.org/package=DeepLearningCausal)
 <!-- badges: end -->
 
-**DeepLearningCausal** is an R package that provides functions to estimate the Conditional Average Treatment Effects (CATE)
-and Population Average Treatment Effects on the Treated (PATT) from experimental and observational data using both ensemble learning and deep learning (specifically, deep neural networks) methods. First, the package provides functions to implement three meta-learner models for estimating the CATE using ensemble and deep learning methods: the R-learner, Single-learner (S-learner), Two-learner (T-learner), and the Cross-Learner (X-learner) models described in Künzel et al. (2019) as well as Nie and Wager (2021). Second, "DeepLearningCausal" provides functions to implement the Ottoboni and Poulos (2020) PATT-C estimator to obtain via ensemble and deep learning methods the Population Average Treatment Effects on the Treated from experimental and observational data with noncompliance. The package also includes features that enable users to visualize the distribution of the estimated CATEs from the meta-learner models as well as the PATT from the PATT-C estimator. Third, DeepLearningCausal provides functions that users can employ to illustrate and analyze not only the treatment indicator's marginal effect from the meta-learner and PATT-C estimator but also heterogeneous treatment effects from the said estimators for subgroup analysis.   
+**DeepLearningCausal** is an R package that provides functions to estimate the Conditional Average Treatment Effects (CATE) and Population Average Treatment Effects on the Treated (PATT) from experimental and observational data using both weighted ensemble learning and deep learning (i.e., general deep neural networks) methods. The package begins with a suite of function that enable users to estimate the CATE from two types of meta-learner models using ensemble and deep learning methods. The first type of meta-learner models are the Single-learner (S-learner) and Two-learner (T-learner) models that rely on conditional mean regression methods while the second type are the R-learner and the Cross-Learner (X-learner) models that rely on pseudo-outcome methods (Künzel et al., 2019; Nie and Wager, 2021). "DeepLearningCausal" then provides functions to estimate via ensemble and deep learning the PATT from experimental and observational data with treatment noncompliance based on the PATT-C model developed by Ottoboni and Poulous (2020). The package also includes functions that enable users to ilustrate the estimated CATE from the meta-learner models mentioned above, visualize the estimated PATT, and display heterogeneous treatment effects for subgroup analysis. Finally, DeepLearningCausal includes features that permits users to compare the performance of the meta-learner models and conduct sensitivity analysis of the estimated treatment effects by employing Welch and boostrapped t-tests.     
 
 ### Why DeepLearningCausal?
 
-Researchers are increasingly interested to estimate causal effecs, including Conditional Average Treatment Effects (CATE)
-and Population Average Treatment Effects, from observational and experimental data using machine learning (ML) and deep learning. A unique advantage of the DeepLearningCausal package is that it provides a single user-friendly pacakge that users can employ to estimate the CATE from
-experimental and observational data as well as Population Average Treatment Effects on the Treated (PATT) from experimental and observational
-data with noncompliance. Another key benefit of DeepLearningCausal is that it provides users the choice of estimating CATE and PATT using both ensemble learning and deep neural networks as well as plotting the estimated treatment effects. More specifically,
+Researchers are increasingly interested to estimate causal effecs, including Conditional Average Treatment Effects (CATE)and Population Average Treatment Effects on the Treated (PATT), from observational and experimental data using conventional machine learning (ML) methods and deep learning. A unique advantage of the DeepLearningCausal package is that it provides a single user-friendly pacakge that users can employ to estimate the CATE from samples as well as the PATT from experimental and observational data with treatment noncompliance. Another key benefit of DeepLearningCausal is that it provides users the choice of estimating CATE and PATT using both weighted ensemble learning and the general deep neural networks. More specifically,
 
 - Ensemble learning includes the candidate algorithms: gradient boosted trees, lasso, random forests, and neural nets. It combines these algorithms with a convex combination of weights based on minimizing cross-validated error.These algorithms are drawn from the 42 different ML methods in SuperLearner package developed by Polley et al. (2024). 
   
@@ -29,12 +25,12 @@ data with noncompliance. Another key benefit of DeepLearningCausal is that it pr
 
 | Function                | Description                                                                                             |
 |-------------------------|---------------------------------------------------------------------------------------------------------|
-| `metalearner_ensemble`  | Estimates CATE for R-Learner, S-learner, T-learner, X-learner, and R-learner using super learner weighted ensemble.|
-| `metalearner_deepneural`| Estimates CATE for R-Learner, S-learner, T-learner, X-learner, and R-learner using deep neural networks.            |
-| `pattc_ensemble`        | Estimates PATT_C estimator for obtaining PATT using super learner weighted ensemble.                    |
+| `metalearner_ensemble`  | Estimates CATE for S-learner, T-learner, X-learner, R-learner using the super learner weighted ensemble.|
+| `metalearner_deepneural`| Estimates CATE for S-learner, T-learner, X-learner, R-learner using deep neural networks.               |
+| `pattc_ensemble`        | Estimates the PATT from the PATT-C model using the super learner weighted ensemble.                    |
 | `pattc_deepneural`      | Estimates PATT_C estimator for obtaining PATT using deep neural networks.                               |
+| `treateffect_plot`      | Plots the estimated average treatment effects obtained from the meta-learner and PATT-C models.         |
 | `hte_plot`              | Plots Heterogeneous Treatment Effects extracted from the meta-learner and PATT-C models.                |
-| `marginal_plot`         | Plots Marginal Effects for the treatment indicator from the meta-learner and PATT-C models.             |
 
 
 
@@ -126,11 +122,11 @@ devtools::install_github("hknd23/DeepLearningCausal")
 
 ### Using the Package: Ensemble Learning
 
-We illustrate the functionality of **DeepLearningCausal** using the two survey response datasets summarized above. The data from these two survey response datasets is included and briefly described in the manual for the package. 
+We illustrate the functionality of **DeepLearningCausal** using the two datasets summarized above. These datasets are included and briefly described in the manual for the package. 
 
 #### Ensemble Learning for Meta-Leaners
 
-The function `metalearner_ensemble` in the package estimates the CATE from the following four meta-learner models using ensemble learning: the R-learner, S-learner, T-learner X-learner, and R-learner. To allow for easy replication, the example below shows via a tutorial the applicability of this function for a small number of observations (N) from our survey response dataset in Example 1 that incorporates a survey experiment.
+The function `metalearner_ensemble` in the package estimates the CATE from the following four meta-learner models using ensemble learning: the S-learner, T-learner X-learner, and R-learner. To allow for easy replication, the example below shows via a tutorial the applicability of this function for a small number of observations (N) from our survey response dataset in Example 1 that incorporates a survey experiment.
 
 ``` r
 library(DeepLearningCausal)
