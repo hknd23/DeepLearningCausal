@@ -212,8 +212,8 @@ plot.metalearner_deepneural <- function(model_obj,
       Color = color
     )
     
-    x_min <- floor(min(lower, min(cate_vals))) - 1
-    x_max <- ceiling(max(upper, max(cate_vals))) + 1
+    x_min <- min(lower, min(cate_vals)) - 1*sd_cate
+    x_max <- max(upper, max(cate_vals)) + 1*sd_cate
     
     meta_plot <- ggplot() +
       geom_density(data = data.frame(CATE = cate_vals),
@@ -240,8 +240,11 @@ plot.metalearner_deepneural <- function(model_obj,
                                        type = "Y_hat0"),
                             data.frame("predictions" = model_obj$Y_hats[,2],
                                        type = "Y_hat1"))
-    meta_plot <-  ggplot(meta_preds,  aes(x = predictions, fill = type)) +
-      geom_histogram(alpha = 0.6, position = 'identity')+
+    meta_plot <-  ggplot() +
+      geom_density(data = meta_preds,  
+                   aes(x = predictions, fill = type),
+                   color = "black",
+                   alpha = 0.7, linewidth = 0.5) +
       xlab("Predicted Outcome")+ylab("")+
       theme(legend.position = "bottom")+
       theme(legend.title=element_blank())
@@ -294,10 +297,10 @@ plot.metalearner_ensemble <- function(model_obj,
       Color = color
     )
     
-    x_min <- floor(min(lower, min(cate_vals))) - 1
-    x_max <- ceiling(max(upper, max(cate_vals))) + 1
+    x_min <- min(lower, min(cate_vals)) - 1*sd_cate
+    x_max <- max(upper, max(cate_vals)) + 1*sd_cate
     
-    p <- ggplot() +
+    meta_plot <- ggplot() +
       geom_density(data = data.frame(CATE = cate_vals),
                    aes(x = CATE, y = ..density..),
                    fill = "gray90", color = "black",
@@ -316,18 +319,19 @@ plot.metalearner_ensemble <- function(model_obj,
         y = "Density"
       ) +
       theme_minimal()
-    
-    return(p)
   } else if (type == "predict") {
     meta_preds <-  rbind(data.frame("predictions" = model_obj$Y_hats[,1],
                                     type = "Y_hat0"),
                          data.frame("predictions" = model_obj$Y_hats[,2],
                                     type = "Y_hat1"))
-    meta_plot <- ggplot(meta_preds, aes(x = predictions, fill = type)) +
-                 geom_histogram(alpha = 0.6, position = 'identity') + 
-                 xlab("Predicted Outcome")+ylab("") +
-                 theme(legend.position = "bottom") +
-                 theme(legend.title=element_blank())
+    meta_plot <-  ggplot() +
+      geom_density(data = meta_preds,  
+                   aes(x = predictions, fill = type),
+                   color = "black",
+                   alpha = 0.7, linewidth = 0.5) +
+      xlab("Predicted Outcome")+ylab("")+
+      theme(legend.position = "bottom")+
+      theme(legend.title=element_blank())
   }
   return(meta_plot)
 }
@@ -377,10 +381,10 @@ plot.pattc_ensemble <- function(model_obj)
                        data.frame("predictions" = model_obj$pop_counterfactual[,2],
                                   type = "Y_hat1"))
   pattc_plot <-  ggplot(patt_preds, aes(x = predictions, fill = type)) +
-    geom_histogram(alpha = 0.6, position = 'identity')+
-    xlab("")+ylab("")+
-    theme(legend.position = "bottom")+
-    theme(legend.title=element_blank())
+                        geom_histogram(alpha = 0.6, position = 'identity')+
+                        xlab("") + ylab("") +
+                        theme(legend.position = "bottom") +
+                        theme(legend.title=element_blank())
   return(pattc_plot)
 }
 
@@ -434,7 +438,8 @@ plot.CATEs_ci <- function(model_obj, conf_level = 0.95) {
                  alpha = 0.7, linewidth = 0.5) +
     geom_vline(xintercept = 0, linetype = "dotted", color = "gray30") +
     geom_point(data = df_summary, aes(x = Mean, y = 0), size = 2) +
-    geom_errorbarh(data = df_summary, aes(xmin = Lower, xmax = Upper, y = 0, color = Color), height = 0.1) +
+    geom_errorbarh(data = df_summary, aes(xmin = Lower, xmax = Upper, y = 0, 
+                                          color = Color), height = 0.1) +
     scale_color_identity() +
     xlim(x_min, x_max) +
     labs(
