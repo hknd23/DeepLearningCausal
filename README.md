@@ -60,7 +60,7 @@ After being randomly assigned to the control group or the treatment, the respond
 | **Support War**       | Dependent variable: What do you think? Would you support your country going to war with country A?           | Binary (1=Yes; 2=No) |
 
 ### Example 2
-We employ two datasets to obtain the PATT from the PATT-C model that is also estimated via ensemble learning and deep neural networks.  The first is the survey response dataset for example 1 that was described above. The second is the World Value Survey (WVS) Data for India for the following years in which the WVS implemented their survey questionnaire in the country: 1995, 2001, 2006, 2012, and 2022. The WVS data in this case serves as a representative population-level survey response dataset that includes responses to several questions by respondents that measures their demographic information, dispositional features, and attitudinal characteristics. Importantly, the WVS India data includes questions that permits us to operationalize whether respondents (i)  "support war" that serves as the outcome measure (dependent variable), and (ii) agree with policy prescriptions offered by a hypothetical strong (populist) leader to address foreign policy crises which, in turn, serves as a proxy for the treatment variable in the representative population-level survey data. 
+We employ two datasets to obtain the PATT from the PATT-C model that is also estimated via ensemble learning and general deep neural networks.  The first is the survey response dataset for example 1 that was described above. The second is the World Value Survey (WVS) Data for India for the following years in which the WVS implemented their survey questionnaire in the country: 1995, 2001, 2006, 2012, and 2022. The WVS data in this case serves as a representative population-level survey response dataset that includes responses to several questions by respondents that measures their demographic information, dispositional features, and attitudinal characteristics. Importantly, the WVS India data includes questions that permits us to operationalize whether respondents (i)  "support war" that serves as the outcome measure (dependent variable), and (ii) agree with policy prescriptions offered by a hypothetical strong (populist) leader to address foreign policy crises which, in turn, serves as a proxy for the treatment variable in the representative population-level survey data. 
 
 The WVS data for India also includes information such as nonresponses  to the question about attitudes toward the strong leader's policy prescription which served as a proxy to measure compliance in this dataset. Furthermore, the WVS India data employed to estimate the PATT-C model includes responses to questions that directly match the operationalized covariates from our India survey response data summarized above. These questions in the WVS data and the responses to these questions that permit us to operationalize the covariates in this data are summarized in the following table.
 
@@ -128,7 +128,7 @@ We illustrate the functionality of **DeepLearningCausal** using the two datasets
 
 #### Ensemble Learning for Meta-Leaners
 
-The function `metalearner_ensemble` in the package estimates the CATE from the following four meta-learner models using ensemble learning: the S-learner, T-learner X-learner, and R-learner. To allow for easy replication, the example below shows via a tutorial the applicability of this function for a small number of observations (N) from our survey response dataset in Example 1 that incorporates a survey experiment.
+The function `metalearner_ensemble` in the package estimates the CATE from the following four meta-learner models using weighted ensemble learning: the S-learner, T-learner X-learner, and R-learner. To allow for easy replication, the example below shows via a tutorial the applicability of this function for a small number of observations (N) from our survey response dataset in Example 1 that incorporates a survey experiment.
 
 ``` r
 library(DeepLearningCausal)
@@ -148,16 +148,11 @@ slearner_en <- metalearner_ensemble(cov.formula = response_formula,
 ```
 
 #### Plotting Treatment Effects From Meta-Learners Ensemble 
-The **DeepLearningCausal** package includes features and functions that enables users to extract and illustrate three types of plots from the CATEs obtained from the meta-learner models that are estimated with ensemble learning. First, users can visualize the distribution of the estimated CATEs from the meta-learner models. For instance, once the S- and T-Learner models are estimated via ensemble learning, the CATEs from these models are stored in the element `slearner_en$CATEs` and can be extracted for visualization using `plot()`:
+The **DeepLearningCausal** package includes functions that enables users to extract and illustrate two types of plots from the CATEs obtained from the meta-learner models estimated via ensemble learning. First, can call the function `marginal_plot` to extract the marginal effect of their treatment indicator on the outcome measure from the meta-learner models in this case. For example, once the CATE from the S-Learner and T-learner model is estimated using ensemble learning, the `treateffect_plot` function can be employed to obtain and illustrate the estimated effect of the "Strong Leader" treatment on "Support War" from both these models as follows:
 
-![](tutorial_files/tutorial_files/figure-gfm/enslearner-1.png)<!-- -->
-![](tutorial_files/tutorial_files/figure-gfm/entlearner-1.png)<!-- -->
-![](tutorial_files/tutorial_files/figure-gfm/enxlearner-1.png)<!-- -->
-![](tutorial_files/tutorial_files/figure-gfm/enrlearner-1.png)<!-- -->
+<<Add S- and T-Learner CATE plot here]
 
-Second, users can call the function `marginal_plot` to extract the marginal effect of their treatment indicator on the outcome measure from the meta-learner models in this case. For example, once the CATE from the S-Learner model is estimated using ensemble learning, the `marginal_plot` function can be employed to obtain and illustrate the marginal effect of the "Strong Leader" treatment on "Support War" from this model as follows:
-
-Third, the `hte_plot` function in the package enables users to obtain and illustrate heterogeneous treatment effects that can help them identify whether the treatment effect of interest varies significantly across different subgroups in their data. As an example, after estimating the CATE from the T-Learner model with ensemble learning, we employed the `hte_plot` function to assess whether the treatment effect of the Strong Leader indicator on Support War differs for three key subgroup indicators in our survey experiment data summarized in example 1: gender, age, and education. Doing so generates the figure,     
+Second, the `hte_plot` function in the package enables users to obtain and illustrate heterogeneous treatment effects that can help them identify whether the treatment effect of interest varies significantly across different subgroups in their data. As an example, after estimating the CATE from the T-Learner model with ensemble learning, we employed the `hte_plot` function to assess whether the treatment effect of the Strong Leader indicator on Support War differs for three key subgroup indicators in our survey experiment data summarized in example 1: gender, age, and education. Doing so generates the figure,     
 
 ```r
 hte_plot(slearner_nn, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
@@ -217,14 +212,9 @@ slearner_nn <- metalearner_deepneural(cov.formula = response_formula,
                hidden.layer = c(2, 2), linear.output = FALSE)
 ```
 #### Plotting Treatment Effects From Deep Neural Meta-Learners
-The **DeepLearningCausal** package enables users to illustrate the distribution of the CATE obtained from the  S-, T- X-learner, and R-learner models that are estimated via deep neural networks. For example, users can visualize the distribution of the CATE from the S- and T-learner models estimated via deep neural networks using `plot()`:
+The **DeepLearningCausal** package enables users to eemploy the `treateffect_plot` function to plot the estimated effect of the treatment indicator of interest on the outcome measure obtained from the S-, T- X-learner, and R-learner models that are each estimated by using deep neural networks. For the sake of brevity, we illustrate the CATE of the *Strong Leader* treatment on *Support War* from the S-Learner model estimated using deep neural networks **here**. 
 
-![](tutorial_files/tutorial_files/figure-gfm/nnslearner-1.png)<!-- -->
-![](tutorial_files/tutorial_files/figure-gfm/nntlearner-1.png)<!-- -->
-![](tutorial_files/tutorial_files/figure-gfm/nnxlearner-1.png)<!-- -->
-![](tutorial_files/tutorial_files/figure-gfm/nnrlearner-1.png)<!-- -->
-
-Users can employ the `marginal_plot` function to plot the marginal effect of the treatment indicator of interest on the outcome measure that is obtained from the S-, T- X-learner, and R-learner models in the package that are each estimated by using deep neural networks. For the sake of brevity, we illustrate the marginal effect of the *Strong Leader* treatment on *Support War* from the S-Learner model estimated using deep neural networks **here**. The `hte_plot` function also enables users to extract and illustrate heterogeneous treatment effects associated with the CATE obtained from the three meta-learner models in the package that are each estimated by using deep neural networks. As an example, we demonstrate the heterogeneous treatment effects (for three subgroups) obtained from the S-Learner model estimated via deep neural networks **here**. 
+Users can employ the `hte_plot` function to extract and illustrate heterogeneous treatment effects associated with the CATE obtained from the three meta-learner models in the package that are each estimated by using deep neural networks. As an example, we demonstrate the heterogeneous treatment effects (for three subgroups) obtained from the S-Learner model estimated via deep neural networks **here**. 
 
 
 #### Tutorials for Deep Neural Meta-Learners 
