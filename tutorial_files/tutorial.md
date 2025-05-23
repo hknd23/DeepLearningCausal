@@ -117,7 +117,14 @@ print(slearner_en)
 plot(slearner_en)
 ```
 
-    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+    ## Warning: The dot-dot notation (`..density..`) was deprecated in ggplot2 3.4.0.
+    ## ℹ Please use `after_stat(density)` instead.
+    ## ℹ The deprecated feature was likely used in the DeepLearningCausal package.
+    ##   Please report the issue at
+    ##   <]8;;https://github.com/hknd23/DeepLearningCausal/issueshttps://github.com/hknd23/DeepLearningCausal/issues]8;;>.
+    ## This warning is displayed once every 8 hours.
+    ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+    ## generated.
 
 ![](tutorial_files/figure-gfm/enslearner-1.png)<!-- -->
 
@@ -184,8 +191,6 @@ print(tlearner_en)
 plot(tlearner_en)
 ```
 
-    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-
 ![](tutorial_files/figure-gfm/entlearner-1.png)<!-- -->
 
 ### Ensemble X Learner
@@ -232,8 +237,6 @@ print(xlearner_en)
 ``` r
 plot(xlearner_en)
 ```
-
-    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
 ![](tutorial_files/figure-gfm/enxlearner-1.png)<!-- -->
 
@@ -295,8 +298,6 @@ print(rlearner_en)
 plot(rlearner_en)
 ```
 
-    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-
 ![](tutorial_files/figure-gfm/enrlearner-1.png)<!-- -->
 
 ## Deep Neural Meta Learners
@@ -337,8 +338,6 @@ print(slearner_nn)
 plot(slearner_nn)
 ```
 
-    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-
 ![](tutorial_files/figure-gfm/nnslearner-1.png)<!-- -->
 
 ### Deep Neural T Learner
@@ -377,8 +376,6 @@ print(tlearner_nn)
 ``` r
 plot(tlearner_nn)
 ```
-
-    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
 ![](tutorial_files/figure-gfm/nntlearner-1.png)<!-- -->
 
@@ -419,8 +416,6 @@ print(xlearner_nn)
 plot(xlearner_nn)
 ```
 
-    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-
 ![](tutorial_files/figure-gfm/nnxlearner-1.png)<!-- --> \### Deep Neural
 R Learner For the R Learner, use `meta.learner.type = "R.Learner"`:
 
@@ -457,7 +452,8 @@ print(rlearner_nn)
 plot(rlearner_nn)
 ```
 
-    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+    ## Warning: Removed 1 row containing missing values or values outside the scale range
+    ## (`geom_vline()`).
 
 ![](tutorial_files/figure-gfm/nnrlearner-1.png)<!-- -->
 
@@ -506,8 +502,6 @@ print(pattc_en)
 ``` r
 plot(pattc_en)
 ```
-
-    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
 ![](tutorial_files/figure-gfm/pattcenv-1.png)<!-- -->
 
@@ -593,8 +587,6 @@ print(pattc_nn)
 ``` r
 plot(pattc_nn)
 ```
-
-    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
 ![](tutorial_files/figure-gfm/pattcnnv-1.png)<!-- -->
 
