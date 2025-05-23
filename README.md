@@ -183,7 +183,7 @@ pattc_en <- pattc_ensemble(response.formula = response_formula,
 #### Plotting Treatment Effects From PATT-C Ensemble
 Our package includes features and functions that enables users to extract and illustrate two types of figures from the PATT that is obtained from the PATT-C model via weighted ensemble learning. The first is the distribution of the estimated PATT of the treatment indicator on the dependent variable. This is obtained from using `treateffect_plot`:
 
-<<Illustrate distribution of estimated PATT from PATT-C model>>
+[PATT plot here]
 
 The second is heterogeneous treatment effects that users can employ to assess and visualize whether the PATT varies significantly across different subgroups identified in our example with respect to gender, age and education. The heterogenous treatment effects obtained from the PATT estimate of *Strong Leader* is illustrated here for the three aforementioned subgroups using the `hte_plot` function:
 
