@@ -150,7 +150,7 @@ slearner_en <- metalearner_ensemble(cov.formula = response_formula,
 #### Plotting Treatment Effects From Meta-Learners Ensemble 
 The **DeepLearningCausal** package includes functions that enables users to extract and illustrate the following two types of plots from the CATEs obtained from the meta-learner models estimated via weighted ensemble learning. First, users can call the function `treateffect_plot` to extract and illustrate the estimated CATE of their treatment indicator on the dependent variable from all the meta-learner models in the package. For example, once the CATE from the S-Learner and T-learner model is estimated via weighted ensemble learning using the survey experimental data in the package, the `treateffect_plot` function can be employed to obtain and illustrate the estimated effect of the "Strong Leader" treatment on "Support War" from both these models as follows:
 
-<<S- and T-Learner CATE plot here>>
+[S- and T-Learner CATE plot here]
 
 Second, the `hte_plot` function in the package enables users to obtain and illustrate heterogeneous treatment effects that can help them identify whether the treatment effect of interest varies across different subgroups in their data. As an example, after estimating the CATE from the T-Learner model with weighted ensemble learning, we employed the `hte_plot` function to assess whether the treatment effect of the *Strong Leader* indicator on *Support War* differs for three key subgroup indicators in our survey experiment data summarized in example 1: gender, age, and education. Doing so generates the figure:     
 
