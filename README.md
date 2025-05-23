@@ -148,11 +148,11 @@ slearner_en <- metalearner_ensemble(cov.formula = response_formula,
 ```
 
 #### Plotting Treatment Effects From Meta-Learners Ensemble 
-The **DeepLearningCausal** package includes functions that enables users to extract and illustrate two types of plots from the CATEs obtained from the meta-learner models estimated via ensemble learning. First, can call the function `marginal_plot` to extract the marginal effect of their treatment indicator on the outcome measure from the meta-learner models in this case. For example, once the CATE from the S-Learner and T-learner model is estimated using ensemble learning, the `treateffect_plot` function can be employed to obtain and illustrate the estimated effect of the "Strong Leader" treatment on "Support War" from both these models as follows:
+The **DeepLearningCausal** package includes functions that enables users to extract and illustrate the following two types of plots from the CATEs obtained from the meta-learner models estimated via weighted ensemble learning. First, users can call the function `treateffect_plot` to extract and illustrate the estimated CATE of their treatment indicator on the dependent variable from all the meta-learner models in the package. For example, once the CATE from the S-Learner and T-learner model is estimated via weighted ensemble learning using the survey experimental data in the package, the `treateffect_plot` function can be employed to obtain and illustrate the estimated effect of the "Strong Leader" treatment on "Support War" from both these models as follows:
 
-<<Add S- and T-Learner CATE plot here]
+[S- and T-Learner CATE plot here]
 
-Second, the `hte_plot` function in the package enables users to obtain and illustrate heterogeneous treatment effects that can help them identify whether the treatment effect of interest varies significantly across different subgroups in their data. As an example, after estimating the CATE from the T-Learner model with ensemble learning, we employed the `hte_plot` function to assess whether the treatment effect of the Strong Leader indicator on Support War differs for three key subgroup indicators in our survey experiment data summarized in example 1: gender, age, and education. Doing so generates the figure,     
+Second, the `hte_plot` function in the package enables users to obtain and illustrate heterogeneous treatment effects that can help them identify whether the treatment effect of interest varies across different subgroups in their data. As an example, after estimating the CATE from the T-Learner model with weighted ensemble learning, we employed the `hte_plot` function to assess whether the treatment effect of the *Strong Leader* indicator on *Support War* differs for three key subgroup indicators in our survey experiment data summarized in example 1: gender, age, and education. Doing so generates the figure:     
 
 ```r
 hte_plot(slearner_nn, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
@@ -170,7 +170,7 @@ The tutorial for `metalearner_ensemble` for the X-learner is [here](/tutorial.md
 The tutorial for `metalearner_ensemble` for the R-learner is [here](/tutorial.md#ensemble-r-learner)
 
 #### Ensemble Learning for PATT-C Estimator
-The function `PATTC_ensemble` estimates the PATT-C model (i.e. estimating PATT for experimental data in which some units do not comply with the treatment) using ensemble learning. The example below shows via a tutorial the applicability of this function for a small number of observations (N) using both the survey response dataset in Example 1 and the Word Values Survey (WVS) response dataset in Example 2.
+The function `PATTC_ensemble` estimates the PATT-C model via weighted ensemble learning. This enables users to estimate PATT from experimental and observational data with treatment noncompliance. The example below shows via a tutorial the applicability of this function for a small number of observations (N) using both the survey experiment dataset in Example 1 and the Word Values Survey (WVS) response dataset in Example 2.
 
 ```r
 pattc_en <- pattc_ensemble(response.formula = response_formula,
@@ -181,13 +181,11 @@ pattc_en <- pattc_ensemble(response.formula = response_formula,
 ```
 
 #### Plotting Treatment Effects From PATT-C Ensemble
-Our package includes features and functions that enables users to extract and illustrate from the PATT_C model (estimated via ensemble learning) the following: the distribution of the estimated PATT , the marginal effect of the PATT estimate of Strong Leader, and heterogeneous treatment effects to assess and visualize whether the PATT varies significantly across different subgroups identified in our example with respect to gender, age, education. The distribution of the estimated PATT can be illustrated from the PATT-C estimated via ensemble learning using `plot()`:
+Our package includes features and functions that enables users to extract and illustrate two types of figures from the PATT that is obtained from the PATT-C model via weighted ensemble learning. The first is the distribution of the estimated PATT of the treatment indicator on the dependent variable. This is obtained from using `treateffect_plot`:
 
-![](tutorial_files/tutorial_files/figure-gfm/pattcenv-1.png)<!-- -->
+[PATT plot here]
 
-The marginal effect of the PATT estimate of "Strong Leader" on "Support War" from the PATT-C (ensemble learning) model using the `marginal_plot' function is:
-
-Heterogenous Treatment Effects obtained from the PATT estimate of *Strong Leader* is illustrated for the following three subgroups using the `hte_plot` function:
+The second is heterogeneous treatment effects that users can employ to assess and visualize whether the PATT varies significantly across different subgroups identified in our example with respect to gender, age and education. The heterogenous treatment effects obtained from the PATT estimate of *Strong Leader* is illustrated here for the three aforementioned subgroups using the `hte_plot` function:
 
 ```r
 hte_plot(pattc_en, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
@@ -218,13 +216,7 @@ Users can employ the `hte_plot` function to extract and illustrate heterogeneous
 
 
 #### Tutorials for Deep Neural Meta-Learners 
-The tutorial for `metalearner_deepneural` for the S-learner is [here](/tutorial.md#deep-neural-s-learner).
-
-The tutorial for `metalearner_deepneural` for the T-learner is [here](/tutorial.md#deep-neural-t-learner).
-
-The tutorial for `metalearner_deepneural` for the X-learner is [here](/tutorial.md#deep-neural-x-learner).
-
-The tutorial for `metalearner_deepneural` for the R-learner is [here](/tutorial.md#deep-neural-r-learner).
+The tutorial for `metalearner_deepneural` for the S-learner is [here](/tutorial.md#deep-neural-s-learner). The tutorial for `metalearner_deepneural` for the T-learner is [here](/tutorial.md#deep-neural-t-learner). The tutorial for `metalearner_deepneural` for the X-learner is [here](/tutorial.md#deep-neural-x-learner). The tutorial for `metalearner_deepneural` for the R-learner is [here](/tutorial.md#deep-neural-r-learner).
 
 
 #### Deep Neural Networks for PATT-C Estimator
