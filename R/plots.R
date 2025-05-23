@@ -240,13 +240,18 @@ plot.metalearner_deepneural <- function(model_obj,
                                        type = "Y_hat0"),
                             data.frame("predictions" = model_obj$Y_hats[,2],
                                        type = "Y_hat1"))
+    
+    x_min <- min(meta_preds$predictions) - 1*sd(meta_preds$predictions)
+    x_max <- max(meta_preds$predictions) - 1*sd(meta_preds$predictions)
+    
     meta_plot <-  ggplot() +
       geom_density(data = meta_preds,  
                    aes(x = predictions, fill = type),
                    color = "black",
                    alpha = 0.7, linewidth = 0.5) +
-      xlab("Predicted Outcome")+ylab("")+
-      theme(legend.position = "bottom")+
+      xlab("Predicted Outcome") + ylab("") +
+      xlim(x_min, x_max) +
+      theme(legend.position = "bottom") +
       theme(legend.title=element_blank())
   }
   return(meta_plot)
@@ -324,13 +329,18 @@ plot.metalearner_ensemble <- function(model_obj,
                                     type = "Y_hat0"),
                          data.frame("predictions" = model_obj$Y_hats[,2],
                                     type = "Y_hat1"))
+    
+    x_min <- min(meta_preds$predictions) - 1*sd(meta_preds$predictions)
+    x_max <- max(meta_preds$predictions) - 1*sd(meta_preds$predictions)
+    
     meta_plot <-  ggplot() +
       geom_density(data = meta_preds,  
                    aes(x = predictions, fill = type),
                    color = "black",
                    alpha = 0.7, linewidth = 0.5) +
-      xlab("Predicted Outcome")+ylab("")+
-      theme(legend.position = "bottom")+
+      xlab("Predicted Outcome") + ylab("") +
+      xlim(x_min, x_max) +
+      theme(legend.position = "bottom") +
       theme(legend.title=element_blank())
   }
   return(meta_plot)
@@ -354,11 +364,21 @@ plot.pattc_deepneural <- function(model_obj)
                                   type = "Y_hat0"),
                        data.frame("predictions" = model_obj$pop_counterfactual[,2],
                                   type = "Y_hat1"))
-  pattc_plot <-  ggplot(patt_preds,  aes(x = predictions, fill = type)) +
-    geom_histogram(alpha = 0.6, position = 'identity')+
-    xlab("")+ylab("")+
-    theme(legend.position = "bottom")+
+  
+  x_min <- min(patt_preds$predictions) - 1*sd(patt_preds$predictions)
+  x_max <- max(patt_preds$predictions) - 1*sd(patt_preds$predictions)
+  
+  pattc_plot <-  ggplot() +
+    geom_density(data = patt_preds,  
+                 aes(x = predictions, fill = type),
+                 color = "black",
+                 alpha = 0.7, linewidth = 0.5) +
+    xlab("Predicted Outcome") + ylab("") +
+    xlim(x_min, x_max) +
+    theme(legend.position = "bottom") +
     theme(legend.title=element_blank())
+  
+  
   return(pattc_plot)
 }
 
@@ -380,11 +400,19 @@ plot.pattc_ensemble <- function(model_obj)
                                   type = "Y_hat0"),
                        data.frame("predictions" = model_obj$pop_counterfactual[,2],
                                   type = "Y_hat1"))
-  pattc_plot <-  ggplot(patt_preds, aes(x = predictions, fill = type)) +
-                        geom_histogram(alpha = 0.6, position = 'identity')+
-                        xlab("") + ylab("") +
-                        theme(legend.position = "bottom") +
-                        theme(legend.title=element_blank())
+  
+  x_min <- min(patt_preds$predictions) - 1*sd(patt_preds$predictions)
+  x_max <- max(patt_preds$predictions) - 1*sd(patt_preds$predictions)
+  
+  pattc_plot <-  ggplot() +
+    geom_density(data = patt_preds,  
+                 aes(x = predictions, fill = type),
+                 color = "black",
+                 alpha = 0.7, linewidth = 0.5) +
+    xlab("Predicted Outcome") + ylab("") +
+    xlim(x_min, x_max) +
+    theme(legend.position = "bottom") +
+    theme(legend.title=element_blank())
   return(pattc_plot)
 }
 
