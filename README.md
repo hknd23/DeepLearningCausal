@@ -122,7 +122,7 @@ Or with devtools:
 devtools::install_github("hknd23/DeepLearningCausal")
 ```
 
-### Using the Package: Ensemble Learning
+### Using the Package: Meta-Learner Models
 
 We illustrate the functionality of **DeepLearningCausal** using the two datasets summarized above. These datasets are included and briefly described in the manual for the package. 
 
@@ -169,6 +169,27 @@ The tutorial for `metalearner_ensemble` for the T-learner is [here](/tutorial.md
 The tutorial for `metalearner_ensemble` for the X-learner is [here](/tutorial.md#ensemble-x-learner).
 The tutorial for `metalearner_ensemble` for the R-learner is [here](/tutorial.md#ensemble-r-learner)
 
+#### Deep Neural Networks for Meta-Learners
+The function `metalearner_deepneural` in the package estimates the CATE from the two meta-learner models, the S-learner and T-learner, using deep neural networks. The example below shows via a tutorial the applicability of this function for a small number of observations (*N*) from our survey response (specifically, survey experiment) dataset in Example 1.
+
+``` r
+slearner_nn <- metalearner_deepneural(cov.formula = response_formula,
+               data = exp_data, treat.var = "strong_leader",
+               meta.learner.type = "S.Learner", stepmax = 1e+9, 
+               hidden.layer = c(2, 2), linear.output = FALSE)
+```
+#### Plotting Treatment Effects From Deep Neural Meta-Learners
+The **DeepLearningCausal** package enables users to eemploy the `treateffect_plot` function to plot the estimated effect of the treatment indicator of interest on the outcome measure obtained from the S-, T- X-learner, and R-learner models that are each estimated by using deep neural networks. For the sake of brevity, we illustrate the CATE of the *Strong Leader* treatment on *Support War* from the S-Learner model estimated using deep neural networks **here**. 
+
+Users can employ the `hte_plot` function to extract and illustrate heterogeneous treatment effects associated with the CATE obtained from the three meta-learner models in the package that are each estimated by using deep neural networks. As an example, we demonstrate the heterogeneous treatment effects (for three subgroups) obtained from the S-Learner model estimated via deep neural networks **here**. 
+
+
+#### Tutorials for Deep Neural Meta-Learners 
+The tutorial for `metalearner_deepneural` for the S-learner is [here](/tutorial.md#deep-neural-s-learner). The tutorial for `metalearner_deepneural` for the T-learner is [here](/tutorial.md#deep-neural-t-learner). The tutorial for `metalearner_deepneural` for the X-learner is [here](/tutorial.md#deep-neural-x-learner). The tutorial for `metalearner_deepneural` for the R-learner is [here](/tutorial.md#deep-neural-r-learner).
+
+
+### Using the Package: Estimating the PATT
+
 #### Ensemble Learning for PATT-C Estimator
 The function `PATTC_ensemble` estimates the PATT-C model via weighted ensemble learning. This enables users to estimate PATT from experimental and observational data with treatment noncompliance. The example below shows via a tutorial the applicability of this function for a small number of observations (N) using both the survey experiment dataset in Example 1 and the Word Values Survey (WVS) response dataset in Example 2.
 
@@ -197,26 +218,6 @@ hte_plot(pattc_en, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
 
 #### Tutorial for PATT-C Ensemble 
 The tutorial for the `PATTC_ensemble` for the PATT-C model is [here](/tutorial.md#ensemble-patt-c).
-
-### Using the Package: Deep Neural Networks
-
-#### Deep Neural Networks for Meta-Learners
-The function `metalearner_deepneural` in the package estimates the CATE from the two meta-learner models, the S-learner and T-learner, using deep neural networks. The example below shows via a tutorial the applicability of this function for a small number of observations (*N*) from our survey response (specifically, survey experiment) dataset in Example 1.
-
-``` r
-slearner_nn <- metalearner_deepneural(cov.formula = response_formula,
-               data = exp_data, treat.var = "strong_leader",
-               meta.learner.type = "S.Learner", stepmax = 1e+9, 
-               hidden.layer = c(2, 2), linear.output = FALSE)
-```
-#### Plotting Treatment Effects From Deep Neural Meta-Learners
-The **DeepLearningCausal** package enables users to eemploy the `treateffect_plot` function to plot the estimated effect of the treatment indicator of interest on the outcome measure obtained from the S-, T- X-learner, and R-learner models that are each estimated by using deep neural networks. For the sake of brevity, we illustrate the CATE of the *Strong Leader* treatment on *Support War* from the S-Learner model estimated using deep neural networks **here**. 
-
-Users can employ the `hte_plot` function to extract and illustrate heterogeneous treatment effects associated with the CATE obtained from the three meta-learner models in the package that are each estimated by using deep neural networks. As an example, we demonstrate the heterogeneous treatment effects (for three subgroups) obtained from the S-Learner model estimated via deep neural networks **here**. 
-
-
-#### Tutorials for Deep Neural Meta-Learners 
-The tutorial for `metalearner_deepneural` for the S-learner is [here](/tutorial.md#deep-neural-s-learner). The tutorial for `metalearner_deepneural` for the T-learner is [here](/tutorial.md#deep-neural-t-learner). The tutorial for `metalearner_deepneural` for the X-learner is [here](/tutorial.md#deep-neural-x-learner). The tutorial for `metalearner_deepneural` for the R-learner is [here](/tutorial.md#deep-neural-r-learner).
 
 
 #### Deep Neural Networks for PATT-C Estimator
