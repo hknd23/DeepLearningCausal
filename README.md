@@ -126,7 +126,7 @@ devtools::install_github("hknd23/DeepLearningCausal")
 
 We illustrate the functionality of **DeepLearningCausal** using the two datasets summarized above. These datasets are included and briefly described in the manual for the package. 
 
-#### Ensemble Learning for Meta-Leaners
+#### Ensemble Learning for Meta-Learners
 
 The function `metalearner_ensemble` in the package estimates the CATE from the following four meta-learner models using weighted ensemble learning: the S-learner, T-learner X-learner, and R-learner. To allow for easy replication, the example below shows via a tutorial the applicability of this function for a small number of observations (N) from our survey response dataset in Example 1 that incorporates a survey experiment.
 
@@ -190,7 +190,7 @@ The tutorial for `metalearner_deepneural` for the S-learner is [here](/tutorial.
 
 ### Using the Package: Estimating the PATT
 
-#### Ensemble Learning for PATT-C Estimator
+#### Ensemble Learning for Estimating PATT in datasets with Treatment Noncompliance
 The function `PATTC_ensemble` estimates the PATT-C model via weighted ensemble learning. This enables users to estimate PATT from experimental and observational data with treatment noncompliance. The example below shows via a tutorial the applicability of this function for a small number of observations (N) using both the survey experiment dataset in Example 1 and the Word Values Survey (WVS) response dataset in Example 2.
 
 ```r
@@ -201,7 +201,7 @@ pattc_en <- pattc_ensemble(response.formula = response_formula,
             response.SL.learners = SLlearners)
 ```
 
-#### Plotting Treatment Effects From PATT-C Ensemble
+#### Plotting Ensemble Learning-Estimated PATT 
 Our package includes features and functions that enables users to extract and illustrate two types of figures from the PATT that is obtained from the PATT-C model via weighted ensemble learning. The first is the distribution of the estimated PATT of the treatment indicator on the dependent variable. This is obtained from using `treateffect_plot`:
 
 [PATT plot here]
@@ -216,11 +216,11 @@ hte_plot(pattc_en, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
 ![](tutorial_files/tutorial_files/figure-gfm/hte_patt-1.png)<!-- -->
 
 
-#### Tutorial for PATT-C Ensemble 
+#### Tutorial for Ensemble Learning-Estimated PATT
 The tutorial for the `PATTC_ensemble` for the PATT-C model is [here](/tutorial.md#ensemble-patt-c).
 
 
-#### Deep Neural Networks for PATT-C Estimator
+#### Deep Neural Networks for Estimating PATT in datasets with Treatment Noncompliance 
 The function `PATTC_deepneural` estimates the PATT from the PATT-C model for experimental data (in settings with noncompliance) using deep neural networks. The tutorial in the example below shows thw applicability of this function for a small number of observations using both the survey response dataset in Example 1 and the WVS response dataset in Example 2. 
 
 ```r
@@ -232,14 +232,14 @@ pattc_nn <- pattc_deepneural(response.formula = response_formula,
             compl.stepmax = 1e+09, response.stepmax = 1e+09)
 ```
 
-#### Plotting Treatment Effects From Deep Neural PATT-C Estimator
+#### Plotting Deep Neural Network-Estimated PATT
 The distribution of the PATT obtained from the PATT-C models that is estimated via deep neural networks can be visualized by using The estimated PATT from the PATT_C model using deep neural networks can be illustrated by using `plot()`:
 
 ![](tutorial_files/tutorial_files/figure-gfm/pattcnnv-1.png)<!-- -->
 
 Users can employ the `marginal_plot` function to plot the marginal effect of the treatment variable (in our example, *strong leader*) on the outcome measure (e.g. *support war*) from the PATT-C model that is estimated by using deep neural networks, which is available **here**.The `hte_plot` function enables users to extract and illustrate heterogeneous treatment effects associated with the PATT obtained from the PATT-C model that is estimated by using deep neural networks. Using the said function, the heterogeneous treatment effects for three subgroups obtained from the PATT-C model estimated via deep neural networks is available **here**. 
 
-#### Tutorial for Deep Neural PATT-C Estimator 
+#### Tutorial for Deep Neural Network-Estimated PATT 
 
 The tutorial for `pattc_deepneural` for the PATT-C model estimated using deep neural networks is available [here](/tutorial.md#deep-neural-patt-c).
 
