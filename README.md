@@ -237,7 +237,7 @@ The distribution of the PATT obtained from the PATT-C models that is estimated v
 
 ![](tutorial_files/tutorial_files/figure-gfm/pattcnnv-1.png)<!-- -->
 
-Users can employ the `marginal_plot` function to plot the marginal effect of the treatment variable (in our example, *strong leader*) on the outcome measure (e.g. *support war*) from the PATT-C model that is estimated by using deep neural networks, which is available **here**.The `hte_plot` function enables users to extract and illustrate heterogeneous treatment effects associated with the PATT obtained from the PATT-C model that is estimated by using deep neural networks. Using the said function, the heterogeneous treatment effects for three subgroups obtained from the PATT-C model estimated via deep neural networks is available **here**. 
+The `hte_plot` function enables users to extract and illustrate heterogeneous treatment effects associated with the PATT obtained from the PATT-C model that is estimated by using deep neural networks. Using the said function, the heterogeneous treatment effects for three subgroups obtained from the PATT-C model estimated via deep neural networks is available **here**. 
 
 #### Tutorial for Deep Neural Network-Estimated PATT 
 
