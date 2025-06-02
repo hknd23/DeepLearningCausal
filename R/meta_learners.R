@@ -291,9 +291,14 @@ metalearner_ensemble <- function(data,
     ID_pseudo <- 1:nrow(data)
     pseudo_all <- cbind(pseudo_all, ID_pseudo)
     
+    pb <- txtProgressBar(min = 0, 
+                         max = length(folds), 
+                         style = 3, 
+                         width = 50, 
+                         char = "=")
+    
     for (f in seq_along(folds)) {
-      pb <- txtProgressBar(min = 0, max = length(folds), 
-                           style = 3, width = 50, char = "=")
+
       
       if (f == 1) {
         data1 <- data[c(folds[[5]], folds[[2]], folds[[3]], folds[[4]]), ]
@@ -436,10 +441,17 @@ metalearner_ensemble <- function(data,
     ID_pseudo <- 1:nrow(data)
     pseudo_all <- cbind(pseudo_all, ID_pseudo)
     
+    pb <- txtProgressBar(min = 0,
+                         max = length(folds),
+                         style = 3,
+                         width = 50,
+                         char = "=")
+    
     ##### # 5-fold sample splitting
     # Sample splitting
     folds <- caret::createFolds(data$d, k = 5)
     for(f in 1:(length(folds))){
+      
       if(f == 1){
         data1 <- data[c(folds[[5]], folds[[2]], folds[[3]], folds[[4]]),]
         df_main <- data[folds[[1]],]
@@ -498,7 +510,12 @@ metalearner_ensemble <- function(data,
       ## Collect all pseudo outcomes
       pseudo_all[,1][df_main$ID] <- pseudo_outcome
       pseudo_all[,2][df_main$ID] <- weights
+      
+      Sys.sleep(0.05)
+      setTxtProgressBar(pb, f)
     }
+    close(pb)
+    
     
     pseudo_all <- as.data.frame(pseudo_all)
     res_combined_r <- matrix(NA,nrow(data),5)
