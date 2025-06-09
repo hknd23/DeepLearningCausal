@@ -14,6 +14,7 @@
 #' @param cut_points numeric vector for cut-off points to generate subgroups from
 #' covariates. If left blank a vector generated from median values will be used.
 #' @param zero_int logical for vertical line at 0 x intercept.
+#'
 #' @returns \code{ggplot} object illustrating subgroup HTE and 95% confidence
 #' intervals.
 #' @importFrom magrittr %>%
@@ -175,6 +176,7 @@ hte_plot <- function(model_obj,
 #'
 #' @param model_obj \code{metalearner_deepneural} model object.
 #' @param type "CATEs" or "predict".
+#' @param conf_level numeric value for confidence level. Defaults to 0.95.
 #'
 #' @returns \code{ggplot} object.
 #' @export
@@ -265,6 +267,7 @@ plot.metalearner_deepneural <- function(model_obj,
 #'
 #' @param model_obj \code{metalearner_ensemble} model object
 #' @param type "CATEs" or "predict"
+#' @param conf_level numeric value for confidence level. Defaults to 0.95.
 #'
 #' @returns \code{ggplot} object
 #' @export
