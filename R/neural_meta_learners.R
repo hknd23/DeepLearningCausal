@@ -225,9 +225,6 @@ metalearner_deepneural <- function(data,
           Y_hat_test_0 <- Y_test_0
         }
         
-        #Y_hat_test_0 <- max.col(Y_test_0) - 1
-        #Y_hat_test_1 <- max.col(Y_test_1) - 1
-        
         score_meta[,1][df_main$ID] = Y_hat_test_1 - Y_hat_test_0
         
         Y_hats <- data.frame("Y_hat0" = Y_hat_test_0,
@@ -462,15 +459,15 @@ metalearner_deepneural <- function(data,
     pseudo_all <- as.data.frame(pseudo_all)
     res_combined_r <- matrix(NA,nrow(data),5)
     
-    
     r_mod_data <- cbind(data, pseudo_all)
-    r_mod_data$weight <- round(r_mod_data$V2 *10)
+    r_mod_data$obs_weight <- round(r_mod_data$V2 *10)
     
     r.formula <- paste0("V1 ~ ", paste0(covariates, collapse = " + "))
     
     set_data <- split(r_mod_data, cut(1:nrow(r_mod_data), breaks = 10))
     set_data_weighted <- lapply(set_data,
-                                function(x) tidyr::uncount(x, weight = weight))
+                                function(x) tidyr::uncount(x, 
+                                                           weights = obs_weight))
     
     set_index <- split(1:nrow(data), cut(1:nrow(data), breaks = 10))
     
@@ -487,7 +484,8 @@ metalearner_deepneural <- function(data,
         res_combined_r[unlist(set_index[6:10]), l] <- score_r_1_cf
       }
       if(l  > 5){
-        r_mod_cf <- neuralnet::neuralnet(s.formula, data = set_data_weighted[[l]], 
+        r_mod_cf <- neuralnet::neuralnet(s.formula, 
+                                         data = set_data_weighted[[l]], 
                                          hidden = hidden.layer,
                                          algorithm = algorithm, 
                                          linear.output = FALSE,
@@ -499,8 +497,6 @@ metalearner_deepneural <- function(data,
       }
     }
     score_meta[, 1] <- rowMeans(res_combined_r)
-    head(score_r_0_cf)
-
     learner_out <- list("formula" = cov.formula,
                         "treat_var" = treat.var,
                         "CATEs" = score_meta,

@@ -198,11 +198,11 @@ plot.metalearner_deepneural <- function(model_obj,
     
     cate_vals <- cates[, 1]
     mean_cate <- mean(cate_vals, na.rm = TRUE)
-    sd_cate   <- sd(cate_vals, na.rm = TRUE)
-    a <- qnorm(1 - (1 - conf_level) / 2)
+    stats::sd_cate   <- stats::sd(cate_vals, na.rm = TRUE)
+    a <- stats::qnorm(1 - (1 - conf_level) / 2)
     
-    lower <- mean_cate - a * sd_cate
-    upper <- mean_cate + a * sd_cate
+    lower <- mean_cate - a * stats::sd_cate
+    upper <- mean_cate + a * stats::sd_cate
     color <- ifelse(lower < 0 & upper > 0, "red", "black")
     
     df_summary <- data.frame(
@@ -212,8 +212,8 @@ plot.metalearner_deepneural <- function(model_obj,
       Color = color
     )
     
-    x_min <- min(lower, min(cate_vals)) - 1*sd_cate
-    x_max <- max(upper, max(cate_vals)) + 1*sd_cate
+    x_min <- min(lower, min(cate_vals)) - 1*stats::sd_cate
+    x_max <- max(upper, max(cate_vals)) + 1*stats::sd_cate
     
     meta_plot <- ggplot() +
       geom_density(data = data.frame(CATE = cate_vals),
@@ -241,8 +241,8 @@ plot.metalearner_deepneural <- function(model_obj,
                             data.frame("predictions" = model_obj$Y_hats[,2],
                                        type = "Y_hat1"))
     
-    x_min <- min(meta_preds$predictions) - 1*sd(meta_preds$predictions)
-    x_max <- max(meta_preds$predictions) + 1*sd(meta_preds$predictions)
+    x_min <- min(meta_preds$predictions) - 1*stats::sd(meta_preds$predictions)
+    x_max <- max(meta_preds$predictions) + 1*stats::sd(meta_preds$predictions)
     
     meta_plot <-  ggplot() +
       geom_density(data = meta_preds,  
@@ -288,11 +288,11 @@ plot.metalearner_ensemble <- function(model_obj,
     
     cate_vals <- cates[, 1]
     mean_cate <- mean(cate_vals, na.rm = TRUE)
-    sd_cate   <- sd(cate_vals, na.rm = TRUE)
-    a <- qnorm(1 - (1 - conf_level) / 2)
+    stats::sd_cate   <- stats::sd(cate_vals, na.rm = TRUE)
+    a <- stats::qnorm(1 - (1 - conf_level) / 2)
     
-    lower <- mean_cate - a * sd_cate
-    upper <- mean_cate + a * sd_cate
+    lower <- mean_cate - a * stats::sd_cate
+    upper <- mean_cate + a * stats::sd_cate
     color <- ifelse(lower < 0 & upper > 0, "red", "black")
     
     df_summary <- data.frame(
@@ -302,8 +302,8 @@ plot.metalearner_ensemble <- function(model_obj,
       Color = color
     )
     
-    x_min <- min(lower, min(cate_vals)) - 1*sd_cate
-    x_max <- max(upper, max(cate_vals)) + 1*sd_cate
+    x_min <- min(lower, min(cate_vals)) - 1*stats::sd_cate
+    x_max <- max(upper, max(cate_vals)) + 1*stats::sd_cate
     
     meta_plot <- ggplot() +
       geom_density(data = data.frame(CATE = cate_vals),
@@ -330,8 +330,8 @@ plot.metalearner_ensemble <- function(model_obj,
                          data.frame("predictions" = model_obj$Y_hats[,2],
                                     type = "Y_hat1"))
     
-    x_min <- min(meta_preds$predictions) - 1*sd(meta_preds$predictions)
-    x_max <- max(meta_preds$predictions) + 1*sd(meta_preds$predictions)
+    x_min <- min(meta_preds$predictions) - 1*stats::sd(meta_preds$predictions)
+    x_max <- max(meta_preds$predictions) + 1*stats::sd(meta_preds$predictions)
     
     meta_plot <-  ggplot() +
       geom_density(data = meta_preds,  
@@ -365,8 +365,8 @@ plot.pattc_deepneural <- function(model_obj)
                        data.frame("predictions" = model_obj$pop_counterfactual[,2],
                                   type = "Y_hat1"))
   
-  x_min <- min(patt_preds$predictions) - 1*sd(patt_preds$predictions)
-  x_max <- max(patt_preds$predictions) + 1*sd(patt_preds$predictions)
+  x_min <- min(patt_preds$predictions) - 1*stats::sd(patt_preds$predictions)
+  x_max <- max(patt_preds$predictions) + 1*stats::sd(patt_preds$predictions)
   
   pattc_plot <-  ggplot() +
     geom_density(data = patt_preds,  
@@ -401,8 +401,8 @@ plot.pattc_ensemble <- function(model_obj)
                        data.frame("predictions" = model_obj$pop_counterfactual[,2],
                                   type = "Y_hat1"))
   
-  x_min <- min(patt_preds$predictions) - 1*sd(patt_preds$predictions)
-  x_max <- max(patt_preds$predictions) + 1*sd(patt_preds$predictions)
+  x_min <- min(patt_preds$predictions) - 1*stats::sd(patt_preds$predictions)
+  x_max <- max(patt_preds$predictions) + 1*stats::sd(patt_preds$predictions)
   
   pattc_plot <-  ggplot() +
     geom_density(data = patt_preds,  
