@@ -18,6 +18,7 @@
 #' @returns \code{ggplot} object illustrating subgroup HTE and 95% confidence
 #' intervals.
 #' @importFrom magrittr %>%
+#' @importFrom stats median sd qnorm
 #' @import ggplot2
 #' @export
 #'
@@ -81,7 +82,7 @@ hte_plot <- function(model_obj,
     mean_highers_temp <- rep(NA, n_boot)
 
     if (is.null(cut_points)) {
-      cuts <- sapply(x_vars, stats::median,na.rm = TRUE)
+      cuts <- sapply(x_vars, median,na.rm = TRUE)
     } else {
       if (length(cut_points) !=  length(x_var_names)) {
         stop(paste0("length of cut_points must be ", length(x_var_names)))
@@ -181,6 +182,7 @@ hte_plot <- function(model_obj,
 #' @returns \code{ggplot} object.
 #' @export
 #' @importFrom magrittr %>%
+#' @importFrom stats sd qnorm
 #' @import ggplot2
 plot.metalearner_deepneural <- function(model_obj, 
                                         conf_level = 0.95, 
@@ -200,11 +202,11 @@ plot.metalearner_deepneural <- function(model_obj,
     
     cate_vals <- cates[, 1]
     mean_cate <- mean(cate_vals, na.rm = TRUE)
-    stats::sd_cate   <- stats::sd(cate_vals, na.rm = TRUE)
-    a <- stats::qnorm(1 - (1 - conf_level) / 2)
+    sd_cate   <- sd(cate_vals, na.rm = TRUE)
+    a <- qnorm(1 - (1 - conf_level) / 2)
     
-    lower <- mean_cate - a * stats::sd_cate
-    upper <- mean_cate + a * stats::sd_cate
+    lower <- mean_cate - a * sd_cate
+    upper <- mean_cate + a * sd_cate
     color <- ifelse(lower < 0 & upper > 0, "red", "black")
     
     df_summary <- data.frame(
@@ -214,8 +216,8 @@ plot.metalearner_deepneural <- function(model_obj,
       Color = color
     )
     
-    x_min <- min(lower, min(cate_vals)) - 1*stats::sd_cate
-    x_max <- max(upper, max(cate_vals)) + 1*stats::sd_cate
+    x_min <- min(lower, min(cate_vals)) - 1*sd_cate
+    x_max <- max(upper, max(cate_vals)) + 1*sd_cate
     
     meta_plot <- ggplot() +
       geom_density(data = data.frame(CATE = cate_vals),
@@ -243,8 +245,8 @@ plot.metalearner_deepneural <- function(model_obj,
                             data.frame("predictions" = model_obj$Y_hats[,2],
                                        type = "Y_hat1"))
     
-    x_min <- min(meta_preds$predictions) - 1*stats::sd(meta_preds$predictions)
-    x_max <- max(meta_preds$predictions) + 1*stats::sd(meta_preds$predictions)
+    x_min <- min(meta_preds$predictions) - 1*sd(meta_preds$predictions)
+    x_max <- max(meta_preds$predictions) + 1*sd(meta_preds$predictions)
     
     meta_plot <-  ggplot() +
       geom_density(data = meta_preds,  
@@ -272,6 +274,7 @@ plot.metalearner_deepneural <- function(model_obj,
 #' @returns \code{ggplot} object
 #' @export
 #' @importFrom magrittr %>%
+#' @importFrom stats sd qnorm
 #' @import ggplot2
 plot.metalearner_ensemble <- function(model_obj,
                                       conf_level = 0.95,
@@ -291,11 +294,11 @@ plot.metalearner_ensemble <- function(model_obj,
     
     cate_vals <- cates[, 1]
     mean_cate <- mean(cate_vals, na.rm = TRUE)
-    stats::sd_cate   <- stats::sd(cate_vals, na.rm = TRUE)
-    a <- stats::qnorm(1 - (1 - conf_level) / 2)
+    sd_cate   <- sd(cate_vals, na.rm = TRUE)
+    a <- qnorm(1 - (1 - conf_level) / 2)
     
-    lower <- mean_cate - a * stats::sd_cate
-    upper <- mean_cate + a * stats::sd_cate
+    lower <- mean_cate - a * sd_cate
+    upper <- mean_cate + a * sd_cate
     color <- ifelse(lower < 0 & upper > 0, "red", "black")
     
     df_summary <- data.frame(
@@ -305,8 +308,8 @@ plot.metalearner_ensemble <- function(model_obj,
       Color = color
     )
     
-    x_min <- min(lower, min(cate_vals)) - 1*stats::sd_cate
-    x_max <- max(upper, max(cate_vals)) + 1*stats::sd_cate
+    x_min <- min(lower, min(cate_vals)) - 1*sd_cate
+    x_max <- max(upper, max(cate_vals)) + 1*sd_cate
     
     meta_plot <- ggplot() +
       geom_density(data = data.frame(CATE = cate_vals),
@@ -333,8 +336,8 @@ plot.metalearner_ensemble <- function(model_obj,
                          data.frame("predictions" = model_obj$Y_hats[,2],
                                     type = "Y_hat1"))
     
-    x_min <- min(meta_preds$predictions) - 1*stats::sd(meta_preds$predictions)
-    x_max <- max(meta_preds$predictions) + 1*stats::sd(meta_preds$predictions)
+    x_min <- min(meta_preds$predictions) - 1*sd(meta_preds$predictions)
+    x_max <- max(meta_preds$predictions) + 1*sd(meta_preds$predictions)
     
     meta_plot <-  ggplot() +
       geom_density(data = meta_preds,  
@@ -360,6 +363,7 @@ plot.metalearner_ensemble <- function(model_obj,
 #' @returns \code{ggplot} object
 #' @export
 #' @importFrom magrittr %>%
+#' @importFrom stats sd qnorm
 #' @import ggplot2
 plot.pattc_deepneural <- function(model_obj)
 {
@@ -368,8 +372,8 @@ plot.pattc_deepneural <- function(model_obj)
                        data.frame("predictions" = model_obj$pop_counterfactual[,2],
                                   type = "Y_hat1"))
   
-  x_min <- min(patt_preds$predictions) - 1*stats::sd(patt_preds$predictions)
-  x_max <- max(patt_preds$predictions) + 1*stats::sd(patt_preds$predictions)
+  x_min <- min(patt_preds$predictions) - 1*sd(patt_preds$predictions)
+  x_max <- max(patt_preds$predictions) + 1*sd(patt_preds$predictions)
   
   pattc_plot <-  ggplot() +
     geom_density(data = patt_preds,  
@@ -396,6 +400,7 @@ plot.pattc_deepneural <- function(model_obj)
 #' @returns \code{ggplot} object
 #' @export
 #' @importFrom magrittr %>%
+#' @importFrom stats sd
 #' @import ggplot2
 plot.pattc_ensemble <- function(model_obj)
 {
@@ -404,8 +409,8 @@ plot.pattc_ensemble <- function(model_obj)
                        data.frame("predictions" = model_obj$pop_counterfactual[,2],
                                   type = "Y_hat1"))
   
-  x_min <- min(patt_preds$predictions) - 1*stats::sd(patt_preds$predictions)
-  x_max <- max(patt_preds$predictions) + 1*stats::sd(patt_preds$predictions)
+  x_min <- min(patt_preds$predictions) - 1*sd(patt_preds$predictions)
+  x_max <- max(patt_preds$predictions) + 1*sd(patt_preds$predictions)
   
   pattc_plot <-  ggplot() +
     geom_density(data = patt_preds,  

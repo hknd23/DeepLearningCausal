@@ -23,6 +23,7 @@
 #' @return `metalearner_ensemble` of predicted outcome values and CATEs 
 #' estimated by the meta learners for each observation.
 #' @export
+#' @importFrom stats binomial
 #'
 #' @examples
 #' # load dataset
@@ -330,7 +331,7 @@ metalearner_ensemble <- function(data,
                                           SL.library = SL.learners,
                                           verbose = FALSE, 
                                           method = "method.NNLS",
-                                          family = stats::binomial(), 
+                                          family = binomial(), 
                                           cvControl = control)
       
       p_hat <- p_mod$SL.predict
@@ -482,7 +483,7 @@ metalearner_ensemble <- function(data,
                             SL.library = SL.learners,
                             verbose = FALSE, 
                             method = "method.NNLS", 
-                            family = stats::binomial(),
+                            family = binomial(),
                             cvControl = control)
       
       p_hat <- p_mod$SL.predict
