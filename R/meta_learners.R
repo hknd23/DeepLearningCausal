@@ -356,15 +356,16 @@ metalearner_ensemble <- function(data,
                                            cvControl = control)
       m1_hat <- m1_mod$SL.predict
       
-      m0_mod <- SuperLearner(Y = aux_0$y, X = aux_0[, c(covariates)],
-                             newX = df_main[, c(covariates)], 
-                             SL.library = SL.learners,
-                             verbose = FALSE, 
-                             method = "method.NNLS", 
-                             family = ifelse(binary.outcome, 
-                                             "binomial", 
-                                             "gaussian"),
-                             cvControl = control)
+      m0_mod <- SuperLearner::SuperLearner(Y = aux_0$y, 
+                                           X = aux_0[, c(covariates)],
+                                           newX = df_main[, c(covariates)], 
+                                           SL.library = SL.learners,
+                                           verbose = FALSE, 
+                                           method = "method.NNLS", 
+                                           family = ifelse(binary.outcome, 
+                                                           "binomial", 
+                                                           "gaussian"),
+                                           cvControl = control)
       m0_hat <- m0_mod$SL.predict
       
       # Compute pseudo-outcomes
