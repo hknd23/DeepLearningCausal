@@ -42,7 +42,6 @@ and \code{pattc_neural}.
 \donttest{
 # load dataset
 set.seed(123456)
-# estimate CATEs with X Learner
 xlearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +
                                   income  + employed  + job_loss,
                                   data = exp_data,
@@ -55,6 +54,7 @@ xlearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +
                                   linear.output = FALSE,
                                   binary.outcome = FALSE)
 
-print(xlearner_nn)
+hte_plot(xlearner_nn)
                                   }
+                    
 }

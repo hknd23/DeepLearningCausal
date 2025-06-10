@@ -4,10 +4,12 @@
 \alias{plot.metalearner_deepneural}
 \title{plot.metalearner_deepneural}
 \usage{
-\method{plot}{metalearner_deepneural}(model_obj, type = "CATEs")
+\method{plot}{metalearner_deepneural}(model_obj, conf_level = 0.95, type = "CATEs")
 }
 \arguments{
 \item{model_obj}{\code{metalearner_deepneural} model object.}
+
+\item{conf_level}{numeric value for confidence level. Defaults to 0.95.}
 
 \item{type}{"CATEs" or "predict".}
 }
