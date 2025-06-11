@@ -6,14 +6,15 @@
 #' \code{metalearner_deepneural}, as well as PATT-C from \code{pattc_ensemble}
 #' and \code{pattc_neural}.
 #'
-#' @param model_obj estimated model from \code{metalearner_ensemble},
+#' @param x estimated model from \code{metalearner_ensemble},
 #'  \code{metalearner_deepneural}, \code{pattc_ensemble}, or \code{pattc_neural}.
 #' @param custom_labels character vector for the names of subgroups.
-#' @param boot logical for bootstrapped HTE 95% intervals.
 #' @param n_boot number of bootstrap iterations. Only used with boot = TRUE.
 #' @param cut_points numeric vector for cut-off points to generate subgroups from
 #' covariates. If left blank a vector generated from median values will be used.
 #' @param zero_int logical for vertical line at 0 x intercept.
+#' @param ... Additional arguments 
+#' @param boot 
 #'
 #' @returns \code{ggplot} object illustrating subgroup HTE and 95% confidence
 #' intervals.
@@ -41,7 +42,7 @@
 #' hte_plot(xlearner_nn)
 #'                                   }
 #'                     
-hte_plot <- function(model_obj,
+hte_plot <- function(x, ...,
                      boot = TRUE,
                      n_boot = 1000,
                      cut_points = NULL,
@@ -166,7 +167,7 @@ hte_plot <- function(model_obj,
         x = "",
         y = ""
       ) + geom_vline(xintercept = x_int, linetype = "dashed", color = "grey70")
-    return(ht_plot)
+    print(ht_plot)
 }
 
 #' plot.metalearner_deepneural
@@ -175,21 +176,22 @@ hte_plot <- function(model_obj,
 #' Uses \code{plot()} to generate histogram of ditribution of CATEs or predicted
 #' outcomes from  \code{metalearner_deepneural}
 #'
-#' @param model_obj \code{metalearner_deepneural} model object.
+#' @param x \code{metalearner_deepneural} model object.
 #' @param type "CATEs" or "predict".
 #' @param conf_level numeric value for confidence level. Defaults to 0.95.
+#' @param ... Additional arguments 
 #'
 #' @returns \code{ggplot} object.
 #' @export
 #' @importFrom magrittr %>%
 #' @importFrom stats sd qnorm
 #' @import ggplot2
-plot.metalearner_deepneural <- function(model_obj, 
+plot.metalearner_deepneural <- function(x, ..., 
                                         conf_level = 0.95, 
                                         type = "CATEs")
 {
   if (type == "CATEs"){
-    cates <- model_obj[["CATEs"]]
+    cates <- x[["CATEs"]]
     if (!is.matrix(cates) && !is.data.frame(cates)) {
       stop("model_obj[['CATEs']] must be a matrix or data frame")
     }
@@ -240,9 +242,9 @@ plot.metalearner_deepneural <- function(model_obj,
       ) +
       theme_minimal()
   } else if (type == "predict") {
-    meta_preds <-  rbind(data.frame("predictions" = model_obj$Y_hats[,1],
+    meta_preds <-  rbind(data.frame("predictions" = x$Y_hats[,1],
                                        type = "Y_hat0"),
-                            data.frame("predictions" = model_obj$Y_hats[,2],
+                            data.frame("predictions" = x$Y_hats[,2],
                                        type = "Y_hat1"))
     
     x_min <- min(meta_preds$predictions) - 1*sd(meta_preds$predictions)
@@ -258,7 +260,7 @@ plot.metalearner_deepneural <- function(model_obj,
       theme(legend.position = "bottom") +
       theme(legend.title=element_blank())
   }
-  return(meta_plot)
+  print(meta_plot)
 }
 
 #' plot.metalearner_ensemble
@@ -267,21 +269,22 @@ plot.metalearner_deepneural <- function(model_obj,
 #' Uses \code{plot()} to generate histogram of ditribution of CATEs or predicted
 #' outcomes from  \code{metalearner_ensemble}
 #'
-#' @param model_obj \code{metalearner_ensemble} model object
+#' @param x \code{metalearner_ensemble} model object
 #' @param type "CATEs" or "predict"
 #' @param conf_level numeric value for confidence level. Defaults to 0.95.
+#' @param ... Additional arguments 
 #'
 #' @returns \code{ggplot} object
 #' @export
 #' @importFrom magrittr %>%
 #' @importFrom stats sd qnorm
 #' @import ggplot2
-plot.metalearner_ensemble <- function(model_obj,
+plot.metalearner_ensemble <- function(x, ...,
                                       conf_level = 0.95,
                                       type = "CATEs")
 {
   if (type == "CATEs"){
-    cates <- model_obj[["CATEs"]]
+    cates <- x[["CATEs"]]
     if (!is.matrix(cates) && !is.data.frame(cates)) {
       stop("model_obj[['CATEs']] must be a matrix or data frame")
     }
@@ -331,9 +334,9 @@ plot.metalearner_ensemble <- function(model_obj,
       ) +
       theme_minimal()
   } else if (type == "predict") {
-    meta_preds <-  rbind(data.frame("predictions" = model_obj$Y_hats[,1],
+    meta_preds <-  rbind(data.frame("predictions" = x$Y_hats[,1],
                                     type = "Y_hat0"),
-                         data.frame("predictions" = model_obj$Y_hats[,2],
+                         data.frame("predictions" = x$Y_hats[,2],
                                     type = "Y_hat1"))
     
     x_min <- min(meta_preds$predictions) - 1*sd(meta_preds$predictions)
@@ -349,7 +352,7 @@ plot.metalearner_ensemble <- function(model_obj,
       theme(legend.position = "bottom") +
       theme(legend.title=element_blank())
   }
-  return(meta_plot)
+  print(meta_plot)
 }
 
 #' plot.pattc_deepneural
@@ -358,18 +361,19 @@ plot.metalearner_ensemble <- function(model_obj,
 #' Uses \code{plot()} to generate histogram of ditribution of CATEs or predicted
 #' outcomes from  \code{pattc_deepneural}
 #'
-#' @param model_obj \code{pattc_deepneural} model object
+#' @param x \code{pattc_deepneural} model object
+#' @param ... Additional arguments 
 #'
 #' @returns \code{ggplot} object
 #' @export
 #' @importFrom magrittr %>%
 #' @importFrom stats sd qnorm
 #' @import ggplot2
-plot.pattc_deepneural <- function(model_obj)
+plot.pattc_deepneural <- function(x, ...)
 {
-  patt_preds <-  rbind(data.frame("predictions" = model_obj$pop_counterfactual[,1],
+  patt_preds <-  rbind(data.frame("predictions" = x$pop_counterfactual[,1],
                                   type = "Y_hat0"),
-                       data.frame("predictions" = model_obj$pop_counterfactual[,2],
+                       data.frame("predictions" = x$pop_counterfactual[,2],
                                   type = "Y_hat1"))
   
   x_min <- min(patt_preds$predictions) - 1*sd(patt_preds$predictions)
@@ -384,9 +388,7 @@ plot.pattc_deepneural <- function(model_obj)
     xlim(x_min, x_max) +
     theme(legend.position = "bottom") +
     theme(legend.title=element_blank())
-  
-  
-  return(pattc_plot)
+  print(pattc_plot)
 }
 
 #' plot.pattc_ensemble
@@ -395,18 +397,19 @@ plot.pattc_deepneural <- function(model_obj)
 #' Uses \code{plot()} to generate histogram of ditribution of CATEs or predicted
 #' outcomes from  \code{pattc_ensemble}
 #'
-#' @param model_obj \code{pattc_ensemble} model object
+#' @param x \code{pattc_ensemble} model object
+#' @param ... Additional arguments 
 #'
 #' @returns \code{ggplot} object
 #' @export
 #' @importFrom magrittr %>%
 #' @importFrom stats sd
 #' @import ggplot2
-plot.pattc_ensemble <- function(model_obj)
+plot.pattc_ensemble <- function(x, ...)
 {
-  patt_preds <-  rbind(data.frame("predictions" = model_obj$pop_counterfactual[,1],
+  patt_preds <-  rbind(data.frame("predictions" = x$pop_counterfactual[,1],
                                   type = "Y_hat0"),
-                       data.frame("predictions" = model_obj$pop_counterfactual[,2],
+                       data.frame("predictions" = x$pop_counterfactual[,2],
                                   type = "Y_hat1"))
   
   x_min <- min(patt_preds$predictions) - 1*sd(patt_preds$predictions)
@@ -421,5 +424,5 @@ plot.pattc_ensemble <- function(model_obj)
     xlim(x_min, x_max) +
     theme(legend.position = "bottom") +
     theme(legend.title=element_blank())
-  return(pattc_plot)
+  print(pattc_plot)
 }

@@ -478,26 +478,26 @@ metalearner_ensemble <- function(data,
       df_aux <- data1
       ## R-learner 
       # Train a classification model to get the propensity scores
-      p_mod <- SuperLearner(Y = df_aux$d, 
-                            X = df_aux[, covariates], 
-                            newX = df_main[, covariates], 
-                            SL.library = SL.learners,
-                            verbose = FALSE, 
-                            method = "method.NNLS", 
-                            family = binomial(),
-                            cvControl = control)
+      p_mod <- SuperLearner::SuperLearner(Y = df_aux$d, 
+                             X = df_aux[, covariates], 
+                             newX = df_main[, covariates], 
+                             SL.library = SL.learners,
+                             verbose = FALSE, 
+                             method = "method.NNLS", 
+                             family = binomial(),
+                             cvControl = control)
       
       p_hat <- p_mod$SL.predict
       p_hat <- ifelse(p_hat < 0.025, 0.025, 
                      ifelse(p_hat > .975, .975, p_hat))
       # Train a regression model 
-      m_mod <- SuperLearner(Y = df_aux$y,
-                            X = df_aux[,covariates], 
-                            newX = df_main[,covariates],
-                            SL.library = SL.learners,
-                            verbose = FALSE,
-                            method = "method.NNLS",
-                            family = ifelse(binary.outcome, 
+      m_mod <- SuperLearner::SuperLearner(Y = df_aux$y,
+                             X = df_aux[,covariates], 
+                             newX = df_main[,covariates],
+                             SL.library = SL.learners,
+                             verbose = FALSE,
+                             method = "method.NNLS",
+                             family = ifelse(binary.outcome, 
                                             "binomial", 
                                             "gaussian"),
                             cvControl = control)
@@ -528,29 +528,29 @@ metalearner_ensemble <- function(data,
 
     for(l in 1:10){
       if(l <= 5){
-        r_mod_cf <- SuperLearner(Y = set_pseudo[[l]][, 1],
-                                 X = set_data[[l]][,covariates], 
-                                 newX = do.call(rbind, 
-                                                set_data[6:10])[,covariates], 
-                                 SL.library = SL.learners,
-                                 verbose = FALSE, 
-                                 method = "method.NNLS",
-                                 obsWeights = set_pseudo[[l]][, 2],
-                                 cvControl = control)
+        r_mod_cf <- SuperLearner::SuperLearner(Y = set_pseudo[[l]][, 1],
+                                  X = set_data[[l]][,covariates], 
+                                  newX = do.call(rbind, 
+                                                 set_data[6:10])[,covariates], 
+                                  SL.library = SL.learners,
+                                  verbose = FALSE, 
+                                  method = "method.NNLS",
+                                  obsWeights = set_pseudo[[l]][, 2],
+                                  cvControl = control)
         
         score_r_1_cf <- r_mod_cf$SL.predict
         res_combined_r[unlist(set_index[6:10]), l] <- score_r_1_cf
               }
       if(l  > 5){
-        r_mod_cf <- SuperLearner(Y = set_pseudo[[l]][, 1],
-                                 X = set_data[[l]][,covariates], 
-                                 newX = do.call(rbind, 
-                                                set_data[1:5])[,covariates], 
-                                 SL.library = SL.learners,
-                                 verbose = FALSE, 
-                                 method = "method.NNLS",
-                                 obsWeights = set_pseudo[[l]][, 2],
-                                 cvControl = control)
+        r_mod_cf <- SuperLearner::SuperLearner(Y = set_pseudo[[l]][, 1],
+                                  X = set_data[[l]][,covariates], 
+                                  newX = do.call(rbind, 
+                                                 set_data[1:5])[,covariates], 
+                                  SL.library = SL.learners,
+                                  verbose = FALSE, 
+                                  method = "method.NNLS",
+                                  obsWeights = set_pseudo[[l]][, 2],
+                                  cvControl = control)
         
         score_r_0_cf <- r_mod_cf$SL.predict
         res_combined_r[unlist(set_index[1:5]), (l - 5)] <- score_r_0_cf
