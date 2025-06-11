@@ -50,25 +50,25 @@ hte_plot <- function(x, ...,
                      zero_int = TRUE
                     )
 {
-    if(class(model_obj) %in% c("metalearner_ensemble",
+    if(class(x) %in% c("metalearner_ensemble",
                                "metalearner_deepneural")){
-      all_vars <- all.vars(model_obj$formula)
+      all_vars <- all.vars(x$formula)
       x_var_names <- all_vars[-1]
-      x_vars <- model_obj$data[,c(x_var_names)]
+      x_vars <- x$data[,c(x_var_names)]
       rownames(x_vars) <- 1:nrow(x_vars)
-      y_var <- model_obj$CATEs
-    } else if (class(model_obj) %in% c("pattc_ensemble",
+      y_var <- x$CATEs
+    } else if (class(x) %in% c("pattc_ensemble",
                                        "pattc_deepneural")){
-      all_vars <- all.vars(model_obj$formula)
+      all_vars <- all.vars(x$formula)
       y_var <- all_vars[1]
       x_var_names <- all_vars[-1]
 
-      compliers <- model_obj$pop_data[which(
-        model_obj$pop_data[,model_obj$compl_var]==1),]
+      compliers <- x$pop_data[which(
+        x$pop_data[,x$compl_var]==1),]
       rownames(compliers) <- 1:nrow(compliers)
       x_vars <- compliers[,c(x_var_names)]
-      y_var <- data.frame( count_diff =  model_obj$pop_counterfactual[,2] -
-                            model_obj$pop_counterfactual[,1])
+      y_var <- data.frame( count_diff =  x$pop_counterfactual[,2] -
+                            x$pop_counterfactual[,1])
     }
 
     lowers <- list()
