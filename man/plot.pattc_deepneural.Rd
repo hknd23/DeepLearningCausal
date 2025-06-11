@@ -4,10 +4,12 @@
 \alias{plot.pattc_deepneural}
 \title{plot.pattc_deepneural}
 \usage{
-\method{plot}{pattc_deepneural}(model_obj)
+\method{plot}{pattc_deepneural}(x, ...)
 }
 \arguments{
-\item{model_obj}{\code{pattc_deepneural} model object}
+\item{x}{\code{pattc_deepneural} model object}
+
+\item{...}{Additional arguments}
 }
 \value{
 \code{ggplot} object

@@ -4,10 +4,12 @@
 \alias{plot.metalearner_ensemble}
 \title{plot.metalearner_ensemble}
 \usage{
-\method{plot}{metalearner_ensemble}(model_obj, conf_level = 0.95, type = "CATEs")
+\method{plot}{metalearner_ensemble}(x, ..., conf_level = 0.95, type = "CATEs")
 }
 \arguments{
-\item{model_obj}{\code{metalearner_ensemble} model object}
+\item{x}{\code{metalearner_ensemble} model object}
+
+\item{...}{Additional arguments}
 
 \item{conf_level}{numeric value for confidence level. Defaults to 0.95.}
 

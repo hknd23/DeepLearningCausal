@@ -5,7 +5,8 @@
 \title{hte_plot}
 \usage{
 hte_plot(
-  model_obj,
+  x,
+  ...,
   boot = TRUE,
   n_boot = 1000,
   cut_points = NULL,
@@ -14,10 +15,12 @@ hte_plot(
 )
 }
 \arguments{
-\item{model_obj}{estimated model from \code{metalearner_ensemble},
+\item{x}{estimated model from \code{metalearner_ensemble},
 \code{metalearner_deepneural}, \code{pattc_ensemble}, or \code{pattc_neural}.}
 
-\item{boot}{logical for bootstrapped HTE 95\% intervals.}
+\item{...}{Additional arguments}
+
+\item{boot}{}
 
 \item{n_boot}{number of bootstrap iterations. Only used with boot = TRUE.}
 
