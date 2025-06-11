@@ -9,12 +9,12 @@
 #' @param x estimated model from \code{metalearner_ensemble},
 #'  \code{metalearner_deepneural}, \code{pattc_ensemble}, or \code{pattc_neural}.
 #' @param custom_labels character vector for the names of subgroups.
+#' @param boot logical for using bootstraps to estimate confidence intervals.
 #' @param n_boot number of bootstrap iterations. Only used with boot = TRUE.
 #' @param cut_points numeric vector for cut-off points to generate subgroups from
 #' covariates. If left blank a vector generated from median values will be used.
 #' @param zero_int logical for vertical line at 0 x intercept.
 #' @param ... Additional arguments 
-#' @param boot 
 #'
 #' @returns \code{ggplot} object illustrating subgroup HTE and 95% confidence
 #' intervals.
