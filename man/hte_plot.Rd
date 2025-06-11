@@ -20,7 +20,7 @@ hte_plot(
 
 \item{...}{Additional arguments}
 
-\item{boot}{}
+\item{boot}{logical for using bootstraps to estimate confidence intervals.}
 
 \item{n_boot}{number of bootstrap iterations. Only used with boot = TRUE.}
 
