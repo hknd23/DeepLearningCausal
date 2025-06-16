@@ -145,28 +145,34 @@ hte_plot <- function(x, ...,
     combined_df <- rbind(lowers_y_df, highers_y_df)
 
     sorted_df <- combined_df[order(combined_df$var_name), ]
-
-    if (!is.null(custom_labels)) {
-      if (length(custom_labels) !=  length(combined_df$var_name)) {
-        stop(paste0("length of custom_labels must be ",
-                    length(combined_df$var_name)))
-      }
-      sorted_df$var_name <- as.character(custom_labels)
-    }
     if (zero_int){
       x_int <- 0
     } else if (!zero_int) {
       x_int <- NULL
     }
-    ht_plot <- ggplot(sorted_df, aes(y = var_name, x = means)) +
-      geom_point() +
-      geom_errorbarh(aes(xmin = X2.5., xmax = X97.5.), height = 0.2) +
-      theme_minimal() +
-      labs(
-        title = "",
-        x = "",
-        y = ""
-      ) + geom_vline(xintercept = x_int, linetype = "dashed", color = "grey70")
+    if (!is.null(custom_labels)) {
+      ht_plot <- ggplot(sorted_df, aes(y = var_name, x = means)) +
+        geom_point() +
+        geom_errorbarh(aes(xmin = X2.5., xmax = X97.5.), height = 0.2) +
+        theme_minimal() +
+        labs(
+          title = "",
+          x = "",
+          y = "") + geom_vline(xintercept = x_int, 
+                               linetype = "dashed", 
+                               color = "grey70") + scale_y_discrete(labels = custom_labels)
+    } else if (is.null(custom_labels)) {
+      ht_plot <- ggplot(sorted_df, aes(y = var_name, x = means)) +
+        geom_point() +
+        geom_errorbarh(aes(xmin = X2.5., xmax = X97.5.), height = 0.2) +
+        theme_minimal() +
+        labs(
+          title = "",
+          x = "",
+          y = ""
+        ) + geom_vline(xintercept = x_int, linetype = "dashed", color = "grey70")
+    }
+    
     print(ht_plot)
 }
 
