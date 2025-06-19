@@ -167,7 +167,14 @@ hte_plot(slearner_nn, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
 
 Third, the package includes features that permit users to illustrate the distribution and pairwise correlations of estimated individual treatment effects from all the four meta-learner models:
 
-[CATE correlation plots here]
+```r
+allcates_en <- data.frame("S_learner" =  slearner_en$CATEs,
+                          "T_learner" =  tlearner_en$CATEs,
+                          "X_learner" =  xlearner_en$CATEs,
+                          "R_learner" =  rlearner_en$CATEs)
+psych::pairs.panels(allcates_en, breaks = 30)
+```
+![](tutorial_files/tutorial_files/figure-gfm/cor_nn.png)<!-- -->
 
 #### Tutorials for Meta-Learners Ensemble 
 
