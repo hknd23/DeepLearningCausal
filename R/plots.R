@@ -174,7 +174,7 @@ hte_plot <- function(x, ...,
     }
     
     print(ht_plot)
-}
+} 
 
 #' plot.metalearner_deepneural
 #'
