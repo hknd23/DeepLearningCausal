@@ -27,10 +27,10 @@ Researchers are increasingly interested to estimate causal effecs, including Con
 
 | Function                | Description                                                                                             |
 |-------------------------|---------------------------------------------------------------------------------------------------------|
-| `metalearner_ensemble`  | Estimates CATE for S-learner, T-learner, X-learner, R-learner using the super learner weighted ensemble.|
-| `metalearner_deepneural`| Estimates CATE for S-learner, T-learner, X-learner, R-learner using deep neural networks.               |
-| `pattc_ensemble`        | Estimates the PATT from the PATT-C model using the super learner weighted ensemble.                    |
-| `pattc_deepneural`      | Estimates PATT_C estimator for obtaining PATT using deep neural networks.                               |
+| `metalearner_ensemble`  | Estimates CATE for S-learner, T-learner, X-learner, and R-learner using weighted ensemble learning.|
+| `metalearner_deepneural`| Estimates CATE for S-learner, T-learner, X-learner, and R-learner using deep neural networks.               |
+| `pattc_ensemble`        | Estimates the PATT from PATT-C model using weighted ensemble learning.                    |
+| `pattc_deepneural`      | Estimates PATT from PATT_C model using deep neural networks.                               |
 | `hte_plot`              | Plots Heterogeneous Treatment Effects extracted from the meta-learner and PATT-C models.                |
 
 
