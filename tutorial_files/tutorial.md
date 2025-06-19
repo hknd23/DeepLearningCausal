@@ -219,7 +219,7 @@ xlearner_en <- metalearner_ensemble(cov.formula = response_formula,
 
     ## Training X-Learner
 
-    ##   |                                                          |                                                  |   0%  |                                                          |==========                                        |  20%  |                                                          |                                                  |   0%  |                                                          |====================                              |  40%  |                                                          |                                                  |   0%  |                                                          |==============================                    |  60%  |                                                          |                                                  |   0%  |                                                          |========================================          |  80%  |                                                          |                                                  |   0%  |                                                          |==================================================| 100%
+    ##   |                                                          |                                                  |   0%  |                                                          |==========                                        |  20%  |                                                          |====================                              |  40%  |                                                          |==============================                    |  60%  |                                                          |========================================          |  80%  |                                                          |==================================================| 100%
 
 ``` r
 print(xlearner_en)
@@ -265,6 +265,8 @@ rlearner_en <- metalearner_ensemble(cov.formula = response_formula,
     ## Training model for meta learner
 
     ## Training R-Learner
+
+    ##   |                                                          |                                                  |   0%  |                                                          |==========                                        |  20%  |                                                          |====================                              |  40%  |                                                          |==============================                    |  60%  |                                                          |========================================          |  80%  |                                                          |==================================================| 100%
 
     ## Warning: All algorithms have zero weight
 
@@ -433,7 +435,7 @@ rlearner_nn <- metalearner_deepneural(cov.formula = response_formula,
 
     ## Training model for meta learner
 
-    ##   |                                                          |                                                  |   0%
+    ##   |                                                          |                                                  |   0%  |                                                          |                                                  |   0%  |                                                          |==========                                        |  20%  |                                                          |====================                              |  40%  |                                                          |==============================                    |  60%  |                                                          |========================================          |  80%  |                                                          |==================================================| 100%
 
 ``` r
 print(rlearner_nn)
@@ -644,11 +646,32 @@ hte_plot(xlearner_nn, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
          n_boot = 1000)
 ```
 
+![](tutorial_files/figure-gfm/htex-1.png)<!-- -->
+
+``` r
+hte_plot(slearner_nn, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
+         n_boot = 1000)
+```
+
 ![](tutorial_files/figure-gfm/htes-1.png)<!-- -->
+
+``` r
+hte_plot(tlearner_nn, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
+         n_boot = 1000)
+```
+
+![](tutorial_files/figure-gfm/htet-1.png)<!-- -->
+
+``` r
+hte_plot(pattc_en, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
+         n_boot = 1000)
+```
+
+![](tutorial_files/figure-gfm/hte_patten-1.png)<!-- -->
 
 ``` r
 hte_plot(pattc_nn, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
          n_boot = 1000)
 ```
 
-![](tutorial_files/figure-gfm/hte_patt-1.png)<!-- -->
+![](tutorial_files/figure-gfm/hte_pattnn-1.png)<!-- -->
