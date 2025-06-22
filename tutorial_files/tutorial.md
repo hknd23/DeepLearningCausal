@@ -642,35 +642,44 @@ points for subgroups. If a covariate is binary, the value for its cut
 off should be between 0-1.
 
 ``` r
-hte_plot(xlearner_nn, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
+cuts = c(20, .5, 3, 3, .5, 2, .5, 6)
+
+labels <- c("Age <= 33", "Age > 33", "Primary School", "Tertiary", "Unemployed",         
+            "Employed", "Male", "Female",  "Minority", "Majority Religion" ,
+            "Low Income",  "Middle Income",  "Job Secure",  "Job Insecurity",
+            "Centrist", "Right-wing Partisan")
+```
+
+``` r
+hte_plot(xlearner_nn, cut_points = cuts, custom_labels = labels, boot = TRUE,
          n_boot = 1000)
 ```
 
-![](tutorial_files/figure-gfm/htex-1.png)<!-- -->
+![](tutorial_files/figure-gfm/hte-1.png)<!-- -->
 
 ``` r
-hte_plot(slearner_nn, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
+hte_plot(slearner_nn, cut_points = cuts, custom_labels = labels, boot = TRUE,
          n_boot = 1000)
 ```
 
 ![](tutorial_files/figure-gfm/htes-1.png)<!-- -->
 
 ``` r
-hte_plot(tlearner_nn, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
+hte_plot(tlearner_nn, cut_points = cuts, custom_labels = labels, boot = TRUE,
          n_boot = 1000)
 ```
 
 ![](tutorial_files/figure-gfm/htet-1.png)<!-- -->
 
 ``` r
-hte_plot(pattc_en, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
+hte_plot(pattc_en, cut_points = cuts, custom_labels = labels, boot = TRUE,
          n_boot = 1000)
 ```
 
 ![](tutorial_files/figure-gfm/hte_patten-1.png)<!-- -->
 
 ``` r
-hte_plot(pattc_nn, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
+hte_plot(pattc_nn, cut_points = cuts, custom_labels = labels, boot = TRUE,
          n_boot = 1000)
 ```
 
