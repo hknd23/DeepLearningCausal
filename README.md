@@ -147,9 +147,7 @@ slearner_en <- metalearner_ensemble(cov.formula = response_formula,
 ```
 
 #### Plotting Treatment Effects From Meta-Learners Ensemble 
-The **DeepLearningCausal** package includes numerous features and functions that enables users to extract and illustrate three types of plots from the CATEs obtained from the meta-learner models estimated via weighted ensemble learning. First, users can illustrate both the estimated CATE with confidence intervals and the distribution of the estimated CATE of their treatment indicator on the dependent variable from all the meta-learner models in the package as demonstrated in our accompanying paper (Huynh et al., 2025). Second, the `hte_plot` function in the package enables users to obtain and illustrate heterogeneous treatment effects that can help them identify whether the treatment effect of interest varies across different subgroups in their data. As an example, after estimating the CATE from the S-Learner abd the R-leaner model via weighted ensemble learning, we employed the `hte_plot` function to assess whether the treatment effect of the *Strong Leader* indicator on *Support War* differs for the subgroup indicators of interest from our survey experiment data. Doing so generates the figures:
-
-<< HTE from S-learner and R-learner via weighted ensemble learning>>
+The **DeepLearningCausal** package includes numerous features and functions that enables users to extract and illustrate three types of plots from the CATEs obtained from the meta-learner models estimated via weighted ensemble learning. First, users can illustrate both the estimated CATE with confidence intervals and the distribution of the estimated CATE of their treatment indicator on the dependent variable from all the meta-learner models in the package as demonstrated in our accompanying paper (Huynh et al., 2025). Second, the `hte_plot` function in the package enables users to obtain and illustrate heterogeneous treatment effects (HTE) that can help them identify whether the treatment effect of interest varies across different subgroups in their data. As an example, after estimating the CATE from the S-Learner and the R-leaner model via weighted ensemble learning, we employed the `hte_plot` function to assess whether the treatment effect of the *Strong Leader* indicator on *Support War* differs for the subgroup indicators of interest from our survey experiment data. Doing so generates the HTE figures from the S-learner and R-learner estimated via weighted ensemble learning:
 
 ```r
 hte_plot(tlearner_nn, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
@@ -195,11 +193,11 @@ slearner_nn <- metalearner_deepneural(cov.formula = response_formula,
                hidden.layer = c(2, 2), linear.output = FALSE)
 ```
 #### Plotting Treatment Effects From Deep Neural Meta-Learners
-The **DeepLearningCausal** package enables users to plot the estimated CATE of the treatment indicator of interest on the outcome measure obtained from the T-, S- X-, and R-learner models that are each estimated by using deep neural networks. For the sake of brevity, we illustrate the CATE of the *Strong Leader* treatment on *Support War* from the S-Learner model estimated using deep neural networks **here**. 
+Users can also illustrate the estimated CATE with confidence intervals and its distribution of the estimated CATE all the meta-learner models esimated by deep neural networks, as demonstrated in our accompanying paper (Huynh et al., 2025). The `hte_plot` function also enables users to illustrate and heterogeneous treatment effects (HTE) from the deep neural network-based meta-learner models in the package. The HTE plots from the deep neural network-based T-learner and X-learner are presented in the accompany paper mentioned above, while those from the S-Learner and R-leaner model in this case are as follows:
 
-Users can employ the `hte_plot` function to extract and illustrate heterogeneous treatment effects associated with the CATE obtained from the three meta-learner models in the package that are each estimated by using deep neural networks. As an example, we demonstrate the heterogeneous treatment effects (for three subgroups) obtained from the S-Learner model estimated via deep neural networks **here**. 
+(HTE plot for deep neural network based S-learner and R-learner model here)
 
-Furthermore, our package allows users to display and assess the distribution and pairwise correlations of estimated individual treatment effects from the four meta-learner models estimated via deep neural networks as shown **here**.
+Furthermore, our package allows users to display and assess the distribution and pairwise correlations of estimated individual treatment effects from the four meta-learner models estimated via deep neural networks which is demonstrated in our paper associated with this GitHub repo. 
 
 #### Tutorials for Deep Neural Meta-Learners 
 The tutorial for `metalearner_deepneural` for the S-learner is [here](/tutorial.md#deep-neural-s-learner). The tutorial for `metalearner_deepneural` for the T-learner is [here](/tutorial.md#deep-neural-t-learner). The tutorial for `metalearner_deepneural` for the X-learner is [here](/tutorial.md#deep-neural-x-learner). The tutorial for `metalearner_deepneural` for the R-learner is [here](/tutorial.md#deep-neural-r-learner).
@@ -228,7 +226,7 @@ plot(pattc_en)
 
 
 
-The second is heterogeneous treatment effects that users can employ to assess and visualize whether the PATT varies significantly across different subgroups identified in our example with respect to gender, age and education. The heterogenous treatment effects obtained from the PATT estimate of *Strong Leader* is illustrated here for the three aforementioned subgroups using the `hte_plot` function:
+The second is heterogeneous treatment effects that users can employ to assess and visualize whether the PATT varies significantly across different subgroups identified in our example. The heterogenous treatment effects obtained from the PATT estimate of *Strong Leader* is illustrated here for the subgroups using the `hte_plot` function:
 
 ```r
 hte_plot(pattc_en, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
@@ -259,14 +257,16 @@ The distribution of the PATT obtained from the PATT-C models that is estimated v
 
 ![](tutorial_files/tutorial_files/figure-gfm/pattcnnv-1.png)<!-- -->
 
-The `hte_plot` function enables users to extract and illustrate heterogeneous treatment effects associated with the PATT obtained from the PATT-C model that is estimated by using deep neural networks. Using the said function, the heterogeneous treatment effects for three subgroups obtained from the PATT-C model estimated via deep neural networks is available **here**. 
+The `hte_plot` function enables users to extract and illustrate heterogeneous treatment effects associated with the PATT obtained from the PATT-C model that is estimated by using deep neural networks. Using the said function, we illustrate the heterogeneous treatment effects obtained from the PATT-C model estimated via deep neural networks in our accompanying paper (Huynh et al., 2025). 
 
 #### Tutorial for Deep Neural Network-Estimated PATT 
 
-The tutorial for `pattc_deepneural` for the PATT-C model estimated using deep neural networks is available [here](/tutorial.md#deep-neural-patt-c).
+The tutorial for `pattc_deepneural` for the PATT-C model estimated using deep neural networks is available [here](/tutorial.md#deep-neural-patt-c). 
 
 ### References
-Künzel, S. R., J.S. Sekhon, P.J. Bickel, and B. Yu, B. 2019. “Metalearners for estimating heterogeneous treatment effects using machine  learning.” Proceedings of the National Academy of Science, 116, 4156–4165. DOI: https://doi.org/10.1073/pnas.1804597116 
+Khoi, N., Y. Yang, and B. Mukherjee. 2025. "DeepLearningCausal: R Package for Estimating Treatment Effects Using Deep Neural Networks and Ensemble Learning." Working Paper, Hitotsubashi University and Penn State University. 
+
+Künzel, S. R., J.S. Sekhon, P.J. Bickel, and B. Yu. 2019. “Metalearners for estimating heterogeneous treatment effects using machine  learning.” Proceedings of the National Academy of Science, 116, 4156–4165. DOI: https://doi.org/10.1073/pnas.1804597116 
 
 Nie, X., and S. Wager. 2021. "Quasi-oracle estimation of heterogeneous treatment effects." Biometrika, 108(2):299–319. DOI: https://academic.oup.com/biomet/article-abstract/108/2/299/5911092 
 
