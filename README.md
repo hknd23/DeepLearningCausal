@@ -147,34 +147,43 @@ slearner_en <- metalearner_ensemble(cov.formula = response_formula,
 ```
 
 #### Plotting Treatment Effects From Meta-Learners Ensemble 
-The **DeepLearningCausal** package includes numerous features and functions that enables users to extract and illustrate three types of plots from the CATEs obtained from the meta-learner models estimated via weighted ensemble learning. First, users can illustrate both the estimated CATE with confidence intervals and the distribution of the estimated CATE of their treatment indicator on the dependent variable from all the meta-learner models in the package as demonstrated in our accompanying paper (Huynh et al., 2025). Second, the `hte_plot` function in the package enables users to obtain and illustrate heterogeneous treatment effects (HTE) that can help them identify whether the treatment effect of interest varies across different subgroups in their data. As an example, after estimating the CATE from the S-Learner and the R-leaner model via weighted ensemble learning, we employed the `hte_plot` function to assess whether the treatment effect of the *Strong Leader* indicator on *Support War* differs for the subgroup indicators of interest from our survey experiment data. Doing so generates the HTE figures from the S-learner and R-learner estimated via weighted ensemble learning:
-
+The **DeepLearningCausal** package includes numerous features and functions that enable users to extract and illustrate three types of plots from the CATEs obtained from the meta-learner models estimated via weighted ensemble learning. First, users can illustrate both the estimated CATE with confidence intervals and the distribution of the estimated CATE of their treatment indicator on the dependent variable from all the meta-learner models in the package, as demonstrated in our accompanying paper (Huynh et al., 2025). Second, the `hte_plot` function in the package enables users to obtain and illustrate heterogeneous treatment effects (HTE) that can help them identify whether the treatment effect of interest varies across different subgroups in their data. As an example, after estimating the CATE from the S-Learner and the R-learner model via weighted ensemble learning, we employed the `hte_plot` function to assess whether the treatment effect of the *Strong Leader* indicator on *Support War* differs for the subgroup indicators of interest from our survey experiment data. Doing so generates the HTE figures from the S-learner and R-learner estimated via weighted ensemble learning:
 ```r
-hte_plot(tlearner_nn, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
+cut_points <- c(33, .5, 4, 4, .5, 2, .5, 5)
+labels <- c("Age <= 33", "Age > 33", "Primary School", "Tertiary", "Unemployed",         
+            "Employed", "Male", "Female",  "Minority", "Majority Religion" ,
+            "Low Income",  "Middle Income",  "Job Secure",  "Job Insecurity",
+            "Centrist", "Right-wing Partisan")
+```
+```r
+hte_plot(slearner_en, cut_points = cut_points, custom_labels = labels , boot = TRUE,
          n_boot = 1000)
 ```
 
 ![](tutorial_files/tutorial_files/figure-gfm/htet-1.png)<!-- -->
-
     
 
 ```r
-hte_plot(slearner_nn, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
+hte_plot(rlearner_en, cut_points = cut_points, custom_labels = labels ,  boot = TRUE,
          n_boot = 1000)
 ```
 
 ![](tutorial_files/tutorial_files/figure-gfm/htes-1.png)<!-- -->
 
-Third, the package includes features that permit users to illustrate the distribution and pairwise correlations of estimated individual treatment effects from all the four meta-learner models that is also demonstrated in our accompanying paper. 
+```r
+hte_plot(slearner_nn, cut_points = cut_points, custom_labels = labels , boot = TRUE,
+         n_boot = 1000)
+```
+
+![](tutorial_files/tutorial_files/figure-gfm/htet-1.png)<!-- -->
+    
 
 ```r
-allcates_en <- data.frame("S_learner" =  slearner_en$CATEs,
-                          "T_learner" =  tlearner_en$CATEs,
-                          "X_learner" =  xlearner_en$CATEs,
-                          "R_learner" =  rlearner_en$CATEs)
-psych::pairs.panels(allcates_en, breaks = 30)
+hte_plot(rlearner_nn, cut_points = cut_points, custom_labels = labels ,  boot = TRUE,
+         n_boot = 1000)
 ```
-![](tutorial_files/tutorial_files/figure-gfm/cor_nn.png)<!-- -->
+
+![](tutorial_files/tutorial_files/figure-gfm/htes-1.png)<!-- -->
 
 #### Tutorials for Meta-Learners Ensemble 
 
