@@ -204,7 +204,20 @@ slearner_nn <- metalearner_deepneural(cov.formula = response_formula,
 #### Plotting Treatment Effects From Deep Neural Meta-Learners
 Users can also illustrate the estimated CATE with confidence intervals and its distribution of the estimated CATE all the meta-learner models esimated by deep neural networks, as demonstrated in our accompanying paper (Huynh et al., 2025). The `hte_plot` function also enables users to illustrate and heterogeneous treatment effects (HTE) from the deep neural network-based meta-learner models in the package. The HTE plots from the deep neural network-based T-learner and X-learner are presented in the accompany paper mentioned above, while those from the S-Learner and R-leaner model in this case are as follows:
 
-(HTE plot for deep neural network based S-learner and R-learner model here)
+```r
+hte_plot(slearner_nn, cut_points = cut_points, custom_labels = labels , boot = TRUE,
+         n_boot = 1000)
+```
+
+![](tutorial_files/tutorial_files/figure-gfm/htet-1.png)<!-- -->
+    
+
+```r
+hte_plot(rlearner_nn, cut_points = cut_points, custom_labels = labels ,  boot = TRUE,
+         n_boot = 1000)
+```
+
+![](tutorial_files/tutorial_files/figure-gfm/htes-1.png)<!-- -->
 
 Furthermore, our package allows users to display and assess the distribution and pairwise correlations of estimated individual treatment effects from the four meta-learner models estimated via deep neural networks which is demonstrated in our paper associated with this GitHub repo. 
 
@@ -233,17 +246,7 @@ plot(pattc_en)
 ```
 ![](tutorial_files/tutorial_files/figure-gfm/pattcenv-1.png)<!-- -->
 
-
-
-The second is heterogeneous treatment effects that users can employ to assess and visualize whether the PATT varies significantly across different subgroups identified in our example. The heterogenous treatment effects obtained from the PATT estimate of *Strong Leader* is illustrated here for the subgroups using the `hte_plot` function:
-
-```r
-hte_plot(pattc_en, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
-         n_boot = 1000)
-```
-
-![](tutorial_files/tutorial_files/figure-gfm/hte_patt-1.png)<!-- -->
-
+The second is heterogeneous treatment effects that users can employ to assess and visualize whether the PATT varies significantly across different subgroups in our example datasets. The plot for the heterogenous treatment effects obtained in this case can be obtained by using the `hte_plot` function, as shown in the accompanying paper by Huynh et al. (2025).
 
 #### Tutorial for Ensemble Learning-Estimated PATT
 The tutorial for the `PATTC_ensemble` for the PATT-C model is [here](/tutorial.md#ensemble-patt-c).
