@@ -170,20 +170,6 @@ hte_plot(rlearner_en, cut_points = cut_points, custom_labels = labels ,  boot = 
 
 ![](tutorial_files/tutorial_files/figure-gfm/htes-1.png)<!-- -->
 
-```r
-hte_plot(slearner_nn, cut_points = cut_points, custom_labels = labels , boot = TRUE,
-         n_boot = 1000)
-```
-
-![](tutorial_files/tutorial_files/figure-gfm/htet-1.png)<!-- -->
-    
-
-```r
-hte_plot(rlearner_nn, cut_points = cut_points, custom_labels = labels ,  boot = TRUE,
-         n_boot = 1000)
-```
-
-![](tutorial_files/tutorial_files/figure-gfm/htes-1.png)<!-- -->
 
 #### Tutorials for Meta-Learners Ensemble 
 
