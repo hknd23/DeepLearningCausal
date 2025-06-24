@@ -302,18 +302,23 @@ labels <- c("Age <= 33", "Age > 33", "Primary School", "Tertiary", "Unemployed",
             "Low Income",  "Middle Income",  "Job Secure",  "Job Insecurity",
             "Centrist", "Right-wing Partisan")
 ```
-```{r hte}
-hte_plot(xlearner_nn, cut_points = cuts, custom_labels = labels, boot = TRUE,
+```{r enshte}
+hte_plot(slearner_en, cut_points = cuts, custom_labels = labels, boot = TRUE,
          n_boot = 1000)
 ```
-```{r htes}
+```{r enrhte}
+hte_plot(rlearner_en, cut_points = cuts, custom_labels = labels, boot = TRUE,
+         n_boot = 1000)
+```
+```{r nnshte}
 hte_plot(slearner_nn, cut_points = cuts, custom_labels = labels, boot = TRUE,
          n_boot = 1000)
 ```
-```{r htet}
-hte_plot(tlearner_nn, cut_points = cuts, custom_labels = labels, boot = TRUE,
+```{r nnrhte}
+hte_plot(rlearner_nn, cut_points = cuts, custom_labels = labels, boot = TRUE,
          n_boot = 1000)
 ```
+
 ```{r hte_patten}
 hte_plot(pattc_en, cut_points = cuts, custom_labels = labels, boot = TRUE,
          n_boot = 1000)

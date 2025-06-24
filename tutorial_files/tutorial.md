@@ -651,25 +651,32 @@ labels <- c("Age <= 33", "Age > 33", "Primary School", "Tertiary", "Unemployed",
 ```
 
 ``` r
-hte_plot(xlearner_nn, cut_points = cuts, custom_labels = labels, boot = TRUE,
+hte_plot(slearner_en, cut_points = cuts, custom_labels = labels, boot = TRUE,
          n_boot = 1000)
 ```
 
-![](tutorial_files/figure-gfm/hte-1.png)<!-- -->
+![](tutorial_files/figure-gfm/enshte-1.png)<!-- -->
+
+``` r
+hte_plot(rlearner_en, cut_points = cuts, custom_labels = labels, boot = TRUE,
+         n_boot = 1000)
+```
+
+![](tutorial_files/figure-gfm/enrhte-1.png)<!-- -->
 
 ``` r
 hte_plot(slearner_nn, cut_points = cuts, custom_labels = labels, boot = TRUE,
          n_boot = 1000)
 ```
 
-![](tutorial_files/figure-gfm/htes-1.png)<!-- -->
+![](tutorial_files/figure-gfm/nnshte-1.png)<!-- -->
 
 ``` r
-hte_plot(tlearner_nn, cut_points = cuts, custom_labels = labels, boot = TRUE,
+hte_plot(rlearner_nn, cut_points = cuts, custom_labels = labels, boot = TRUE,
          n_boot = 1000)
 ```
 
-![](tutorial_files/figure-gfm/htet-1.png)<!-- -->
+![](tutorial_files/figure-gfm/nnrhte-1.png)<!-- -->
 
 ``` r
 hte_plot(pattc_en, cut_points = cuts, custom_labels = labels, boot = TRUE,
