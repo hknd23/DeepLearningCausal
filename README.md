@@ -160,7 +160,7 @@ hte_plot(slearner_en, cut_points = cut_points, custom_labels = labels , boot = T
          n_boot = 1000)
 ```
 
-![](tutorial_files/tutorial_files/figure-gfm/htet-1.png)<!-- -->
+![](tutorial_files/tutorial_files/figure-gfm/enshte-1.png)<!-- -->
     
 
 ```r
@@ -168,7 +168,7 @@ hte_plot(rlearner_en, cut_points = cut_points, custom_labels = labels ,  boot = 
          n_boot = 1000)
 ```
 
-![](tutorial_files/tutorial_files/figure-gfm/htes-1.png)<!-- -->
+![](tutorial_files/tutorial_files/figure-gfm/enrhte-1.png)<!-- -->
 
 
 #### Tutorials for Meta-Learners Ensemble 
@@ -195,7 +195,7 @@ hte_plot(slearner_nn, cut_points = cut_points, custom_labels = labels , boot = T
          n_boot = 1000)
 ```
 
-![](tutorial_files/tutorial_files/figure-gfm/htet-1.png)<!-- -->
+![](tutorial_files/tutorial_files/figure-gfm/nnshte-1.png)<!-- -->
     
 
 ```r
@@ -203,7 +203,7 @@ hte_plot(rlearner_nn, cut_points = cut_points, custom_labels = labels ,  boot = 
          n_boot = 1000)
 ```
 
-![](tutorial_files/tutorial_files/figure-gfm/htes-1.png)<!-- -->
+![](tutorial_files/tutorial_files/figure-gfm/nnrhte-1.png)<!-- -->
 
 Furthermore, our package allows users to display and assess the distribution and pairwise correlations of estimated individual treatment effects from the four meta-learner models estimated via deep neural networks which is demonstrated in our paper associated with this GitHub repo. 
 
