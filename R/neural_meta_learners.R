@@ -535,3 +535,7 @@ print.metalearner_deepneural <- function(x, ...){
   cat("CATEs percentiles:\n")
   print(quantile(x$CATEs, c(.10 ,.25, .50 ,.75, .90)))
 }
+
+                                
+####### Remember to fix mmod R learner on 494
+
