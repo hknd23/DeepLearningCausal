@@ -4,10 +4,12 @@
 \alias{plot.pattc_ensemble}
 \title{plot.pattc_ensemble}
 \usage{
-\method{plot}{pattc_ensemble}(model_obj)
+\method{plot}{pattc_ensemble}(x, ...)
 }
 \arguments{
-\item{model_obj}{\code{pattc_ensemble} model object}
+\item{x}{\code{pattc_ensemble} model object}
+
+\item{...}{Additional arguments}
 }
 \value{
 \code{ggplot} object

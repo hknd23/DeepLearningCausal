@@ -1,6 +1,6 @@
 DeepLearningCausal
 ================
-2024-07-13
+2025-04-26
 
 ## Introduction
 
@@ -8,11 +8,12 @@ This is the tutorial for the main functions in the `DeepLearningCausal`
 package.
 
 ``` r
-devtools::install_github("hknd23/DeepLearningCausal", force = TRUE)
-``` 
+devtools::install_github("hknd23/DeepLearningCausal",force = TRUE)
+install.packages("DeepLearningCausal")
+```
 
 ``` r
-install.packages("DeepLearningCausal")
+library(DeepLearningCausal)
 ```
 
 ``` r
@@ -27,7 +28,7 @@ library(SuperLearner)
 
     ## Loading required package: foreach
 
-    ## Loaded gam 1.22-3
+    ## Loaded gam 1.22-5
 
     ## Super Learner
 
@@ -60,7 +61,7 @@ library(SuperLearner)
 
 response_formula <- support_war ~ age + female + education + income +
                     employed + job_loss + hindu + political_ideology
-SLlearners = c("SL.xgboost", "SL.ranger", "SL.nnet", "SL.glm")
+SLlearners = c("SL.xgboost", "SL.ranger", "SL.nnet","SL.glm")
 set.seed(123456)
 
 slearner_en <- metalearner_ensemble(cov.formula = response_formula,
@@ -75,11 +76,29 @@ slearner_en <- metalearner_ensemble(cov.formula = response_formula,
 
     ##   |                                                          |                                                  |   0%
 
+    ## Training S-Learner
+
     ## Loading required namespace: xgboost
 
     ## Loading required namespace: ranger
 
-    ##   |                                                          |==========                                        |  20%  |                                                          |                                                  |   0%  |                                                          |====================                              |  40%  |                                                          |                                                  |   0%  |                                                          |==============================                    |  60%  |                                                          |                                                  |   0%  |                                                          |========================================          |  80%  |                                                          |                                                  |   0%  |                                                          |==================================================| 100%
+    ##   |                                                          |==========                                        |  20%  |                                                          |                                                  |   0%
+
+    ## Training S-Learner
+
+    ##   |                                                          |====================                              |  40%  |                                                          |                                                  |   0%
+
+    ## Training S-Learner
+
+    ##   |                                                          |==============================                    |  60%  |                                                          |                                                  |   0%
+
+    ## Training S-Learner
+
+    ##   |                                                          |========================================          |  80%  |                                                          |                                                  |   0%
+
+    ## Training S-Learner
+
+    ##   |                                                          |==================================================| 100%
 
 ``` r
 print(slearner_en)
@@ -93,6 +112,14 @@ print(slearner_en)
     ## CATEs percentiles:
     ##          10%          25%          50%          75%          90% 
     ## -0.080797294 -0.038553500 -0.005370921  0.012809736  0.028659600
+
+``` r
+plot(slearner_en)
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](tutorial_files/figure-gfm/enslearner-1.png)<!-- -->
 
 ### Ensemble T Learner
 
@@ -105,7 +132,7 @@ library(SuperLearner)
 
 response_formula <- support_war ~ age + female + education + income +
                     employed + job_loss + hindu + political_ideology
-SLlearners = c("SL.xgboost", "SL.ranger", "SL.nnet", "SL.glm")
+SLlearners = c("SL.xgboost", "SL.ranger", "SL.nnet","SL.glm")
 set.seed(123456)
 
 tlearner_en <- metalearner_ensemble(cov.formula = response_formula,
@@ -118,46 +145,97 @@ tlearner_en <- metalearner_ensemble(cov.formula = response_formula,
 
     ## Training model for meta learner
 
-    ##   |                                                          |                                                  |   0%  |                                                          |==========                                        |  20%  |                                                          |                                                  |   0%  |                                                          |====================                              |  40%  |                                                          |                                                  |   0%  |                                                          |==============================                    |  60%  |                                                          |                                                  |   0%  |                                                          |========================================          |  80%  |                                                          |                                                  |   0%  |                                                          |==================================================| 100%
+    ##   |                                                          |                                                  |   0%
+
+    ## Training T-Learner
+
+    ##   |                                                          |==========                                        |  20%  |                                                          |                                                  |   0%
+
+    ## Training T-Learner
+
+    ##   |                                                          |====================                              |  40%  |                                                          |                                                  |   0%
+
+    ## Training T-Learner
+
+    ##   |                                                          |==============================                    |  60%  |                                                          |                                                  |   0%
+
+    ## Training T-Learner
+
+    ##   |                                                          |========================================          |  80%  |                                                          |                                                  |   0%
+
+    ## Training T-Learner
+
+    ##   |                                                          |==================================================| 100%
 
 ``` r
-print(slearner_en)
+print(tlearner_en)
 ```
 
     ## Method:
-    ## Ensemble  S.Learner
+    ## Ensemble  T.Learner
     ## Formula:
     ## support_war ~ age + female + education + income + employed +      job_loss + hindu + political_ideology
     ## Treatment Variable:  strong_leader
     ## CATEs percentiles:
-    ##          10%          25%          50%          75%          90% 
-    ## -0.080797294 -0.038553500 -0.005370921  0.012809736  0.028659600
+    ##         10%         25%         50%         75%         90% 
+    ## -0.22988514 -0.09762369 -0.00153812  0.06944965  0.15572093
 
 ``` r
-library(ggplot2)
+plot(tlearner_en)
 ```
 
-    ## Warning: package 'ggplot2' was built under R version 4.2.3
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](tutorial_files/figure-gfm/entlearner-1.png)<!-- -->
+
+### Ensemble X Learner
+
+For the X Learner, use `meta.learner.type = "X.Learner"`:
 
 ``` r
-library(dplyr)
+library(DeepLearningCausal)
+data("exp_data")
+library(SuperLearner)
+
+response_formula <- support_war ~ age + female + education + income +
+                    employed + job_loss + hindu + political_ideology
+SLlearners = c("SL.xgboost", "SL.ranger", "SL.nnet","SL.glm")
+set.seed(123456)
+
+xlearner_en <- metalearner_ensemble(cov.formula = response_formula,
+               data = exp_data,
+               treat.var = "strong_leader",
+               meta.learner.type = "X.Learner",
+               SL.learners = SLlearners,
+               binary.outcome = FALSE)
 ```
+
+    ## Training model for meta learner
+
+    ## Training X-Learner
+
+    ##   |                                                          |                                                  |   0%  |                                                          |==========                                        |  20%  |                                                          |                                                  |   0%  |                                                          |====================                              |  40%  |                                                          |                                                  |   0%  |                                                          |==============================                    |  60%  |                                                          |                                                  |   0%  |                                                          |========================================          |  80%  |                                                          |                                                  |   0%  |                                                          |==================================================| 100%
 
 ``` r
-data.frame(slearner_en$CATEs) %>% ggplot( aes(x= slearner_en.CATEs)) +
-  geom_histogram(alpha = 0.6, position = 'identity') +
-  xlab("CATEs (S Learner)")+ylab("")
+print(xlearner_en)
 ```
 
-![](tutorial_files/figure-gfm/visualst-1.png)<!-- -->
+    ## Method:
+    ## Ensemble  X.Learner
+    ## Formula:
+    ## support_war ~ age + female + education + income + employed +      job_loss + hindu + political_ideology
+    ## Treatment Variable:  strong_leader
+    ## CATEs percentiles:
+    ##         10%         25%         50%         75%         90% 
+    ## -0.40304486 -0.24239673 -0.04533516  0.21475522  0.32371884
 
 ``` r
-data.frame(tlearner_en$CATEs) %>% ggplot( aes(x= tlearner_en.CATEs)) +
-  geom_histogram(alpha = 0.6, position = 'identity')+
-  xlab("CATEs (T Learner)")+ylab("")
+plot(xlearner_en)
 ```
 
-![](tutorial_files/figure-gfm/visualst-2.png)<!-- -->
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](tutorial_files/figure-gfm/enxlearner-1.png)<!-- -->
 
 ## Deep Neural Meta Learners
 
@@ -193,6 +271,14 @@ print(slearner_nn)
     ## 10% 25% 50% 75% 90% 
     ##   0   0   0   0   0
 
+``` r
+plot(slearner_nn)
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](tutorial_files/figure-gfm/nnslearner-1.png)<!-- -->
+
 ### Deep Neural T Learner
 
 For the T Learner, use `meta.learner.type = "T.Learner"`:
@@ -227,21 +313,53 @@ print(tlearner_nn)
     ## -0.39385285 -0.18827734 -0.05463520  0.04525315  0.37286898
 
 ``` r
-library(ggplot2)
-
-data.frame(slearner_nn$CATEs) %>% ggplot( aes(x= slearner_nn.CATEs)) +
-  geom_histogram(alpha = 0.6, position = 'identity') +
-  xlab("CATEs (S Learner)")+ylab("")
+plot(tlearner_nn)
 ```
-![](tutorial_files/figure-gfm/visualstnn-1.png)<!-- -->
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](tutorial_files/figure-gfm/nntlearner-1.png)<!-- -->
+
+### Deep Neural X Learner
+
+For the X Learner, use `meta.learner.type = "X.Learner"`:
 
 ``` r
-data.frame(tlearner_nn$CATEs) %>% ggplot( aes(x= tlearner_nn.CATEs)) +
-  geom_histogram(alpha = 0.6, position = 'identity')+
-  xlab("CATEs (T Learner)")+ylab("")
+response_formula <- support_war ~ age + female + education + income +
+                    employed + job_loss + hindu + political_ideology
+set.seed(123456)
+
+xlearner_nn <- metalearner_deepneural(cov.formula = response_formula,
+               data = exp_data, treat.var = "strong_leader",
+               meta.learner.type = "X.Learner", stepmax = 1e+9, 
+               hidden.layer = c(2, 2), linear.output = FALSE,
+               binary.outcome = FALSE)
 ```
 
-![](tutorial_files/figure-gfm/visualstnn-2.png)<!-- -->
+    ## Training model for meta learner
+
+    ##   |                                                          |                                                  |   0%  |                                                          |==========                                        |  20%  |                                                          |====================                              |  40%  |                                                          |==============================                    |  60%  |                                                          |========================================          |  80%  |                                                          |==================================================| 100%
+
+``` r
+print(xlearner_nn)
+```
+
+    ## Method:
+    ## Deep Neural  X.Learner
+    ## Formula:
+    ## support_war ~ age + female + education + income + employed +      job_loss + hindu + political_ideology
+    ## Treatment Variable:  strong_leader
+    ## CATEs percentiles:
+    ##       10%       25%       50%       75%       90% 
+    ## 0.1431044 0.3537234 0.5034391 0.5436359 0.8344527
+
+``` r
+plot(xlearner_nn)
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](tutorial_files/figure-gfm/nnxlearner-1.png)<!-- -->
 
 ## Ensemble PATT-C
 
@@ -286,17 +404,10 @@ print(pattc_en)
     ## Welch Two Sample t-test
 
 ``` r
-library(ggplot2)
-patt_en_preds <-  rbind(data.frame("predictions" = pattc_en$pop_counterfactual[,1],
-                                   type = "Y_hat0"),
-                        data.frame("predictions" = pattc_en$pop_counterfactual[,2],
-                                   type = "Y_hat1"))
-patt_en_preds %>%
-  ggplot( aes(x = predictions, fill = type)) +
-  geom_histogram(alpha = 0.6, position = 'identity')+xlab("Predicted Outcome")+ylab("")+
-  theme(legend.position = "bottom")+
-  theme(legend.title=element_blank())
+plot(pattc_en)
 ```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
 ![](tutorial_files/figure-gfm/pattcenv-1.png)<!-- -->
 
@@ -380,19 +491,10 @@ print(pattc_nn)
     ## Welch Two Sample t-test
 
 ``` r
-library(ggplot2)
-patt_nn_preds <-  rbind(data.frame("predictions" = pattc_nn$pop_counterfactual[,1],
-                                   type = "Y_hat0"),
-                        data.frame("predictions" = pattc_nn$pop_counterfactual[,2],
-                                   type = "Y_hat1"))
-
-patt_nn_preds %>%
-  ggplot( aes(x = predictions, fill = type)) +
-  geom_histogram(alpha = 0.6, position = 'identity')+
-  xlab("Predicted Outcome")+ylab("")+
-  theme(legend.position = "bottom")+
-  theme(legend.title=element_blank())
+plot(pattc_nn)
 ```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
 ![](tutorial_files/figure-gfm/pattcnnv-1.png)<!-- -->
 
@@ -437,3 +539,15 @@ print(pattc_nn_b)
     ## 0.11479795 0.08213788 0.15084056 
     ## 
     ## Bootstrapped PATT-C with 5000 samples
+
+## Subgroup HTE Plots
+
+Subgroup analyses using CATEs from meta learners and PATT-C predictions
+can be performed using `hte_plot`:
+
+``` r
+hte_plot(xlearner_nn, cut_points = c(20, .5, 3, 3, .5, 2, .5, 6), boot = TRUE,
+         n_boot = 1000)
+```
+
+![](tutorial_files/figure-gfm/htes-1.png)<!-- -->

@@ -11,13 +11,13 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Introduction
 
 This is the tutorial for the main functions in the `DeepLearningCausal` package. 
+```{r importcran, warning = FALSE, eval=FALSE}
+devtools::install_github("hknd23/DeepLearningCausal",force = TRUE)
+install.packages("DeepLearningCausal")
+```
 
 ```{r importgh, warning = FALSE}
-devtools::install_github("hknd23/DeepLearningCausal",force = TRUE)
 library(DeepLearningCausal)
-```
-```{r importcran, warning = FALSE, eval=FALSE}
-install.packages("DeepLearningCausal")
 ```
 
 ```{r importdep, warning = FALSE}
@@ -55,6 +55,8 @@ slearner_en <- metalearner_ensemble(cov.formula = response_formula,
                binary.outcome = FALSE)
 
 print(slearner_en)
+
+plot(slearner_en)
 ```
 
 ### Ensemble T Learner
@@ -76,20 +78,59 @@ tlearner_en <- metalearner_ensemble(cov.formula = response_formula,
                meta.learner.type = "T.Learner",
                SL.learners = SLlearners,
                binary.outcome = FALSE)
-print(slearner_en)
+print(tlearner_en)
+
+plot(tlearner_en)
 ```
 
-```{r visualst}
-library(ggplot2)
-library(dplyr)
+### Ensemble X Learner
+For the X Learner, use `meta.learner.type = "X.Learner"`: 
 
-data.frame(slearner_en$CATEs) %>% ggplot( aes(x= slearner_en.CATEs)) +
-  geom_histogram(alpha = 0.6, position = 'identity') +
-  xlab("CATEs (S Learner)")+ylab("")
+```{r enxlearner}
+library(DeepLearningCausal)
+data("exp_data")
+library(SuperLearner)
 
-data.frame(tlearner_en$CATEs) %>% ggplot( aes(x= tlearner_en.CATEs)) +
-  geom_histogram(alpha = 0.6, position = 'identity')+
-  xlab("CATEs (T Learner)")+ylab("")
+response_formula <- support_war ~ age + female + education + income +
+                    employed + job_loss + hindu + political_ideology
+SLlearners = c("SL.xgboost", "SL.ranger", "SL.nnet","SL.glm")
+set.seed(123456)
+
+xlearner_en <- metalearner_ensemble(cov.formula = response_formula,
+               data = exp_data,
+               treat.var = "strong_leader",
+               meta.learner.type = "X.Learner",
+               SL.learners = SLlearners,
+               binary.outcome = FALSE)
+print(xlearner_en)
+
+plot(xlearner_en)
+
+```
+
+### Ensemble R Learner
+For the R Learner, use `meta.learner.type = "R.Learner"`: 
+
+```{r enrlearner}
+library(DeepLearningCausal)
+data("exp_data")
+library(SuperLearner)
+
+response_formula <- support_war ~ age + female + education + income +
+                    employed + job_loss + hindu + political_ideology
+SLlearners = c("SL.xgboost", "SL.ranger", "SL.nnet","SL.glm")
+set.seed(123456)
+
+rlearner_en <- metalearner_ensemble(cov.formula = response_formula,
+               data = exp_data,
+               treat.var = "strong_leader",
+               meta.learner.type = "R.Learner",
+               SL.learners = SLlearners,
+               binary.outcome = FALSE)
+print(rlearner_en)
+
+plot(rlearner_en)
+
 ```
 
 ## Deep Neural Meta Learners
@@ -107,6 +148,8 @@ slearner_nn <- metalearner_deepneural(cov.formula = response_formula,
                hidden.layer = c(2, 2), linear.output = FALSE,
                binary.outcome = FALSE)
 print(slearner_nn)
+
+plot(slearner_nn)
 ```
 
 ### Deep Neural T Learner
@@ -123,13 +166,43 @@ tlearner_nn <- metalearner_deepneural(cov.formula = response_formula,
                hidden.layer = c(2, 2), linear.output = FALSE,
                binary.outcome = FALSE)
 print(tlearner_nn)
-```
-
-
-```{r visualstnn}
-plot(slearner_nn)
 
 plot(tlearner_nn)
+```
+
+### Deep Neural X Learner
+For the X Learner, use `meta.learner.type = "X.Learner"`: 
+
+```{r nnxlearner}
+response_formula <- support_war ~ age + female + education + income +
+                    employed + job_loss + hindu + political_ideology
+set.seed(123456)
+
+xlearner_nn <- metalearner_deepneural(cov.formula = response_formula,
+               data = exp_data, treat.var = "strong_leader",
+               meta.learner.type = "X.Learner", stepmax = 1e+9, 
+               hidden.layer = c(2, 2), linear.output = FALSE,
+               binary.outcome = FALSE)
+print(xlearner_nn)
+
+plot(xlearner_nn)
+```
+### Deep Neural R Learner
+For the R Learner, use `meta.learner.type = "R.Learner"`: 
+
+```{r nnrlearner}
+response_formula <- support_war ~ age + female + education + income +
+                    employed + job_loss + hindu + political_ideology
+set.seed(123456)
+
+rlearner_nn <- metalearner_deepneural(cov.formula = response_formula,
+               data = exp_data, treat.var = "strong_leader",
+               meta.learner.type = "R.Learner", stepmax = 1e+9, 
+               hidden.layer = c(2, 2), linear.output = FALSE,
+               binary.outcome = FALSE)
+print(rlearner_nn)
+
+plot(rlearner_nn)
 ```
 
 ## Ensemble PATT-C
@@ -218,3 +291,39 @@ pattc_nn_b <- pattc_deepneural(response.formula = response_formula,
 print(pattc_nn_b)
 ```
 
+## Subgroup HTE Plots
+
+Subgroup analyses using CATEs from meta learners and PATT-C predictions can be performed using `hte_plot`. `cut_points` specifies the cut-off points for subgroups. If a covariate is binary, the value for its cut off should be between 0-1.  
+```{r htelabels}
+cuts = c(20, .5, 3, 3, .5, 2, .5, 6)
+
+labels <- c("Age <= 33", "Age > 33", "Primary School", "Tertiary", "Unemployed",         
+            "Employed", "Male", "Female",  "Minority", "Majority Religion" ,
+            "Low Income",  "Middle Income",  "Job Secure",  "Job Insecurity",
+            "Centrist", "Right-wing Partisan")
+```
+```{r enshte}
+hte_plot(slearner_en, cut_points = cuts, custom_labels = labels, boot = TRUE,
+         n_boot = 1000)
+```
+```{r enrhte}
+hte_plot(rlearner_en, cut_points = cuts, custom_labels = labels, boot = TRUE,
+         n_boot = 1000)
+```
+```{r nnshte}
+hte_plot(slearner_nn, cut_points = cuts, custom_labels = labels, boot = TRUE,
+         n_boot = 1000)
+```
+```{r nnrhte}
+hte_plot(rlearner_nn, cut_points = cuts, custom_labels = labels, boot = TRUE,
+         n_boot = 1000)
+```
+
+```{r hte_patten}
+hte_plot(pattc_en, cut_points = cuts, custom_labels = labels, boot = TRUE,
+         n_boot = 1000)
+```
+```{r hte_pattnn}
+hte_plot(pattc_nn, cut_points = cuts, custom_labels = labels, boot = TRUE,
+         n_boot = 1000)
+```

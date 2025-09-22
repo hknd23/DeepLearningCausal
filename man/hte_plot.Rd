@@ -5,7 +5,8 @@
 \title{hte_plot}
 \usage{
 hte_plot(
-  model_obj,
+  x,
+  ...,
   boot = TRUE,
   n_boot = 1000,
   cut_points = NULL,
@@ -14,10 +15,12 @@ hte_plot(
 )
 }
 \arguments{
-\item{model_obj}{estimated model from \code{metalearner_ensemble},
+\item{x}{estimated model from \code{metalearner_ensemble},
 \code{metalearner_deepneural}, \code{pattc_ensemble}, or \code{pattc_neural}.}
 
-\item{boot}{logical for bootstrapped HTE 95\% intervals.}
+\item{...}{Additional arguments}
+
+\item{boot}{logical for using bootstraps to estimate confidence intervals.}
 
 \item{n_boot}{number of bootstrap iterations. Only used with boot = TRUE.}
 
@@ -42,7 +45,6 @@ and \code{pattc_neural}.
 \donttest{
 # load dataset
 set.seed(123456)
-# estimate CATEs with X Learner
 xlearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +
                                   income  + employed  + job_loss,
                                   data = exp_data,
@@ -55,6 +57,7 @@ xlearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +
                                   linear.output = FALSE,
                                   binary.outcome = FALSE)
 
-print(xlearner_nn)
+hte_plot(xlearner_nn)
                                   }
+                    
 }

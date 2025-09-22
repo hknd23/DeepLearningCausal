@@ -35,8 +35,8 @@ boosting, glmnet, random forest, and neural nets.}
 binary values or proportions.}
 }
 \value{
-\code{metalearner_ensemble} of predicted outcome values and CATEs estimated by the meta
-learners for each observation.
+\code{metalearner_ensemble} of predicted outcome values and CATEs
+estimated by the meta learners for each observation.
 }
 \description{
 \code{metalearner_ensemble} implements the S-learner, T-learner, and X-learner for
@@ -81,11 +81,13 @@ print(tlearner)
 \donttest{
 # estimate CATEs with X Learner
 set.seed(123456)
-xlearner <- metalearner_ensemble(cov.formula = support_war ~ age + income + employed  + job_loss,
+xlearner <- metalearner_ensemble(cov.formula = support_war ~ age + income +
+ employed  + job_loss,
                                  data = exp_data,
                                  treat.var = "strong_leader",
                                  meta.learner.type = "X.Learner",
-                                 SL.learners = c("SL.glmnet","SL.xgboost", "SL.ranger","SL.nnet"),
+                                 SL.learners = c("SL.glmnet","SL.xgboost", 
+                                 "SL.ranger","SL.nnet"),
                                  nfolds = 5,
                                  binary.outcome = TRUE)
 
