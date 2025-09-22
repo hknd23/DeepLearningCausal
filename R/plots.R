@@ -36,8 +36,9 @@
 #'                                   linear.output = FALSE,
 #'                                   binary.outcome = FALSE)
 #'
-#' print(xlearner_nn)
+#' hte_plot(xlearner_nn)
 #'                                   }
+#'                                   
 hte_plot <- function(model_obj,
                      boot = TRUE,
                      n_boot = 1000,

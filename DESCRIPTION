@@ -47,7 +47,10 @@ Imports:
         Hmisc,
         ggplot2, 
         dplyr,
-        weights
+        weights,
+        reticulate,
+        keras3,
+        
 Suggests: 
         testthat,
         tidyr
