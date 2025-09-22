@@ -41,13 +41,7 @@
 #'
 #' hte_plot(xlearner_nn)
 #'                                   }
-<<<<<<< HEAD
-#'                                   
-hte_plot <- function(model_obj,
-=======
-#'                     
 hte_plot <- function(x, ...,
->>>>>>> 44cbbc7e4dc2bf60d64ceed2dac62189854f03ce
                      boot = TRUE,
                      n_boot = 1000,
                      cut_points = NULL,

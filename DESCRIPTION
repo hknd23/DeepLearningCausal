@@ -48,16 +48,9 @@ Imports:
         Hmisc,
         ggplot2, 
         dplyr,
-<<<<<<< HEAD
         weights,
         reticulate,
-        keras3,
-        
-=======
-        tidyr,
-        magrittr,
-        weights
->>>>>>> 44cbbc7e4dc2bf60d64ceed2dac62189854f03ce
+        keras3
 Suggests: 
         testthat,
 Roxygen: list(markdown = TRUE)
