@@ -50,8 +50,10 @@ jobs:
         run: |
           Rscript -e "reticulate::use_python('${{ steps.setup-python.outputs.python-path }}', required = TRUE)"
 
+      - name: Install rcmdcheck
+        run: |
+          Rscript -e 'install.packages("rcmdcheck", repos = "https://cloud.r-project.org")'
+
       - name: Run R CMD check
         uses: r-lib/actions/check-r-package@v2
-        with:
-          setup-r-dependencies: true
 
