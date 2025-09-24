@@ -52,3 +52,6 @@ jobs:
 
       - name: Run R CMD check
         uses: r-lib/actions/check-r-package@v2
+        with:
+          setup-r-dependencies: true
+
