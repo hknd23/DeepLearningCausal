@@ -36,13 +36,19 @@ jobs:
         with:
           r-version: ${{ matrix.r }}
 
-      - name: Install and configure reticulate
+      - name: Install system dependencies
         run: |
-          Rscript -e 'if (!requireNamespace("reticulate", quietly = TRUE)) install.packages("reticulate", repos = "https://cloud.r-project.org")'
-          Rscript -e "reticulate::use_python('${{ steps.setup-python.outputs.python-path }}', required = TRUE)"
+          sudo apt-get update
+          sudo apt-get install -y libpng-dev
 
-      - name: Install R package dependencies
-        run: Rscript -e 'install.packages("remotes", repos = "https://cloud.r-project.org"); remotes::install_deps(dependencies = TRUE)'
+      - name: Install R dependencies
+        run: |
+          Rscript -e 'install.packages(c("png", "reticulate", "remotes"), repos = "https://cloud.r-project.org")'
+          Rscript -e 'remotes::install_deps(dependencies = TRUE)'
+
+      - name: Configure reticulate
+        run: |
+          Rscript -e "reticulate::use_python('${{ steps.setup-python.outputs.python-path }}', required = TRUE)"
 
       - name: Run R CMD check
         uses: r-lib/actions/check-r-package@v2
