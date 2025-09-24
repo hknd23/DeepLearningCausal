@@ -1,0 +1,47 @@
+name: R-P-reticulate
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    name: R ${{ matrix.r }} / Python ${{ matrix.python }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        r: [4.2, 4.3]
+        python: ['3.9', '3.10', '3.11']
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: ${{ matrix.r }}
+
+      - name: Install R dependencies
+        run: Rscript -e 'install.packages(c("remotes", "reticulate")); remotes::install_deps(dependencies = TRUE)'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install tensorflow keras numpy pandas
+
+      - name: Configure reticulate
+        run: Rscript -e "reticulate::use_python(Sys.getenv('PYTHON'), required = TRUE)"
+        env:
+          PYTHON: ${{ steps.setup-python.outputs.python-path }}
+
+      - name: Run R CMD check
+        uses: r-lib/actions/check-r-package@v2
