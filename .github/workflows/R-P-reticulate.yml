@@ -36,11 +36,10 @@ jobs:
         with:
           r-version: ${{ matrix.r }}
 
-      - name: Install reticulate
-        run: Rscript -e 'install.packages("reticulate", repos = "https://cloud.r-project.org")'
-
-      - name: Configure reticulate
-        run: Rscript -e "reticulate::use_python('${{ steps.setup-python.outputs.python-path }}', required = TRUE)"
+      - name: Install and configure reticulate
+        run: |
+          Rscript -e 'if (!requireNamespace("reticulate", quietly = TRUE)) install.packages("reticulate", repos = "https://cloud.r-project.org")'
+          Rscript -e "reticulate::use_python('${{ steps.setup-python.outputs.python-path }}', required = TRUE)"
 
       - name: Install R package dependencies
         run: Rscript -e 'install.packages("remotes", repos = "https://cloud.r-project.org"); remotes::install_deps(dependencies = TRUE)'
