@@ -1,3 +1,11 @@
+name: R-P-reticulate
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
 jobs:
   test:
     name: R ${{ matrix.r }} / Python ${{ matrix.python }}
