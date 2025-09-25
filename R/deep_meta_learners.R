@@ -30,7 +30,7 @@ metalearner_keras <-function(data,
                              meta.learner.type,
                              stepmax = NULL,
                              nfolds = 5,
-                             algorithm = NULL,
+                             algorithm = "adam",
                              hidden.layer = c(2,2),
                              linear.output = FALSE,
                              binary.y = TRUE,
@@ -43,9 +43,7 @@ metalearner_keras <-function(data,
   if(nlayers == 0){
     stop("Please specify at least one hidden layer")
   }
-  if(is.null(algorithm)){
-    algorithm = "adam"
-  }
+
   if(is.null(stepmax)){
     stepmax = 100 * (nlayers + 1)
   }
