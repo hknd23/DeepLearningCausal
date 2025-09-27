@@ -1,5 +1,6 @@
 #' @importFrom stats as.formula model.frame na.omit predict prop.test pt var weighted.mean t.test quantile
 #' @importFrom utils data setTxtProgressBar txtProgressBar
+#' @importFrom magrittr %>%
 NULL
 
 #' Create list for experimental data
