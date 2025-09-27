@@ -123,3 +123,27 @@ popcall <- function(response.formula,
 
   return(popl)
 }
+
+
+build_model <- function(hidden.layer,
+                        input_shape,
+                        output_units = 1,
+                        output_activation = "sigmoid",
+                        hidden_activation = "relu") {
+  nlayers <- length(hidden.layer)
+  hidden_units <- hidden.layer
+  
+  model <- keras3::keras_model_sequential()
+  model <- model %>% keras3::layer_dense(units = hidden_units[1], 
+                                         activation = hidden_activation, 
+                                         input_shape = input_shape)
+  
+  for (i in 2:nlayers) {
+    model <- model %>% keras3::layer_dense(units = hidden_units[i], 
+                                           activation = hidden_activation)
+  }
+  
+  model <- model %>% keras3::layer_dense(units = output_units,
+                                         activation = output_activation)
+  return(model)
+}
