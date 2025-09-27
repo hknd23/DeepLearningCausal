@@ -125,7 +125,22 @@ popcall <- function(response.formula,
   return(popl)
 }
 
-
+#' Build Keras model
+#' @description
+#' Specify model for deep learning
+#'
+#' @param hidden.layer vector of integers for number of hidden units in each
+#' hidden layer
+#' @param input_shape integer for number of input features
+#' @param output_units integer for number of output units, default is 1
+#' @param output_activation string for output layer activation function,
+#' default is "sigmoid"
+#' @param hidden_activation string for hidden layer activation function,
+#' default is "relu"
+#' @return Keras model object
+#' @keywords internal
+#' @importFrom keras3 layer_dense keras_model_sequential
+#' @importFrom magrittr %>%
 build_model <- function(hidden.layer,
                         input_shape,
                         output_units = 1,
