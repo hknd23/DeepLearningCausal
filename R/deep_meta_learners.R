@@ -2,7 +2,6 @@ metalearner_keras <-function(data,
                              cov.formula,
                              treat.var,
                              meta.learner.type,
-                             stepmax = NULL,
                              nfolds = 5,
                              algorithm = "adam",
                              hidden.layer = c(2,2),
@@ -12,14 +11,18 @@ metalearner_keras <-function(data,
                              epoch = 10,
                              verbose = 1,
                              batch_size = 32){
-  batch_size = batch_size
+  
+  check_cran_deps()
+  check_python_modules()
+  
   nlayers <- length(hidden.layer)
+  
   if(nlayers == 0){
     stop("Please specify at least one hidden layer")
   }
-
-  if(is.null(stepmax)){
-    stepmax = 100 * (nlayers + 1)
+  if(!(meta.learner.type %in% c("S.Learner", "T.Learner", 
+                                "X.Learner", "R.Learner"))){
+    stop("Please specify valid meta learner type of 'S.Learner', 'T.Learner', 'X.Learner' or 'R.Learner'")
   }
   
   cov.formula <- as.formula(cov.formula)

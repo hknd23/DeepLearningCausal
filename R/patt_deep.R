@@ -278,6 +278,9 @@ pattc_deep <- function(response.formula,
                       bootstrap = FALSE,
                       nboot = 1000){
   
+  check_cran_deps()
+  check_python_modules()
+  
   expdata <- expcall(response.formula,
                      treat.var = treat.var,
                      compl.var = compl.var,

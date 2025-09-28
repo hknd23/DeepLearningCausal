@@ -95,10 +95,10 @@ metalearner_deepneural <- function(data,
                                    linear.output = FALSE,
                                    binary.outcome = FALSE)
 {
-  if(meta.learner.type %in% c("S.Learner", "T.Learner", 
-                              "X.Learner", "R.Learner") == FALSE)
-  {
-    stop("Meta Learner not supported")
+
+  if(!(meta.learner.type %in% c("S.Learner", "T.Learner", 
+                                "X.Learner", "R.Learner"))){
+    stop("Please specify valid meta learner type of 'S.Learner', 'T.Learner', 'X.Learner' or 'R.Learner'")
   }
 
   cov.formula <- as.formula(cov.formula)
