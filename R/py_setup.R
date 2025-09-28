@@ -46,3 +46,30 @@ python_ready <- function(modules = c("keras", "tensorflow", "numpy"),
 }
   invisible(TRUE)
 }
+
+#' Check for required CRAN packages and prompt installation if missing.
+#' @return Invisibly returns TRUE if all required packages are installed.
+#' @keywords internal
+check_cran_deps <- function() {
+  packages <- c("reticulate", "keras3", "tensorflow")
+  missing <- packages[!vapply(packages, requireNamespace, logical(1), quietly = TRUE)]
+  if (length(missing) > 0) {
+    stop("Missing required R packages: ", paste(missing, collapse = ", "),
+         ". Please install them with:\ninstall.packages(c(\"", 
+         paste(missing, collapse = "\", \""), "\"))")
+  }
+  invisible(TRUE)
+}
+
+#' Check for required Python modules and prompt installation if missing.
+#' @return Invisibly returns TRUE if all required modules are available.
+#' @keywords internal
+check_python_modules <- function() {
+  py_modules <- c("tensorflow", "keras", "numpy")
+  missing <- py_modules[!vapply(py_modules, reticulate::py_module_available, logical(1))]
+  if (length(missing) > 0) {
+    stop("Missing required Python modules: ", 
+         paste(missing, collapse = ", "),
+         ". Please install them in your Python environment with reticulate::py_install() or setup using python_ready().")
+  }
+}
