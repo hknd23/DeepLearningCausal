@@ -39,21 +39,22 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libpng-dev libcurl4-openssl-dev
+          sudo apt-get install -y libpng-dev libcurl4-openssl-dev libssl-dev libxml2-dev
 
       - name: Install R dependencies
         run: |
-          Rscript -e 'install.packages(c("png", "reticulate", "remotes", "rcmdcheck"), repos = "https://cloud.r-project.org")'
+          Rscript -e 'install.packages(c("png", "reticulate", "keras3", "tensorflow", "remotes", "rcmdcheck"), repos = "https://cloud.r-project.org")'
           Rscript -e 'remotes::install_deps(dependencies = TRUE)'
 
       - name: Configure reticulate
         run: |
           Rscript -e "reticulate::use_python('${{ steps.setup-python.outputs.python-path }}', required = TRUE)"
 
-      - name: Install rcmdcheck
-        run: |
-          Rscript -e 'install.packages("rcmdcheck", repos = "https://cloud.r-project.org")'
-
       - name: Run R CMD check
         uses: r-lib/actions/check-r-package@v2
+        
+      - name: Run tests
+        run: |
+          Rscript -e 'devtools::test()'
+
 
