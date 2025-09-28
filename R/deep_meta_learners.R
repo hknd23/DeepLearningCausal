@@ -1,4 +1,4 @@
-metalearner_keras <-function(data,
+metalearner_keras <- function(data,
                              cov.formula,
                              treat.var,
                              meta.learner.type,

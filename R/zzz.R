@@ -1,11 +1,16 @@
 # This file is used to run code when loading the package
 .onAttach <- function(libname, pkgname) {
-  # Only initialize if Python is available and not already initialized
-  if (!reticulate::py_available(initialize = FALSE)) {
+  if (requireNamespace("reticulate", quietly = TRUE)) {
+    if (!reticulate::py_available(initialize = FALSE)) {
+      packageStartupMessage(
+        "Python not installed or unavailable. Some features may be disabled.\n",
+        "Install Python from https://www.python.org/ and use `python_ready()` to enable all features."
+      )
+    }
+  } else {
     packageStartupMessage(
-      "Python not installed or unavailable. Some features may be disabled.\n",
-      "Install Python from https://www.python.org/ and use `python_ready()` to enable all features."
+      "The 'reticulate' package is not installed. Python-related features will be disabled.\n",
+      "Install with install.packages(\"reticulate\")."
     )
   }
 }
-  
