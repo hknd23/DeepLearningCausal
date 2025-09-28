@@ -403,6 +403,15 @@ pattc_deep <- function(response.formula,
   return(model.out)
 }
 
+#' Title
+#'
+#' @param x 
+#' @param ... 
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 print.pattc_deep <- function(x, ...){
   cat("Call:\n")
   print(x$formula)
