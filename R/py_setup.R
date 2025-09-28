@@ -1,8 +1,8 @@
 # File: R/setup.R
 
-#' Ensure Python modules are available
+#' Check for Python module availability and install if missing.
 #'
-#' Call this to manually set up Python and dependencies.
+#' Call this to manually set up Python and dependencies. The function checks if Python is available via the `reticulate` package, and if not, it creates a virtual environment and installs the specified Python modules.
 #' @param modules Character vector of Python modules to check for and install if missing.
 #' @param envname Name of the virtual environment to use or create. Defaults to "keras-tensorflow".
 #' @return Invisibly returns TRUE if setup is complete.
@@ -14,6 +14,18 @@
 #' @export
 python_ready <- function(modules = c("keras", "tensorflow", "numpy"),
                          envname = "keras-tensorflow") {
+  if (!requireNamespace("reticulate", quietly = TRUE)) {
+    stop("'reticulate' package required. Please install with install.packages('reticulate').")
+  }
+  
+  if (!requireNamespace("keras3", quietly = TRUE)) {
+    message("'keras3' R package not found. Please install with install.packages('keras3').")
+  }
+  
+  if (!requireNamespace("tensorflow", quietly = TRUE)) {
+    message("'tensorflow' R package not found. Please install with install.packages('tensorflow').")
+  }
+  
   if (reticulate::py_available(initialize = FALSE)) {
     message("Python is already available")
   } else {
