@@ -164,7 +164,7 @@ deep_response_model <- function(response.formula,
 #' @export
 #'
 #' @examples
-deep_pattc_counterfactuals<- function (pop.data,
+pattc_deep_counterfactuals<- function (pop.data,
                                        response.mod,
                                        response_formula,
                                        ID = NULL,
@@ -240,7 +240,7 @@ deep_pattc_counterfactuals<- function (pop.data,
 #' data("exp_data")
 #' data("pop_data")
 #' set.seed(1243)
-#' deeppattc <- deep_pattc(response.formula = support_war ~ age + female +
+#' deeppattc <- pattc_deep(response.formula = support_war ~ age + female +
 #' income + education +  employed + married +
 #'   hindu + job_loss,
 #' exp.data = exp_data,
@@ -260,7 +260,7 @@ deep_pattc_counterfactuals<- function (pop.data,
 #' boot = FALSE
 #' )
 #' }
-deep_pattc <- function(response.formula,
+pattc_deep <- function(response.formula,
                       compl.var,
                       treat.var,
                       exp.data,
@@ -329,7 +329,7 @@ deep_pattc <- function(response.formula,
   
   message("Predicting response and estimating PATT-C")
   
-  counterfactuals <- deep_pattc_counterfactuals(pop.data = popdata,
+  counterfactuals <- pattc_deep_counterfactuals(pop.data = popdata,
                                                 response.mod = response.mod,
                                                 response_formula = response.formula,
                                                 ID = NULL,
@@ -401,4 +401,18 @@ deep_pattc <- function(response.formula,
                     "PATT_C" = pattc
   )
   return(model.out)
+}
+
+print.pattc_deep <- function(x, ...){
+  cat("Call:\n")
+  print(x$formula)
+  cat("\n")
+  cat("Deep Learning PATT-C:\n")
+  print(x$PATT_C[[1]])
+  cat("\n")
+  cat("Method:\n")
+  print(x$PATT_C[[2]])
+  cat("\n")
+  cat("Test Statistics:\n")
+  print(x$PATT_C[[3]])
 }
