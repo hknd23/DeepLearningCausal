@@ -4,7 +4,13 @@
 #'
 #' Call this to manually set up Python and dependencies.
 #' @param modules Character vector of Python modules to check for and install if missing.
-#' @param envname Name of the virtual environment to use or create.
+#' @param envname Name of the virtual environment to use or create. Defaults to "keras-tensorflow".
+#' @return Invisibly returns TRUE if setup is complete.
+#' @examples
+#' \dontrun{
+#' python_ready(modules = c("keras", "tensorflow", "numpy"),
+#'             envname = "keras-tensorflow")
+#' }
 #' @export
 python_ready <- function(modules = c("keras", "tensorflow", "numpy"),
                          envname = "keras-tensorflow") {
