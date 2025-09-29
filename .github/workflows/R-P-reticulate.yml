@@ -43,7 +43,8 @@ jobs:
 
       - name: Install R dependencies
         run: |
-          Rscript -e 'install.packages(c("png", "reticulate", "keras3", "tensorflow", "remotes", "rcmdcheck", "devtools"), repos = "https://cloud.r-project.org")'
+          Rscript -e 'install.packages("remotes", repos = "https://cloud.r-project.org")'
+          Rscript -e 'remotes::install_cran(c("png", "reticulate", "keras3", "tensorflow", "rcmdcheck", "devtools"), dependencies = TRUE)'
           Rscript -e 'remotes::install_deps(dependencies = TRUE)'
 
       - name: Configure reticulate
