@@ -1,4 +1,5 @@
 test_that("keras_pattc", {
+  python_ready()
   skip_if_not(reticulate::py_available(), "Python not available")
   
   # Try keras3, install if missing
