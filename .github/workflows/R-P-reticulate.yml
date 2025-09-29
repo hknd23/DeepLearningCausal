@@ -39,7 +39,15 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev libgit2-dev libpng-dev
+          sudo apt-get install -y \
+            libcurl4-openssl-dev \
+            libssl-dev \
+            libxml2-dev \
+            libgit2-dev \
+            libpng-dev \
+            libfontconfig1-dev \
+            libfreetype6-dev \
+            pkg-config
 
       - name: Install R dependencies
         run: |
