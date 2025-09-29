@@ -1,7 +1,8 @@
 test_that("keras_pattc", {
   python_ready()
-  skip_if_not(reticulate::py_available(), "Python not available")
-  
+  if (!reticulate::py_available()) {
+    stop("Python not available — test cannot proceed.")
+  }  
   # Try keras3, install if missing
   if (!requireNamespace("keras3", quietly = TRUE)) {
     message("Installing keras3...")
