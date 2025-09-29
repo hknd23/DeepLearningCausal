@@ -1,4 +1,4 @@
-metalearner_keras <- function(data,
+metalearner_deep <- function(data,
                              cov.formula,
                              treat.var,
                              meta.learner.type,
@@ -471,5 +471,6 @@ metalearner_keras <- function(data,
       
     } # end of R learner
   } # end of R/X learner
+  class(learner_out) <- "metalearner_deep"
   return(learner_out)
 }

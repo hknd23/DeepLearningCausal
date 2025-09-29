@@ -52,13 +52,14 @@ Imports:
         magrittr,
         weights
 Suggests: 
-        testthat,
-        reticulate,
-        keras3,
-        tensorflow
+    testthat (>= 3.0.0),
+    reticulate,
+    keras3,
+    tensorflow
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Depends: 
     R (>= 4.1.0)
 URL: https://github.com/hknd23/DeepLearningCausal
 BugReports: https://github.com/hknd23/DeepLearningCausal/issues
+Config/testthat/edition: 3

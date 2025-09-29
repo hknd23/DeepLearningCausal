@@ -403,6 +403,7 @@ pattc_deep <- function(response.formula,
                     "population_counterfactuals" = counterfactuals,
                     "PATT_C" = pattc
   )
+  class(model.out) <- "pattc_deep"
   return(model.out)
 }
 
