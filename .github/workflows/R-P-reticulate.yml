@@ -39,7 +39,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libpng-dev libcurl4-openssl-dev libssl-dev libxml2-dev
+          sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev libgit2-dev libpng-dev
 
       - name: Install R dependencies
         run: |
@@ -53,9 +53,10 @@ jobs:
 
       - name: Run R CMD check
         uses: r-lib/actions/check-r-package@v2
-        
+
+      - name: Ensure devtools is installed
+        run: Rscript -e 'if (!requireNamespace("devtools", quietly = TRUE)) install.packages("devtools")'
+  
       - name: Run tests
         run: |
           Rscript -e 'devtools::test()'
-
-
