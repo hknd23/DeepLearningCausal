@@ -316,8 +316,7 @@ pattc_deep <- function(response.formula,
                             complier.formula = compl.formula,
                             treat.var = treat.var,
                             compl.var = compl.var)
-  print(compliers)
-  
+
   message("Training response model")
   
   response.mod <- deep_response_model(response.formula = response.formula,
@@ -339,7 +338,6 @@ pattc_deep <- function(response.formula,
                                                 ID = NULL,
                                                 cluster = NULL,
                                                 binary.preds = binary.preds)
-  print(counterfactuals)
   if (binary.preds) {
     Y_hat1_0s <- sum(counterfactuals$Y_hat0)
     nY_hat0 <- length(counterfactuals$Y_hat0)

@@ -36,7 +36,7 @@ test_that("keras_pattc", {
                           binary.preds = FALSE,
                           boot = FALSE
   )
-  expect_s3_class(deeppattc, "deep_pattc")
+  expect_s3_class(deeppattc, "pattc_deep")
   expect_type(deeppattc$predictions, "double")
   expect_equal(length(deeppattc$population_counterfactuals), nrow(pop_data))
   expect_equal(length(deeppattc$complier_prediction), nrow(exp_data))
