@@ -1,5 +1,5 @@
 test_that("keras_pattc", {
-  python_ready()
+  #python_ready()
   message(paste0("Python tensorflow: ", reticulate::py_module_available('tensorflow')))
   message(paste0("Python keras: ", reticulate::py_module_available('keras')))
   
