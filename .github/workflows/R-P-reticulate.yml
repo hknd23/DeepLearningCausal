@@ -56,7 +56,10 @@ jobs:
       - name: Install R dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: devtools
+          extra-packages: |
+            devtools
+            keras3
+            tensorflow
 
       - name: Configure reticulate
         run: |
