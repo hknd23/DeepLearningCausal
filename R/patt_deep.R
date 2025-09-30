@@ -301,7 +301,7 @@ pattc_deep <- function(response.formula,
   
   message("Training complier model")
   complier.mod <- deep_complier_mod(complier.formula = compl.formula,
-                                    exp.data = expdata,
+                                    exp.data = expdata$exp_data,
                                     treat.var = treat.var,
                                     algorithm = algorithm,
                                     hidden.layer = hidden.layer,
