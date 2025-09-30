@@ -72,4 +72,5 @@ check_python_modules <- function() {
          paste(missing, collapse = ", "),
          ". Please install them in your Python environment with reticulate::py_install() or setup using python_ready().")
   }
+  invisible(TRUE)
 }
