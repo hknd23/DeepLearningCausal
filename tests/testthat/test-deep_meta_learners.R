@@ -20,8 +20,8 @@ test_that("keras_pattc", {
   deeppattc <- pattc_deep(response.formula = support_war ~ age + female +
                             income + education +  employed + married +
                             hindu + job_loss,
-                          exp.data = exp_data,
-                          pop.data = pop_data,
+                          exp.data = exp_data_full,
+                          pop.data = pop_data_full,
                           treat.var = "strong_leader",
                           compl.var = "compliance",
                           algorithm = "adam",
@@ -30,7 +30,7 @@ test_that("keras_pattc", {
                           weights = NULL,
                           cluster = NULL,
                           epoch = 1000,
-                          verbose = 1,
+                          verbose = 0,
                           batch_size = 32,
                           model_type = "classification",
                           binary.preds = FALSE,
