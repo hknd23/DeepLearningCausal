@@ -27,11 +27,12 @@ deep_complier_mod <- function(complier.formula,
   if (!is.null(ID)){
     id=ID
   }
+  exp_data <- exp.data
   complier.formula <- as.formula(complier.formula)
   covariates <- all.vars(complier.formula)[-1]
   compl.var <- all.vars(complier.formula)[1]
 
-    Ycompl <- as.matrix(exp_data[which(exp_data[, treat.var]==1), 
+  Ycompl <- as.matrix(exp_data[which(exp_data[, treat.var]==1), 
                                compl.var])
   Xcompl <- as.matrix(exp_data[which(exp_data[, treat.var]==1), 
                                covariates])
