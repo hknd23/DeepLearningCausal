@@ -65,6 +65,11 @@ jobs:
         run: |
           Rscript -e "reticulate::use_python('${{ steps.setup-python.outputs.python-path }}', required = TRUE)"
 
+      - name: Check Python modules from R
+        run: |
+          Rscript -e "reticulate::py_module_available('tensorflow')"
+          Rscript -e "reticulate::py_module_available('keras')"
+
       - name: Run R CMD check
         uses: r-lib/actions/check-r-package@v2
   
