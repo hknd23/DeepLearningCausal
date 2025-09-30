@@ -1,5 +1,8 @@
 test_that("keras_pattc", {
   python_ready()
+  message(paste0("Python tensorflow: ", reticulate::py_module_available('tensorflow')))
+  message(paste0("Python keras: ", reticulate::py_module_available('keras')))
+  
   skip_if_not(reticulate::py_available(), "Python not available") 
   # Try keras3, install if missing
   if (!requireNamespace("keras3", quietly = TRUE)) {
