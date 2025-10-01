@@ -314,7 +314,7 @@ pattc_deep <- function(response.formula,
                                     algorithm = compl.algorithm,
                                     hidden.layer = compl.hidden.layer,
                                     ID = ID,
-                                    epoch = complier.epoch,
+                                    epoch = compl.epoch,
                                     verbose = verbose,
                                     batch_size = batch_size)
   
