@@ -219,8 +219,6 @@ pattc_deep_counterfactuals<- function (pop.data,
 #' @param treat.var A string specifying the name of the treatment variable.
 #' @param exp.data A data frame containing the experimental data.
 #' @param pop.data A data frame containing the population data.
-#' @param algorithm A string specifying the optimization algorithm for training the deep learning models. Default is "adam".
-#' @param hidden.layer A numeric vector specifying the number of units in each hidden layer. Default is c(2,2).
 #' @param ID An optional string specifying the name of the identifier variable.
 #' @param weights An optional string specifying the name of the weights variable.
 #' @param cluster An optional string specifying the name of the clustering variable.
@@ -229,9 +227,13 @@ pattc_deep_counterfactuals<- function (pop.data,
 #' @param model_type A string specifying the type of response model: "regression" or "classification". Default is "regression".
 #' @param binary.preds A logical indicating whether to treat predictions as binary outcomes. Default is FALSE.
 #' @param bootstrap A logical indicating whether to use bootstrapping for confidence intervals. Default is FALSE.
-#' @param complier.epoch Integer for the number of epochs for complier model.
 #' @param response.epoch Integer for the number of epochs for response model.
 #' @param nboot An integer specifying the number of bootstrap samples if bootstrap is TRUE. Default is 1000.
+#' @param compl.algorithm 
+#' @param response.algorithm 
+#' @param compl.hidden.layer 
+#' @param response.hidden.layer 
+#' @param compl.epoch 
 #'
 #' @return pattc_deep object containing the fitted models, predictions, counterfactuals, and PATT-C estimate.
 #' @import keras3
@@ -269,12 +271,14 @@ pattc_deep <- function(response.formula,
                       treat.var,
                       exp.data,
                       pop.data,
-                      algorithm = "adam",
-                      hidden.layer = c(2,2),
+                      compl.algorithm = "adam",
+                      response.algorithm = "adam",
+                      compl.hidden.layer = c(4,2),
+                      response.hidden.layer = c(4,2),
                       ID = NULL,
                       weights = NULL,
                       cluster = NULL,
-                      complier.epoch = 10,
+                      compl.epoch = 10,
                       response.epoch = 10,
                       verbose = 1,
                       batch_size = 32,
@@ -307,8 +311,8 @@ pattc_deep <- function(response.formula,
   complier.mod <- deep_complier_mod(complier.formula = compl.formula,
                                     exp.data = expdata$exp_data,
                                     treat.var = treat.var,
-                                    algorithm = algorithm,
-                                    hidden.layer = hidden.layer,
+                                    algorithm = compl.algorithm,
+                                    hidden.layer = compl.hidden.layer,
                                     ID = ID,
                                     epoch = complier.epoch,
                                     verbose = verbose,
@@ -327,8 +331,8 @@ pattc_deep <- function(response.formula,
                                       exp.data = expdata$exp_data,
                                       compl.var = compl.var,
                                       deep.compliers = compliers,
-                                      algorithm = algorithm,
-                                      hidden.layer = hidden.layer,
+                                      algorithm = response.algorithm,
+                                      hidden.layer = response.hidden.layer,
                                       epoch = response.epoch,
                                       verbose = verbose,
                                       batch_size = batch_size,

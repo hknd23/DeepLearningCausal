@@ -24,18 +24,21 @@ test_that("keras_pattc", {
                           pop.data = pop_data_full,
                           treat.var = "strong_leader",
                           compl.var = "compliance",
-                          algorithm = "adam",
-                          hidden.layer = c(2,2),
+                          compl.algorithm = "adam",
+                          response.algorithm = "adam",
+                          compl.hidden.layer = c(4,2),
+                          response.hidden.layer = c(4,2),
                           ID = NULL,
                           weights = NULL,
                           cluster = NULL,
+                          compl.epoch = 100,
+                          response.epoch = 10000,
                           verbose = 0,
-                          complier.epoch = 500,
-                          response.epoch = 1000,
-                          batch_size = 32,
-                          model_type = "classification",
+                          batch_size = 64,
+                          model_type = "regression",
                           binary.preds = FALSE,
-                          boot = FALSE
+                          bootstrap = FALSE,
+                          nboot = 1000)
   )
   expect_s3_class(deeppattc, "pattc_deep")
   expect_type(deeppattc$complier_prediction, "double")
