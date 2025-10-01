@@ -351,9 +351,14 @@ pattc_deep <- function(response.formula,
     nY_hat0 <- length(counterfactuals$Y_hat0)
     Y_hat1_1s <- sum(counterfactuals$Y_hat1)
     nY_hat1 <- length(counterfactuals$Y_hat1)
-    pattc_xsq <- prop.test(c(Y_hat1_1s, Y_hat1_0s), c(nY_hat1,nY_hat0),
-                           alternative = "two.sided", correct = FALSE)
-    
+    pattc_xsq <- tryCatch({
+      pattc_xsq <- prop.test(c(Y_hat1_1s, Y_hat1_0s), c(nY_hat1,nY_hat0),
+                             alternative = "two.sided", correct = FALSE)
+    },error=function(e){
+      message("PATT-C could not be calculated. Predictions may be constant")
+      pattc_xsq <- NULL
+    })
+
     conf_int <- pattc_xsq$conf.int[1:2]
     diff <- pattc_xsq$estimate[1] - pattc_xsq$estimate[2]
     estimate <- c(diff, conf_int)
@@ -385,9 +390,15 @@ pattc_deep <- function(response.formula,
       boot.out <- list(results, method)
       pattc <- boot.out
     } else if (!bootstrap){
-      pattc_t <- t.test(x = counterfactuals$Y_hat1,
-                        y = counterfactuals$Y_hat0,
-                        alternative = "two.sided")
+    
+      pattc_t <- tryCatch({
+        pattc_t <- t.test(x = counterfactuals$Y_hat1,
+                          y = counterfactuals$Y_hat0,
+                          alternative = "two.sided")
+      },error=function(e){
+        message("PATT-C could not be calculated. Predictions may be constant")
+        pattc_t <- NULL
+      })
       
       conf_int <- pattc_t$conf.int[1:2]
       diff <- pattc_t$estimate[1] - pattc_t$estimate[2]
