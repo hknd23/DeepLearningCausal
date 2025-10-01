@@ -356,7 +356,8 @@ pattc_deep <- function(response.formula,
                              alternative = "two.sided", correct = FALSE)
     },error=function(e){
       message("PATT-C could not be calculated. Predictions may be constant")
-      pattc_xsq <- NULL
+      pattc_xsq <- list(estimate = NaN,
+                        conf.int = c(NaN, NaN))
     })
 
     conf_int <- pattc_xsq$conf.int[1:2]
@@ -397,7 +398,8 @@ pattc_deep <- function(response.formula,
                           alternative = "two.sided")
       },error=function(e){
         message("PATT-C could not be calculated. Predictions may be constant")
-        pattc_t <- NULL
+        pattc_t <- list(estimate = NaN,
+                        conf.int = c(NaN, NaN))
       })
       
       conf_int <- pattc_t$conf.int[1:2]
