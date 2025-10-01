@@ -213,6 +213,7 @@ pattc_deep_counterfactuals<- function (pop.data,
 #' It consists of training a deep learning model to predict compliance among treated individuals,
 #' predicting compliance in the experimental data, training a response model among predicted compliers,
 #' and estimating counterfactual outcomes in the population data.
+#'
 #' @param response.formula A formula specifying the response variable and covariates.
 #' @param compl.var A string specifying the name of the compliance variable.
 #' @param treat.var A string specifying the name of the treatment variable.
@@ -223,14 +224,16 @@ pattc_deep_counterfactuals<- function (pop.data,
 #' @param ID An optional string specifying the name of the identifier variable.
 #' @param weights An optional string specifying the name of the weights variable.
 #' @param cluster An optional string specifying the name of the clustering variable.
-#' @param epoch An integer specifying the number of epochs for training the deep learning models. Default is 10.
 #' @param verbose An integer specifying the verbosity level during training. Default is 1.
 #' @param batch_size An integer specifying the batch size for training the deep learning models. Default is 32.
 #' @param model_type A string specifying the type of response model: "regression" or "classification". Default is "regression".
 #' @param binary.preds A logical indicating whether to treat predictions as binary outcomes. Default is FALSE.
 #' @param bootstrap A logical indicating whether to use bootstrapping for confidence intervals. Default is FALSE.
+#' @param complier.epoch Integer for the number of epochs for complier model.
+#' @param response.epoch Integer for the number of epochs for response model.
 #' @param nboot An integer specifying the number of bootstrap samples if bootstrap is TRUE. Default is 1000.
-#' @return A list containing the fitted models, predictions, counterfactuals, and PATT-C estimate.
+#'
+#' @return pattc_deep object containing the fitted models, predictions, counterfactuals, and PATT-C estimate.
 #' @import keras3
 #' @importFrom stats as.formula model.frame na.omit predict prop.test qnorm
 #' @export
@@ -400,7 +403,7 @@ pattc_deep <- function(response.formula,
                     "complier_epoch" = complier.epoch,
                     "response_epoch" = response.epoch,
                     "exp_data" = exp_data$exp_data,
-                    "pop_data" = exp_data$pop_data,
+                    "pop_data" = pop_data$pop_data,
                     "complier_prediction" = compliers,
                     "population_counterfactuals" = counterfactuals,
                     "PATT_C" = pattc
