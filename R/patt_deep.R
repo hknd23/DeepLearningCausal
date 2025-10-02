@@ -25,7 +25,8 @@ deep_complier_mod <- function(complier.formula,
                               ID = NULL,
                               epoch = 10,
                               verbose = 1,
-                              batch_size = 32){
+                              batch_size = 32, 
+                              validation_split = NULL){
   if (!is.null(ID)){
     id=ID
   }
@@ -45,7 +46,6 @@ deep_complier_mod <- function(complier.formula,
                                 output_units = 1,
                                 hidden_activation = hidden_activation,
                                 output_activation = "sigmoid")
-  
   deep.complier.mod <- model_complier %>% keras3::compile(
     optimizer = algorithm,
     loss = "binary_crossentropy",
@@ -57,6 +57,7 @@ deep_complier_mod <- function(complier.formula,
     y = Ycompl,
     epochs = epoch,
     batch_size = batch_size,
+    validation_split = validation_split,
     verbose = verbose
   )
   
@@ -128,6 +129,7 @@ deep_response_model <- function(response.formula,
                                 verbose = 1,
                                 batch_size = 32,
                                 output_units = 1,
+                                validation_split = NULL,
                                 output_activation = "linear",
                                 loss = "mean_squared_error",
                                 metrics = "mean_absolute_error"){
@@ -160,6 +162,7 @@ deep_response_model <- function(response.formula,
     y = Yresponse,
     epochs = epoch,
     batch_size = batch_size,
+    validation_split = validation_split,
     verbose = verbose
   )
   return(deep.response.mod)
@@ -251,6 +254,9 @@ pattc_deep_counterfactuals<- function (pop.data,
 #' @param response.metrics 
 #' @param compl.hidden_activation 
 #' @param response.hidden_activation 
+#' @param response.output_units 
+#' @param compl.validation_split 
+#' @param response.validation_split 
 #'
 #' @return pattc_deep object containing the fitted models, predictions, counterfactuals, and PATT-C estimate.
 #' @import keras3
@@ -303,6 +309,8 @@ pattc_deep <- function(response.formula,
                       cluster = NULL,
                       compl.epoch = 10,
                       response.epoch = 10,
+                      compl.validation_split = NULL,
+                      response.validation_split = NULL,
                       verbose = 1,
                       batch_size = 32,
                       binary.preds = FALSE,
@@ -339,7 +347,8 @@ pattc_deep <- function(response.formula,
                                     ID = ID,
                                     epoch = compl.epoch,
                                     verbose = verbose,
-                                    batch_size = batch_size)
+                                    batch_size = batch_size,
+                                    validation_split = compl.validation_split)
   
   
   compliers <- deep_predict(deep.complier.mod = complier.mod,
@@ -363,7 +372,8 @@ pattc_deep <- function(response.formula,
                                       output_activation = response.output_activation,
                                       output_units = response.output_units,
                                       loss = response.loss,
-                                      metrics = response.metrics)
+                                      metrics = response.metrics,
+                                      validation_split = response.validation_split)
   
   message("Predicting response and estimating PATT-C")
   
