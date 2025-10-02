@@ -1,3 +1,22 @@
+#' Title
+#'
+#' @param data 
+#' @param cov.formula 
+#' @param treat.var 
+#' @param meta.learner.type 
+#' @param nfolds 
+#' @param algorithm 
+#' @param hidden.layer 
+#' @param hidden_activation 
+#' @param output_activation 
+#' @param output_units 
+#' @param verbose 
+#' @param batch_size 
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 metalearner_deep <- function(data,
                              cov.formula,
                              treat.var,
@@ -5,9 +24,9 @@ metalearner_deep <- function(data,
                              nfolds = 5,
                              algorithm = "adam",
                              hidden.layer = c(2,2),
-                             linear.output = FALSE,
-                             binary.y = TRUE,
-                             output_units = 1,
+                             hidden_activation = "relu",
+                             output_activation = "linear",
+                             output_units = 1
                              epoch = 10,
                              verbose = 1,
                              batch_size = 32){
@@ -17,9 +36,6 @@ metalearner_deep <- function(data,
   
   nlayers <- length(hidden.layer)
   
-  if(nlayers == 0){
-    stop("Please specify at least one hidden layer")
-  }
   if(!(meta.learner.type %in% c("S.Learner", "T.Learner", 
                                 "X.Learner", "R.Learner"))){
     stop("Please specify valid meta learner type of 'S.Learner', 'T.Learner', 'X.Learner' or 'R.Learner'")
@@ -51,15 +67,11 @@ metalearner_deep <- function(data,
       
       df_aux <- data1
       
-      if (binary.y) {
-        output_activation = "sigmoid"
-      } else if (!binary.y) {
-        output_activation = "relu"
-      }
-      
       if(meta.learner.type == "S.Learner"){
         modelm_S <- build_model(hidden.layer = hidden.layer, 
                                 input_shape = length(covariates) + 1, 
+                                hidden_activation = hidden_activation,
+                                output_activation = output_activation,
                                 output_units = 1)
         
         m_mod_S <- modelm_S %>% keras3::compile(
@@ -101,10 +113,14 @@ metalearner_deep <- function(data,
         
         modelm1_T <- build_model(hidden.layer = hidden.layer, 
                                  input_shape = length(covariates) + 1, 
-                                 output_units = 1)
+                                 hidden_activation = hidden_activation,
+                                 output_activation = output_activation,
+                                 output_units = output_units)
         modelm0_T <- build_model(hidden.layer = hidden.layer, 
                                  input_shape = length(covariates) + 1, 
-                                 output_units = 1)
+                                 hidden_activation = hidden_activation,
+                                 output_activation = output_activation,
+                                 output_units = output_units)
         
         m1_mod_T <- modelm1_T %>% keras3::compile(
           optimizer = algorithm,
@@ -176,11 +192,6 @@ metalearner_deep <- function(data,
         
         df_aux <- data1
         
-        if (binary.y) {
-          output_activation = "sigmoid"
-        } else if (!binary.y) {
-          output_activation = "relu"
-        }
         Xp_train <- df_aux[,c(covariates)]
         d_train <- df_aux$d
         Xp_train_matrix <- as.matrix(Xp_train)
@@ -188,7 +199,9 @@ metalearner_deep <- function(data,
         
         modelp_X <- build_model(hidden.layer = hidden.layer, 
                                 input_shape = length(covariates), 
-                                output_units = 1)
+                                hidden_activation = hidden_activation,
+                                output_activation = output_activation,
+                                output_units = output_units)
         
         p_mod_X <- modelp_X %>% keras3::compile(
           optimizer = algorithm,
@@ -211,10 +224,14 @@ metalearner_deep <- function(data,
         
         modelm1_X <- build_model(hidden.layer = hidden.layer, 
                                  input_shape = length(covariates), 
-                                 output_units = 1)
+                                 hidden_activation = hidden_activation,
+                                 output_activation = output_activation,
+                                 output_units = output_units)
         modelm0_X <- build_model(hidden.layer = hidden.layer,
                                  input_shape = length(covariates), 
-                                 output_units = 1)
+                                 hidden_activation = hidden_activation,
+                                 output_activation = output_activation,
+                                 output_units = output_units)
         m1_mod_X <- modelm1_X %>% keras3::compile(
           optimizer = algorithm,
           loss = "binary_crossentropy",
@@ -263,6 +280,7 @@ metalearner_deep <- function(data,
       a1 <- tryCatch({
         tau1_model <- build_model(hidden.layer = hidden.layer,
                                   input_shape = length(covariates),
+                                  hidden_activation = hidden_activation,
                                   output_units = 1,
                                   output_activation = "sigmoid")
         tau1_mod <- tau1_model %>% keras3::compile(
@@ -287,6 +305,7 @@ metalearner_deep <- function(data,
       a0 <- tryCatch({
         tau0_model <- build_model(hidden.layer = hidden.layer,
                                   input_shape = length(covariates),
+                                  hidden_activation = hidden_activation,
                                   output_units = 1,
                                   output_activation = "sigmoid")
         tau0_mod <- tau0_model %>% keras3::compile(
@@ -337,18 +356,15 @@ metalearner_deep <- function(data,
         df_main  <- data[test_idx, ]
         df_aux <- data1
         
-        if (binary.y) {
-          output_activation = "sigmoid"
-        } else if (!binary.y) {
-          output_activation = "relu"
-        }
-        
         # First stage: estimate m(X) and p(X)
         modelm_R <- build_model(hidden.layer = hidden.layer, 
                                 input_shape = length(covariates), 
-                                output_units = 1)
+                                hidden_activation = hidden_activation,
+                                output_units = 1,
+                                output_activation = "sigmoid")
         modelp_R <- build_model(hidden.layer = hidden.layer,
                                 input_shape = length(covariates), 
+                                hidden_activation = hidden_activation,
                                 output_units = 1,
                                 output_activation = "sigmoid")
         m_mod_R <- modelm_R %>% keras3::compile(
@@ -403,8 +419,9 @@ metalearner_deep <- function(data,
         if(l <= 5){
           modelcf_R <- build_model(hidden.layer = hidden.layer,
                                    input_shape = length(covariates), 
-                                   output_units = 1,
-                                   output_activation = "sigmoid")
+                                   hidden_activation = hidden_activation,
+                                   output_activation = output_activation,
+                                   output_units = output_units)
           r_mod_cf <- modelcf_R %>% keras3::compile(
             optimizer = algorithm,
             loss = "binary_crossentropy",
@@ -430,8 +447,9 @@ metalearner_deep <- function(data,
         if(l  > 5){
           modelcf_R <- build_model(hidden.layer = hidden.layer,
                                    input_shape = length(covariates), 
-                                   output_units = 1,
-                                   output_activation = "sigmoid")
+                                   hidden_activation = hidden_activation,
+                                   output_activation = output_activation,
+                                   output_units = output_units)
           r_mod_cf <- modelcf_R %>% keras3::compile(
             optimizer = algorithm,
             loss = "binary_crossentropy",
