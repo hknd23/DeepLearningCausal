@@ -13,3 +13,4 @@ tutorial.md
 ^tutorial_files$
 ^README\.md$
 code_of_conduct.md
+tests/testthat/test-ci-only.R
