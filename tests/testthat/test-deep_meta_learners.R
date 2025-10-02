@@ -31,6 +31,7 @@ test_that("keras_pattc", {
                           compl.hidden_activation = "relu",
                           response.hidden_activation = "relu",
                           response.output_activation = "linear",
+                          response.output_units = 1,
                           response.loss = "mean_squared_error",
                           response.metrics = "mean_absolute_error",
                           ID = NULL,
@@ -41,7 +42,7 @@ test_that("keras_pattc", {
                           verbose = 0,
                           batch_size = 64,
                           binary.preds = FALSE,
-                          bootstrap = FALSE,
+                          bootstrap = TRUE,
                           nboot = 1000)
   expect_s3_class(deeppattc, "pattc_deep")
   print(nrow(deeppattc$population_counterfactuals))
