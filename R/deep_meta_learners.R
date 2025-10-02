@@ -12,6 +12,10 @@
 #' @param output_units 
 #' @param verbose 
 #' @param batch_size 
+#' @param loss 
+#' @param metrics 
+#' @param epoch 
+#' @param validation_split 
 #'
 #' @returns
 #' @export
