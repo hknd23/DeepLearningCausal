@@ -27,9 +27,12 @@ metalearner_deep <- function(data,
                              hidden_activation = "relu",
                              output_activation = "linear",
                              output_units = 1,
+                             loss = "mean_squared_error",
+                             metrics = "mean_absolute_error",
                              epoch = 10,
                              verbose = 1,
-                             batch_size = 32){
+                             batch_size = 32, 
+                             validation_split = NULL){
   
   check_cran_deps()
   check_python_modules()
@@ -76,8 +79,8 @@ metalearner_deep <- function(data,
         
         m_mod_S <- modelm_S %>% keras3::compile(
           optimizer = algorithm,
-          loss = "binary_crossentropy",
-          metrics = "accuracy"
+          loss = loss,
+          metrics = metrics
         )
         X_train <- (df_aux[,c(covariates, "d")])
         Y_train <- df_aux$y
@@ -85,8 +88,9 @@ metalearner_deep <- function(data,
         Y_train_matrix <- as.matrix(Y_train)
         
         m_mod_S %>% keras3::fit(X_train_matrix, Y_train_matrix, epochs = epoch, 
-                        batch_size = batch_size, 
-                        verbose = verbose)
+                                batch_size = batch_size, 
+                                verbose = verbose,
+                                validation_split = validation_split)
         M_mods[[f]] <- m_mod_S
         
         # Set treatment variable to 0
@@ -124,13 +128,13 @@ metalearner_deep <- function(data,
         
         m1_mod_T <- modelm1_T %>% keras3::compile(
           optimizer = algorithm,
-          loss = "binary_crossentropy",
-          metrics = "accuracy"
+          loss = loss,
+          metrics = metrics
         )
         m0_mod_T <- modelm0_T %>% keras3::compile(
           optimizer = algorithm,
-          loss = "binary_crossentropy",
-          metrics = "accuracy"
+          loss = loss,
+          metrics = metrics
         )
         
         X_train1 <- df_aux[which(df_aux$d==1),c(covariates, "d")]
@@ -144,10 +148,12 @@ metalearner_deep <- function(data,
         Y_train0_matrix <- as.matrix(Y_train0)
         
         m1_mod_T %>% keras3::fit(X_train1_matrix, Y_train1_matrix, epochs = epoch, 
-                         batch_size = batch_size, 
+                         batch_size = batch_size,
+                         validation_split = validation_split,
                          verbose = verbose)
         m0_mod_T %>% keras3::fit(X_train0_matrix, Y_train0_matrix, epochs = epoch, 
                          batch_size = batch_size, 
+                         validation_split = validation_split,
                          verbose = verbose)
         M_modsT <- list(m0_mod_T,m1_mod_T)
         M_mods[[f]] <- M_modsT
@@ -205,8 +211,8 @@ metalearner_deep <- function(data,
         
         p_mod_X <- modelp_X %>% keras3::compile(
           optimizer = algorithm,
-          loss = "binary_crossentropy",
-          metrics = "accuracy"
+          loss = loss,
+          metrics = metrics
         )
         p_mod_X %>% keras3::fit(as.matrix(df_aux[,covariates]), 
                         df_aux[,"d"], 
@@ -234,23 +240,25 @@ metalearner_deep <- function(data,
                                  output_units = output_units)
         m1_mod_X <- modelm1_X %>% keras3::compile(
           optimizer = algorithm,
-          loss = "binary_crossentropy",
-          metrics = "accuracy"
+          loss = loss,
+          metrics = metrics
         )
         m0_mod_X <- modelm0_X %>% keras3::compile(
           optimizer = algorithm,
-          loss = "binary_crossentropy",
-          metrics = "accuracy"
+          loss = loss,
+          metrics = metrics
         )
         m1_mod_X %>% keras3::fit(as.matrix(aux_1[,covariates]), 
                          as.matrix(aux_1$y), 
                          epochs = epoch, 
                          batch_size = batch_size, 
+                         validation_split = validation_split,
                          verbose = verbose)
         m0_mod_X %>% keras3::fit(as.matrix(aux_0[,covariates]),
                          as.matrix(aux_0$y), 
                          epochs = epoch, 
                          batch_size = batch_size, 
+                         validation_split = validation_split,
                          verbose = verbose)
         m1_hat <- predict(m1_mod_X, as.matrix(df_main[, covariates]))
         m0_hat <- predict(m0_mod_X, as.matrix(df_main[, covariates]))
@@ -285,13 +293,14 @@ metalearner_deep <- function(data,
                                   output_activation = "sigmoid")
         tau1_mod <- tau1_model %>% keras3::compile(
           optimizer = algorithm,
-          loss = "binary_crossentropy",
-          metrics = "accuracy"
+          loss = loss,
+          metrics = metrics
         )
         tau1_mod %>% keras3::fit(as.matrix(train_data1[, covariates]),
                          as.matrix(train_data1$y),
                          epochs = epoch,
                          batch_size = batch_size,
+                         validation_split = validation_split,
                          verbose = verbose)
         
         score_tau1 <- predict(tau1_mod, data[, covariates])
@@ -310,13 +319,14 @@ metalearner_deep <- function(data,
                                   output_activation = "sigmoid")
         tau0_mod <- tau0_model %>% keras3::compile(
           optimizer = algorithm,
-          loss = "binary_crossentropy",
-          metrics = "accuracy"
+          loss = loss,
+          metrics = metrics
         )
         tau0_mod %>% keras3::fit(as.matrix(train_data0[, covariates]),
                          as.matrix(train_data0$y),
                          epochs = epoch,
                          batch_size = batch_size,
+                         validation_split = validation_split,
                          verbose = verbose)
         
         score_tau0 <- predict(tau0_mod, data[, covariates])
@@ -369,24 +379,26 @@ metalearner_deep <- function(data,
                                 output_activation = "sigmoid")
         m_mod_R <- modelm_R %>% keras3::compile(
           optimizer = algorithm,
-          loss = "binary_crossentropy",
-          metrics = "accuracy"
+          loss = loss,
+          metrics = metrics
         )
         p_mod_R <- modelp_R %>% keras3::compile(
           optimizer = algorithm,
-          loss = "binary_crossentropy",
-          metrics = "accuracy"
+          loss = loss,
+          metrics = metrics
         )
         m_mod_R %>% keras3::fit(as.matrix(df_aux[,covariates]), 
                         as.matrix(df_aux$y), 
                         epochs = epoch, 
-                        batch_size = batch_size, 
+                        batch_size = batch_size,
+                        validation_split = validation_split,
                         verbose = verbose)
         
         p_mod_R %>% keras3::fit(as.matrix(df_aux[,covariates]), 
                         as.matrix(df_aux[,"d"]),
                         epochs = epoch, 
                         batch_size = batch_size, 
+                        validation_split = validation_split,
                         verbose = verbose)
         
         p_hat <- predict(p_mod_R, as.matrix(df_main[, covariates]))
@@ -424,8 +436,8 @@ metalearner_deep <- function(data,
                                    output_units = output_units)
           r_mod_cf <- modelcf_R %>% keras3::compile(
             optimizer = algorithm,
-            loss = "binary_crossentropy",
-            metrics = "accuracy"
+            loss = loss,
+            metrics = metrics
           )
           r_mod_cf %>% keras3::fit(as.matrix(do.call(rbind, 
                                              set_data[l])[,covariates]),
@@ -435,6 +447,7 @@ metalearner_deep <- function(data,
                            sample_weight = as.matrix(do.call(rbind, 
                                                              set_pseudo[l])[,2]),
                            batch_size = batch_size, 
+                           validation_split = validation_split, 
                            verbose = verbose)
           score_r_1_cf <- predict(r_mod_cf, 
                                   as.matrix(do.call(rbind, 
@@ -452,8 +465,8 @@ metalearner_deep <- function(data,
                                    output_units = output_units)
           r_mod_cf <- modelcf_R %>% keras3::compile(
             optimizer = algorithm,
-            loss = "binary_crossentropy",
-            metrics = "accuracy"
+            loss = loss,
+            metrics = metrics
           )
           r_mod_cf %>% keras3::fit(as.matrix(do.call(rbind, 
                                              set_data[l])[,covariates]),
@@ -463,6 +476,7 @@ metalearner_deep <- function(data,
                            sample_weight = as.matrix(do.call(rbind, 
                                                              set_pseudo[l])[,2]),
                            batch_size = batch_size, 
+                           validation_split = validation_split, 
                            verbose = verbose)
           
           score_r_0_cf <- predict(r_mod_cf, 
