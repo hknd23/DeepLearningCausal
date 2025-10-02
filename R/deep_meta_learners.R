@@ -26,7 +26,7 @@ metalearner_deep <- function(data,
                              hidden.layer = c(2,2),
                              hidden_activation = "relu",
                              output_activation = "linear",
-                             output_units = 1
+                             output_units = 1,
                              epoch = 10,
                              verbose = 1,
                              batch_size = 32){
