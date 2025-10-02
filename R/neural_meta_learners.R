@@ -340,8 +340,7 @@ metalearner_deepneural <- function(data,
                                        stepmax = stepmax)
       score_tau1 <- predict(tau1_mod, data[, covariates])
       a1 <- score_tau1
-    },error=function(e){
-      
+    }, error = function(e){
       mean_score <- mean(pseudo_all[,1])
       score_tau1 <- rep.int(mean_score, times = nrow(data))
       a1 <- score_tau1

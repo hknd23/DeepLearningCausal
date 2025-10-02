@@ -10,6 +10,7 @@
 #' @param epoch 
 #' @param verbose 
 #' @param batch_size 
+#' @param hidden_activation 
 #'
 #' @returns
 #' @export
@@ -20,6 +21,7 @@ deep_complier_mod <- function(complier.formula,
                               treat.var,
                               algorithm = "adam",
                               hidden.layer = c(2,2),
+                              hidden_activation = "relu",
                               ID = NULL,
                               epoch = 10,
                               verbose = 1,
@@ -41,6 +43,7 @@ deep_complier_mod <- function(complier.formula,
   model_complier <- build_model(hidden.layer = hidden.layer, 
                                 input_shape = length(covariates), 
                                 output_units = 1,
+                                hidden_activation = hidden_activation,
                                 output_activation = "sigmoid")
   
   deep.complier.mod <- model_complier %>% keras3::compile(
@@ -60,6 +63,18 @@ deep_complier_mod <- function(complier.formula,
   return(deep.complier.mod)
 }
 
+#' Title
+#'
+#' @param deep.complier.mod 
+#' @param complier.formula 
+#' @param exp.data 
+#' @param treat.var 
+#' @param compl.var 
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 deep_predict <- function(deep.complier.mod,
                          complier.formula,
                          exp.data,
@@ -92,8 +107,11 @@ deep_predict <- function(deep.complier.mod,
 #' @param hidden.layer 
 #' @param epoch 
 #' @param verbose 
+#' @param hidden_activation 
+#' @param output_activation 
+#' @param loss 
+#' @param metrics 
 #' @param batch_size 
-#' @param model_type 
 #'
 #' @returns
 #' @export
@@ -105,10 +123,13 @@ deep_response_model <- function(response.formula,
                                 compl.var,
                                 algorithm = "adam",
                                 hidden.layer = c(2,2),
+                                hidden_activation = "relu",
                                 epoch = 10,
                                 verbose = 1,
                                 batch_size = 32,
-                                model_type = "regression"){
+                                output_activation = "linear",
+                                loss = "mean_squared_error",
+                                metrics = "mean_absolute_error"){
   
   variables <- all.vars(response.formula)
   responsevar <- variables[1]
@@ -121,26 +142,17 @@ deep_response_model <- function(response.formula,
   exp.compliers <- exp.data[which(deep.compliers$compliers_all==1),]
   Yresponse <- as.matrix(exp.compliers[,responsevar])
   Xresponse <- as.matrix(exp.compliers[,c(compl.var, covariates)])
-  
-  if (model_type == "regression"){
-    output_units = 1
-    output_activation = "linear"
-    loss = "mean_squared_error"
-    metrics = list("mean_absolute_error")
-  } else if (model_type == "classification"){
-    output_units = 1
-    output_activation = "sigmoid"
-    loss = "binary_crossentropy"
-    metrics = list("accuracy")
-  }
+
   model_response <- build_model(hidden.layer = hidden.layer, 
                                 input_shape = length(c(compl.var, covariates)), 
                                 output_units = output_units,
+                                hidden_activation = hidden_activation,
                                 output_activation = output_activation)
+  
   deep.response.mod <- model_response %>% keras3::compile(
     optimizer = algorithm,
     loss = loss,
-    metrics = metrics
+    metrics = list(metrics)
   )
   deep.response.mod %>% keras3::fit(
     x = Xresponse,
@@ -224,7 +236,6 @@ pattc_deep_counterfactuals<- function (pop.data,
 #' @param cluster An optional string specifying the name of the clustering variable.
 #' @param verbose An integer specifying the verbosity level during training. Default is 1.
 #' @param batch_size An integer specifying the batch size for training the deep learning models. Default is 32.
-#' @param model_type A string specifying the type of response model: "regression" or "classification". Default is "regression".
 #' @param binary.preds A logical indicating whether to treat predictions as binary outcomes. Default is FALSE.
 #' @param bootstrap A logical indicating whether to use bootstrapping for confidence intervals. Default is FALSE.
 #' @param response.epoch Integer for the number of epochs for response model.
@@ -234,6 +245,11 @@ pattc_deep_counterfactuals<- function (pop.data,
 #' @param compl.hidden.layer 
 #' @param response.hidden.layer 
 #' @param compl.epoch 
+#' @param response.output_activation 
+#' @param response.loss 
+#' @param response.metrics 
+#' @param compl.hidden_activation 
+#' @param response.hidden_activation 
 #'
 #' @return pattc_deep object containing the fitted models, predictions, counterfactuals, and PATT-C estimate.
 #' @import keras3
@@ -275,6 +291,11 @@ pattc_deep <- function(response.formula,
                       response.algorithm = "adam",
                       compl.hidden.layer = c(4,2),
                       response.hidden.layer = c(4,2),
+                      compl.hidden_activation = "relu",
+                      response.hidden_activation = "relu",
+                      response.output_activation = "linear",
+                      response.loss = "mean_squared_error",
+                      response.metrics = "mean_absolute_error",
                       ID = NULL,
                       weights = NULL,
                       cluster = NULL,
@@ -282,7 +303,6 @@ pattc_deep <- function(response.formula,
                       response.epoch = 10,
                       verbose = 1,
                       batch_size = 32,
-                      model_type = "regression",
                       binary.preds = FALSE,
                       bootstrap = FALSE,
                       nboot = 1000){
@@ -313,6 +333,7 @@ pattc_deep <- function(response.formula,
                                     treat.var = treat.var,
                                     algorithm = compl.algorithm,
                                     hidden.layer = compl.hidden.layer,
+                                    hidden_activation = compl.hidden_activation,
                                     ID = ID,
                                     epoch = compl.epoch,
                                     verbose = verbose,
@@ -333,10 +354,13 @@ pattc_deep <- function(response.formula,
                                       deep.compliers = compliers,
                                       algorithm = response.algorithm,
                                       hidden.layer = response.hidden.layer,
+                                      hidden_activation = response.hidden_activation,
                                       epoch = response.epoch,
                                       verbose = verbose,
                                       batch_size = batch_size,
-                                      model_type =  model_type)
+                                      output_activation = response.output_activation,
+                                      loss = response.loss,
+                                      metrics = response.metrics)
   
   message("Predicting response and estimating PATT-C")
   
