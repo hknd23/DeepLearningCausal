@@ -40,7 +40,6 @@ test_that("keras_pattc", {
                           response.epoch = 10000,
                           verbose = 0,
                           batch_size = 64,
-                          model_type = "regression",
                           binary.preds = FALSE,
                           bootstrap = FALSE,
                           nboot = 1000)
