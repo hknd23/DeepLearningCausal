@@ -147,16 +147,24 @@ build_model <- function(hidden.layer,
                         output_activation = "sigmoid",
                         hidden_activation = "relu") {
   nlayers <- length(hidden.layer)
+  if (length(hidden_activation) == 1){
+    hidden_activation <- rep(hidden_activation, nlayers)
+  }
+  
+  if (length(hidden_activation) != nlayers){
+    stop("Length of hidden_activation is not equal to length of hidden.layer")
+  }
+  
   hidden_units <- hidden.layer
   
   model <- keras3::keras_model_sequential()
   suppressWarnings(model <- model %>% keras3::layer_dense(units = hidden_units[1], 
-                                         activation = hidden_activation, 
+                                         activation = hidden_activation[1], 
                                          input_shape = input_shape))
   
   for (i in 2:nlayers) {
     model <- model %>% keras3::layer_dense(units = hidden_units[i], 
-                                           activation = hidden_activation)
+                                           activation = hidden_activation[i])
   }
   
   model <- model %>% keras3::layer_dense(units = output_units,
