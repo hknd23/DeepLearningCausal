@@ -1,21 +1,24 @@
-
-#' Title
-#'
-#' @param complier.formula 
-#' @param exp.data 
-#' @param treat.var 
-#' @param algorithm 
-#' @param hidden.layer 
-#' @param ID 
-#' @param epoch 
-#' @param verbose 
-#' @param batch_size 
-#' @param hidden_activation 
+#' Train complier model using deep neural learning through Tensorflow
+#' 
+#' @description
+#' Train model using group exposed to treatment with compliance as binary
+#' outcome variable and covariates.
+#' 
+#' @param complier.formula formula to fit compliance model (c ~ x) using
+#' complier variable and covariates
+#' @param treat.var string specifying the binary treatment variable
+#' @param exp.data list object of experimental data.
+#' @param algorithm string for name of optimizer algorithm
+#' @param hidden.layer vector specifying the hidden layers and the number of neurons in each layer.
+#' @param ID string for name of indentifier variable.
+#' @param epoch integer for number of epochs
+#' @param verbose 1 to display model training information and learning curve plot. 0 to suppress messages and plots.
+#' @param batch_size integer for batch size to split the training set. Defaults to 32.
+#' @param hidden_activation string or vector for activation function used for hidden layers. Defaults to "relu".
 #'
 #' @returns
+#' @importFrom magrittr %>%
 #' @export
-#'
-#' @examples
 deep_complier_mod <- function(complier.formula,
                               exp.data,
                               treat.var,
@@ -64,18 +67,20 @@ deep_complier_mod <- function(complier.formula,
   return(deep.complier.mod)
 }
 
-#' Title
+#' Complier model prediction
+#' @description
+#' Predict Compliance from control group in experimental data
 #'
-#' @param deep.complier.mod 
-#' @param complier.formula 
-#' @param exp.data 
-#' @param treat.var 
-#' @param compl.var 
+#' @param deep.complier.mod model object from \code{deep.complier.mod()}
+#' @param exp.data `data.frame` object of experimental dataset
+#' @param treat.var string specifying the binary treatment variable
+#' @param compl.var string specifying binary complier variable
+#'
+#' @return `data.frame` object with true compliers, predicted compliers in the
+#' control group, and all compliers (actual + predicted).
 #'
 #' @returns
 #' @export
-#'
-#' @examples
 deep_predict <- function(deep.complier.mod,
                          complier.formula,
                          exp.data,
@@ -98,29 +103,38 @@ deep_predict <- function(deep.complier.mod,
   return(deep.compliers)
 }
 
-#' Title
+#' Response model from experimental data using deep neural learning through Tensorflow
 #'
-#' @param response.formula 
-#' @param exp.data 
-#' @param deep.compliers 
-#' @param compl.var 
-#' @param algorithm 
-#' @param hidden.layer 
-#' @param epoch 
-#' @param verbose 
-#' @param hidden_activation 
-#' @param output_activation 
-#' @param loss 
-#' @param metrics 
-#' @param batch_size 
+#' @description
+#' Train response model (response variable as outcome and covariates) from all
+#' compliers (actual + predicted) in experimental data using Tensorflow.
 #'
-#' @returns
+#'#' @param response.formula formula to fit the response model (y ~ x) using
+#' binary outcome variable and covariates
+#' @param exp.data experimental dataset.
+#' @param compl.var string specifying binary complier variable
+#' @param exp.compliers `data.frame` object of compliers from
+#' \code{complier_predict}.
+#' @param algorithm string for optimizer algorithm in response model. 
+#' @param hidden.layer vector specifying hidden layers and the number of neurons in each hidden layer
+#' @param epoch integer for number of epochs
+#' @param verbose 1 to display model training information and learning curve plot. 
+#' 0 to suppress messages and plots.
+#' @param hidden_activation string or vector for activation functions in hidden layers.
+#' @param output_activation string for activation function in output layer. "linear" is 
+#' recommended for continuous outcome variables, and "sigmoid" for binary outcome variables
+#' @param loss string for loss function. "mean_squared_error" recommended for linear models, 
+#' "binary_crossentropy" for binary models.
+#' @param metrics string for metrics. "mean_squared_error" recommended for linear models, 
+#' "binary_accuracy" for binary models.
+#' @param batch_size batch size to split training data.
+#'
+#' @returns model object of trained  response model.
+#' @importFrom magrittr %>%
 #' @export
-#'
-#' @examples
 deep_response_model <- function(response.formula,
                                 exp.data,
-                                deep.compliers,
+                                exp.compliers,
                                 compl.var,
                                 algorithm = "adam",
                                 hidden.layer = c(2,2),
@@ -132,7 +146,7 @@ deep_response_model <- function(response.formula,
                                 validation_split = NULL,
                                 output_activation = "linear",
                                 loss = "mean_squared_error",
-                                metrics = "mean_absolute_error"){
+                                metrics = "mean_squared_error"){
   
   variables <- all.vars(response.formula)
   responsevar <- variables[1]
@@ -142,9 +156,9 @@ deep_response_model <- function(response.formula,
   
   exp.data <- exp.data[,all.vars(.formula)]
   
-  exp.compliers <- exp.data[which(deep.compliers$compliers_all==1),]
-  Yresponse <- as.matrix(exp.compliers[,responsevar])
-  Xresponse <- as.matrix(exp.compliers[,c(compl.var, covariates)])
+  compliers <- exp.data[which(exp.compliers$compliers_all==1),]
+  Yresponse <- as.matrix(compliers[,responsevar])
+  Xresponse <- as.matrix(compliers[,c(compl.var, covariates)])
 
   model_response <- build_model(hidden.layer = hidden.layer, 
                                 input_shape = length(c(compl.var, covariates)), 
@@ -168,19 +182,20 @@ deep_response_model <- function(response.formula,
   return(deep.response.mod)
 }
 
-#' Title
+#' Assess Population Data counterfactuals
+#' @description
+#' Create counterfactual datasets in the population for compliers and
+#' noncompliers. 
 #'
-#' @param pop.data 
-#' @param response.mod 
+#' @param pop.data population dataset
+#' @param response.mod trained model from \code{response_model}.
+#' @param cluster string for clustering variable
+#' @param ID string fir identifier variable
+#' @param binary.preds logical for predictions to be binary or proportions when
 #' @param response_formula 
-#' @param ID 
-#' @param cluster 
-#' @param binary.preds 
-#'
-#' @returns
+#' 
+#' @returns `data.frame` object of predicted outcomes of counterfactual groups.
 #' @export
-#'
-#' @examples
 pattc_deep_counterfactuals<- function (pop.data,
                                        response.mod,
                                        response_formula,
@@ -230,42 +245,44 @@ pattc_deep_counterfactuals<- function (pop.data,
 #' predicting compliance in the experimental data, training a response model among predicted compliers,
 #' and estimating counterfactual outcomes in the population data.
 #'
-#' @param response.formula A formula specifying the response variable and covariates.
-#' @param compl.var A string specifying the name of the compliance variable.
-#' @param treat.var A string specifying the name of the treatment variable.
-#' @param exp.data A data frame containing the experimental data.
-#' @param pop.data A data frame containing the population data.
-#' @param ID An optional string specifying the name of the identifier variable.
-#' @param weights An optional string specifying the name of the weights variable.
-#' @param cluster An optional string specifying the name of the clustering variable.
-#' @param verbose An integer specifying the verbosity level during training. Default is 1.
-#' @param batch_size An integer specifying the batch size for training the deep learning models. Default is 32.
-#' @param binary.preds A logical indicating whether to treat predictions as binary outcomes. Default is FALSE.
-#' @param bootstrap A logical indicating whether to use bootstrapping for confidence intervals. Default is FALSE.
-#' @param response.epoch Integer for the number of epochs for response model.
-#' @param nboot An integer specifying the number of bootstrap samples if bootstrap is TRUE. Default is 1000.
-#' @param compl.algorithm 
-#' @param response.algorithm 
-#' @param compl.hidden.layer 
-#' @param response.hidden.layer 
-#' @param compl.epoch 
-#' @param response.output_activation 
-#' @param response.loss 
-#' @param response.metrics 
-#' @param compl.hidden_activation 
-#' @param response.hidden_activation 
-#' @param response.output_units 
-#' @param compl.validation_split 
-#' @param response.validation_split 
+#' @param response.formula formula specifying the response variable and covariates.
+#' @param compl.var string specifying the name of the compliance variable.
+#' @param treat.var string specifying the name of the treatment variable.
+#' @param exp.data data frame containing the experimental data.
+#' @param pop.data data frame containing the population data.
+#' @param ID optional string specifying the name of the identifier variable.
+#' @param weights optional string specifying the name of the weights variable.
+#' @param cluster optional string specifying the name of the clustering variable.
+#' @param verbose integer specifying the verbosity level during training. Default is 1.
+#' @param batch_size integer specifying the batch size for training the deep learning models. Default is 32.
+#' @param binary.preds logical indicating whether to treat predictions as binary outcomes. Default is FALSE.
+#' @param bootstrap logical indicating whether to use bootstrapping for confidence intervals. Default is FALSE.
+#' @param response.epoch integer for the number of epochs for response model.
+#' @param nboot integer specifying the number of bootstrap samples if bootstrap is TRUE. Default is 1000.
+#' @param compl.algorithm string for name of optimizer algorithm for complier model. For optimizers available see `keras` package.
+#' @param response.algorithm string for name of optimizer algorithm for response model. For optimizers available see `keras` package.
+#' @param compl.hidden.layer vector specifying the hidden layers in the complier model and the number of neurons in each hidden layer.
+#' @param response.hidden.layer vector specifying the hidden layers in the response model and the number of neurons in each hidden layer.
+#' @param compl.epoch Integer for the number of epochs for complier model.
+#' @param response.output_activation string for name of activation function for output layer of response model. "linear" is recommended for continuous outcome variables, and "sigmoid" for binary outcome variables. For activation functions available see `keras` package.
+#' @param response.loss string for loss function in response model. "mean_squared_error" recommended for linear models, 
+#' "binary_crossentropy" for binary models.
+#' @param response.metrics string for metrics in response model. "mean_squared_error" recommended for linear models, 
+#' "binary_accuracy" for binary models.
+#' @param compl.hidden_activation string or vector for name of activation function for hidden layers complier model. Defaults to "relu" (Rectified Linear Unit)
+#' @param response.hidden_activation string or vector for name of activation function for hidden layers complier model. Defaults to "relu" (Rectified Linear Unit)
+#' @param response.output_units integer for units in output layer. Defaults to 1 for continuous and binary outcome variables. In case of multinomial outcome variable, set to the number of categories.
+#' @param compl.validation_split double for the proportion of test data to be split as validation in complier model. Defaults to 0.2.
+#' @param response.validation_split double for the proportion of test data to be split as validation in response model. Defaults to 0.2.
 #'
 #' @return pattc_deep object containing the fitted models, predictions, counterfactuals, and PATT-C estimate.
-#' @import keras3
+#' @import keras3 
 #' @importFrom stats as.formula model.frame na.omit predict prop.test qnorm
+#' @importFrom magrittr %>%
 #' @export
 #' @examples
 #' \dontrun{
 #' library(DeepLearningCausal)
-#' library(magrittr)
 #' data("exp_data")
 #' data("pop_data")
 #' set.seed(1243)
@@ -466,12 +483,14 @@ pattc_deep <- function(response.formula,
   return(model.out)
 }
 
-#' Title
+#' print.pattc_deep
+#' @description 
+#' Print method for \code{pattc_deep}
+#' 
+#' @param x  `pattc_deep` class object from \code{pattc_deep} 
+#' @param ... additional arguments
 #'
-#' @param x 
-#' @param ... 
-#'
-#' @returns
+#' @returns list of model results
 #' @export
 #'
 #' @examples
