@@ -38,23 +38,22 @@ Imports:
         caret,
         neuralnet,
         SuperLearner,
-        class,
-        Hmisc,
         ggplot2, 
-        dplyr,
         tidyr,
         magrittr,
         reticulate,
         keras3,
-        weights
 Suggests: 
     testthat (>= 3.0.0),
+    dplyr,
+    class,
     xgboost,
     randomForest,
     glmnet,
     gam,
     e1071,
-    gbm,
+    gbm,  
+    Hmisc,
     tensorflow
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
