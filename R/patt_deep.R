@@ -129,7 +129,7 @@ deep_predict <- function(deep.complier.mod,
 #' @param metrics string for metrics. "mean_squared_error" recommended for linear models, 
 #' "binary_accuracy" for binary models.
 #' @param batch_size batch size to split training data.
-#' @param response.formula 
+#' @param response.formula formula specifying the response variable and covariates.
 #' @param output_units integer for units in output layer. Defaults to 1 for continuous and binary outcome variables. 
 #' In case of multinomial outcome variable, value should be set to the number of categories.
 #' @param validation_split double for the proportion of test data to be split as validation in response model.

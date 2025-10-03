@@ -23,7 +23,7 @@ deep_response_model(
 )
 }
 \arguments{
-\item{response.formula}{}
+\item{response.formula}{formula specifying the response variable and covariates.}
 
 \item{exp.data}{experimental dataset.}
 
