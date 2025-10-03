@@ -39,22 +39,22 @@ Imports:
         neuralnet,
         SuperLearner,
         class,
-        xgboost,
-        randomForest,
-        glmnet,
-        gam,
-        e1071,
-        gbm,
         Hmisc,
         ggplot2, 
         dplyr,
         tidyr,
         magrittr,
+        reticulate,
+        keras3,
         weights
 Suggests: 
     testthat (>= 3.0.0),
-    reticulate,
-    keras3,
+    xgboost,
+    randomForest,
+    glmnet,
+    gam,
+    e1071,
+    gbm,
     tensorflow
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2

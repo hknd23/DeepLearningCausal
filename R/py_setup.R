@@ -15,15 +15,7 @@ python_ready <- function(modules = c("keras", "tensorflow", "numpy"),
   if (!requireNamespace("reticulate", quietly = TRUE)) {
     stop("'reticulate' package required. Please install with install.packages('reticulate').")
   }
-  
-  if (!requireNamespace("keras3", quietly = TRUE)) {
-    message("'keras3' R package not found. Please install with install.packages('keras3').")
-  }
-  
-  if (!requireNamespace("tensorflow", quietly = TRUE)) {
-    message("'tensorflow' R package not found. Please install with install.packages('tensorflow').")
-  }
-  
+
   if (reticulate::py_available(initialize = FALSE)) {
     message("Python is already available")
   } else {
