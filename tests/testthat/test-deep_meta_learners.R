@@ -37,7 +37,7 @@ test_that("keras_pattc", {
                           ID = NULL,
                           weights = NULL,
                           cluster = NULL,
-                          compl.epoch = 5000,
+                          compl.epoch = 2000,
                           response.epoch = 10000,
                           verbose = 0,
                           batch_size = 64,

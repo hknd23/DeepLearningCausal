@@ -210,8 +210,8 @@ pattc_deep_counterfactuals<- function (pop.data,
                                        binary.preds = FALSE){
   
   compl.var <- pop.data$compl_var
-  covariates <- all.vars(pop.data$response.formula)[-1]
-  outcome <- all.vars(pop.data$response.formula)[1]
+  covariates <- all.vars(pop.data$response_formula)[-1]
+  outcome <- all.vars(pop.data$response_formula)[1]
   
   pop_data <- pop.data$pop_data
   pop_data$c <- pop_data[, compl.var]
