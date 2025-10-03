@@ -65,7 +65,4 @@ model object of trained  response model.
 \description{
 Train response model (response variable as outcome and covariates) from all
 compliers (actual + predicted) in experimental data using Tensorflow.
-
-#' @param response.formula formula to fit the response model (y ~ x) using
-binary outcome variable and covariates
 }
