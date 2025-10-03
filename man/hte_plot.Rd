@@ -59,5 +59,4 @@ xlearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +
 
 hte_plot(xlearner_nn)
                                   }
-                    
 }

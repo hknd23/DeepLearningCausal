@@ -1,5 +1,3 @@
-# File: R/setup.R
-
 #' Check for Python module availability and install if missing.
 #'
 #' Call this to manually set up Python and dependencies. The function checks if Python is available via the `reticulate` package, and if not, it creates a virtual environment and installs the specified Python modules.
