@@ -2,7 +2,7 @@
 % Please edit documentation in R/patt_deep.R
 \name{pattc_deep_counterfactuals}
 \alias{pattc_deep_counterfactuals}
-\title{Title}
+\title{Assess Population Data counterfactuals}
 \usage{
 pattc_deep_counterfactuals(
   pop.data,
@@ -14,18 +14,22 @@ pattc_deep_counterfactuals(
 )
 }
 \arguments{
-\item{pop.data}{}
+\item{pop.data}{population dataset}
 
-\item{response.mod}{}
+\item{response.mod}{trained model from \code{response_model}.}
 
 \item{response_formula}{}
 
-\item{ID}{}
+\item{ID}{string fir identifier variable}
 
-\item{cluster}{}
+\item{cluster}{string for clustering variable}
 
-\item{binary.preds}{}
+\item{binary.preds}{logical for predictions to be binary or proportions when}
+}
+\value{
+\code{data.frame} object of predicted outcomes of counterfactual groups.
 }
 \description{
-Title
+Create counterfactual datasets in the population for compliers and
+noncompliers.
 }

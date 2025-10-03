@@ -14,7 +14,7 @@ pattc_ensemble(
   response.SL.learners = c("SL.glmnet", "SL.xgboost", "SL.ranger", "SL.nnet", "SL.glm"),
   ID = NULL,
   cluster = NULL,
-  binary.outcome = FALSE,
+  binary.preds = FALSE,
   bootstrap = FALSE,
   nboot = 1000
 )
@@ -43,7 +43,7 @@ model.}
 
 \item{cluster}{string for name of cluster variable. (currently not used)}
 
-\item{binary.outcome}{logical specifying predicted outcome variable will take
+\item{binary.preds}{logical specifying predicted outcome variable will take
 binary values or proportions.}
 
 \item{bootstrap}{logical for bootstrapped PATT-C.}
@@ -80,7 +80,7 @@ pattc <- pattc_ensemble(response.formula = support_war ~ age + income +
                                 response.SL.learners = c("SL.glm", "SL.nnet"),
                                 ID = NULL,
                                 cluster = NULL,
-                                binary.outcome = FALSE)
+                                binary.preds = FALSE)
 
 print(pattc)
 
@@ -94,7 +94,7 @@ pattc_boot <- pattc_ensemble(response.formula = support_war ~ age + income +
                                 response.SL.learners = c("SL.glm", "SL.nnet"),
                                 ID = NULL,
                                 cluster = NULL,
-                                binary.outcome = FALSE,
+                                binary.preds = FALSE,
                                 bootstrap = TRUE,
                                 nboot = 1000)
 print(pattc_boot)

@@ -9,7 +9,7 @@ pattc_counterfactuals(
   response.mod,
   ID = NULL,
   cluster = NULL,
-  binary.outcome = FALSE
+  binary.preds = FALSE
 )
 }
 \arguments{
@@ -21,7 +21,7 @@ pattc_counterfactuals(
 
 \item{cluster}{string for clustering variable}
 
-\item{binary.outcome}{logical specifying whether predicted outcomes are
+\item{binary.preds}{logical specifying whether predicted outcomes are
 proportions or binary (0-1).}
 }
 \value{

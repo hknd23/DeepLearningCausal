@@ -2,15 +2,18 @@
 % Please edit documentation in R/patt_deep.R
 \name{print.pattc_deep}
 \alias{print.pattc_deep}
-\title{Title}
+\title{print.pattc_deep}
 \usage{
 \method{print}{pattc_deep}(x, ...)
 }
 \arguments{
-\item{x}{}
+\item{x}{\code{pattc_deep} class object from \code{pattc_deep}}
 
-\item{...}{}
+\item{...}{additional arguments}
+}
+\value{
+list of model results
 }
 \description{
-Title
+Print method for \code{pattc_deep}
 }

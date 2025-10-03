@@ -35,59 +35,63 @@ pattc_deep(
 )
 }
 \arguments{
-\item{response.formula}{A formula specifying the response variable and covariates.}
+\item{response.formula}{formula specifying the response variable and covariates.}
 
-\item{compl.var}{A string specifying the name of the compliance variable.}
+\item{compl.var}{string specifying the name of the compliance variable.}
 
-\item{treat.var}{A string specifying the name of the treatment variable.}
+\item{treat.var}{string specifying the name of the treatment variable.}
 
-\item{exp.data}{A data frame containing the experimental data.}
+\item{exp.data}{data frame containing the experimental data.}
 
-\item{pop.data}{A data frame containing the population data.}
+\item{pop.data}{data frame containing the population data.}
 
-\item{compl.algorithm}{}
+\item{compl.algorithm}{string for name of optimizer algorithm for complier model. For optimizers available see \code{keras} package.}
 
-\item{response.algorithm}{}
+\item{response.algorithm}{string for name of optimizer algorithm for response model. For optimizers available see \code{keras} package.}
 
-\item{compl.hidden.layer}{}
+\item{compl.hidden.layer}{vector specifying the hidden layers in the complier model and the number of neurons in each hidden layer.}
 
-\item{response.hidden.layer}{}
+\item{response.hidden.layer}{vector specifying the hidden layers in the response model and the number of neurons in each hidden layer.}
 
-\item{compl.hidden_activation}{}
+\item{compl.hidden_activation}{string or vector for name of activation function for hidden layers complier model. Defaults to "relu" (Rectified Linear Unit)}
 
-\item{response.hidden_activation}{}
+\item{response.hidden_activation}{string or vector for name of activation function for hidden layers complier model. Defaults to "relu" (Rectified Linear Unit)}
 
-\item{response.output_activation}{}
+\item{response.output_activation}{string for name of activation function for output layer of response model.
+"linear" is recommended for continuous outcome variables, and "sigmoid" for binary outcome variables.
+For activation functions available see \code{keras} package.}
 
-\item{response.output_units}{}
+\item{response.output_units}{integer for units in output layer. Defaults to 1 for continuous and binary outcome variables. In case of multinomial outcome variable, set to the number of categories.}
 
-\item{response.loss}{}
+\item{response.loss}{string for loss function in response model. "mean_squared_error" recommended for linear models,
+"binary_crossentropy" for binary models.}
 
-\item{response.metrics}{}
+\item{response.metrics}{string for metrics in response model. "mean_squared_error" recommended for linear models,
+"binary_accuracy" for binary models.}
 
-\item{ID}{An optional string specifying the name of the identifier variable.}
+\item{ID}{optional string specifying the name of the identifier variable.}
 
-\item{weights}{An optional string specifying the name of the weights variable.}
+\item{weights}{optional string specifying the name of the weights variable.}
 
-\item{cluster}{An optional string specifying the name of the clustering variable.}
+\item{cluster}{optional string specifying the name of the clustering variable.}
 
-\item{compl.epoch}{}
+\item{compl.epoch}{Integer for the number of epochs for complier model.}
 
-\item{response.epoch}{Integer for the number of epochs for response model.}
+\item{response.epoch}{integer for the number of epochs for response model.}
 
-\item{compl.validation_split}{}
+\item{compl.validation_split}{double for the proportion of test data to be split as validation in complier model. Defaults to 0.2.}
 
-\item{response.validation_split}{}
+\item{response.validation_split}{double for the proportion of test data to be split as validation in response model. Defaults to 0.2.}
 
-\item{verbose}{An integer specifying the verbosity level during training. Default is 1.}
+\item{verbose}{integer specifying the verbosity level during training. Defaults to 1.}
 
-\item{batch_size}{An integer specifying the batch size for training the deep learning models. Default is 32.}
+\item{batch_size}{integer specifying the batch size for training the deep learning models. Default is 32.}
 
-\item{binary.preds}{A logical indicating whether to treat predictions as binary outcomes. Default is FALSE.}
+\item{binary.preds}{logical indicating whether to treat predictions as binary outcomes. Default is FALSE.}
 
-\item{bootstrap}{A logical indicating whether to use bootstrapping for confidence intervals. Default is FALSE.}
+\item{bootstrap}{logical indicating whether to use bootstrapping for confidence intervals. Default is FALSE.}
 
-\item{nboot}{An integer specifying the number of bootstrap samples if bootstrap is TRUE. Default is 1000.}
+\item{nboot}{integer specifying the number of bootstrap samples if bootstrap is TRUE. Default is 1000.}
 }
 \value{
 pattc_deep object containing the fitted models, predictions, counterfactuals, and PATT-C estimate.
@@ -102,7 +106,6 @@ and estimating counterfactual outcomes in the population data.
 \examples{
 \dontrun{
 library(DeepLearningCausal)
-library(magrittr)
 data("exp_data")
 data("pop_data")
 set.seed(1243)

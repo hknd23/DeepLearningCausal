@@ -22,9 +22,8 @@ complier variable and covariates}
 
 \item{ID}{string for name of indentifier variable.}
 
-\item{SL.learners}{vector of strings for ML classifier algorithms. If left
-\code{NULL} employs extreme gradient boosting, elastic net regression, random
-forest, and neural nets.}
+\item{SL.learners}{vector of strings for ML classifier algorithms. Defaults to
+extreme gradient boosting, elastic net regression, random forest, and neural nets.}
 }
 \value{
 model object of trained model.

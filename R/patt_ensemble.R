@@ -9,9 +9,8 @@
 #' complier variable and covariates
 #' @param treat.var string specifying the binary treatment variable
 #' @param ID string for name of indentifier variable.
-#' @param SL.learners vector of strings for ML classifier algorithms. If left
-#' `NULL` employs extreme gradient boosting, elastic net regression, random
-#' forest, and neural nets.
+#' @param SL.learners vector of strings for ML classifier algorithms. Defaults to
+#' extreme gradient boosting, elastic net regression, random forest, and neural nets.
 #'
 #' @return model object of trained model.
 #' @export
@@ -140,7 +139,7 @@ response_model <- function(response.formula,
 #'
 #' @param pop.data population dataset
 #' @param response.mod trained model from \code{response_model}.
-#' @param binary.outcome logical specifying whether predicted outcomes are
+#' @param binary.preds logical specifying whether predicted outcomes are
 #' proportions or binary (0-1).
 #' @param cluster string for clustering variable
 #' @param ID string fir identifier variable
@@ -152,7 +151,7 @@ pattc_counterfactuals<- function (pop.data,
                                   response.mod,
                                   ID = NULL,
                                   cluster = NULL,
-                                  binary.outcome = FALSE){
+                                  binary.preds = FALSE){
   compl.var <- pop.data$compl_var
   covariates <- all.vars(pop.data$response_formula)[-1]
   outcome <- all.vars(pop.data$response_formula)[1]
@@ -170,10 +169,10 @@ pattc_counterfactuals<- function (pop.data,
   Y.pred.1 <- predict(response.mod, pop.tr.counterfactual, onlySL = T)$pred
 
   Y.pred.0 <- predict(response.mod, pop.ctrl.counterfactual, onlySL = T)$pred
-  if (binary.outcome) {
+  if (binary.preds) {
     Y.hat.1 <- ifelse(Y.pred.1 > .5, 1, 0)
     Y.hat.0 <- ifelse(Y.pred.0 > .5, 1, 0)
-  } else if (!binary.outcome) {
+  } else if (!binary.preds) {
     Y.hat.1 <- Y.pred.1
     Y.hat.0 <- Y.pred.0
   }
@@ -205,7 +204,7 @@ pattc_counterfactuals<- function (pop.data,
 #' @param compl.var string for binary compliance variable.
 #' @param ID string for name of identifier. (currently not used)
 #' @param cluster string for name of cluster variable. (currently not used)
-#' @param binary.outcome logical specifying predicted outcome variable will take
+#' @param binary.preds logical specifying predicted outcome variable will take
 #' binary values or proportions.
 #' @param bootstrap logical for bootstrapped PATT-C.
 #' @param nboot number of bootstrapped samples. Only used with
@@ -238,7 +237,7 @@ pattc_counterfactuals<- function (pop.data,
 #'                                 response.SL.learners = c("SL.glm", "SL.nnet"),
 #'                                 ID = NULL,
 #'                                 cluster = NULL,
-#'                                 binary.outcome = FALSE)
+#'                                 binary.preds = FALSE)
 #'
 #' print(pattc)
 #'
@@ -252,7 +251,7 @@ pattc_counterfactuals<- function (pop.data,
 #'                                 response.SL.learners = c("SL.glm", "SL.nnet"),
 #'                                 ID = NULL,
 #'                                 cluster = NULL,
-#'                                 binary.outcome = FALSE,
+#'                                 binary.preds = FALSE,
 #'                                 bootstrap = TRUE,
 #'                                 nboot = 1000)
 #' print(pattc_boot)
@@ -272,7 +271,7 @@ pattc_ensemble <- function(response.formula,
                                         "SL.glm"),
                         ID = NULL,
                         cluster = NULL,
-                        binary.outcome = FALSE,
+                        binary.preds = FALSE,
                         bootstrap = FALSE,
                         nboot = 1000){
 
@@ -319,10 +318,10 @@ pattc_ensemble <- function(response.formula,
                                            response.mod = response.mod,
                                            ID = NULL,
                                            cluster = NULL,
-                                           binary.outcome = binary.outcome)
+                                           binary.preds = binary.preds)
 
   outcome.var <- all.vars(response.formula)[1]
-  if (binary.outcome) {
+  if (binary.preds) {
     Y_hat1_0s <- sum(counterfactuals$Y_hat0)
     nY_hat0 <- length(counterfactuals$Y_hat0)
     Y_hat1_1s <- sum(counterfactuals$Y_hat1)
@@ -339,7 +338,7 @@ pattc_ensemble <- function(response.formula,
     pattc <-list(estimate,
                  pattc_xsq$method,
                  statistic)
-  }  else if (!binary.outcome){
+  }  else if (!binary.preds){
     if (bootstrap) {
       bootResults <- matrix(NA, nrow = nboot, ncol = ncol(counterfactuals)+1)
       for (i in seq_len(nboot)){
