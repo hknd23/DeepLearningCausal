@@ -15,6 +15,9 @@ deep_predict(
 \arguments{
 \item{deep.complier.mod}{model object from \code{deep.complier.mod()}}
 
+\item{complier.formula}{formula to fit compliance model (c ~ x) using
+complier variable and covariates}
+
 \item{exp.data}{\code{data.frame} object of experimental dataset}
 
 \item{treat.var}{string specifying the binary treatment variable}

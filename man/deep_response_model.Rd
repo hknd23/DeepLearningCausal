@@ -23,6 +23,8 @@ deep_response_model(
 )
 }
 \arguments{
+\item{response.formula}{}
+
 \item{exp.data}{experimental dataset.}
 
 \item{exp.compliers}{\code{data.frame} object of compliers from
@@ -42,6 +44,11 @@ deep_response_model(
 0 to suppress messages and plots.}
 
 \item{batch_size}{batch size to split training data.}
+
+\item{output_units}{integer for units in output layer. Defaults to 1 for continuous and binary outcome variables.
+In case of multinomial outcome variable, value should be set to the number of categories.}
+
+\item{validation_split}{double for the proportion of test data to be split as validation in response model.}
 
 \item{output_activation}{string for activation function in output layer. "linear" is
 recommended for continuous outcome variables, and "sigmoid" for binary outcome variables}

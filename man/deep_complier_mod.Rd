@@ -39,6 +39,8 @@ complier variable and covariates}
 \item{verbose}{1 to display model training information and learning curve plot. 0 to suppress messages and plots.}
 
 \item{batch_size}{integer for batch size to split the training set. Defaults to 32.}
+
+\item{validation_split}{double for proportion of training data to be split for validation.}
 }
 \value{
 deep.complier.mod model object

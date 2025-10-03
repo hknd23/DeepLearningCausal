@@ -15,6 +15,7 @@
 #' @param verbose 1 to display model training information and learning curve plot. 0 to suppress messages and plots.
 #' @param batch_size integer for batch size to split the training set. Defaults to 32.
 #' @param hidden_activation string or vector for activation function used for hidden layers. Defaults to "relu".
+#' @param validation_split double for proportion of training data to be split for validation.
 #'
 #' @return deep.complier.mod model object
 #' @importFrom magrittr %>%
@@ -75,6 +76,8 @@ deep_complier_mod <- function(complier.formula,
 #' @param exp.data `data.frame` object of experimental dataset
 #' @param treat.var string specifying the binary treatment variable
 #' @param compl.var string specifying binary complier variable
+#' @param complier.formula formula to fit compliance model (c ~ x) using
+#' complier variable and covariates
 #'
 #' @return `data.frame` object with true compliers, predicted compliers in the
 #' control group, and all compliers (actual + predicted).
@@ -109,6 +112,7 @@ deep_predict <- function(deep.complier.mod,
 #'
 #'#' @param response.formula formula to fit the response model (y ~ x) using
 #' binary outcome variable and covariates
+#'
 #' @param exp.data experimental dataset.
 #' @param compl.var string specifying binary complier variable
 #' @param exp.compliers `data.frame` object of compliers from
@@ -126,6 +130,10 @@ deep_predict <- function(deep.complier.mod,
 #' @param metrics string for metrics. "mean_squared_error" recommended for linear models, 
 #' "binary_accuracy" for binary models.
 #' @param batch_size batch size to split training data.
+#' @param response.formula 
+#' @param output_units integer for units in output layer. Defaults to 1 for continuous and binary outcome variables. 
+#' In case of multinomial outcome variable, value should be set to the number of categories.
+#' @param validation_split double for the proportion of test data to be split as validation in response model.
 #'
 #' @return model object of trained  response model.
 #' @importFrom magrittr %>%
@@ -190,20 +198,20 @@ deep_response_model <- function(response.formula,
 #' @param cluster string for clustering variable
 #' @param ID string fir identifier variable
 #' @param binary.preds logical for predictions to be binary or proportions when
-#' @param response_formula 
+#' @param response.formula formula specifying the response variable and covariates.
 #' 
 #' @return `data.frame` object of predicted outcomes of counterfactual groups.
 #' @export
 pattc_deep_counterfactuals<- function (pop.data,
                                        response.mod,
-                                       response_formula,
+                                       response.formula,
                                        ID = NULL,
                                        cluster = NULL,
                                        binary.preds = FALSE){
   
   compl.var <- pop.data$compl_var
-  covariates <- all.vars(pop.data$response_formula)[-1]
-  outcome <- all.vars(pop.data$response_formula)[1]
+  covariates <- all.vars(pop.data$response.formula)[-1]
+  outcome <- all.vars(pop.data$response.formula)[1]
   
   pop_data <- pop.data$pop_data
   pop_data$c <- pop_data[, compl.var]
@@ -396,7 +404,7 @@ pattc_deep <- function(response.formula,
   
   counterfactuals <- pattc_deep_counterfactuals(pop.data = popdata,
                                                 response.mod = response.mod,
-                                                response_formula = response.formula,
+                                                response.formula = response.formula,
                                                 ID = NULL,
                                                 cluster = NULL,
                                                 binary.preds = binary.preds)

@@ -7,7 +7,7 @@
 pattc_deep_counterfactuals(
   pop.data,
   response.mod,
-  response_formula,
+  response.formula,
   ID = NULL,
   cluster = NULL,
   binary.preds = FALSE
@@ -18,7 +18,7 @@ pattc_deep_counterfactuals(
 
 \item{response.mod}{trained model from \code{response_model}.}
 
-\item{response_formula}{}
+\item{response.formula}{formula specifying the response variable and covariates.}
 
 \item{ID}{string fir identifier variable}
 
