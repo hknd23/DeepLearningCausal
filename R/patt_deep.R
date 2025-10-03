@@ -110,9 +110,8 @@ deep_predict <- function(deep.complier.mod,
 #' Train response model (response variable as outcome and covariates) from all
 #' compliers (actual + predicted) in experimental data using Tensorflow.
 #'
-#'#' @param response.formula formula to fit the response model (y ~ x) using
+#' @param response.formula formula to fit the response model (y ~ x) using
 #' binary outcome variable and covariates
-#'
 #' @param exp.data experimental dataset.
 #' @param compl.var string specifying binary complier variable
 #' @param exp.compliers `data.frame` object of compliers from
