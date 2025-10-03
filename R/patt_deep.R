@@ -16,7 +16,7 @@
 #' @param batch_size integer for batch size to split the training set. Defaults to 32.
 #' @param hidden_activation string or vector for activation function used for hidden layers. Defaults to "relu".
 #'
-#' @returns
+#' @return deep.complier.mod model object
 #' @importFrom magrittr %>%
 #' @export
 deep_complier_mod <- function(complier.formula,
@@ -78,8 +78,6 @@ deep_complier_mod <- function(complier.formula,
 #'
 #' @return `data.frame` object with true compliers, predicted compliers in the
 #' control group, and all compliers (actual + predicted).
-#'
-#' @returns
 #' @export
 deep_predict <- function(deep.complier.mod,
                          complier.formula,
@@ -129,7 +127,7 @@ deep_predict <- function(deep.complier.mod,
 #' "binary_accuracy" for binary models.
 #' @param batch_size batch size to split training data.
 #'
-#' @returns model object of trained  response model.
+#' @return model object of trained  response model.
 #' @importFrom magrittr %>%
 #' @export
 deep_response_model <- function(response.formula,
@@ -194,7 +192,7 @@ deep_response_model <- function(response.formula,
 #' @param binary.preds logical for predictions to be binary or proportions when
 #' @param response_formula 
 #' 
-#' @returns `data.frame` object of predicted outcomes of counterfactual groups.
+#' @return `data.frame` object of predicted outcomes of counterfactual groups.
 #' @export
 pattc_deep_counterfactuals<- function (pop.data,
                                        response.mod,
@@ -253,7 +251,7 @@ pattc_deep_counterfactuals<- function (pop.data,
 #' @param ID optional string specifying the name of the identifier variable.
 #' @param weights optional string specifying the name of the weights variable.
 #' @param cluster optional string specifying the name of the clustering variable.
-#' @param verbose integer specifying the verbosity level during training. Default is 1.
+#' @param verbose integer specifying the verbosity level during training. Defaults to 1.
 #' @param batch_size integer specifying the batch size for training the deep learning models. Default is 32.
 #' @param binary.preds logical indicating whether to treat predictions as binary outcomes. Default is FALSE.
 #' @param bootstrap logical indicating whether to use bootstrapping for confidence intervals. Default is FALSE.
@@ -264,7 +262,9 @@ pattc_deep_counterfactuals<- function (pop.data,
 #' @param compl.hidden.layer vector specifying the hidden layers in the complier model and the number of neurons in each hidden layer.
 #' @param response.hidden.layer vector specifying the hidden layers in the response model and the number of neurons in each hidden layer.
 #' @param compl.epoch Integer for the number of epochs for complier model.
-#' @param response.output_activation string for name of activation function for output layer of response model. "linear" is recommended for continuous outcome variables, and "sigmoid" for binary outcome variables. For activation functions available see `keras` package.
+#' @param response.output_activation string for name of activation function for output layer of response model. 
+#' "linear" is recommended for continuous outcome variables, and "sigmoid" for binary outcome variables. 
+#' For activation functions available see `keras` package.
 #' @param response.loss string for loss function in response model. "mean_squared_error" recommended for linear models, 
 #' "binary_crossentropy" for binary models.
 #' @param response.metrics string for metrics in response model. "mean_squared_error" recommended for linear models, 
@@ -490,10 +490,10 @@ pattc_deep <- function(response.formula,
 #' @param x  `pattc_deep` class object from \code{pattc_deep} 
 #' @param ... additional arguments
 #'
-#' @returns list of model results
+#' @return list of model results
 #' @export
 #'
-#' @examples
+#@examples
 print.pattc_deep <- function(x, ...){
   cat("Call:\n")
   print(x$formula)

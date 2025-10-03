@@ -2,7 +2,7 @@
 % Please edit documentation in R/patt_deep.R
 \name{deep_predict}
 \alias{deep_predict}
-\title{Title}
+\title{Complier model prediction}
 \usage{
 deep_predict(
   deep.complier.mod,
@@ -13,16 +13,18 @@ deep_predict(
 )
 }
 \arguments{
-\item{deep.complier.mod}{}
+\item{deep.complier.mod}{model object from \code{deep.complier.mod()}}
 
-\item{complier.formula}{}
+\item{exp.data}{\code{data.frame} object of experimental dataset}
 
-\item{exp.data}{}
+\item{treat.var}{string specifying the binary treatment variable}
 
-\item{treat.var}{}
-
-\item{compl.var}{}
+\item{compl.var}{string specifying binary complier variable}
+}
+\value{
+\code{data.frame} object with true compliers, predicted compliers in the
+control group, and all compliers (actual + predicted).
 }
 \description{
-Title
+Predict Compliance from control group in experimental data
 }

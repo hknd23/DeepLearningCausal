@@ -2,7 +2,10 @@
 % Please edit documentation in R/deep_meta_learners.R
 \name{metalearner_deep}
 \alias{metalearner_deep}
-\title{Title}
+\title{metalearner_deep
+#' @description
+\code{metalearner_deepneural} implements the meta learners for estimating
+CATE using Deep Neural Networks through Tensorflow.}
 \usage{
 metalearner_deep(
   data,
@@ -24,38 +27,50 @@ metalearner_deep(
 )
 }
 \arguments{
-\item{data}{}
+\item{data}{data.frame object of data.}
 
-\item{cov.formula}{}
+\item{cov.formula}{formula description of the model y ~ x(list of covariates).}
 
-\item{treat.var}{}
+\item{treat.var}{string for name of Treatment variable}
 
-\item{meta.learner.type}{}
+\item{meta.learner.type}{string of "S.Learner", "T.Learner", "X.Learner", or "R.Learner"}
 
-\item{nfolds}{}
+\item{nfolds}{integer for number of folds for Meta Learners}
 
-\item{algorithm}{}
+\item{algorithm}{string for optimization algorithm. For optimizers available see \code{keras} package.}
 
-\item{hidden.layer}{}
+\item{hidden.layer}{vector specifying the hidden layers in the model and the number of neurons in each hidden layer.}
 
-\item{hidden_activation}{}
+\item{hidden_activation}{string or vector for name of activation function for hidden layers of  model. Defaults to "relu".}
 
-\item{output_activation}{}
+\item{output_activation}{string for name of activation function for output layer of  model.
+"linear" is recommended for continuous outcome variables, and "sigmoid" for binary outcome variables.
+For activation functions available see \code{keras} package.}
 
-\item{output_units}{}
+\item{output_units}{integer for units in output layer. Defaults to 1 for continuous and binary outcome variables.
+In case of multinomial outcome variable, set to the number of categories.}
 
-\item{loss}{}
+\item{loss}{string for loss function "mean_squared_error" recommended for linear models,
+"binary_crossentropy" for binary models.}
 
-\item{metrics}{}
+\item{metrics}{string for metrics in response model. "mean_squared_error" recommended for linear models,
+"binary_accuracy" for binary models.}
 
-\item{epoch}{}
+\item{epoch}{interger for number of epochs.}
 
-\item{verbose}{}
+\item{verbose}{integer specifying the verbosity level during training.
+1 for full information and learning curve plots. 0 to suppress messages and plots.}
 
-\item{batch_size}{}
+\item{batch_size}{integer for batch size to split training data.}
 
-\item{validation_split}{}
+\item{validation_split}{double for proportion of training data to split for validation.}
+}
+\value{
+\code{metalearner_deep} object with CATEs
 }
 \description{
-Title
+metalearner_deep
+#' @description
+\code{metalearner_deepneural} implements the meta learners for estimating
+CATE using Deep Neural Networks through Tensorflow.
 }

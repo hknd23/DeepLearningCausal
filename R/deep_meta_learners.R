@@ -1,26 +1,35 @@
-#' Title
+#' metalearner_deep
+#'#' @description
+#' \code{metalearner_deepneural} implements the meta learners for estimating
+#' CATE using Deep Neural Networks through Tensorflow.
+#' 
+#' @param data data.frame object of data.
+#' @param cov.formula formula description of the model y ~ x(list of covariates).
+#' @param treat.var string for name of Treatment variable
+#' @param meta.learner.type string of "S.Learner", "T.Learner", "X.Learner", or "R.Learner"
+#' @param nfolds integer for number of folds for Meta Learners
+#' @param algorithm string for optimization algorithm. For optimizers available see `keras` package.
+#' @param hidden.layer vector specifying the hidden layers in the model and the number of neurons in each hidden layer.
+#' @param hidden_activation string or vector for name of activation function for hidden layers of  model. Defaults to "relu".
+#' @param output_activation string for name of activation function for output layer of  model.
+#'  "linear" is recommended for continuous outcome variables, and "sigmoid" for binary outcome variables. 
+#'  For activation functions available see `keras` package.
+#' @param output_units integer for units in output layer. Defaults to 1 for continuous and binary outcome variables. 
+#' In case of multinomial outcome variable, set to the number of categories.
+#' @param verbose integer specifying the verbosity level during training. 
+#' 1 for full information and learning curve plots. 0 to suppress messages and plots.
+#' @param batch_size integer for batch size to split training data.
+#' @param loss string for loss function "mean_squared_error" recommended for linear models, 
+#' "binary_crossentropy" for binary models.
+#' @param metrics string for metrics in response model. "mean_squared_error" recommended for linear models, 
+#' "binary_accuracy" for binary models.
+#' @param epoch interger for number of epochs.
+#' @param validation_split double for proportion of training data to split for validation.
 #'
-#' @param data 
-#' @param cov.formula 
-#' @param treat.var 
-#' @param meta.learner.type 
-#' @param nfolds 
-#' @param algorithm 
-#' @param hidden.layer 
-#' @param hidden_activation 
-#' @param output_activation 
-#' @param output_units 
-#' @param verbose 
-#' @param batch_size 
-#' @param loss 
-#' @param metrics 
-#' @param epoch 
-#' @param validation_split 
-#'
-#' @returns
+#' @return `metalearner_deep` object with CATEs
 #' @export
 #'
-#' @examples
+#@examples
 metalearner_deep <- function(data,
                              cov.formula,
                              treat.var,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/patt_deep.R
 \name{deep_complier_mod}
 \alias{deep_complier_mod}
-\title{Title}
+\title{Train complier model using deep neural learning through Tensorflow}
 \usage{
 deep_complier_mod(
   complier.formula,
@@ -19,26 +19,31 @@ deep_complier_mod(
 )
 }
 \arguments{
-\item{complier.formula}{}
+\item{complier.formula}{formula to fit compliance model (c ~ x) using
+complier variable and covariates}
 
-\item{exp.data}{}
+\item{exp.data}{list object of experimental data.}
 
-\item{treat.var}{}
+\item{treat.var}{string specifying the binary treatment variable}
 
-\item{algorithm}{}
+\item{algorithm}{string for name of optimizer algorithm}
 
-\item{hidden.layer}{}
+\item{hidden.layer}{vector specifying the hidden layers and the number of neurons in each layer.}
 
-\item{hidden_activation}{}
+\item{hidden_activation}{string or vector for activation function used for hidden layers. Defaults to "relu".}
 
-\item{ID}{}
+\item{ID}{string for name of indentifier variable.}
 
-\item{epoch}{}
+\item{epoch}{integer for number of epochs}
 
-\item{verbose}{}
+\item{verbose}{1 to display model training information and learning curve plot. 0 to suppress messages and plots.}
 
-\item{batch_size}{}
+\item{batch_size}{integer for batch size to split the training set. Defaults to 32.}
+}
+\value{
+deep.complier.mod model object
 }
 \description{
-Title
+Train model using group exposed to treatment with compliance as binary
+outcome variable and covariates.
 }

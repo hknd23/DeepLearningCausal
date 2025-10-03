@@ -2,12 +2,12 @@
 % Please edit documentation in R/patt_deep.R
 \name{deep_response_model}
 \alias{deep_response_model}
-\title{Title}
+\title{Response model from experimental data using deep neural learning through Tensorflow}
 \usage{
 deep_response_model(
   response.formula,
   exp.data,
-  deep.compliers,
+  exp.compliers,
   compl.var,
   algorithm = "adam",
   hidden.layer = c(2, 2),
@@ -19,36 +19,46 @@ deep_response_model(
   validation_split = NULL,
   output_activation = "linear",
   loss = "mean_squared_error",
-  metrics = "mean_absolute_error"
+  metrics = "mean_squared_error"
 )
 }
 \arguments{
-\item{response.formula}{}
+\item{exp.data}{experimental dataset.}
 
-\item{exp.data}{}
+\item{exp.compliers}{\code{data.frame} object of compliers from
+\code{complier_predict}.}
 
-\item{deep.compliers}{}
+\item{compl.var}{string specifying binary complier variable}
 
-\item{compl.var}{}
+\item{algorithm}{string for optimizer algorithm in response model.}
 
-\item{algorithm}{}
+\item{hidden.layer}{vector specifying hidden layers and the number of neurons in each hidden layer}
 
-\item{hidden.layer}{}
+\item{hidden_activation}{string or vector for activation functions in hidden layers.}
 
-\item{hidden_activation}{}
+\item{epoch}{integer for number of epochs}
 
-\item{epoch}{}
+\item{verbose}{1 to display model training information and learning curve plot.
+0 to suppress messages and plots.}
 
-\item{verbose}{}
+\item{batch_size}{batch size to split training data.}
 
-\item{batch_size}{}
+\item{output_activation}{string for activation function in output layer. "linear" is
+recommended for continuous outcome variables, and "sigmoid" for binary outcome variables}
 
-\item{output_activation}{}
+\item{loss}{string for loss function. "mean_squared_error" recommended for linear models,
+"binary_crossentropy" for binary models.}
 
-\item{loss}{}
-
-\item{metrics}{}
+\item{metrics}{string for metrics. "mean_squared_error" recommended for linear models,
+"binary_accuracy" for binary models.}
+}
+\value{
+model object of trained  response model.
 }
 \description{
-Title
+Train response model (response variable as outcome and covariates) from all
+compliers (actual + predicted) in experimental data using Tensorflow.
+
+#' @param response.formula formula to fit the response model (y ~ x) using
+binary outcome variable and covariates
 }
