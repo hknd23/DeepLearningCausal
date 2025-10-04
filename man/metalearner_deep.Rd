@@ -4,7 +4,7 @@
 \alias{metalearner_deep}
 \title{metalearner_deep
 #' @description
-\code{metalearner_deepneural} implements the meta learners for estimating
+\code{metalearner_deep} implements the meta learners for estimating
 CATE using Deep Neural Networks through Tensorflow.}
 \usage{
 metalearner_deep(
@@ -23,7 +23,8 @@ metalearner_deep(
   epoch = 10,
   verbose = 1,
   batch_size = 32,
-  validation_split = NULL
+  validation_split = NULL,
+  patience = NULL
 )
 }
 \arguments{
@@ -64,6 +65,8 @@ In case of multinomial outcome variable, set to the number of categories.}
 \item{batch_size}{integer for batch size to split training data.}
 
 \item{validation_split}{double for proportion of training data to split for validation.}
+
+\item{patience}{integer for number of epochs with no improvement to wait before stopping training.}
 }
 \value{
 \code{metalearner_deep} object with CATEs
@@ -71,6 +74,6 @@ In case of multinomial outcome variable, set to the number of categories.}
 \description{
 metalearner_deep
 #' @description
-\code{metalearner_deepneural} implements the meta learners for estimating
+\code{metalearner_deep} implements the meta learners for estimating
 CATE using Deep Neural Networks through Tensorflow.
 }

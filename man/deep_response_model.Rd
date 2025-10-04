@@ -17,6 +17,7 @@ deep_response_model(
   batch_size = 32,
   output_units = 1,
   validation_split = NULL,
+  patience = NULL,
   output_activation = "linear",
   loss = "mean_squared_error",
   metrics = "mean_squared_error"
@@ -49,6 +50,8 @@ deep_response_model(
 In case of multinomial outcome variable, value should be set to the number of categories.}
 
 \item{validation_split}{double for the proportion of test data to be split as validation in response model.}
+
+\item{patience}{integer for number of epochs with no improvement after which training will be stopped.}
 
 \item{output_activation}{string for activation function in output layer. "linear" is
 recommended for continuous outcome variables, and "sigmoid" for binary outcome variables}

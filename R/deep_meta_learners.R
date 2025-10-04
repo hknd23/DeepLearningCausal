@@ -1,6 +1,6 @@
 #' metalearner_deep
 #'#' @description
-#' \code{metalearner_deepneural} implements the meta learners for estimating
+#' \code{metalearner_deep} implements the meta learners for estimating
 #' CATE using Deep Neural Networks through Tensorflow.
 #' 
 #' @param data data.frame object of data.
@@ -25,7 +25,7 @@
 #' "binary_accuracy" for binary models.
 #' @param epoch interger for number of epochs.
 #' @param validation_split double for proportion of training data to split for validation.
-#'
+#' @param patience integer for number of epochs with no improvement to wait before stopping training.
 #' @return `metalearner_deep` object with CATEs
 #' @export
 #'
@@ -45,7 +45,8 @@ metalearner_deep <- function(data,
                              epoch = 10,
                              verbose = 1,
                              batch_size = 32, 
-                             validation_split = NULL){
+                             validation_split = NULL,
+                             patience = NULL){
   
   check_cran_deps()
   check_python_modules()
@@ -75,6 +76,15 @@ metalearner_deep <- function(data,
   Yhats_list <- list()
   M_mods <- list()
   
+  if (!is.null(patience)){
+    early_stopping <- keras3::callback_early_stopping(monitor = "val_loss", 
+                                                      patience = patience, 
+                                                      restore_best_weights = TRUE)
+    callbacks_list <- list(early_stopping)
+  } else {
+    callbacks_list <- NULL
+  }
+  
   if(meta.learner.type %in% c("S.Learner", "T.Learner")){
     for(f in seq_along(folds)){
       test_idx <- folds[[f]]
@@ -103,7 +113,8 @@ metalearner_deep <- function(data,
         m_mod_S %>% keras3::fit(X_train_matrix, Y_train_matrix, epochs = epoch, 
                                 batch_size = batch_size, 
                                 verbose = verbose,
-                                validation_split = validation_split)
+                                validation_split = validation_split,
+                                callbacks = callbacks_list)
         M_mods[[f]] <- m_mod_S
         
         # Set treatment variable to 0
@@ -163,10 +174,12 @@ metalearner_deep <- function(data,
         m1_mod_T %>% keras3::fit(X_train1_matrix, Y_train1_matrix, epochs = epoch, 
                          batch_size = batch_size,
                          validation_split = validation_split,
+                         callbacks_list = callbacks_list,
                          verbose = verbose)
         m0_mod_T %>% keras3::fit(X_train0_matrix, Y_train0_matrix, epochs = epoch, 
                          batch_size = batch_size, 
                          validation_split = validation_split,
+                         callbacks_list = callbacks_list,
                          verbose = verbose)
         M_modsT <- list(m0_mod_T,m1_mod_T)
         M_mods[[f]] <- M_modsT
@@ -219,18 +232,20 @@ metalearner_deep <- function(data,
         modelp_X <- build_model(hidden.layer = hidden.layer, 
                                 input_shape = length(covariates), 
                                 hidden_activation = hidden_activation,
-                                output_activation = output_activation,
-                                output_units = output_units)
+                                output_activation = "sigmoid",
+                                output_units = 1)
         
         p_mod_X <- modelp_X %>% keras3::compile(
           optimizer = algorithm,
-          loss = loss,
-          metrics = metrics
+          loss = "binary_crossentropy",
+          metrics = "accuracy"
         )
         p_mod_X %>% keras3::fit(as.matrix(df_aux[,covariates]), 
                         df_aux[,"d"], 
                         epochs = epoch, 
                         batch_size = batch_size, 
+                        validation_split = validation_split,
+                        callbacks_list = callbacks_list,
                         verbose = verbose)
         
         p_hat <- predict(p_mod_X, as.matrix(df_main[, covariates]))
@@ -266,12 +281,14 @@ metalearner_deep <- function(data,
                          epochs = epoch, 
                          batch_size = batch_size, 
                          validation_split = validation_split,
+                         callbacks_list = callbacks_list,
                          verbose = verbose)
         m0_mod_X %>% keras3::fit(as.matrix(aux_0[,covariates]),
                          as.matrix(aux_0$y), 
                          epochs = epoch, 
                          batch_size = batch_size, 
                          validation_split = validation_split,
+                         callbacks_list = callbacks_list,
                          verbose = verbose)
         m1_hat <- predict(m1_mod_X, as.matrix(df_main[, covariates]))
         m0_hat <- predict(m0_mod_X, as.matrix(df_main[, covariates]))
@@ -302,8 +319,8 @@ metalearner_deep <- function(data,
         tau1_model <- build_model(hidden.layer = hidden.layer,
                                   input_shape = length(covariates),
                                   hidden_activation = hidden_activation,
-                                  output_units = 1,
-                                  output_activation = "sigmoid")
+                                  output_units = output_units,
+                                  output_activation = output_activation)
         tau1_mod <- tau1_model %>% keras3::compile(
           optimizer = algorithm,
           loss = loss,
@@ -314,11 +331,12 @@ metalearner_deep <- function(data,
                          epochs = epoch,
                          batch_size = batch_size,
                          validation_split = validation_split,
+                         callbacks_list = callbacks_list,
                          verbose = verbose)
         
         score_tau1 <- predict(tau1_mod, data[, covariates])
         a1 <- score_tau1
-      },error=function(e){
+      }, error = function(e){
         mean_score <- mean(pseudo_all[,1])
         score_tau1 <- rep.int(mean_score, times = nrow(data))
         a1 <- score_tau1
@@ -328,8 +346,8 @@ metalearner_deep <- function(data,
         tau0_model <- build_model(hidden.layer = hidden.layer,
                                   input_shape = length(covariates),
                                   hidden_activation = hidden_activation,
-                                  output_units = 1,
-                                  output_activation = "sigmoid")
+                                  output_units = output_units,
+                                  output_activation = output_activation)
         tau0_mod <- tau0_model %>% keras3::compile(
           optimizer = algorithm,
           loss = loss,
@@ -340,6 +358,7 @@ metalearner_deep <- function(data,
                          epochs = epoch,
                          batch_size = batch_size,
                          validation_split = validation_split,
+                         callbacks_list = callbacks_list,
                          verbose = verbose)
         
         score_tau0 <- predict(tau0_mod, data[, covariates])
@@ -383,8 +402,8 @@ metalearner_deep <- function(data,
         modelm_R <- build_model(hidden.layer = hidden.layer, 
                                 input_shape = length(covariates), 
                                 hidden_activation = hidden_activation,
-                                output_units = 1,
-                                output_activation = "sigmoid")
+                                output_units = output_units,
+                                output_activation = output_activation)
         modelp_R <- build_model(hidden.layer = hidden.layer,
                                 input_shape = length(covariates), 
                                 hidden_activation = hidden_activation,
@@ -397,14 +416,15 @@ metalearner_deep <- function(data,
         )
         p_mod_R <- modelp_R %>% keras3::compile(
           optimizer = algorithm,
-          loss = loss,
-          metrics = metrics
+          loss = "binary_crossentropy",
+          metrics = "accuracy"
         )
         m_mod_R %>% keras3::fit(as.matrix(df_aux[,covariates]), 
                         as.matrix(df_aux$y), 
                         epochs = epoch, 
                         batch_size = batch_size,
                         validation_split = validation_split,
+                        callbacks_list = callbacks_list,
                         verbose = verbose)
         
         p_mod_R %>% keras3::fit(as.matrix(df_aux[,covariates]), 
@@ -412,6 +432,7 @@ metalearner_deep <- function(data,
                         epochs = epoch, 
                         batch_size = batch_size, 
                         validation_split = validation_split,
+                        callbacks_list = callbacks_list,
                         verbose = verbose)
         
         p_hat <- predict(p_mod_R, as.matrix(df_main[, covariates]))
@@ -461,6 +482,7 @@ metalearner_deep <- function(data,
                                                              set_pseudo[l])[,2]),
                            batch_size = batch_size, 
                            validation_split = validation_split, 
+                           callbacks_list = callbacks_list,
                            verbose = verbose)
           score_r_1_cf <- predict(r_mod_cf, 
                                   as.matrix(do.call(rbind, 
@@ -490,6 +512,7 @@ metalearner_deep <- function(data,
                                                              set_pseudo[l])[,2]),
                            batch_size = batch_size, 
                            validation_split = validation_split, 
+                           callbacks_list = callbacks_list,
                            verbose = verbose)
           
           score_r_0_cf <- predict(r_mod_cf, 

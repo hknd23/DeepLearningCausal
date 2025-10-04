@@ -15,7 +15,8 @@ deep_complier_mod(
   epoch = 10,
   verbose = 1,
   batch_size = 32,
-  validation_split = NULL
+  validation_split = NULL,
+  patience = NULL
 )
 }
 \arguments{
@@ -41,6 +42,8 @@ complier variable and covariates}
 \item{batch_size}{integer for batch size to split the training set. Defaults to 32.}
 
 \item{validation_split}{double for proportion of training data to be split for validation.}
+
+\item{patience}{integer for number of epochs with no improvement after which training will be stopped.}
 }
 \value{
 deep.complier.mod model object
