@@ -27,6 +27,8 @@ pattc_deep(
   response.epoch = 10,
   compl.validation_split = NULL,
   response.validation_split = NULL,
+  compl.patience = NULL,
+  response.patience = NULL,
   verbose = 1,
   batch_size = 32,
   binary.preds = FALSE,
@@ -82,6 +84,10 @@ For activation functions available see \code{keras} package.}
 \item{compl.validation_split}{double for the proportion of test data to be split as validation in complier model. Defaults to 0.2.}
 
 \item{response.validation_split}{double for the proportion of test data to be split as validation in response model. Defaults to 0.2.}
+
+\item{compl.patience}{integer for number of epochs with no improvement after which training will be stopped in complier model.}
+
+\item{response.patience}{integer for number of epochs with no improvement after which training will be stopped in response model.}
 
 \item{verbose}{integer specifying the verbosity level during training. Defaults to 1.}
 

@@ -306,6 +306,8 @@ pattc_deep_counterfactuals<- function (pop.data,
 #' @param response.output_units integer for units in output layer. Defaults to 1 for continuous and binary outcome variables. In case of multinomial outcome variable, set to the number of categories.
 #' @param compl.validation_split double for the proportion of test data to be split as validation in complier model. Defaults to 0.2.
 #' @param response.validation_split double for the proportion of test data to be split as validation in response model. Defaults to 0.2.
+#' @param compl.patience integer for number of epochs with no improvement after which training will be stopped in complier model.
+#' @param response.patience integer for number of epochs with no improvement after which training will be stopped in response model.
 #'
 #' @return pattc_deep object containing the fitted models, predictions, counterfactuals, and PATT-C estimate.
 #' @import keras3 
@@ -360,6 +362,8 @@ pattc_deep <- function(response.formula,
                       response.epoch = 10,
                       compl.validation_split = NULL,
                       response.validation_split = NULL,
+                      compl.patience = NULL,
+                      response.patience = NULL,
                       verbose = 1,
                       batch_size = 32,
                       binary.preds = FALSE,
@@ -397,7 +401,8 @@ pattc_deep <- function(response.formula,
                                     epoch = compl.epoch,
                                     verbose = verbose,
                                     batch_size = batch_size,
-                                    validation_split = compl.validation_split)
+                                    validation_split = compl.validation_split,
+                                    patience = compl.patience)
   
   
   compliers <- deep_predict(deep.complier.mod = complier.mod,
@@ -422,7 +427,8 @@ pattc_deep <- function(response.formula,
                                       output_units = response.output_units,
                                       loss = response.loss,
                                       metrics = response.metrics,
-                                      validation_split = response.validation_split)
+                                      validation_split = response.validation_split,
+                                      patience = response.patience)
   
   message("Predicting response and estimating PATT-C")
   
