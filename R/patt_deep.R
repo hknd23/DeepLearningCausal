@@ -16,7 +16,7 @@
 #' @param batch_size integer for batch size to split the training set. Defaults to 32.
 #' @param hidden_activation string or vector for activation function used for hidden layers. Defaults to "relu".
 #' @param validation_split double for proportion of training data to be split for validation.
-#'
+#' @param patience integer for number of epochs with no improvement after which training will be stopped.
 #' @return deep.complier.mod model object
 #' @importFrom magrittr %>%
 #' @export
@@ -30,7 +30,8 @@ deep_complier_mod <- function(complier.formula,
                               epoch = 10,
                               verbose = 1,
                               batch_size = 32, 
-                              validation_split = NULL){
+                              validation_split = NULL,
+                              patience = NULL){
   if (!is.null(ID)){
     id=ID
   }
@@ -50,11 +51,21 @@ deep_complier_mod <- function(complier.formula,
                                 output_units = 1,
                                 hidden_activation = hidden_activation,
                                 output_activation = "sigmoid")
+  
   deep.complier.mod <- model_complier %>% keras3::compile(
     optimizer = algorithm,
     loss = "binary_crossentropy",
     metrics = "accuracy"
   )
+  
+  if (!is.null(patience)){
+    early_stopping <- keras3::callback_early_stopping(monitor = "val_loss", 
+                                                      patience = patience, 
+                                                      restore_best_weights = TRUE)
+    callbacks_list <- list(early_stopping)
+  } else {
+    callbacks_list <- NULL
+  }
   
   deep.complier.mod %>% keras3::fit(
     x = Xcompl,
@@ -62,6 +73,7 @@ deep_complier_mod <- function(complier.formula,
     epochs = epoch,
     batch_size = batch_size,
     validation_split = validation_split,
+    callbacks = callbacks_list,
     verbose = verbose
   )
   
@@ -133,6 +145,7 @@ deep_predict <- function(deep.complier.mod,
 #' @param output_units integer for units in output layer. Defaults to 1 for continuous and binary outcome variables. 
 #' In case of multinomial outcome variable, value should be set to the number of categories.
 #' @param validation_split double for the proportion of test data to be split as validation in response model.
+#' @param patience integer for number of epochs with no improvement after which training will be stopped.
 #'
 #' @return model object of trained  response model.
 #' @importFrom magrittr %>%
@@ -149,6 +162,7 @@ deep_response_model <- function(response.formula,
                                 batch_size = 32,
                                 output_units = 1,
                                 validation_split = NULL,
+                                patience = NULL,
                                 output_activation = "linear",
                                 loss = "mean_squared_error",
                                 metrics = "mean_squared_error"){
@@ -176,12 +190,23 @@ deep_response_model <- function(response.formula,
     loss = loss,
     metrics = list(metrics)
   )
+  
+  if (!is.null(patience)){
+    early_stopping <- keras3::callback_early_stopping(monitor = "val_loss", 
+                                                      patience = patience, 
+                                                      restore_best_weights = TRUE)
+    callbacks_list <- list(early_stopping)
+  } else {
+    callbacks_list <- NULL
+  }
+  
   deep.response.mod %>% keras3::fit(
     x = Xresponse,
     y = Yresponse,
     epochs = epoch,
     batch_size = batch_size,
     validation_split = validation_split,
+    callbacks = callbacks_list,
     verbose = verbose
   )
   return(deep.response.mod)
