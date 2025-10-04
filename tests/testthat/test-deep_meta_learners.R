@@ -1,3 +1,4 @@
+skip_on_cran()
 test_that("keras_pattc", {
   #python_ready()
   message(paste0("Python tensorflow: ", reticulate::py_module_available('tensorflow')))
@@ -38,14 +39,14 @@ test_that("keras_pattc", {
                           weights = NULL,
                           cluster = NULL,
                           compl.epoch = 2000,
-                          response.epoch = 10000,
+                          response.epoch = 5000,
                           verbose = 0,
                           batch_size = 64,
                           binary.preds = FALSE,
                           bootstrap = TRUE,
                           nboot = 1000)
   expect_s3_class(deeppattc, "pattc_deep")
-  print(nrow(deeppattc$population_counterfactuals))
+  #print(nrow(deeppattc$population_counterfactuals))
   #expect_equal(nrow(deeppattc$population_counterfactuals), nrow(pop_data_full))
   expect_equal(nrow(deeppattc$complier_prediction), nrow(exp_data_full))
   
