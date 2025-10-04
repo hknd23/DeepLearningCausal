@@ -174,12 +174,12 @@ metalearner_deep <- function(data,
         m1_mod_T %>% keras3::fit(X_train1_matrix, Y_train1_matrix, epochs = epoch, 
                          batch_size = batch_size,
                          validation_split = validation_split,
-                         callbacks_list = callbacks_list,
+                         callbacks = callbacks_list,
                          verbose = verbose)
         m0_mod_T %>% keras3::fit(X_train0_matrix, Y_train0_matrix, epochs = epoch, 
                          batch_size = batch_size, 
                          validation_split = validation_split,
-                         callbacks_list = callbacks_list,
+                         callbacks = callbacks_list,
                          verbose = verbose)
         M_modsT <- list(m0_mod_T,m1_mod_T)
         M_mods[[f]] <- M_modsT
@@ -245,7 +245,7 @@ metalearner_deep <- function(data,
                         epochs = epoch, 
                         batch_size = batch_size, 
                         validation_split = validation_split,
-                        callbacks_list = callbacks_list,
+                        callbacks = callbacks_list,
                         verbose = verbose)
         
         p_hat <- predict(p_mod_X, as.matrix(df_main[, covariates]))
@@ -281,14 +281,14 @@ metalearner_deep <- function(data,
                          epochs = epoch, 
                          batch_size = batch_size, 
                          validation_split = validation_split,
-                         callbacks_list = callbacks_list,
+                         callbacks = callbacks_list,
                          verbose = verbose)
         m0_mod_X %>% keras3::fit(as.matrix(aux_0[,covariates]),
                          as.matrix(aux_0$y), 
                          epochs = epoch, 
                          batch_size = batch_size, 
                          validation_split = validation_split,
-                         callbacks_list = callbacks_list,
+                         callbacks = callbacks_list,
                          verbose = verbose)
         m1_hat <- predict(m1_mod_X, as.matrix(df_main[, covariates]))
         m0_hat <- predict(m0_mod_X, as.matrix(df_main[, covariates]))
@@ -331,7 +331,7 @@ metalearner_deep <- function(data,
                          epochs = epoch,
                          batch_size = batch_size,
                          validation_split = validation_split,
-                         callbacks_list = callbacks_list,
+                         callbacks = callbacks_list,
                          verbose = verbose)
         
         score_tau1 <- predict(tau1_mod, data[, covariates])
@@ -358,7 +358,7 @@ metalearner_deep <- function(data,
                          epochs = epoch,
                          batch_size = batch_size,
                          validation_split = validation_split,
-                         callbacks_list = callbacks_list,
+                         callbacks = callbacks_list,
                          verbose = verbose)
         
         score_tau0 <- predict(tau0_mod, data[, covariates])
@@ -424,7 +424,7 @@ metalearner_deep <- function(data,
                         epochs = epoch, 
                         batch_size = batch_size,
                         validation_split = validation_split,
-                        callbacks_list = callbacks_list,
+                        callbacks = callbacks_list,
                         verbose = verbose)
         
         p_mod_R %>% keras3::fit(as.matrix(df_aux[,covariates]), 
@@ -432,7 +432,7 @@ metalearner_deep <- function(data,
                         epochs = epoch, 
                         batch_size = batch_size, 
                         validation_split = validation_split,
-                        callbacks_list = callbacks_list,
+                        callbacks = callbacks_list,
                         verbose = verbose)
         
         p_hat <- predict(p_mod_R, as.matrix(df_main[, covariates]))
@@ -482,7 +482,7 @@ metalearner_deep <- function(data,
                                                              set_pseudo[l])[,2]),
                            batch_size = batch_size, 
                            validation_split = validation_split, 
-                           callbacks_list = callbacks_list,
+                           callbacks = callbacks_list,
                            verbose = verbose)
           score_r_1_cf <- predict(r_mod_cf, 
                                   as.matrix(do.call(rbind, 
@@ -512,7 +512,7 @@ metalearner_deep <- function(data,
                                                              set_pseudo[l])[,2]),
                            batch_size = batch_size, 
                            validation_split = validation_split, 
-                           callbacks_list = callbacks_list,
+                           callbacks = callbacks_list,
                            verbose = verbose)
           
           score_r_0_cf <- predict(r_mod_cf, 
