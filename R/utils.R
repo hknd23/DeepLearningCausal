@@ -156,18 +156,27 @@ build_model <- function(hidden.layer,
   }
   
   hidden_units <- hidden.layer
+  inputs <- keras3::layer_input(shape = input_shape)
   
-  model <- keras3::keras_model_sequential()
-  suppressWarnings(model <- model %>% keras3::layer_dense(units = hidden_units[1], 
-                                         activation = hidden_activation[1], 
-                                         input_shape = input_shape))
-  
-  for (i in 2:nlayers) {
-    model <- model %>% keras3::layer_dense(units = hidden_units[i], 
-                                           activation = hidden_activation[i])
+  if (nlayers == 1) {
+    x <- keras3::layer_dense(inputs,
+                             units = hidden_units[1],
+                             activation = hidden_activation[1])
+  } else {
+    x <- keras3::layer_dense(inputs,
+                             units = hidden_units[1],
+                             activation = hidden_activation[1])
+    for (i in 2:nlayers) {
+      x <- keras3::layer_dense(x,
+                               units = hidden_units[i],
+                               activation = hidden_activation[i])
+    }
   }
   
-  model <- model %>% keras3::layer_dense(units = output_units,
-                                         activation = output_activation)
+  # Output layer
+  outputs <- keras3::layer_dense(x,
+                                 units = output_units,
+                                 activation = output_activation)
+  model <- keras3::keras_model(inputs = inputs, outputs = outputs)
   return(model)
 }
