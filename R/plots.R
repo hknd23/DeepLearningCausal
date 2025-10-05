@@ -37,7 +37,7 @@
 #'                                   algorithm = "rprop+",
 #'                                   hidden.layer = c(3),
 #'                                   linear.output = FALSE,
-#'                                   binary.outcome = FALSE)
+#'                                   binary.preds = FALSE)
 #'
 #' hte_plot(xlearner_nn)
 #'                                   }

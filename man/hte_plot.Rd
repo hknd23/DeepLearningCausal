@@ -55,7 +55,7 @@ xlearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +
                                   algorithm = "rprop+",
                                   hidden.layer = c(3),
                                   linear.output = FALSE,
-                                  binary.outcome = FALSE)
+                                  binary.preds = FALSE)
 
 hte_plot(xlearner_nn)
                                   }
