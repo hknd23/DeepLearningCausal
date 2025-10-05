@@ -37,16 +37,18 @@ IND_exp_ex <- IND_exp_data3[sample(nrow(IND_exp_data3), nrow(IND_exp_data3)/2),]
 IND_pop_ex <- IND_pop_data3[which(IND_pop_data3$year %in% c(2022)),]
 IND_pop_ex2<-IND_pop_ex[sample(nrow(IND_pop_ex), nrow(IND_pop_ex)/2),]
 
-Exp_data_full <- IND_exp_data3
-Pop_data_full <- IND_pop_data3
+exp_data_full <- IND_exp_data3
+pop_data_full <- IND_pop_data3
 
 expdata <- IND_exp_ex
 popdata <- IND_pop_ex2
 
-Exp_data <- expdata
-Pop_data <- popdata
+exp_data <- expdata
+pop_data <- popdata
 
 save(exp_data_full, file = "test_code/exp_data_full.rda")
 save(pop_data_full, file = "test_code/pop_data_full.rda")
 save(exp_data, file = "test_code/exp_data.rda")
-save(exp_data, file = "test_code/pop_data.rda")
+save(pop_data, file = "test_code/pop_data.rda")
+
+

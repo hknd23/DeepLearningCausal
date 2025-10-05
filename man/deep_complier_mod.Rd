@@ -45,6 +45,8 @@ complier variable and covariates}
 \item{validation_split}{double for proportion of training data to be split for validation.}
 
 \item{patience}{integer for number of epochs with no improvement after which training will be stopped.}
+
+\item{dropout_rate}{double or vector for proportion of hidden layer to drop out.}
 }
 \value{
 deep.complier.mod model object

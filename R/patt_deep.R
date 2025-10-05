@@ -17,6 +17,8 @@
 #' @param hidden_activation string or vector for activation function used for hidden layers. Defaults to "relu".
 #' @param validation_split double for proportion of training data to be split for validation.
 #' @param patience integer for number of epochs with no improvement after which training will be stopped.
+#' @param dropout_rate double or vector for proportion of hidden layer to drop out.
+#'
 #' @return deep.complier.mod model object
 #' @importFrom magrittr %>%
 #' @export
@@ -148,6 +150,7 @@ deep_predict <- function(deep.complier.mod,
 #' In case of multinomial outcome variable, value should be set to the number of categories.
 #' @param validation_split double for the proportion of test data to be split as validation in response model.
 #' @param patience integer for number of epochs with no improvement after which training will be stopped.
+#' @param dropout_rate double or vector for proportion of hidden layer to drop out in response model. 
 #'
 #' @return model object of trained  response model.
 #' @importFrom magrittr %>%

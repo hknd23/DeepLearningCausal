@@ -62,6 +62,8 @@ recommended for continuous outcome variables, and "sigmoid" for binary outcome v
 
 \item{metrics}{string for metrics. "mean_squared_error" recommended for linear models,
 "binary_accuracy" for binary models.}
+
+\item{dropout_rate}{double or vector for proportion of hidden layer to drop out in response model.}
 }
 \value{
 model object of trained  response model.
