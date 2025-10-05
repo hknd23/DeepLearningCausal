@@ -11,7 +11,8 @@ metalearner_ensemble(
   meta.learner.type,
   SL.learners = c("SL.glmnet", "SL.xgboost", "SL.ranger", "SL.nnet"),
   nfolds = 5,
-  binary.outcome = FALSE
+  family = gaussian(),
+  binary.preds = FALSE
 )
 }
 \arguments{
@@ -31,8 +32,10 @@ boosting, glmnet, random forest, and neural nets.}
 \item{nfolds}{number of folds for cross-validation. Currently supports up to
 5 folds.}
 
-\item{binary.outcome}{logical specifying predicted outcome variable will take
-binary values or proportions.}
+\item{family}{gaussian() for continuous outcome variable or binomial() for binary outcome variable}
+
+\item{binary.preds}{logical specifying predicted outcome variable will take
+binary values or proportions when family = binomial().}
 }
 \value{
 \code{metalearner_ensemble} of predicted outcome values and CATEs
@@ -59,7 +62,8 @@ slearner <- metalearner_ensemble(cov.formula = support_war ~ age +
                                 meta.learner.type = "S.Learner",
                                 SL.learners = c("SL.glm"),
                                 nfolds = 5,
-                                binary.outcome = FALSE)
+                                family = gaussian(),
+                                binary.preds = FALSE)
 print(slearner)
 
 \donttest{
@@ -73,7 +77,8 @@ tlearner <- metalearner_ensemble(cov.formula = support_war ~ age + income +
                                   SL.learners = c("SL.xgboost","SL.ranger",
                                                "SL.nnet"),
                                   nfolds = 5,
-                                  binary.outcome = FALSE)
+                                  family = gaussian(),
+                                  binary.preds = FALSE)
 
 print(tlearner)
                                   }
@@ -89,7 +94,8 @@ xlearner <- metalearner_ensemble(cov.formula = support_war ~ age + income +
                                  SL.learners = c("SL.glmnet","SL.xgboost", 
                                  "SL.ranger","SL.nnet"),
                                  nfolds = 5,
-                                 binary.outcome = TRUE)
+                                 family = binomial(),
+                                 binary.preds = TRUE)
 
 print(xlearner)
                                   }
