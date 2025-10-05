@@ -9,7 +9,8 @@ build_model(
   input_shape,
   output_units = 1,
   output_activation = "sigmoid",
-  hidden_activation = "relu"
+  hidden_activation = "relu",
+  dropout_rate = NULL
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ default is "sigmoid"}
 
 \item{hidden_activation}{string for hidden layer activation function,
 default is "relu"}
+
+\item{dropout_rate}{double or vector for proportion of hidden layer to drop out.}
 }
 \value{
 Keras model object

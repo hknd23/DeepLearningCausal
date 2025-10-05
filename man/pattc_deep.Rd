@@ -29,6 +29,8 @@ pattc_deep(
   response.validation_split = NULL,
   compl.patience = NULL,
   response.patience = NULL,
+  compl.dropout_rate = NULL,
+  response.dropout_rate = NULL,
   verbose = 1,
   batch_size = 32,
   binary.preds = FALSE,
@@ -88,6 +90,10 @@ For activation functions available see \code{keras} package.}
 \item{compl.patience}{integer for number of epochs with no improvement after which training will be stopped in complier model.}
 
 \item{response.patience}{integer for number of epochs with no improvement after which training will be stopped in response model.}
+
+\item{compl.dropout_rate}{double or vector for proportion of hidden layer to drop out in complier model.}
+
+\item{response.dropout_rate}{double or vector for proportion of hidden layer to drop out in response model.}
 
 \item{verbose}{integer specifying the verbosity level during training. Defaults to 1.}
 

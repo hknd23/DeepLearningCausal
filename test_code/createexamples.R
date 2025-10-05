@@ -46,7 +46,7 @@ popdata <- IND_pop_ex2
 Exp_data <- expdata
 Pop_data <- popdata
 
-save(Exp_data_full, file = "test_code/Exp_Data_Full.rda")
-save(Pop_data_full, file = "test_code/Pop_Data_Full.rda")
-save(Exp_data, file = "test_code/Exp_Data.rda")
-save(Pop_data, file = "test_code/Pop_Data.rda")
+save(exp_data_full, file = "test_code/exp_data_full.rda")
+save(pop_data_full, file = "test_code/pop_data_full.rda")
+save(exp_data, file = "test_code/exp_data.rda")
+save(exp_data, file = "test_code/pop_data.rda")

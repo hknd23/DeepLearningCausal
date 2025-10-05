@@ -31,7 +31,8 @@ deep_complier_mod <- function(complier.formula,
                               verbose = 1,
                               batch_size = 32, 
                               validation_split = NULL,
-                              patience = NULL){
+                              patience = NULL,
+                              dropout_rate = NULL){
   if (!is.null(ID)){
     id=ID
   }
@@ -50,7 +51,8 @@ deep_complier_mod <- function(complier.formula,
                                 input_shape = length(covariates), 
                                 output_units = 1,
                                 hidden_activation = hidden_activation,
-                                output_activation = "sigmoid")
+                                output_activation = "sigmoid",
+                                dropout_rate = dropout_rate)
   
   deep.complier.mod <- model_complier %>% keras3::compile(
     optimizer = algorithm,
@@ -165,7 +167,8 @@ deep_response_model <- function(response.formula,
                                 patience = NULL,
                                 output_activation = "linear",
                                 loss = "mean_squared_error",
-                                metrics = "mean_squared_error"){
+                                metrics = "mean_squared_error",
+                                dropout_rate = NULL){
   
   variables <- all.vars(response.formula)
   responsevar <- variables[1]
@@ -183,7 +186,8 @@ deep_response_model <- function(response.formula,
                                 input_shape = length(c(compl.var, covariates)), 
                                 output_units = output_units,
                                 hidden_activation = hidden_activation,
-                                output_activation = output_activation)
+                                output_activation = output_activation,
+                                dropout_rate = dropout_rate)
   
   deep.response.mod <- model_response %>% keras3::compile(
     optimizer = algorithm,
@@ -308,6 +312,8 @@ pattc_deep_counterfactuals<- function (pop.data,
 #' @param response.validation_split double for the proportion of test data to be split as validation in response model. Defaults to 0.2.
 #' @param compl.patience integer for number of epochs with no improvement after which training will be stopped in complier model.
 #' @param response.patience integer for number of epochs with no improvement after which training will be stopped in response model.
+#' @param compl.dropout_rate double or vector for proportion of hidden layer to drop out in complier model.
+#' @param response.dropout_rate double or vector for proportion of hidden layer to drop out in response model.
 #'
 #' @return pattc_deep object containing the fitted models, predictions, counterfactuals, and PATT-C estimate.
 #' @import keras3 
@@ -364,6 +370,8 @@ pattc_deep <- function(response.formula,
                       response.validation_split = NULL,
                       compl.patience = NULL,
                       response.patience = NULL,
+                      compl.dropout_rate = NULL,
+                      response.dropout_rate = NULL,
                       verbose = 1,
                       batch_size = 32,
                       binary.preds = FALSE,
@@ -402,7 +410,8 @@ pattc_deep <- function(response.formula,
                                     verbose = verbose,
                                     batch_size = batch_size,
                                     validation_split = compl.validation_split,
-                                    patience = compl.patience)
+                                    patience = compl.patience,
+                                    dropout_rate = compl.dropout_rate)
   
   
   compliers <- deep_predict(deep.complier.mod = complier.mod,
@@ -428,7 +437,8 @@ pattc_deep <- function(response.formula,
                                       loss = response.loss,
                                       metrics = response.metrics,
                                       validation_split = response.validation_split,
-                                      patience = response.patience)
+                                      patience = response.patience,
+                                      dropout_rate = response.dropout_rate)
   
   message("Predicting response and estimating PATT-C")
   

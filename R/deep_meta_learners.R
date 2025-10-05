@@ -26,6 +26,7 @@
 #' @param epoch interger for number of epochs.
 #' @param validation_split double for proportion of training data to split for validation.
 #' @param patience integer for number of epochs with no improvement to wait before stopping training.
+#' @param dropout_rate double or vector for proportion of hidden layer to drop out. 
 #' @return `metalearner_deep` object with CATEs
 #' @export
 #'
@@ -46,7 +47,8 @@ metalearner_deep <- function(data,
                              verbose = 1,
                              batch_size = 32, 
                              validation_split = NULL,
-                             patience = NULL){
+                             patience = NULL,
+                             dropout_rate = NULL){
   
   check_cran_deps()
   check_python_modules()
@@ -98,7 +100,8 @@ metalearner_deep <- function(data,
                                 input_shape = length(covariates) + 1, 
                                 hidden_activation = hidden_activation,
                                 output_activation = output_activation,
-                                output_units = 1)
+                                output_units = output_units,
+                                dropout_rate = dropout_rate)
         
         m_mod_S <- modelm_S %>% keras3::compile(
           optimizer = algorithm,
@@ -143,12 +146,14 @@ metalearner_deep <- function(data,
                                  input_shape = length(covariates) + 1, 
                                  hidden_activation = hidden_activation,
                                  output_activation = output_activation,
-                                 output_units = output_units)
+                                 output_units = output_units,
+                                 dropout_rate = dropout_rate)
         modelm0_T <- build_model(hidden.layer = hidden.layer, 
                                  input_shape = length(covariates) + 1, 
                                  hidden_activation = hidden_activation,
                                  output_activation = output_activation,
-                                 output_units = output_units)
+                                 output_units = output_units,
+                                 dropout_rate = dropout_rate)
         
         m1_mod_T <- modelm1_T %>% keras3::compile(
           optimizer = algorithm,
@@ -233,7 +238,8 @@ metalearner_deep <- function(data,
                                 input_shape = length(covariates), 
                                 hidden_activation = hidden_activation,
                                 output_activation = "sigmoid",
-                                output_units = 1)
+                                output_units = 1,
+                                dropout_rate = dropout_rate)
         
         p_mod_X <- modelp_X %>% keras3::compile(
           optimizer = algorithm,
@@ -260,12 +266,14 @@ metalearner_deep <- function(data,
                                  input_shape = length(covariates), 
                                  hidden_activation = hidden_activation,
                                  output_activation = output_activation,
-                                 output_units = output_units)
+                                 output_units = output_units,
+                                 dropout_rate = dropout_rate)
         modelm0_X <- build_model(hidden.layer = hidden.layer,
                                  input_shape = length(covariates), 
                                  hidden_activation = hidden_activation,
                                  output_activation = output_activation,
-                                 output_units = output_units)
+                                 output_units = output_units,
+                                 dropout_rate = dropout_rate)
         m1_mod_X <- modelm1_X %>% keras3::compile(
           optimizer = algorithm,
           loss = loss,
@@ -320,7 +328,8 @@ metalearner_deep <- function(data,
                                   input_shape = length(covariates),
                                   hidden_activation = hidden_activation,
                                   output_units = output_units,
-                                  output_activation = output_activation)
+                                  output_activation = output_activation,
+                                  dropout_rate = dropout_rate)
         tau1_mod <- tau1_model %>% keras3::compile(
           optimizer = algorithm,
           loss = loss,
@@ -347,7 +356,8 @@ metalearner_deep <- function(data,
                                   input_shape = length(covariates),
                                   hidden_activation = hidden_activation,
                                   output_units = output_units,
-                                  output_activation = output_activation)
+                                  output_activation = output_activation,
+                                  dropout_rate = dropout_rate)
         tau0_mod <- tau0_model %>% keras3::compile(
           optimizer = algorithm,
           loss = loss,
@@ -403,12 +413,14 @@ metalearner_deep <- function(data,
                                 input_shape = length(covariates), 
                                 hidden_activation = hidden_activation,
                                 output_units = output_units,
-                                output_activation = output_activation)
+                                output_activation = output_activation,
+                                dropout_rate = dropout_rate)
         modelp_R <- build_model(hidden.layer = hidden.layer,
                                 input_shape = length(covariates), 
                                 hidden_activation = hidden_activation,
                                 output_units = 1,
-                                output_activation = "sigmoid")
+                                output_activation = "sigmoid",
+                                dropout_rate = dropout_rate)
         m_mod_R <- modelm_R %>% keras3::compile(
           optimizer = algorithm,
           loss = loss,
@@ -467,7 +479,8 @@ metalearner_deep <- function(data,
                                    input_shape = length(covariates), 
                                    hidden_activation = hidden_activation,
                                    output_activation = output_activation,
-                                   output_units = output_units)
+                                   output_units = output_units,
+                                   dropout_rate = dropout_rate)
           r_mod_cf <- modelcf_R %>% keras3::compile(
             optimizer = algorithm,
             loss = loss,
@@ -497,7 +510,8 @@ metalearner_deep <- function(data,
                                    input_shape = length(covariates), 
                                    hidden_activation = hidden_activation,
                                    output_activation = output_activation,
-                                   output_units = output_units)
+                                   output_units = output_units,
+                                   dropout_rate = dropout_rate)
           r_mod_cf <- modelcf_R %>% keras3::compile(
             optimizer = algorithm,
             loss = loss,

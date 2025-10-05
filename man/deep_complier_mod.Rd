@@ -16,7 +16,8 @@ deep_complier_mod(
   verbose = 1,
   batch_size = 32,
   validation_split = NULL,
-  patience = NULL
+  patience = NULL,
+  dropout_rate = NULL
 )
 }
 \arguments{

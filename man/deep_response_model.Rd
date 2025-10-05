@@ -20,7 +20,8 @@ deep_response_model(
   patience = NULL,
   output_activation = "linear",
   loss = "mean_squared_error",
-  metrics = "mean_squared_error"
+  metrics = "mean_squared_error",
+  dropout_rate = NULL
 )
 }
 \arguments{

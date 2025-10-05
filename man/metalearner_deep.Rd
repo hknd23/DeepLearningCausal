@@ -24,7 +24,8 @@ metalearner_deep(
   verbose = 1,
   batch_size = 32,
   validation_split = NULL,
-  patience = NULL
+  patience = NULL,
+  dropout_rate = NULL
 )
 }
 \arguments{
@@ -67,6 +68,8 @@ In case of multinomial outcome variable, set to the number of categories.}
 \item{validation_split}{double for proportion of training data to split for validation.}
 
 \item{patience}{integer for number of epochs with no improvement to wait before stopping training.}
+
+\item{dropout_rate}{double or vector for proportion of hidden layer to drop out.}
 }
 \value{
 \code{metalearner_deep} object with CATEs
