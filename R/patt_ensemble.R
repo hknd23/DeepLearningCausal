@@ -37,7 +37,7 @@ complier_mod <- function(exp.data,
                                              X = Xcompl,
                                              SL.library = SL.learners,
                                              id = ID,
-                                             family = "binomial")
+                                             family = binomial())
   return(complier.mod)
 }
 
@@ -90,7 +90,7 @@ complier_predict <- function(complier.mod,
 #' @param compl.var string specifying binary complier variable
 #' @param exp.compliers `data.frame` object of compliers from
 #' \code{complier_predict}.
-#' @param family string for `"gaussian"` or `"binomial"`.
+#' @param family gaussian() or binomial().
 #' @param ID string for identifier variable.
 #' @param SL.learners vector of names of ML algorithms used for ensemble model.
 #'
@@ -101,7 +101,7 @@ response_model <- function(response.formula,
                          exp.data,
                          compl.var,
                          exp.compliers,
-                         family = "binomial",
+                         family = gaussian(),
                          ID = NULL,
                          SL.learners = c("SL.glmnet", "SL.xgboost",
                                         "SL.ranger", "SL.nnet",
@@ -235,6 +235,7 @@ pattc_counterfactuals<- function (pop.data,
 #'                                 compl.var = "compliance",
 #'                                 compl.SL.learners = c("SL.glm", "SL.nnet"),
 #'                                 response.SL.learners = c("SL.glm", "SL.nnet"),
+#'                                 response.family = binomial(),
 #'                                 ID = NULL,
 #'                                 cluster = NULL,
 #'                                 binary.preds = FALSE)
@@ -249,6 +250,7 @@ pattc_counterfactuals<- function (pop.data,
 #'                                 compl.var = "compliance",
 #'                                 compl.SL.learners = c("SL.glm", "SL.nnet"),
 #'                                 response.SL.learners = c("SL.glm", "SL.nnet"),
+#'                                 response.family = binomial(),
 #'                                 ID = NULL,
 #'                                 cluster = NULL,
 #'                                 binary.preds = FALSE,
@@ -269,12 +271,17 @@ pattc_ensemble <- function(response.formula,
                         response.SL.learners = c("SL.glmnet", "SL.xgboost",
                                         "SL.ranger", "SL.nnet",
                                         "SL.glm"),
+                        response.family = binomial(),
                         ID = NULL,
                         cluster = NULL,
                         binary.preds = FALSE,
                         bootstrap = FALSE,
                         nboot = 1000){
 
+  if (family$family == "gaussian") {
+    binary.preds = FALSE
+  }
+  
   exp_data <- expcall(response.formula,
                       treat.var = treat.var,
                       compl.var = compl.var,
@@ -311,7 +318,8 @@ pattc_ensemble <- function(response.formula,
                                   compl.var = compl.var,
                                   family = "binomial",
                                   ID = NULL,
-                                  SL.learners = response.SL.learners)
+                                  SL.learners = response.SL.learners,
+                                  family = response.family)
 
   message("Predicting response and estimating PATT-C")
   counterfactuals <- pattc_counterfactuals(pop.data = pop_data,

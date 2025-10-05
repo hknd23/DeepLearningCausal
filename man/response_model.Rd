@@ -9,7 +9,7 @@ response_model(
   exp.data,
   compl.var,
   exp.compliers,
-  family = "binomial",
+  family = gaussian(),
   ID = NULL,
   SL.learners = c("SL.glmnet", "SL.xgboost", "SL.ranger", "SL.nnet", "SL.glm")
 )
@@ -25,7 +25,7 @@ binary outcome variable and covariates}
 \item{exp.compliers}{\code{data.frame} object of compliers from
 \code{complier_predict}.}
 
-\item{family}{string for \code{"gaussian"} or \code{"binomial"}.}
+\item{family}{gaussian() or binomial().}
 
 \item{ID}{string for identifier variable.}
 

@@ -12,6 +12,7 @@ pattc_ensemble(
   compl.var,
   compl.SL.learners = c("SL.glmnet", "SL.xgboost", "SL.ranger", "SL.nnet", "SL.glm"),
   response.SL.learners = c("SL.glmnet", "SL.xgboost", "SL.ranger", "SL.nnet", "SL.glm"),
+  response.family = binomial(),
   ID = NULL,
   cluster = NULL,
   binary.preds = FALSE,
@@ -78,6 +79,7 @@ pattc <- pattc_ensemble(response.formula = support_war ~ age + income +
                                 compl.var = "compliance",
                                 compl.SL.learners = c("SL.glm", "SL.nnet"),
                                 response.SL.learners = c("SL.glm", "SL.nnet"),
+                                response.family = binomial(),
                                 ID = NULL,
                                 cluster = NULL,
                                 binary.preds = FALSE)
@@ -92,6 +94,7 @@ pattc_boot <- pattc_ensemble(response.formula = support_war ~ age + income +
                                 compl.var = "compliance",
                                 compl.SL.learners = c("SL.glm", "SL.nnet"),
                                 response.SL.learners = c("SL.glm", "SL.nnet"),
+                                response.family = binomial(),
                                 ID = NULL,
                                 cluster = NULL,
                                 binary.preds = FALSE,
