@@ -14,7 +14,7 @@ metalearner_deepneural(
   algorithm = "rprop+",
   hidden.layer = c(4, 2),
   linear.output = FALSE,
-  binary.outcome = FALSE
+  binary.preds = FALSE
 )
 }
 \arguments{
@@ -41,7 +41,7 @@ backtracking algorithm for training neural networks.}
 \item{linear.output}{logical specifying regression (TRUE)
 or classification (FALSE) model.}
 
-\item{binary.outcome}{logical specifying predicted outcome variable will take
+\item{binary.preds}{logical specifying predicted outcome variable will take
 binary values or proportions.}
 }
 \value{
@@ -69,7 +69,7 @@ slearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age + income +
                                    algorithm = "rprop+",
                                    hidden.layer = c(1),
                                    linear.output = FALSE,
-                                   binary.outcome = FALSE)
+                                   binary.preds = FALSE)
 
 print(slearner_nn)
 
@@ -87,7 +87,7 @@ tlearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +
                                   algorithm = "rprop+",
                                   hidden.layer = c(2,1),
                                   linear.output = FALSE,
-                                  binary.outcome = FALSE)
+                                  binary.preds = FALSE)
 
 print(tlearner_nn)
 
@@ -105,7 +105,7 @@ xlearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +
                                   algorithm = "rprop+",
                                   hidden.layer = c(3),
                                   linear.output = FALSE,
-                                  binary.outcome = FALSE)
+                                  binary.preds = FALSE)
 
 print(xlearner_nn)
                                   }
