@@ -213,6 +213,7 @@ pattc_counterfactuals<- function (pop.data,
 #' model.
 #' @param response.SL.learners vector of names of ML algorithms used for response
 #' model.
+#' @param response.family gaussian() or binomial() for response model.
 #'
 #' @return `pattc_ensemble` object of results of t test as PATTC estimate.
 #' @export

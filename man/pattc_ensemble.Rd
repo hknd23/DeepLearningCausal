@@ -40,6 +40,8 @@ model.}
 \item{response.SL.learners}{vector of names of ML algorithms used for response
 model.}
 
+\item{response.family}{gaussian() or binomial() for response model.}
+
 \item{ID}{string for name of identifier. (currently not used)}
 
 \item{cluster}{string for name of cluster variable. (currently not used)}
