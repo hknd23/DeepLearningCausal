@@ -279,7 +279,7 @@ pattc_ensemble <- function(response.formula,
                         bootstrap = FALSE,
                         nboot = 1000){
 
-  if (family$family == "gaussian") {
+  if (response.family$family == "gaussian") {
     binary.preds = FALSE
   }
   
