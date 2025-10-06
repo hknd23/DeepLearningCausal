@@ -11,6 +11,9 @@ neuralnet_response_model(
   compl.var,
   algorithm = "rprop+",
   hidden.layer = c(4, 2),
+  act.fct = "logistic",
+  err.fct = "sse",
+  linear.output = TRUE,
   stepmax = 1e+08
 )
 }
@@ -27,6 +30,12 @@ from \code{neuralnet_predict}.}
 \item{algorithm}{neural network algorithm, default set to \code{"rprop+"}.}
 
 \item{hidden.layer}{vector specifying hidden layers and number of neurons.}
+
+\item{act.fct}{"logistic" or "tanh activation function.}
+
+\item{err.fct}{"sse" for sum of squared errors or "ce" for cross-entropy.}
+
+\item{linear.output}{logical for whether output (outcome variable) is linear or not.}
 
 \item{stepmax}{maximum number of steps for training model.}
 }

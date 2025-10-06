@@ -13,7 +13,9 @@ metalearner_deepneural(
   nfolds = 5,
   algorithm = "rprop+",
   hidden.layer = c(4, 2),
-  linear.output = FALSE,
+  act.fct = "logistic",
+  err.fct = "sse",
+  linear.output = TRUE,
   binary.preds = FALSE
 )
 }
@@ -37,6 +39,10 @@ Default set to \verb{rprop+}, the Resilient back propagation (Rprop) with weight
 backtracking algorithm for training neural networks.}
 
 \item{hidden.layer}{vector of integers specifying layers and number of neurons.}
+
+\item{act.fct}{"logistic" or "tanh" for activation function to be used in the neural network.}
+
+\item{err.fct}{"ce" for cross-entropy or "sse" for sum of squared errors as error function.}
 
 \item{linear.output}{logical specifying regression (TRUE)
 or classification (FALSE) model.}

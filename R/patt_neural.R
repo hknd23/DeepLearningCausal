@@ -15,6 +15,7 @@
 #' @param hidden.layer vector for specifying hidden layers and number of neurons.
 #' @param ID string for identifier variable
 #' @param stepmax maximum number of steps.
+#' @param act.fct "logistic" or "tanh activation function.
 #'
 #' @return trained complier model object
 #' @export
@@ -24,6 +25,7 @@ neuralnet_complier_mod<-function(complier.formula,
                                  treat.var,
                                  algorithm = "rprop+",
                                  hidden.layer = c(4,2),
+                                 act.fct = "logistic",
                                  ID = NULL,
                                  stepmax = 1e+08){
   if (!is.null(ID)){
@@ -40,6 +42,7 @@ neuralnet_complier_mod<-function(complier.formula,
                                                  algorithm = algorithm,
                                                  hidden = hidden.layer,
                                                  linear.output = FALSE,
+                                                 act.fct = act.fct,
                                                  stepmax = stepmax)
   return(neuralnet.complier.mod)
 }
@@ -92,6 +95,9 @@ neuralnet_predict<-function(neuralnet.complier.mod,
 #' @param algorithm neural network algorithm, default set to `"rprop+"`.
 #' @param hidden.layer vector specifying hidden layers and number of neurons.
 #' @param stepmax maximum number of steps for training model.
+#' @param act.fct "logistic" or "tanh activation function.
+#' @param err.fct "sse" for sum of squared errors or "ce" for cross-entropy.
+#' @param linear.output logical for whether output (outcome variable) is linear or not.
 #'
 #' @return trained response model object
 #' @export
@@ -102,6 +108,9 @@ neuralnet_response_model <- function(response.formula,
                                      compl.var,
                                      algorithm = "rprop+",
                                      hidden.layer = c(4,2),
+                                     act.fct = "logistic",
+                                     err.fct = "sse",
+                                     linear.output = TRUE,
                                      stepmax = 1e+08){
 
   variables <- all.vars(response.formula)
@@ -118,7 +127,9 @@ neuralnet_response_model <- function(response.formula,
                                             data = exp.compliers,
                                             hidden = hidden.layer,
                                             algorithm = algorithm,
-                                            linear.output = FALSE,
+                                            linear.output = linear.output,
+                                            act.fct = act.fct,
+                                            err.fct = err.fct,
                                             stepmax = stepmax)
   return(neuralnet.response.mod)
 }
@@ -136,7 +147,7 @@ neuralnet_response_model <- function(response.formula,
 #' \code{neuralnet_response_model}.
 #' @param ID string for identifier variable.
 #' @param cluster string for clustering variable (currently unused).
-#' @param binary.outcome logical specifying predicted outcome variable will take
+#' @param binary.preds logical specifying predicted outcome variable will take
 #' binary values or proportions.
 #'
 #' @return `data.frame` of predicted outcomes of response variable from
@@ -147,7 +158,7 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
                                              neuralnet.response.mod,
                                              ID = NULL,
                                              cluster = NULL,
-                                             binary.outcome = FALSE){
+                                             binary.preds = FALSE){
 
   compl.var <- pop.data$compl_var
   covariates <- all.vars(pop.data$response_formula)[-1]
@@ -155,18 +166,20 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
   popdata$c <- popdata[,compl.var]
   popdata_comp <- popdata[which(popdata$c==1),]
 
-  pop.tr.counterfactual <- cbind(rep(1, nrow(popdata_comp)), popdata_comp[, covariates])
+  pop.tr.counterfactual <- cbind(rep(1, nrow(popdata_comp)), 
+                                 popdata_comp[, covariates])
   colnames(pop.tr.counterfactual) <- c(compl.var, covariates)
-  pop.ctrl.counterfactual <- cbind(rep(0, nrow(popdata_comp)), popdata_comp[, covariates])
+  pop.ctrl.counterfactual <- cbind(rep(0, nrow(popdata_comp)), 
+                                   popdata_comp[, covariates])
   colnames(pop.ctrl.counterfactual) <- c(compl.var, covariates)
 
   Y.hat.0 <- predict(neuralnet.response.mod, pop.ctrl.counterfactual)
   Y.hat.1 <- predict(neuralnet.response.mod, pop.tr.counterfactual)
 
-  if (binary.outcome) {
+  if (binary.preds) {
     neuralnetpredict.max.0 <- max.col(Y.hat.0) - 1
     neuralnetpredict.max.1 <- max.col(Y.hat.1) - 1
-  } else if (!binary.outcome) {
+  } else if (!binary.preds) {
     neuralnetpredict.max.0 <- Y.hat.0[,2]
     neuralnetpredict.max.1 <- Y.hat.1[,2]
   }
@@ -215,10 +228,14 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #' @param response.stepmax maximum number of steps for response model
 #' @param ID string for identifier variable
 #' @param cluster string for cluster variable.
-#' @param binary.outcome logical specifying predicted outcome variable will take
+#' @param binary.preds logical specifying predicted outcome variable will take
 #' binary values or proportions.
 #' @param bootstrap logical for bootstrapped PATT-C.
 #' @param nboot number of bootstrapped samples
+#' @param compl.act.fct "logistic" or "tanh" activation function for complier model.
+#' @param response.err.fct "sse" for sum of squared errors or "ce" for cross-entropy for response model.
+#' @param response.act.fct "logistic" or "tanh" activation function for response model.
+#' @param linear.output logical for whether output (outcome variable) is linear or not for response model.
 #'
 #' @return `pattc_deepneural` class object of results of t test as PATTC estimate.
 #' @export
@@ -245,7 +262,7 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #'                                response.stepmax = 1e+09,
 #'                                ID = NULL,
 #'                                cluster = NULL,
-#'                                binary.outcome = FALSE)
+#'                                binary.preds = FALSE)
 #'
 #' print(pattc_neural)
 #'
@@ -264,7 +281,7 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #'                                response.stepmax = 1e+09,
 #'                                ID = NULL,
 #'                                cluster = NULL,
-#'                                binary.outcome = FALSE,
+#'                                binary.preds = FALSE,
 #'                                bootstrap = TRUE,
 #'                                nboot = 2000)
 #'
@@ -273,23 +290,31 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #' }
 #'
 pattc_deepneural <- function(response.formula,
-                         exp.data,
-                         pop.data,
-                         treat.var,
-                         compl.var,
-                         compl.algorithm = "rprop+",
-                         response.algorithm = "rprop+",
-                         compl.hidden.layer = c(4,2),
-                         response.hidden.layer = c(4,2),
-                         compl.stepmax = 1e+08,
-                         response.stepmax = 1e+08,
-                         ID = NULL,
-                         cluster = NULL,
-                         binary.outcome = FALSE,
-                         bootstrap = FALSE,
-                         nboot = 1000)
+                             exp.data,
+                             pop.data,
+                             treat.var,
+                             compl.var,
+                             compl.algorithm = "rprop+",
+                             response.algorithm = "rprop+",
+                             compl.hidden.layer = c(4,2),
+                             response.hidden.layer = c(4,2),
+                             compl.act.fct = "logistic",
+                             response.err.fct = "sse",
+                             response.act.fct = "logistic",
+                             linear.output = TRUE,
+                             compl.stepmax = 1e+08,
+                             response.stepmax = 1e+08,
+                             ID = NULL,
+                             cluster = NULL,
+                             binary.preds = FALSE,
+                             bootstrap = FALSE,
+                             nboot = 1000)
 
 {
+  if (response.err.fct == "ce" & linear.output == TRUE){
+    stop("cross-entropy error function cannot be used with linear output.
+         Please set linear.output = FALSE")
+  }
   expdata <- expcall(response.formula,
                      treat.var = treat.var,
                      compl.var = compl.var,
@@ -310,6 +335,10 @@ pattc_deepneural <- function(response.formula,
   neuralnet.compl.mod <- neuralnet_complier_mod(complier.formula = compl.formula,
                                                 exp.data = expdata$exp_data,
                                                 treat.var = treat.var,
+                                                algorithm = compl.algorithm,
+                                                hidden.layer = compl.hidden.layer,
+                                                act.fct = compl.act.fct,
+                                                ID = ID,
                                                 stepmax = compl.stepmax)
 
   compliers <- neuralnet_predict(neuralnet.complier.mod = neuralnet.compl.mod,
@@ -321,16 +350,22 @@ pattc_deepneural <- function(response.formula,
                                                   compl.var = compl.var,
                                                   exp.data = expdata$exp_data,
                                                   neuralnet.compliers = compliers,
+                                                  algorithm = response.algorithm,
+                                                  hidden.layer = response.hidden.layer,
+                                                  act.fct = response.act.fct,
+                                                  err.fct = response.err.fct,
+                                                  linear.output = linear.output,
                                                   stepmax = response.stepmax)
+  
   message("Predicting response and estimating PATT-C")
   counterfactuals <- neuralnet_pattc_counterfactuals(popdata,
                                                      neural.response.mod,
-                                                     binary.outcome = binary.outcome)
+                                                     binary.preds = binary.preds)
 
   outcome.var <- all.vars(response.formula)[1]
   dummy <- length(levels(as.factor(expdata$exp_data[,outcome.var])) )
 
-  if (binary.outcome) {
+  if (binary.preds) {
     Y_hat1_0s <- sum(counterfactuals$Y_hat0)
     nY_hat0 <- length(counterfactuals$Y_hat0)
     Y_hat1_1s <- sum(counterfactuals$Y_hat1)
@@ -349,7 +384,7 @@ pattc_deepneural <- function(response.formula,
                  pattc_xsq$method,
                  statistic)
   }
-  else if (!binary.outcome){
+  else if (!binary.preds){
     if (bootstrap) {
       bootResults <- matrix(NA, nrow = nboot, ncol = ncol(counterfactuals)+1)
       for (i in seq_len(nboot)){

@@ -14,11 +14,15 @@ pattc_deepneural(
   response.algorithm = "rprop+",
   compl.hidden.layer = c(4, 2),
   response.hidden.layer = c(4, 2),
+  compl.act.fct = "logistic",
+  response.err.fct = "sse",
+  response.act.fct = "logistic",
+  linear.output = TRUE,
   compl.stepmax = 1e+08,
   response.stepmax = 1e+08,
   ID = NULL,
   cluster = NULL,
-  binary.outcome = FALSE,
+  binary.preds = FALSE,
   bootstrap = FALSE,
   nboot = 1000
 )
@@ -51,6 +55,14 @@ neurons in complier model.}
 \item{response.hidden.layer}{vector for specifying hidden layers and number of
 neurons in response model.}
 
+\item{compl.act.fct}{"logistic" or "tanh" activation function for complier model.}
+
+\item{response.err.fct}{"sse" for sum of squared errors or "ce" for cross-entropy for response model.}
+
+\item{response.act.fct}{"logistic" or "tanh" activation function for response model.}
+
+\item{linear.output}{logical for whether output (outcome variable) is linear or not for response model.}
+
 \item{compl.stepmax}{maximum number of steps for complier model}
 
 \item{response.stepmax}{maximum number of steps for response model}
@@ -59,7 +71,7 @@ neurons in response model.}
 
 \item{cluster}{string for cluster variable.}
 
-\item{binary.outcome}{logical specifying predicted outcome variable will take
+\item{binary.preds}{logical specifying predicted outcome variable will take
 binary values or proportions.}
 
 \item{bootstrap}{logical for bootstrapped PATT-C.}
@@ -96,7 +108,7 @@ pattc_neural <- pattc_deepneural(response.formula = support_war ~ age + female +
                                response.stepmax = 1e+09,
                                ID = NULL,
                                cluster = NULL,
-                               binary.outcome = FALSE)
+                               binary.preds = FALSE)
 
 print(pattc_neural)
 
@@ -115,7 +127,7 @@ pattc_neural_boot <- pattc_deepneural(response.formula = support_war ~ age + fem
                                response.stepmax = 1e+09,
                                ID = NULL,
                                cluster = NULL,
-                               binary.outcome = FALSE,
+                               binary.preds = FALSE,
                                bootstrap = TRUE,
                                nboot = 2000)
 

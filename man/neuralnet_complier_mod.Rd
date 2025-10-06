@@ -10,6 +10,7 @@ neuralnet_complier_mod(
   treat.var,
   algorithm = "rprop+",
   hidden.layer = c(4, 2),
+  act.fct = "logistic",
   ID = NULL,
   stepmax = 1e+08
 )
@@ -28,6 +29,8 @@ Default set to the Resilient back propagation with weight backtracking
 (see \code{neuralnet} package).}
 
 \item{hidden.layer}{vector for specifying hidden layers and number of neurons.}
+
+\item{act.fct}{"logistic" or "tanh activation function.}
 
 \item{ID}{string for identifier variable}
 
