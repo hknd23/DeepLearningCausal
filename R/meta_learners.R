@@ -24,7 +24,7 @@
 #' @return `metalearner_ensemble` of predicted outcome values and CATEs 
 #' estimated by the meta learners for each observation.
 #' @export
-#' @importFrom stats binomial
+#' @importFrom stats binomial gaussian
 #'
 #' @examples
 #' # load dataset

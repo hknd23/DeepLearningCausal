@@ -13,6 +13,7 @@
 #' extreme gradient boosting, elastic net regression, random forest, and neural nets.
 #'
 #' @return model object of trained model.
+#' @importFrom stats gaussian binomial
 #' @export
 
 complier_mod <- function(exp.data,
@@ -95,6 +96,7 @@ complier_predict <- function(complier.mod,
 #' @param SL.learners vector of names of ML algorithms used for ensemble model.
 #'
 #' @return trained response model.
+#' @importFrom stats gaussian binomial
 #' @export
 
 response_model <- function(response.formula,
@@ -216,6 +218,7 @@ pattc_counterfactuals<- function (pop.data,
 #' @param response.family gaussian() or binomial() for response model.
 #'
 #' @return `pattc_ensemble` object of results of t test as PATTC estimate.
+#' @importFrom stats gaussian binomial
 #' @export
 #'
 #' @examples
