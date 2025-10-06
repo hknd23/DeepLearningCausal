@@ -316,7 +316,6 @@ pattc_ensemble <- function(response.formula,
                                   exp.data = exp_data$exp_data,
                                   exp.compliers = compliers,
                                   compl.var = compl.var,
-                                  family = "binomial",
                                   ID = NULL,
                                   SL.learners = response.SL.learners,
                                   family = response.family)
