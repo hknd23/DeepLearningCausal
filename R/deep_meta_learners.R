@@ -77,7 +77,7 @@ metalearner_deep <- function(data,
   folds <- caret::createFolds(data$d, k=nfolds)
   Yhats_list <- list()
   M_mods <- list()
-  
+  M_mods_history <- list()
   if (!is.null(patience)){
     early_stopping <- keras3::callback_early_stopping(monitor = "val_loss", 
                                                       patience = patience, 
@@ -118,7 +118,8 @@ metalearner_deep <- function(data,
                                 verbose = verbose,
                                 validation_split = validation_split,
                                 callbacks = callbacks_list)
-        M_mods[[f]] <- model_history
+        M_mods[[f]] <- m_mod_S
+        M_mods_history[[f]] <- model_history
         
         # Set treatment variable to 0
         X_test_0 <- (df_main[,c(covariates,"d")])
@@ -176,18 +177,21 @@ metalearner_deep <- function(data,
         X_train0_matrix <- as.matrix(X_train0)
         Y_train0_matrix <- as.matrix(Y_train0)
         
-        m1_mod_T %>% keras3::fit(X_train1_matrix, Y_train1_matrix, epochs = epoch, 
+        m0_history <- m1_mod_T %>% keras3::fit(X_train1_matrix, Y_train1_matrix, epochs = epoch, 
                          batch_size = batch_size,
                          validation_split = validation_split,
                          callbacks = callbacks_list,
                          verbose = verbose)
-        m0_mod_T %>% keras3::fit(X_train0_matrix, Y_train0_matrix, epochs = epoch, 
+        m1_history <- m0_mod_T %>% keras3::fit(X_train0_matrix, Y_train0_matrix, epochs = epoch, 
                          batch_size = batch_size, 
                          validation_split = validation_split,
                          callbacks = callbacks_list,
                          verbose = verbose)
         M_modsT <- list(m0_mod_T,m1_mod_T)
+        M_modsT_history <- list(m0_history,m1_history)
+        
         M_mods[[f]] <- M_modsT
+        M_mods_history[[f]] <- M_modsT_history
         
         X_test <- as.matrix(df_main[,c(covariates,"d")])
         
@@ -212,6 +216,7 @@ metalearner_deep <- function(data,
                         "Y_hats" = Y_hats_sorted,
                         "Meta_Learner" = meta.learner.type,
                         "ml_model" = M_mods,
+                        "ml_model_history" = M_mods_history,
                         "data" = data)
   }
   
@@ -219,7 +224,18 @@ metalearner_deep <- function(data,
     pseudo_all <- matrix(NA, nrow(data), 2)
     ID_pseudo <- 1:nrow(data)
     pseudo_all <- cbind(pseudo_all, ID_pseudo)
+    
+    m_mods <- list()
+    m_mods_history <- list()
+    p_mods <- list()
+    p_mods_history <- list()
+    
     if (meta.learner.type == "X.Learner"){
+      tau_mods_0 <- list()
+      tau_mods_1 <- list()
+      tau_mods_0_history <- list()
+      tau_mods_1_history <- list()
+      
       mu_0_list <- list()
       mu_1_list <- list()
       for(f in seq_along(folds)){
@@ -246,13 +262,16 @@ metalearner_deep <- function(data,
           loss = "binary_crossentropy",
           metrics = "accuracy"
         )
-        p_mod_X %>% keras3::fit(as.matrix(df_aux[,covariates]), 
+        m_X_history <- p_mod_X %>% keras3::fit(as.matrix(df_aux[,covariates]), 
                         df_aux[,"d"], 
                         epochs = epoch, 
                         batch_size = batch_size, 
                         validation_split = validation_split,
                         callbacks = callbacks_list,
                         verbose = verbose)
+        
+        p_mods[[f]] <- p_mod_X
+        p_mods_history[[f]] <- m_X_history
         
         p_hat <- predict(p_mod_X, as.matrix(df_main[, covariates]))
         p_hat <- ifelse(p_hat < 0.025, 0.025, 
@@ -284,20 +303,27 @@ metalearner_deep <- function(data,
           loss = loss,
           metrics = metrics
         )
-        m1_mod_X %>% keras3::fit(as.matrix(aux_1[,covariates]), 
+       m1_history <-  m1_mod_X %>% keras3::fit(as.matrix(aux_1[,covariates]), 
                          as.matrix(aux_1$y), 
                          epochs = epoch, 
                          batch_size = batch_size, 
                          validation_split = validation_split,
                          callbacks = callbacks_list,
                          verbose = verbose)
-        m0_mod_X %>% keras3::fit(as.matrix(aux_0[,covariates]),
+       m0_history <- m0_mod_X %>% keras3::fit(as.matrix(aux_0[,covariates]),
                          as.matrix(aux_0$y), 
                          epochs = epoch, 
                          batch_size = batch_size, 
                          validation_split = validation_split,
                          callbacks = callbacks_list,
                          verbose = verbose)
+        
+        m_mods_X <- list(m0_mod_X,m1_mod_X)
+        m_mods_X_history <- list(m0_history,m1_history)
+        m_mods[[f]] <- m_mods_X
+        m_mods_history[[f]] <- m_mods_X_history
+        
+       
         m1_hat <- predict(m1_mod_X, as.matrix(df_main[, covariates]))
         m0_hat <- predict(m0_mod_X, as.matrix(df_main[, covariates]))
         
@@ -335,7 +361,7 @@ metalearner_deep <- function(data,
           loss = loss,
           metrics = metrics
         )
-        tau1_mod %>% keras3::fit(as.matrix(train_data1[, covariates]),
+       tau1_history <- tau1_mod %>% keras3::fit(as.matrix(train_data1[, covariates]),
                          as.matrix(train_data1$y),
                          epochs = epoch,
                          batch_size = batch_size,
@@ -343,6 +369,9 @@ metalearner_deep <- function(data,
                          callbacks = callbacks_list,
                          verbose = verbose)
         
+       tau_mods_1[[1]] <- tau1_mod
+       tau_mods_1_history[[1]] <- tau1_history
+       
         score_tau1 <- predict(tau1_mod, data[, covariates])
         a1 <- score_tau1
       }, error = function(e){
@@ -363,13 +392,15 @@ metalearner_deep <- function(data,
           loss = loss,
           metrics = metrics
         )
-        tau0_mod %>% keras3::fit(as.matrix(train_data0[, covariates]),
+        tau0_history <- tau0_mod %>% keras3::fit(as.matrix(train_data0[, covariates]),
                          as.matrix(train_data0$y),
                          epochs = epoch,
                          batch_size = batch_size,
                          validation_split = validation_split,
                          callbacks = callbacks_list,
                          verbose = verbose)
+        tau_mods_0[[1]] <- tau0_mod
+        tau_mods_0_history[[1]] <- tau0_history
         
         score_tau0 <- predict(tau0_mod, data[, covariates])
         a0 <- score_tau0
@@ -391,10 +422,14 @@ metalearner_deep <- function(data,
                           "hidden_layer" = hidden.layer,
                           "CATEs" = score_meta[,1],
                           "Meta_Learner" = meta.learner.type,
-                          "ml_model" = list("first_stage_m" = M_mods,
-                                            "first_stage_p" = p_mod_X,
+                          "ml_model" = list("first_stage_m" = m_mods,
+                                            "first_stage_p" = p_mods,
                                             "second_stage_mu0" = tau0_mod,
                                             "second_stage_mu1" = tau1_mod),
+                          "ml_model_history" = list("first_stage_m" = m_mods_history,
+                                                   "first_stage_p" = p_mods_history,
+                                                   "second_stage_mu0" = tau_mods_0_history,
+                                                   "second_stage_mu1" = tau_mods_1_history),
                           "pseudo_outcome" = pseudo_all,
                           "data" = data)
     } # end of X learner
@@ -402,6 +437,12 @@ metalearner_deep <- function(data,
     if(meta.learner.type == "R.Learner"){
       score_r_0 <- list()
       score_r_1 <- list()
+      
+      r_mods_0 <- list()
+      r_mods_1 <- list()
+      r_mods_0_history <- list()
+      r_mods_1_history <- list()
+      
       for(f in seq_along(folds)){
         test_idx <- folds[[f]]
         data1 <- data[-test_idx, ]
@@ -431,7 +472,7 @@ metalearner_deep <- function(data,
           loss = "binary_crossentropy",
           metrics = "accuracy"
         )
-        m_mod_R %>% keras3::fit(as.matrix(df_aux[,covariates]), 
+       mmod_history <- m_mod_R %>% keras3::fit(as.matrix(df_aux[,covariates]), 
                         as.matrix(df_aux$y), 
                         epochs = epoch, 
                         batch_size = batch_size,
@@ -439,13 +480,18 @@ metalearner_deep <- function(data,
                         callbacks = callbacks_list,
                         verbose = verbose)
         
-        p_mod_R %>% keras3::fit(as.matrix(df_aux[,covariates]), 
+       pmod_history <- p_mod_R %>% keras3::fit(as.matrix(df_aux[,covariates]), 
                         as.matrix(df_aux[,"d"]),
                         epochs = epoch, 
                         batch_size = batch_size, 
                         validation_split = validation_split,
                         callbacks = callbacks_list,
                         verbose = verbose)
+        
+        m_mods[[f]] <- m_mod_R
+        m_mods_history[[f]] <- mmod_history
+        p_mods[[f]] <- p_mod_R
+        p_mods_history[[f]] <- pmod_history
         
         p_hat <- predict(p_mod_R, as.matrix(df_main[, covariates]))
         p_hat <- ifelse(p_hat < 0.025, 0.025, 
@@ -486,7 +532,7 @@ metalearner_deep <- function(data,
             loss = loss,
             metrics = metrics
           )
-          r_mod_cf %>% keras3::fit(as.matrix(do.call(rbind, 
+         rmod_history  <- r_mod_cf %>% keras3::fit(as.matrix(do.call(rbind, 
                                              set_data[l])[,covariates]),
                            as.matrix(do.call(rbind, 
                                              set_pseudo[l])[,1]), 
@@ -497,7 +543,11 @@ metalearner_deep <- function(data,
                            validation_split = validation_split, 
                            callbacks = callbacks_list,
                            verbose = verbose)
-          score_r_1_cf <- predict(r_mod_cf, 
+         
+         rmods_1[[l]] <- r_mod_cf
+         rmods_1_history[[l]] <- rmod_history
+         
+           score_r_1_cf <- predict(r_mod_cf, 
                                   as.matrix(do.call(rbind, 
                                                     set_data[6:10])[,covariates]))
           
@@ -517,7 +567,7 @@ metalearner_deep <- function(data,
             loss = loss,
             metrics = metrics
           )
-          r_mod_cf %>% keras3::fit(as.matrix(do.call(rbind, 
+          rmod_history  <- r_mod_cf %>% keras3::fit(as.matrix(do.call(rbind, 
                                              set_data[l])[,covariates]),
                            as.matrix(do.call(rbind, 
                                              set_pseudo[l])[,1]), 
@@ -528,6 +578,9 @@ metalearner_deep <- function(data,
                            validation_split = validation_split, 
                            callbacks = callbacks_list,
                            verbose = verbose)
+          
+          rmods_0[[l-5]] <- r_mod_cf
+          rmods_0_history[[l-5]] <- rmod_history
           
           score_r_0_cf <- predict(r_mod_cf, 
                                   as.matrix(do.call(rbind, 
@@ -545,9 +598,14 @@ metalearner_deep <- function(data,
                           "hidden_layer" = hidden.layer,
                           "CATEs" = score_meta[,1],
                           "Meta_Learner" = meta.learner.type,
-                          "ml_model" = list("first_stage_m" = M_mods,
-                                            "second_stage_r" = list("r_mod_0" = score_r_0,
-                                                                    "r_mod_1" = score_r_1)),
+                          "ml_model" = list("first_stage_m" = m_mods,
+                                            "first_stage_p" = p_mods,
+                                            "second_stage_r" = list("r_mod_0" = r_mods_0,
+                                                                    "r_mod_1" = r_mods_1)),
+                          "ml_model_history" = list("first_stage_m" = m_mods_history,
+                                                   "first_stage_p" = p_mods_history,
+                                                   "second_stage_r" = list("r_mod_0" = r_mods_0_history,
+                                                                           "r_mod_1" = r_mods_1_history)),
                           "pseudo_outcome" = pseudo_all,
                           "data" = data)
       
