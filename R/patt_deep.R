@@ -218,7 +218,7 @@ deep_response_model <- function(response.formula,
     verbose = verbose
   )
   return(list(response = deep.response.mod,
-              response_history = response_history)))
+              response_history = response_history))
 }
 
 #' Assess Population Data counterfactuals
