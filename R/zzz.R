@@ -3,7 +3,6 @@
   if (requireNamespace("reticulate", quietly = TRUE)) {
     if (!reticulate::py_available(initialize = FALSE)) {
       packageStartupMessage(
-        "Python not installed or unavailable. Some features may be disabled.\n",
         "Install Python from https://www.python.org/ and use `python_ready()` to enable all features."
       )
     }
