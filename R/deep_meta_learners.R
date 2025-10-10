@@ -113,12 +113,12 @@ metalearner_deep <- function(data,
         X_train_matrix <- as.matrix(X_train)
         Y_train_matrix <- as.matrix(Y_train)
         
-        m_mod_S %>% keras3::fit(X_train_matrix, Y_train_matrix, epochs = epoch, 
+        model_history <- m_mod_S %>% keras3::fit(X_train_matrix, Y_train_matrix, epochs = epoch, 
                                 batch_size = batch_size, 
                                 verbose = verbose,
                                 validation_split = validation_split,
                                 callbacks = callbacks_list)
-        M_mods[[f]] <- m_mod_S
+        M_mods[[f]] <- model_history
         
         # Set treatment variable to 0
         X_test_0 <- (df_main[,c(covariates,"d")])
