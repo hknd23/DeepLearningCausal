@@ -71,7 +71,7 @@ deep_complier_mod <- function(complier.formula,
     callbacks_list <- NULL
   }
   
-  deep.complier.mod %>% keras3::fit(
+ complier_history <-  deep.complier.mod %>% keras3::fit(
     x = Xcompl,
     y = Ycompl,
     epochs = epoch,
@@ -81,7 +81,8 @@ deep_complier_mod <- function(complier.formula,
     verbose = verbose
   )
   
-  return(deep.complier.mod)
+  return(list(complier = deep.complier.mod,
+              complier_history = complier_history))
 }
 
 #' Complier model prediction
@@ -105,7 +106,7 @@ deep_predict <- function(deep.complier.mod,
                          compl.var){
   covariates <- all.vars(complier.formula)[-1]
   test_data <- as.matrix(exp.data[,covariates])
-  compl_predictp <- predict(deep.complier.mod,test_data)
+  compl_predictp <- predict(deep.complier.mod$complier,test_data)
   compl_predict <- ifelse(compl_predictp > 0.5, 1, 0)
   rownames(compl_predict) <- rownames(exp.data)
   deep.compliers <- data.frame("treatment" = exp.data[,treat.var],
@@ -207,7 +208,7 @@ deep_response_model <- function(response.formula,
     callbacks_list <- NULL
   }
   
-  deep.response.mod %>% keras3::fit(
+  response_history <- deep.response.mod %>% keras3::fit(
     x = Xresponse,
     y = Yresponse,
     epochs = epoch,
@@ -216,7 +217,8 @@ deep_response_model <- function(response.formula,
     callbacks = callbacks_list,
     verbose = verbose
   )
-  return(deep.response.mod)
+  return(list(response = deep.response.mod,
+              response_history = response_history)))
 }
 
 #' Assess Population Data counterfactuals
@@ -254,9 +256,9 @@ pattc_deep_counterfactuals<- function (pop.data,
   pop.ctrl.counterfactual <- cbind(rep(0, nrow(popdata_comp)), popdata_comp[, covariates])
   colnames(pop.ctrl.counterfactual) <- c(compl.var, covariates)
   
-  Y.pred.1 <- predict(response.mod, as.matrix(pop.tr.counterfactual))
+  Y.pred.1 <- predict(response.mod$response, as.matrix(pop.tr.counterfactual))
   
-  Y.pred.0 <- predict(response.mod, as.matrix(pop.ctrl.counterfactual))
+  Y.pred.0 <- predict(response.mod$response, as.matrix(pop.ctrl.counterfactual))
   
   if (binary.preds){
     Y.hat.1 <- ifelse(Y.pred.1 > 0.5, 1, 0)
@@ -520,8 +522,10 @@ pattc_deep <- function(response.formula,
   model.out <- list("formula" = response.formula,
                     "treat_var" = treat.var,
                     "compl_var" =  compl.var,
-                    "complier_model" = complier.mod,
-                    "response_model" = response.mod,
+                    "complier_model" = complier.mod$complier,
+                    "complier_history" = complier.mod$complier_history,
+                    "response_model" = response.mod$response,
+                    "response_history" = response.mod$response_history,
                     "complier_epoch" = compl.epoch,
                     "response_epoch" = response.epoch,
                     "exp_data" = expdata$exp_data,
