@@ -40,140 +40,142 @@
 #'                                   binary.preds = FALSE)
 #'
 #' hte_plot(xlearner_nn)
+#' hte_plot(xlearner_nn,
+#'         selected_vars = c("age", "income"),
+#'         cut_points = c(33, 3),
+#'         custom_labels = c("Age <= 33", "Age > 33", "Income <= 3", "Income > 3"),
+#'         n_boot = 500)
 #'                                   }
 hte_plot <- function(x, ...,
                      boot = TRUE,
                      n_boot = 1000,
                      cut_points = NULL,
                      custom_labels = NULL,
-                     zero_int = TRUE
-                    )
-{
-    if(class(x) %in% c("metalearner_ensemble",
-                               "metalearner_deepneural")){
-      all_vars <- all.vars(x$formula)
-      x_var_names <- all_vars[-1]
-      x_vars <- x$data[,c(x_var_names)]
-      rownames(x_vars) <- 1:nrow(x_vars)
-      y_var <- x$CATEs
-    } else if (class(x) %in% c("pattc_ensemble",
-                                       "pattc_deepneural")){
-      all_vars <- all.vars(x$formula)
-      y_var <- all_vars[1]
-      x_var_names <- all_vars[-1]
-
-      compliers <- x$pop_data[which(
-        x$pop_data[,x$compl_var]==1),]
-      rownames(compliers) <- 1:nrow(compliers)
-      x_vars <- compliers[,c(x_var_names)]
-      y_var <- data.frame( count_diff =  x$pop_counterfactual[,2] -
-                            x$pop_counterfactual[,1])
-    }
-
-    lowers <- list()
-    highers <- list()
-    lowers_y <- list()
-    highers_y <- list()
-    lowers_CIs <- list()
-    highers_CIs <- list()
-    lowers_bootout <- list()
-    highers_bootout <- list()
-    mean_lowers_temp <- rep(NA, n_boot)
-    mean_highers_temp <- rep(NA, n_boot)
-
-    if (is.null(cut_points)) {
-      cuts <- sapply(x_vars, median,na.rm = TRUE)
-    } else {
-      if (length(cut_points) !=  length(x_var_names)) {
-        stop(paste0("length of cut_points must be ", length(x_var_names)))
-      }
-      cuts <- cut_points
-    }
-
-    for (i in 1:length(x_var_names)) {
-      lowers[[i]] <- x_vars[which(x_vars[,i] <= cuts[i]),]
-      highers[[i]] <- x_vars[which(x_vars[,i] > cuts[i]),]
-      lowers_y[[i]] <- y_var[as.numeric(rownames(lowers[[i]])),]
-      highers_y[[i]] <- y_var[as.numeric(rownames(highers[[i]])),]
-      if (boot) {
-        lowers_boot_means <- rep(NA, n_boot)
-        highers_boot_means <- rep(NA, n_boot)
-        for (j in 1:n_boot){
-          lowers_resample <- sample(1:length(lowers_y[[i]]),
-                                    length(lowers_y[[i]]),
-                                    replace=T)
-          highers_resample <- sample(1:length(highers_y[[i]]),
-                                     length(highers_y[[i]]),
-                                     replace=T)
-          lowers_boot_means[j] <- mean(lowers_y[[i]][lowers_resample],
-                                       na.rm = TRUE)
-          lowers_bootout[[i]] <- lowers_boot_means
-          highers_boot_means[j] <- mean(highers_y[[i]][highers_resample],
-                                        na.rm = TRUE)
-          highers_bootout[[i]] <- highers_boot_means
-        }
-        lowers_CIs[[i]] <- c(quantile(lowers_bootout[[i]], c(0.025,  0.975)))
-        highers_CIs[[i]] <- c(quantile(highers_bootout[[i]], c(0.025, 0.975)))
-      } else if (!boot){
-        lowers_CIs[[i]] <- c(quantile(lowers_y[[i]], c(0.025,  0.975)))
-        highers_CIs[[i]] <- c(quantile(highers_y[[i]], c(0.025, 0.975)))
-      }
-    }
-
-    names(lowers) <- paste0(x_var_names, " <= ", cuts)
-    names(highers) <- paste0(x_var_names, " > ", cuts)
-    names(lowers_y) <- paste0(x_var_names, " <= ", cuts)
-    names(highers_y) <- paste0(x_var_names, " > ", cuts)
-
-    if (boot){
-      lowers_means <- unlist(lapply(lowers_bootout, mean, na.rm = TRUE))
-      highers_means <- unlist(lapply(highers_bootout, mean, na.rm = TRUE))
-    } else if (!boot) {
-      lowers_means <- unlist(lapply(lowers_y, mean, na.rm = TRUE))
-      highers_means <- unlist(lapply(highers_y, mean, na.rm = TRUE))
-    }
-
-    lowers_y_df <- data.frame(do.call(rbind, lowers_CIs),
-                              means = lowers_means,
-                              var_name = paste0(x_var_names, " <= ", cuts) )
-
-    highers_y_df <- data.frame(do.call(rbind, highers_CIs),
-                               means = highers_means,
-                               var_name = paste0(x_var_names, " > ", cuts) )
-
-    combined_df <- rbind(lowers_y_df, highers_y_df)
-
-    sorted_df <- combined_df[order(combined_df$var_name), ]
-    if (zero_int){
-      x_int <- 0
-    } else if (!zero_int) {
-      x_int <- NULL
-    }
-    if (!is.null(custom_labels)) {
-      ht_plot <- ggplot(sorted_df, aes(y = var_name, x = means)) +
-        geom_point() +
-        geom_errorbarh(aes(xmin = X2.5., xmax = X97.5.), height = 0.2) +
-        theme_minimal() +
-        labs(
-          title = "",
-          x = "",
-          y = "") + geom_vline(xintercept = x_int, 
-                               linetype = "dashed", 
-                               color = "grey70") + scale_y_discrete(labels = custom_labels)
-    } else if (is.null(custom_labels)) {
-      ht_plot <- ggplot(sorted_df, aes(y = var_name, x = means)) +
-        geom_point() +
-        geom_errorbarh(aes(xmin = X2.5., xmax = X97.5.), height = 0.2) +
-        theme_minimal() +
-        labs(
-          title = "",
-          x = "",
-          y = ""
-        ) + geom_vline(xintercept = x_int, linetype = "dashed", color = "grey70")
-    }
+                     zero_int = TRUE,
+                     selected_vars = NULL) {
+  
+  # --- Extract data depending on object class ---
+  if (class(x) %in% c("metalearner_ensemble", "metalearner_deepneural")) {
+    all_vars <- all.vars(x$formula)
+    x_var_names <- all_vars[-1]
+    if(is.null(x$data)){x$data<-x$test_data}
+    x_vars <- x$data[, c(x_var_names), drop = FALSE]
+    rownames(x_vars) <- 1:nrow(x_vars)
+    y_var <- x$CATEs
     
-    print(ht_plot)
-} 
+  } else if (class(x) %in% c("pattc_ensemble", "pattc_deepneural")) {
+    all_vars <- all.vars(x$formula)
+    y_var <- all_vars[1]
+    x_var_names <- all_vars[-1]
+    compliers <- x$pop_data[which(x$pop_data[, x$compl_var] == 1), ]
+    rownames(compliers) <- 1:nrow(compliers)
+    x_vars <- compliers[, c(x_var_names), drop = FALSE]
+    y_var <- data.frame(count_diff = x$pop_counterfactual[, 2] -
+                          x$pop_counterfactual[, 1])
+  }
+  
+  # --- Handle selected variables ---
+  if (!is.null(selected_vars)) {
+    missing_vars <- setdiff(selected_vars, x_var_names)
+    if (length(missing_vars) > 0) {
+      stop(paste("These selected_vars are not in the data:",
+                 paste(missing_vars, collapse = ", ")))
+    }
+    x_vars <- x_vars[, selected_vars, drop = FALSE]
+    x_var_names <- selected_vars
+  }
+  
+  if (ncol(x_vars) == 0) {
+    stop("No covariates selected. Please check selected_vars matches your data.")
+  }
+  
+  # --- Cut points ---
+  if (is.null(cut_points)) {
+    cuts <- sapply(x_vars, median, na.rm = TRUE)
+  } else {
+    if (length(cut_points) != length(x_var_names)) {
+      stop(paste0("length of cut_points must be ", length(x_var_names)))
+    }
+    cuts <- cut_points
+  }
+  
+  # --- Initialize containers ---
+  lowers <- list(); highers <- list()
+  lowers_y <- list(); highers_y <- list()
+  lowers_CIs <- list(); highers_CIs <- list()
+  lowers_bootout <- list(); highers_bootout <- list()
+  
+  # --- Compute subgroups ---
+  for (i in seq_along(x_var_names)) {
+    lowers[[i]] <- x_vars[x_vars[, i] <= cuts[i], , drop = FALSE]
+    highers[[i]] <- x_vars[x_vars[, i] > cuts[i], , drop = FALSE]
+    
+    lowers_y[[i]] <- y_var[as.numeric(rownames(lowers[[i]])), , drop = FALSE]
+    highers_y[[i]] <- y_var[as.numeric(rownames(highers[[i]])), , drop = FALSE]
+    
+    if (boot) {
+      lowers_boot_means <- replicate(n_boot, {
+        mean(sample(lowers_y[[i]], length(lowers_y[[i]]), replace = TRUE), na.rm = TRUE)
+      })
+      highers_boot_means <- replicate(n_boot, {
+        mean(sample(highers_y[[i]], length(highers_y[[i]]), replace = TRUE), na.rm = TRUE)
+      })
+      
+      lowers_CIs[[i]] <- quantile(lowers_boot_means, c(0.025, 0.975), na.rm = TRUE)
+      highers_CIs[[i]] <- quantile(highers_boot_means, c(0.025, 0.975), na.rm = TRUE)
+      lowers_bootout[[i]] <- lowers_boot_means
+      highers_bootout[[i]] <- highers_boot_means
+    } else {
+      lowers_CIs[[i]] <- quantile(lowers_y[[i]], c(0.025, 0.975), na.rm = TRUE)
+      highers_CIs[[i]] <- quantile(highers_y[[i]], c(0.025, 0.975), na.rm = TRUE)
+    }
+  }
+  
+  # --- Compute means ---
+  if (boot) {
+    lowers_means <- sapply(lowers_bootout, mean, na.rm = TRUE)
+    highers_means <- sapply(highers_bootout, mean, na.rm = TRUE)
+  } else {
+    lowers_means <- sapply(lowers_y, mean, na.rm = TRUE)
+    highers_means <- sapply(highers_y, mean, na.rm = TRUE)
+  }
+  
+  lowers_y_df <- data.frame(do.call(rbind, lowers_CIs),
+                            means = lowers_means,
+                            var_name = paste0(x_var_names, " <= ", cuts))
+  highers_y_df <- data.frame(do.call(rbind, highers_CIs),
+                             means = highers_means,
+                             var_name = paste0(x_var_names, " > ", cuts))
+  combined_df <- rbind(lowers_y_df, highers_y_df)
+  sorted_df <- combined_df[order(combined_df$var_name), ]
+  
+  # --- Axis intercept ---
+  x_int <- if (zero_int) 0 else NULL
+  
+  # --- Plot ---
+  if (!is.null(custom_labels)) {
+    if (length(custom_labels) != nrow(sorted_df)) {
+      stop(paste0("length of custom_labels must be ", nrow(sorted_df),
+                  " (you provided ", length(custom_labels), ")"))
+    }
+    ht_plot <- ggplot(sorted_df, aes(y = var_name, x = means)) +
+      geom_point() +
+      geom_errorbarh(aes(xmin = X2.5., xmax = X97.5.), height = 0.2) +
+      theme_minimal() +
+      labs(x = "", y = "") +
+      geom_vline(xintercept = x_int, linetype = "dashed", color = "grey70") +
+      scale_y_discrete(labels = custom_labels)
+  } else {
+    ht_plot <- ggplot(sorted_df, aes(y = var_name, x = means)) +
+      geom_point() +
+      geom_errorbarh(aes(xmin = X2.5., xmax = X97.5.), height = 0.2) +
+      theme_minimal() +
+      labs(x = "", y = "") +
+      geom_vline(xintercept = x_int, linetype = "dashed", color = "grey70")
+  }
+  
+  print(ht_plot)
+}
 
 #' plot.metalearner_deepneural
 #'
