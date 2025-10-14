@@ -1,6 +1,6 @@
-#' metalearner_deep
+#' metalearner_deeplearning
 #'#' @description
-#' \code{metalearner_deep} implements the meta learners for estimating
+#' \code{metalearner_deeplearning} implements the meta learners for estimating
 #' CATE using Deep Neural Networks through Tensorflow.
 #' 
 #' @param data data.frame object of data.
@@ -27,11 +27,11 @@
 #' @param validation_split double for proportion of training data to split for validation.
 #' @param patience integer for number of epochs with no improvement to wait before stopping training.
 #' @param dropout_rate double or vector for proportion of hidden layer to drop out. 
-#' @return `metalearner_deep` object with CATEs
+#' @return `metalearner_deeplearning` object with CATEs
 #' @export
 #'
 #@examples
-metalearner_deep <- function(data,
+metalearner_deeplearning <- function(data,
                              cov.formula,
                              treat.var,
                              meta.learner.type,
@@ -611,6 +611,6 @@ metalearner_deep <- function(data,
       
     } # end of R learner
   } # end of R/X learner
-  class(learner_out) <- "metalearner_deep"
+  class(learner_out) <- "metalearner_deeplearning"
   return(learner_out)
 }

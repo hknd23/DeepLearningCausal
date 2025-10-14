@@ -18,7 +18,7 @@ test_that("keras_pattc", {
   }
   
   set.seed(1234)
-  deeppattc <- pattc_deep(response.formula = support_war ~ age + female +
+  deeppattc <- pattc_deeplearning(response.formula = support_war ~ age + female +
                             income + education +  employed + married +
                             hindu + job_loss,
                           exp.data = exp_data_full,

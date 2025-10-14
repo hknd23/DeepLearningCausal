@@ -235,7 +235,7 @@ deep_response_model <- function(response.formula,
 #' 
 #' @return `data.frame` object of predicted outcomes of counterfactual groups.
 #' @export
-pattc_deep_counterfactuals<- function (pop.data,
+pattc_deeplearning_counterfactuals<- function (pop.data,
                                        response.mod,
                                        response.formula,
                                        ID = NULL,
@@ -320,7 +320,7 @@ pattc_deep_counterfactuals<- function (pop.data,
 #' @param compl.dropout_rate double or vector for proportion of hidden layer to drop out in complier model.
 #' @param response.dropout_rate double or vector for proportion of hidden layer to drop out in response model.
 #'
-#' @return pattc_deep object containing the fitted models, predictions, counterfactuals, and PATT-C estimate.
+#' @return pattc_deeplearning object containing the fitted models, predictions, counterfactuals, and PATT-C estimate.
 #' @import keras3 
 #' @importFrom stats as.formula model.frame na.omit predict prop.test qnorm
 #' @importFrom magrittr %>%
@@ -331,7 +331,7 @@ pattc_deep_counterfactuals<- function (pop.data,
 #' data("exp_data")
 #' data("pop_data")
 #' set.seed(1243)
-#' deeppattc <- pattc_deep(response.formula = support_war ~ age + female +
+#' deeppattc <- pattc_deeplearning(response.formula = support_war ~ age + female +
 #' income + education +  employed + married +
 #'   hindu + job_loss,
 #' exp.data = exp_data,
@@ -351,7 +351,7 @@ pattc_deep_counterfactuals<- function (pop.data,
 #' boot = FALSE
 #' )
 #' }
-pattc_deep <- function(response.formula,
+pattc_deeplearning <- function(response.formula,
                       compl.var,
                       treat.var,
                       exp.data,
@@ -447,7 +447,7 @@ pattc_deep <- function(response.formula,
   
   message("Predicting response and estimating PATT-C")
   
-  counterfactuals <- pattc_deep_counterfactuals(pop.data = popdata,
+  counterfactuals <- pattc_deeplearning_counterfactuals(pop.data = popdata,
                                                 response.mod = response.mod,
                                                 response.formula = response.formula,
                                                 ID = NULL,
@@ -534,22 +534,22 @@ pattc_deep <- function(response.formula,
                     "population_counterfactuals" = counterfactuals,
                     "PATT_C" = pattc
   )
-  class(model.out) <- "pattc_deep"
+  class(model.out) <- "pattc_deeplearning"
   return(model.out)
 }
 
-#' print.pattc_deep
+#' print.pattc_deeplearning
 #' @description 
-#' Print method for \code{pattc_deep}
+#' Print method for \code{pattc_deeplearning}
 #' 
-#' @param x  `pattc_deep` class object from \code{pattc_deep} 
+#' @param x  `pattc_deeplearning` class object from \code{pattc_deeplearning} 
 #' @param ... additional arguments
 #'
 #' @return list of model results
 #' @export
 #'
 #@examples
-print.pattc_deep <- function(x, ...){
+print.pattc_deeplearning <- function(x, ...){
   cat("Call:\n")
   print(x$formula)
   cat("\n")
