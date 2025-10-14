@@ -230,7 +230,6 @@ deep_response_model <- function(response.formula,
 #' @param response.mod trained model from \code{response_model}.
 #' @param cluster string for clustering variable
 #' @param ID string fir identifier variable
-#' @param binary.preds logical for predictions to be binary or proportions when
 #' @param response.formula formula specifying the response variable and covariates.
 #' 
 #' @return `data.frame` object of predicted outcomes of counterfactual groups.
@@ -239,8 +238,7 @@ pattc_deeplearning_counterfactuals<- function (pop.data,
                                        response.mod,
                                        response.formula,
                                        ID = NULL,
-                                       cluster = NULL,
-                                       binary.preds = FALSE){
+                                       cluster = NULL){
   
   compl.var <- pop.data$compl_var
   covariates <- all.vars(pop.data$response_formula)[-1]
@@ -260,13 +258,8 @@ pattc_deeplearning_counterfactuals<- function (pop.data,
   
   Y.pred.0 <- predict(response.mod$response, as.matrix(pop.ctrl.counterfactual))
   
-  if (binary.preds){
-    Y.hat.1 <- ifelse(Y.pred.1 > 0.5, 1, 0)
-    Y.hat.0 <- ifelse(Y.pred.0 > 0.5, 1, 0)
-  } else {
-    Y.hat.1 <- Y.pred.1
-    Y.hat.0 <- Y.pred.0
-  }
+  Y.hat.1 <- Y.pred.1
+  Y.hat.0 <- Y.pred.0
   
   if (!is.null(cluster)){
     clustervar <- pop.data[, cluster]
