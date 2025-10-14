@@ -15,6 +15,7 @@
 #' covariates. If left blank a vector generated from median values will be used.
 #' @param zero_int logical for vertical line at 0 x intercept.
 #' @param ... Additional arguments 
+#' @param selected_vars vector for names of covariates to use for subgroups.
 #'
 #' @returns \code{ggplot} object illustrating subgroup HTE and 95% confidence
 #' intervals.

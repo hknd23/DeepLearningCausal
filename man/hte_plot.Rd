@@ -11,7 +11,8 @@ hte_plot(
   n_boot = 1000,
   cut_points = NULL,
   custom_labels = NULL,
-  zero_int = TRUE
+  zero_int = TRUE,
+  selected_vars = NULL
 )
 }
 \arguments{
@@ -30,6 +31,8 @@ covariates. If left blank a vector generated from median values will be used.}
 \item{custom_labels}{character vector for the names of subgroups.}
 
 \item{zero_int}{logical for vertical line at 0 x intercept.}
+
+\item{selected_vars}{vector for names of covariates to use for subgroups.}
 }
 \value{
 \code{ggplot} object illustrating subgroup HTE and 95\% confidence
@@ -58,5 +61,10 @@ xlearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +
                                   binary.preds = FALSE)
 
 hte_plot(xlearner_nn)
+hte_plot(xlearner_nn,
+        selected_vars = c("age", "income"),
+        cut_points = c(33, 3),
+        custom_labels = c("Age <= 33", "Age > 33", "Income <= 3", "Income > 3"),
+        n_boot = 500)
                                   }
 }
