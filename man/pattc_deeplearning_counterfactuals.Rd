@@ -9,8 +9,7 @@ pattc_deeplearning_counterfactuals(
   response.mod,
   response.formula,
   ID = NULL,
-  cluster = NULL,
-  binary.preds = FALSE
+  cluster = NULL
 )
 }
 \arguments{
@@ -23,8 +22,6 @@ pattc_deeplearning_counterfactuals(
 \item{ID}{string fir identifier variable}
 
 \item{cluster}{string for clustering variable}
-
-\item{binary.preds}{logical for predictions to be binary or proportions when}
 }
 \value{
 \code{data.frame} object of predicted outcomes of counterfactual groups.
