@@ -49,7 +49,7 @@ test_that("keras_pattc", {
                           verbose = 0,
                           batch_size = 32,
                           nboot = 1000)
-  expect_s3_class(deeppattc, "pattc_deep")
+  expect_s3_class(deeppattc, "pattc_deeplearning")
   #print(nrow(deeppattc$population_counterfactuals))
   #expect_equal(nrow(deeppattc$population_counterfactuals), nrow(pop_data_full))
   expect_equal(nrow(deeppattc$complier_prediction), nrow(exp_data_full))
