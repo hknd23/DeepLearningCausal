@@ -47,9 +47,7 @@ test_that("keras_pattc", {
                           compl.dropout_rate = 0.1,
                           response.dropout_rate = c(0.1, 0.1, 0.1),
                           verbose = 0,
-                          batch_size = 64,
-                          binary.preds = FALSE,
-                          bootstrap = TRUE,
+                          batch_size = 32,
                           nboot = 1000)
   expect_s3_class(deeppattc, "pattc_deep")
   #print(nrow(deeppattc$population_counterfactuals))

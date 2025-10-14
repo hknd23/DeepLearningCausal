@@ -294,8 +294,6 @@ pattc_deeplearning_counterfactuals<- function (pop.data,
 #' @param cluster optional string specifying the name of the clustering variable.
 #' @param verbose integer specifying the verbosity level during training. Defaults to 1.
 #' @param batch_size integer specifying the batch size for training the deep learning models. Default is 32.
-#' @param binary.preds logical indicating whether to treat predictions as binary outcomes. Default is FALSE.
-#' @param bootstrap logical indicating whether to use bootstrapping for confidence intervals. Default is FALSE.
 #' @param response.epoch integer for the number of epochs for response model.
 #' @param nboot integer specifying the number of bootstrap samples if bootstrap is TRUE. Default is 1000.
 #' @param compl.algorithm string for name of optimizer algorithm for complier model. For optimizers available see `keras` package.
@@ -336,20 +334,29 @@ pattc_deeplearning_counterfactuals<- function (pop.data,
 #'   hindu + job_loss,
 #' exp.data = exp_data,
 #' pop.data = pop_data,
-#' treat.var = "strong_leader",
+#' treat.var = "strong_leader", 
 #' compl.var = "compliance",
-#' algorithm = "adam",
-#' hidden.layer = c(2,2),
-#' ID = NULL,
-#' weights = NULL,
-#' cluster = NULL,
-#' epoch = 50,
+#' compl.algorithm = "adam", 
+#' response.algorithm = "adam",
+#' compl.hidden.layer = c(4,2), 
+#' response.hidden.layer = c(4,2),
+#' compl.hidden_activation = "relu", 
+#' response.hidden_activation = "relu",
+#' response.output_activation = "sigmoid",
+#' response.output_units = 1, 
+#' response.loss = "binary_crossentropy",
+#' response.metrics = "accuracy",
+#' compl.epoch = 50, 
+#' response.epoch = 80,
 #' verbose = 1,
-#' batch_size = 32,
-#' model_type = "classification",
-#' binary.preds = FALSE,
-#' boot = FALSE
-#' )
+#' batch_size = 32, 
+#' compl.validation_split = 0.2,
+#' response.validation_split = 0.2,
+#' compl.dropout_rate = 0.1,
+#' response.dropout_rate = 0.1,
+#' compl.patience = 20, 
+#' response.patience = 20,
+#' nboot = 1000)
 #' }
 pattc_deeplearning <- function(response.formula,
                       compl.var,
@@ -379,8 +386,6 @@ pattc_deeplearning <- function(response.formula,
                       response.dropout_rate = NULL,
                       verbose = 1,
                       batch_size = 32,
-                      binary.preds = FALSE,
-                      bootstrap = FALSE,
                       nboot = 1000){
   
   check_cran_deps()
@@ -453,32 +458,9 @@ pattc_deeplearning <- function(response.formula,
                                                 ID = NULL,
                                                 cluster = NULL,
                                                 binary.preds = binary.preds)
-  if (binary.preds) {
-    Y_hat1_0s <- sum(counterfactuals$Y_hat0)
-    nY_hat0 <- length(counterfactuals$Y_hat0)
-    Y_hat1_1s <- sum(counterfactuals$Y_hat1)
-    nY_hat1 <- length(counterfactuals$Y_hat1)
-    pattc_xsq <- tryCatch({
-      pattc_xsq <- prop.test(c(Y_hat1_1s, Y_hat1_0s), c(nY_hat1,nY_hat0),
-                             alternative = "two.sided", correct = FALSE)
-    },error=function(e){
-      message("PATT-C could not be calculated. Predictions may be constant")
-      pattc_xsq <- list(estimate = NaN,
-                        conf.int = c(NaN, NaN))
-    })
-
-    conf_int <- pattc_xsq$conf.int[1:2]
-    diff <- pattc_xsq$estimate[1] - pattc_xsq$estimate[2]
-    estimate <- c(diff, conf_int)
-    names(estimate) <- c("PATT-C", "LCI (2.5%)", "UCI (2.5%)")
-    statistic <- c(pattc_xsq$statistic, pattc_xsq$p.value)
-    names(statistic) <- c("X_squared","p_value")
-    pattc <-list(estimate,
-                 pattc_xsq$method,
-                 statistic)
-  }  else if (!binary.preds){
-    if (bootstrap) {
+  
       bootResults <- matrix(NA, nrow = nboot, ncol = ncol(counterfactuals)+1)
+      
       for (i in seq_len(nboot)){
         resample <- sample(1:nrow(counterfactuals),nrow(counterfactuals),replace=T)
         temp <- counterfactuals[resample,]
@@ -497,17 +479,6 @@ pattc_deeplearning <- function(response.formula,
       method <- paste0("Bootstrapped PATT-C with ", nboot," samples")
       boot.out <- list(results, method)
       pattc <- boot.out
-    } else if (!bootstrap){
-    
-      pattc_t <- tryCatch({
-        pattc_t <- t.test(x = counterfactuals$Y_hat1,
-                          y = counterfactuals$Y_hat0,
-                          alternative = "two.sided")
-      },error=function(e){
-        message("PATT-C could not be calculated. Predictions may be constant")
-        pattc_t <- list(estimate = NaN,
-                        conf.int = c(NaN, NaN))
-      })
       
       conf_int <- pattc_t$conf.int[1:2]
       diff <- pattc_t$estimate[1] - pattc_t$estimate[2]
@@ -518,7 +489,7 @@ pattc_deeplearning <- function(response.formula,
       pattc <-list(estimate,
                    pattc_t$method,
                    statistic)
-    }}
+
   model.out <- list("formula" = response.formula,
                     "treat_var" = treat.var,
                     "compl_var" =  compl.var,
@@ -559,6 +530,4 @@ print.pattc_deeplearning <- function(x, ...){
   cat("Method:\n")
   print(x$PATT_C[[2]])
   cat("\n")
-  cat("Test Statistics:\n")
-  print(x$PATT_C[[3]])
 }
