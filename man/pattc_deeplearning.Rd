@@ -33,8 +33,6 @@ pattc_deeplearning(
   response.dropout_rate = NULL,
   verbose = 1,
   batch_size = 32,
-  binary.preds = FALSE,
-  bootstrap = FALSE,
   nboot = 1000
 )
 }
@@ -99,10 +97,6 @@ For activation functions available see \code{keras} package.}
 
 \item{batch_size}{integer specifying the batch size for training the deep learning models. Default is 32.}
 
-\item{binary.preds}{logical indicating whether to treat predictions as binary outcomes. Default is FALSE.}
-
-\item{bootstrap}{logical indicating whether to use bootstrapping for confidence intervals. Default is FALSE.}
-
 \item{nboot}{integer specifying the number of bootstrap samples if bootstrap is TRUE. Default is 1000.}
 }
 \value{
@@ -126,19 +120,28 @@ income + education +  employed + married +
   hindu + job_loss,
 exp.data = exp_data,
 pop.data = pop_data,
-treat.var = "strong_leader",
+treat.var = "strong_leader", 
 compl.var = "compliance",
-algorithm = "adam",
-hidden.layer = c(2,2),
-ID = NULL,
-weights = NULL,
-cluster = NULL,
-epoch = 50,
+compl.algorithm = "adam", 
+response.algorithm = "adam",
+compl.hidden.layer = c(4,2), 
+response.hidden.layer = c(4,2),
+compl.hidden_activation = "relu", 
+response.hidden_activation = "relu",
+response.output_activation = "sigmoid",
+response.output_units = 1, 
+response.loss = "binary_crossentropy",
+response.metrics = "accuracy",
+compl.epoch = 50, 
+response.epoch = 80,
 verbose = 1,
-batch_size = 32,
-model_type = "classification",
-binary.preds = FALSE,
-boot = FALSE
-)
+batch_size = 32, 
+compl.validation_split = 0.2,
+response.validation_split = 0.2,
+compl.dropout_rate = 0.1,
+response.dropout_rate = 0.1,
+compl.patience = 20, 
+response.patience = 20,
+nboot = 1000)
 }
 }
