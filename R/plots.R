@@ -434,3 +434,41 @@ plot.pattc_ensemble <- function(x, ...)
     theme(legend.title=element_blank())
   print(pattc_plot)
 }
+
+#' plot.pattc_deeplearning
+#'
+#' @description
+#' Uses \code{plot()} to generate histogram of ditribution of CATEs or predicted
+#' outcomes from  \code{pattc_deeplearning}
+#'
+#' @param x \code{pattc_deeplearning} model object
+#' @param ... Additional arguments 
+#'
+#' @returns \code{ggplot} object
+#' @export
+#' @importFrom magrittr %>%
+#' @importFrom stats sd
+#' @import ggplot2
+plot.pattc_ensemble <- function(x, ...)
+{
+  patt_preds <-  rbind(data.frame("predictions" = x$pop_counterfactual[,1],
+                                  type = "Y_hat0"),
+                       data.frame("predictions" = x$pop_counterfactual[,2],
+                                  type = "Y_hat1"))
+  
+  x_min <- min(patt_preds$predictions) - 1*sd(patt_preds$predictions)
+  x_max <- max(patt_preds$predictions) + 1*sd(patt_preds$predictions)
+  
+  pattc_plot <-  ggplot() +
+    geom_density(data = patt_preds,  
+                 aes(x = predictions, fill = type),
+                 color = "black",
+                 alpha = 0.7, linewidth = 0.5) +
+    xlab("Predicted Outcome") + ylab("") +
+    xlim(x_min, x_max) +
+    theme(legend.position = "bottom") +
+    theme(legend.title=element_blank())
+  print(pattc_plot)
+}
+
+
