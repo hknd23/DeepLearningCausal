@@ -471,16 +471,6 @@ pattc_deeplearning <- function(response.formula,
       method <- paste0("Bootstrapped PATT-C with ", nboot," samples")
       boot.out <- list(results, method)
       pattc <- boot.out
-      
-      conf_int <- pattc_t$conf.int[1:2]
-      diff <- pattc_t$estimate[1] - pattc_t$estimate[2]
-      estimate <- c(diff, conf_int)
-      names(estimate) <- c("PATT-C", "LCI (2.5%)", "UCI (2.5%)")
-      statistic <- c(pattc_t$statistic, pattc_t$p.value)
-      names(statistic) <- c("t","p_value")
-      pattc <-list(estimate,
-                   pattc_t$method,
-                   statistic)
 
   model.out <- list("formula" = response.formula,
                     "treat_var" = treat.var,
