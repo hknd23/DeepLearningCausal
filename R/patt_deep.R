@@ -449,8 +449,7 @@ pattc_deeplearning <- function(response.formula,
                                                 response.mod = response.mod,
                                                 response.formula = response.formula,
                                                 ID = NULL,
-                                                cluster = NULL,
-                                                binary.preds = binary.preds)
+                                                cluster = NULL)
   
       bootResults <- matrix(NA, nrow = nboot, ncol = ncol(counterfactuals)+1)
       
