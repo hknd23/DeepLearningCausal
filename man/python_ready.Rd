@@ -6,13 +6,13 @@
 \usage{
 python_ready(
   modules = c("keras", "tensorflow", "numpy"),
-  envname = "keras-tensorflow"
+  envname = "r-reticulate"
 )
 }
 \arguments{
 \item{modules}{Character vector of Python modules to check for and install if missing.}
 
-\item{envname}{Name of the virtual environment to use or create. Defaults to "keras-tensorflow".}
+\item{envname}{Name of the virtual environment to use or create. Defaults to "r-reticulate".}
 }
 \value{
 Invisibly returns TRUE if setup is complete.
@@ -23,6 +23,6 @@ Call this to manually set up Python and dependencies. The function checks if Pyt
 \examples{
 \dontrun{
 python_ready(modules = c("keras", "tensorflow", "numpy"),
-            envname = "keras-tensorflow")
+            envname = "r-reticulate")
 }
 }

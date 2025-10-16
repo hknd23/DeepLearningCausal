@@ -2,16 +2,16 @@
 #'
 #' Call this to manually set up Python and dependencies. The function checks if Python is available via the `reticulate` package, and if not, it creates a virtual environment and installs the specified Python modules.
 #' @param modules Character vector of Python modules to check for and install if missing.
-#' @param envname Name of the virtual environment to use or create. Defaults to "keras-tensorflow".
+#' @param envname Name of the virtual environment to use or create. Defaults to "r-reticulate".
 #' @return Invisibly returns TRUE if setup is complete.
 #' @examples
 #' \dontrun{
 #' python_ready(modules = c("keras", "tensorflow", "numpy"),
-#'             envname = "keras-tensorflow")
+#'             envname = "r-reticulate")
 #' }
 #' @export
 python_ready <- function(modules = c("keras", "tensorflow", "numpy"),
-                         envname = "keras-tensorflow") {
+                         envname = "r-reticulate") {
   if (!requireNamespace("reticulate", quietly = TRUE)) {
     stop("'reticulate' package required. Please install with install.packages('reticulate').")
   }
@@ -20,8 +20,8 @@ python_ready <- function(modules = c("keras", "tensorflow", "numpy"),
     message("Python is already available")
   } else {
     message("Python is not available. Initializing...")
-    reticulate::virtualenv_create("r-reticulate")
-    reticulate::use_virtualenv("r-reticulate", required = TRUE)
+    reticulate::virtualenv_create(envname)
+    reticulate::use_virtualenv(envname, required = TRUE)
   }
   message("Checking for required Python modules...")
   missing <- modules[!vapply(modules, 
