@@ -3,11 +3,11 @@
 #' @description
 #' Produces plot to illustrate sub-group Heterogeneous Treatment Effects (HTE)
 #' of estimated CATEs from \code{metalearner_ensemble} and
-#' \code{metalearner_deepneural}, as well as PATT-C from \code{pattc_ensemble}
+#' \code{metalearner_neural}, as well as PATT-C from \code{pattc_ensemble}
 #' and \code{pattc_neural}.
 #'
 #' @param x estimated model from \code{metalearner_ensemble},
-#'  \code{metalearner_deepneural}, \code{pattc_ensemble}, or \code{pattc_neural}.
+#'  \code{metalearner_neural}, \code{pattc_ensemble}, or \code{pattc_neural}.
 #' @param custom_labels character vector for the names of subgroups.
 #' @param boot logical for using bootstraps to estimate confidence intervals.
 #' @param n_boot number of bootstrap iterations. Only used with boot = TRUE.
@@ -28,7 +28,7 @@
 #' \donttest{
 #' # load dataset
 #' set.seed(123456)
-#' xlearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +
+#' xlearner_nn <- metalearner_neural(cov.formula = support_war ~ age +
 #'                                   income  + employed  + job_loss,
 #'                                   data = exp_data,
 #'                                   treat.var = "strong_leader",
@@ -56,7 +56,7 @@ hte_plot <- function(x, ...,
                      selected_vars = NULL) {
   
   # --- Extract data depending on object class ---
-  if (class(x) %in% c("metalearner_ensemble", "metalearner_deepneural")) {
+  if (class(x) %in% c("metalearner_ensemble", "metalearner_neural")) {
     all_vars <- all.vars(x$formula)
     x_var_names <- all_vars[-1]
     if(is.null(x$data)){x$data<-x$test_data}
@@ -64,7 +64,7 @@ hte_plot <- function(x, ...,
     rownames(x_vars) <- 1:nrow(x_vars)
     y_var <- x$CATEs
     
-  } else if (class(x) %in% c("pattc_ensemble", "pattc_deepneural")) {
+  } else if (class(x) %in% c("pattc_ensemble", "pattc_neural")) {
     all_vars <- all.vars(x$formula)
     y_var <- all_vars[1]
     x_var_names <- all_vars[-1]
@@ -178,13 +178,13 @@ hte_plot <- function(x, ...,
   print(ht_plot)
 }
 
-#' plot.metalearner_deepneural
+#' plot.metalearner_neural
 #'
 #' @description
 #' Uses \code{plot()} to generate histogram of ditribution of CATEs or predicted
-#' outcomes from  \code{metalearner_deepneural}
+#' outcomes from  \code{metalearner_neural}
 #'
-#' @param x \code{metalearner_deepneural} model object.
+#' @param x \code{metalearner_neural} model object.
 #' @param type "CATEs" or "predict".
 #' @param conf_level numeric value for confidence level. Defaults to 0.95.
 #' @param ... Additional arguments 
@@ -194,7 +194,7 @@ hte_plot <- function(x, ...,
 #' @importFrom magrittr %>%
 #' @importFrom stats sd qnorm
 #' @import ggplot2
-plot.metalearner_deepneural <- function(x, ..., 
+plot.metalearner_neural <- function(x, ..., 
                                         conf_level = 0.95, 
                                         type = "CATEs")
 {
@@ -363,13 +363,13 @@ plot.metalearner_ensemble <- function(x, ...,
   print(meta_plot)
 }
 
-#' plot.pattc_deepneural
+#' plot.pattc_neural
 #'
 #' @description
 #' Uses \code{plot()} to generate histogram of ditribution of CATEs or predicted
-#' outcomes from  \code{pattc_deepneural}
+#' outcomes from  \code{pattc_neural}
 #'
-#' @param x \code{pattc_deepneural} model object
+#' @param x \code{pattc_neural} model object
 #' @param ... Additional arguments 
 #'
 #' @returns \code{ggplot} object
@@ -377,7 +377,7 @@ plot.metalearner_ensemble <- function(x, ...,
 #' @importFrom magrittr %>%
 #' @importFrom stats sd qnorm
 #' @import ggplot2
-plot.pattc_deepneural <- function(x, ...)
+plot.pattc_neural <- function(x, ...)
 {
   patt_preds <-  rbind(data.frame("predictions" = x$pop_counterfactual[,1],
                                   type = "Y_hat0"),

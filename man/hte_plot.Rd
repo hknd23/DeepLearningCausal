@@ -17,7 +17,7 @@ hte_plot(
 }
 \arguments{
 \item{x}{estimated model from \code{metalearner_ensemble},
-\code{metalearner_deepneural}, \code{pattc_ensemble}, or \code{pattc_neural}.}
+\code{metalearner_neural}, \code{pattc_ensemble}, or \code{pattc_neural}.}
 
 \item{...}{Additional arguments}
 
@@ -41,14 +41,14 @@ intervals.
 \description{
 Produces plot to illustrate sub-group Heterogeneous Treatment Effects (HTE)
 of estimated CATEs from \code{metalearner_ensemble} and
-\code{metalearner_deepneural}, as well as PATT-C from \code{pattc_ensemble}
+\code{metalearner_neural}, as well as PATT-C from \code{pattc_ensemble}
 and \code{pattc_neural}.
 }
 \examples{
 \donttest{
 # load dataset
 set.seed(123456)
-xlearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +
+xlearner_nn <- metalearner_neural(cov.formula = support_war ~ age +
                                   income  + employed  + job_loss,
                                   data = exp_data,
                                   treat.var = "strong_leader",
