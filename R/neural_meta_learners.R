@@ -1,7 +1,7 @@
-#' metalearner_deepneural
+#' metalearner_neural
 #'
 #' @description
-#' \code{metalearner_deepneural} implements the S-learner and T-learner for estimating
+#' \code{metalearner_neural} implements the S-learner and T-learner for estimating
 #' CATE using Deep Neural Networks. The Resilient back propagation (Rprop)
 #' algorithm is used for training neural networks.
 #'
@@ -24,7 +24,7 @@
 #' @param act.fct "logistic" or "tanh" for activation function to be used in the neural network. 
 #' @param err.fct "ce" for cross-entropy or "sse" for sum of squared errors as error function.
 #'
-#' @return `metalearner_deepneural` of predicted outcome values and CATEs estimated by the meta
+#' @return `metalearner_neural` of predicted outcome values and CATEs estimated by the meta
 #' learners for each observation.
 #' @export
 #'
@@ -34,7 +34,7 @@
 #' data(exp_data)
 #' # estimate CATEs with S Learner
 #' set.seed(123456)
-#' slearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age + income +
+#' slearner_nn <- metalearner_neural(cov.formula = support_war ~ age + income +
 #'                                    employed  + job_loss,
 #'                                    data = exp_data,
 #'                                    treat.var = "strong_leader",
@@ -51,7 +51,7 @@
 #' # load dataset
 #' set.seed(123456)
 #' # estimate CATEs with T Learner
-#' tlearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +
+#' tlearner_nn <- metalearner_neural(cov.formula = support_war ~ age +
 #'                                   income  +
 #'                                   employed  + job_loss,
 #'                                   data = exp_data,
@@ -69,7 +69,7 @@
 #' # load dataset
 #' set.seed(123456)
 #' # estimate CATEs with X Learner
-#' xlearner_nn <- metalearner_deepneural(cov.formula = support_war ~ age +
+#' xlearner_nn <- metalearner_neural(cov.formula = support_war ~ age +
 #'                                   income  +
 #'                                   employed  + job_loss,
 #'                                   data = exp_data,
@@ -86,7 +86,7 @@
 #'                                   }
 #'
 
-metalearner_deepneural <- function(data,
+metalearner_neural <- function(data,
                                    cov.formula,
                                    treat.var,
                                    meta.learner.type,
@@ -536,22 +536,22 @@ metalearner_deepneural <- function(data,
                         "hidden_layer" = hidden.layer,
                         "data" = data)
   }
-  class(learner_out) <- "metalearner_deepneural"
+  class(learner_out) <- "metalearner_neural"
   return(learner_out)
 }
 
-#' print.metalearner_deepneural
+#' print.metalearner_neural
 #'
 #' @description
-#' Print method for \code{metalearner_deepneural}
-#' @param x `metalearner_deepneural` class object from \code{metalearner_deepneural}
+#' Print method for \code{metalearner_neural}
+#' @param x `metalearner_neural` class object from \code{metalearner_neural}
 #' @param ... additional parameter
 #'
 #' @return list of model results
 #' @export
 #'
 
-print.metalearner_deepneural <- function(x, ...){
+print.metalearner_neural <- function(x, ...){
   cat("Method:\n")
   cat("Deep Neural ", x$Meta_Learner)
   cat("\n")

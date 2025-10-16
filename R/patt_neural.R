@@ -237,7 +237,7 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #' @param response.act.fct "logistic" or "tanh" activation function for response model.
 #' @param linear.output logical for whether output (outcome variable) is linear or not for response model.
 #'
-#' @return `pattc_deepneural` class object of results of t test as PATTC estimate.
+#' @return `pattc_neural` class object of results of t test as PATTC estimate.
 #' @export
 #'
 #' @examples
@@ -247,7 +247,7 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #' data(pop_data) #population data
 #' # specify models and estimate PATTC
 #' set.seed(123456)
-#' pattc_neural <- pattc_deepneural(response.formula = support_war ~ age + female +
+#' pattc_neural <- pattc_neural(response.formula = support_war ~ age + female +
 #'                                income + education +  employed + married +
 #'                                hindu + job_loss,
 #'                                exp.data = exp_data,
@@ -266,7 +266,7 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #'
 #' print(pattc_neural)
 #'
-#' pattc_neural_boot <- pattc_deepneural(response.formula = support_war ~ age + female +
+#' pattc_neural_boot <- pattc_neural(response.formula = support_war ~ age + female +
 #'                                income + education +  employed + married +
 #'                                hindu + job_loss,
 #'                                exp.data = exp_data,
@@ -289,7 +289,7 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #'
 #' }
 #'
-pattc_deepneural <- function(response.formula,
+pattc_neural <- function(response.formula,
                              exp.data,
                              pop.data,
                              treat.var,
@@ -434,22 +434,22 @@ pattc_deepneural <- function(response.formula,
                   "pop_counterfactual" = counterfactuals,
                   "PATT_C" = pattc)
 
-  class(model.out)<-"pattc_deepneural"
+  class(model.out)<-"pattc_neural"
   return(model.out)
 }
 
-#' print.pattc_deepneural
+#' print.pattc_neural
 #'
 #' @description
-#' Print method for \code{pattc_deepneural}
-#' @param x `pattc_deepneural` class object from \code{pattc_deepneural}
+#' Print method for \code{pattc_neural}
+#' @param x `pattc_neural` class object from \code{pattc_neural}
 #' @param ... additional parameter
 #'
 #' @return list of model results
 #' @export
 #'
 
-print.pattc_deepneural <- function(x, ...){
+print.pattc_neural <- function(x, ...){
   cat("Method:\n")
   cat("Deep Neural PATT-C\n")
   cat("Formula:\n")
