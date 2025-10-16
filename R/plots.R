@@ -56,7 +56,9 @@ hte_plot <- function(x, ...,
                      selected_vars = NULL) {
   
   # --- Extract data depending on object class ---
-  if (class(x) %in% c("metalearner_ensemble", "metalearner_neural")) {
+  if (class(x) %in% c("metalearner_ensemble", 
+                      "metalearner_neural", 
+                      "metalearner_deeplearning")) {
     all_vars <- all.vars(x$formula)
     x_var_names <- all_vars[-1]
     if(is.null(x$data)){x$data<-x$test_data}
@@ -64,7 +66,9 @@ hte_plot <- function(x, ...,
     rownames(x_vars) <- 1:nrow(x_vars)
     y_var <- x$CATEs
     
-  } else if (class(x) %in% c("pattc_ensemble", "pattc_neural")) {
+  } else if (class(x) %in% c("pattc_ensemble", 
+                             "pattc_neural",
+                             "pattc_deeplearning")) {
     all_vars <- all.vars(x$formula)
     y_var <- all_vars[1]
     x_var_names <- all_vars[-1]
