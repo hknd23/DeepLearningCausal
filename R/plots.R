@@ -120,10 +120,12 @@ hte_plot <- function(x, ...,
     
     if (boot) {
       lowers_boot_means <- replicate(n_boot, {
-        mean(sample(lowers_y[[i]], length(lowers_y[[i]]), replace = TRUE), na.rm = TRUE)
+        mean(sample(lowers_y[[i]]$count_diff, length(lowers_y[[i]]$count_diff), 
+                    replace = TRUE), na.rm = TRUE)
       })
       highers_boot_means <- replicate(n_boot, {
-        mean(sample(highers_y[[i]], length(highers_y[[i]]), replace = TRUE), na.rm = TRUE)
+        mean(sample(highers_y[[i]]$count_diff, length(highers_y[[i]]$count_diff), 
+                    replace = TRUE), na.rm = TRUE)
       })
       
       lowers_CIs[[i]] <- quantile(lowers_boot_means, c(0.025, 0.975), na.rm = TRUE)
