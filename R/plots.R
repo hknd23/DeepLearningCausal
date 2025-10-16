@@ -359,7 +359,7 @@ plot.metalearner_ensemble <- function(x, ...,
                    aes(x = predictions, fill = type),
                    color = "black",
                    alpha = 0.7, linewidth = 0.5) +
-      xlab("Predicted Outcome") + ylab("") +
+      xlab("Predicted Outcomes") + ylab("") +
       xlim(x_min, x_max) +
       theme(legend.position = "bottom") +
       theme(legend.title=element_blank())
@@ -391,12 +391,11 @@ plot.pattc_neural <- function(x, ...)
   x_min <- min(patt_preds$predictions) - 1*sd(patt_preds$predictions)
   x_max <- max(patt_preds$predictions) + 1*sd(patt_preds$predictions)
   
-  pattc_plot <-  ggplot() +
-    geom_density(data = patt_preds,  
-                 aes(x = predictions, fill = type),
+  pattc_plot <-  ggplot(data = patt_preds) +
+    geom_density(aes(x = predictions, fill = type),
                  color = "black",
                  alpha = 0.7, linewidth = 0.5) +
-    xlab("Predicted Outcome") + ylab("") +
+    xlab("Predicted Outcomes") + ylab("") +
     xlim(x_min, x_max) +
     theme(legend.position = "bottom") +
     theme(legend.title=element_blank())
@@ -427,9 +426,8 @@ plot.pattc_ensemble <- function(x, ...)
   x_min <- min(patt_preds$predictions) - 1*sd(patt_preds$predictions)
   x_max <- max(patt_preds$predictions) + 1*sd(patt_preds$predictions)
   
-  pattc_plot <-  ggplot() +
-    geom_density(data = patt_preds,  
-                 aes(x = predictions, fill = type),
+  pattc_plot <-  ggplot(data = patt_preds) +
+    geom_density(aes(x = predictions, fill = type),
                  color = "black",
                  alpha = 0.7, linewidth = 0.5) +
     xlab("Predicted Outcome") + ylab("") +
@@ -442,7 +440,7 @@ plot.pattc_ensemble <- function(x, ...)
 #' plot.pattc_deeplearning
 #'
 #' @description
-#' Uses \code{plot()} to generate histogram of ditribution of CATEs or predicted
+#' Uses \code{plot()} to generate histogram of ditribution of predicted
 #' outcomes from  \code{pattc_deeplearning}
 #'
 #' @param x \code{pattc_deeplearning} model object
@@ -463,12 +461,11 @@ plot.pattc_deeplearning <- function(x, ...)
   x_min <- min(patt_preds$predictions) - 1*sd(patt_preds$predictions)
   x_max <- max(patt_preds$predictions) + 1*sd(patt_preds$predictions)
   
-  pattc_plot <-  ggplot() +
-    geom_density(data = patt_preds,  
-                 aes(x = predictions, fill = type),
+  pattc_plot <-  ggplot(data = patt_preds) +
+    geom_density(aes(x = predictions, fill = type),
                  color = "black",
                  alpha = 0.7, linewidth = 0.5) +
-    xlab("Predicted Outcome") + ylab("") +
+    xlab("Predicted Outcomes") + ylab("") +
     xlim(x_min, x_max) +
     theme(legend.position = "bottom") +
     theme(legend.title=element_blank())
