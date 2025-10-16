@@ -449,7 +449,7 @@ plot.pattc_ensemble <- function(x, ...)
 #' @importFrom magrittr %>%
 #' @importFrom stats sd
 #' @import ggplot2
-plot.pattc_ensemble <- function(x, ...)
+plot.pattc_deeplearning <- function(x, ...)
 {
   patt_preds <-  rbind(data.frame("predictions" = x$pop_counterfactual[,1],
                                   type = "Y_hat0"),
