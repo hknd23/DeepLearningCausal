@@ -484,7 +484,7 @@ pattc_deeplearning <- function(response.formula,
                     "exp_data" = expdata$exp_data,
                     "pop_data" = popdata$pop_data,
                     "complier_prediction" = compliers,
-                    "population_counterfactuals" = counterfactuals,
+                    "pop_counterfactual" = counterfactuals,
                     "PATT_C" = pattc
   )
   class(model.out) <- "pattc_deeplearning"
