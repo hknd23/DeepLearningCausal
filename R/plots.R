@@ -64,7 +64,7 @@ hte_plot <- function(x, ...,
     if(is.null(x$data)){x$data<-x$test_data}
     x_vars <- x$data[, c(x_var_names), drop = FALSE]
     rownames(x_vars) <- 1:nrow(x_vars)
-    y_var <- x$CATEs
+    y_var <- data.frame(count_diff = x$CATEs) 
     
   } else if (class(x) %in% c("pattc_ensemble", 
                              "pattc_neural",
