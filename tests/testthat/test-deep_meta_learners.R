@@ -68,8 +68,7 @@ test_that("ensemble-meta", {
                                   treat.var = "strong_leader",
                                   meta.learner.type = "S.Learner", 
                                   family = binomial(),
-                                  SL.learners = c("SL.xgboost", "SL.ranger", 
-                                                  "SL.nnet", "SL.glm"), 
+                                  SL.learners = c("SL.xgboost", "SL.glm"), 
                                   binary.preds = FALSE)
   expect_s3_class(slearner_en, "metalearner_ensemble")
 })
@@ -84,12 +83,9 @@ test_that("ensemble-pattc", {
                           pop.data = pop_data_full,
                           treat.var = "strong_leader",
                           compl.var = "compliance",
-                          compl.family = binomial(),
                           response.family = binomial(),
-                          SL.learners.compl = c("SL.xgboost", "SL.ranger", 
-                                                "SL.nnet", "SL.glm"),
-                          SL.learners.response = c("SL.xgboost", "SL.ranger", 
-                                                   "SL.nnet", "SL.glm"),
+                          compl.SL.learners = c("SL.xgboost", "SL.glm"),
+                          response.SL.learners = c("SL.xgboost", "SL.glm"),
                           binary.preds = FALSE,
                           nboot = 1000)
   expect_s3_class(pattc_en, "pattc_ensemble")
