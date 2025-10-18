@@ -18,6 +18,7 @@ test_that("keras_pattc", {
   }
   
   set.seed(1234)
+  reticulate::py_set_seed(1234)
   deeppattc <- pattc_deeplearning(response.formula = support_war ~ age + female +
                             income + education +  employed + married +
                             hindu + job_loss,
@@ -38,8 +39,8 @@ test_that("keras_pattc", {
                           ID = NULL,
                           weights = NULL,
                           cluster = NULL,
-                          compl.epoch = 200,
-                          response.epoch = 500,
+                          compl.epoch = 50,
+                          response.epoch = 100,
                           compl.validation_split = 0.2,
                           response.validation_split = 0.2,
                           compl.patience = 20,
@@ -55,3 +56,56 @@ test_that("keras_pattc", {
   expect_equal(nrow(deeppattc$complier_prediction), nrow(exp_data_full))
   
 })
+
+
+test_that("ensemble-meta", {
+  set.seed(1234)
+  slearner_en <- metalearner_ensemble(cov.formula = support_war ~ age + female
+                                      + education + income + employed + 
+                                      job_loss + hindu + political_ideology,
+                                  data = exp_data_full, 
+                                  treat.var = "strong_leader",
+                                  meta.learner.type = "S.Learner", 
+                                  family = binomial(),
+                                  SL.learners = c("SL.xgboost", "SL.ranger", 
+                                                  "SL.nnet", "SL.glm"), 
+                                  binary.preds = FALSE)
+  expect_s3_class(slearner_en, "metalearner_ensemble")
+})
+
+test_that("ensemble-pattc", {
+  set.seed(1234)
+  pattc_en <- pattc_ensemble(response.formula = support_war ~ age + female
+                            + income + education +  employed + married +
+                              hindu + job_loss,
+                          exp.data = exp_data_full,
+                          pop.data = pop_data_full,
+                          treat.var = "strong_leader",
+                          compl.var = "compliance",
+                          compl.family = binomial(),
+                          response.family = binomial(),
+                          SL.learners.compl = c("SL.xgboost", "SL.ranger", 
+                                                "SL.nnet", "SL.glm"),
+                          SL.learners.response = c("SL.xgboost", "SL.ranger", 
+                                                   "SL.nnet", "SL.glm"),
+                          binary.preds = FALSE,
+                          nboot = 1000)
+  expect_s3_class(pattc_en, "pattc_ensemble")
+})  
+
+test_that("neuralnet-pattc", {
+  set.seed(1234)
+  pattc_nn <- pattc_neural(response.formula = support_war ~ age + female
+                            + income + education +  employed + married +
+                              hindu + job_loss,
+                           exp.data = exp_data, pop.data = pop_data,
+                           treat.var = "strong_leader", compl.var = "compliance",
+                           compl.hidden.layer = c(2, 2),
+                           response.hidden.layer = c(2, 2),
+                           compl.stepmax = 1e+09, response.stepmax = 1e+09, 
+                           nboot = 1000)
+  expect_s3_class(pattc_nn, "pattc_neural")
+})
+
+                             
+                                        
