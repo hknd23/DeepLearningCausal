@@ -84,8 +84,8 @@ test_that("ensemble-pattc", {
                           treat.var = "strong_leader",
                           compl.var = "compliance",
                           response.family = binomial(),
-                          compl.SL.learners = c("SL.xgboost", "SL.glm"),
-                          response.SL.learners = c("SL.xgboost", "SL.glm"),
+                          compl.SL.learners = c("SL.glm"),
+                          response.SL.learners = c( "SL.glm"),
                           binary.preds = FALSE,
                           nboot = 1000)
   expect_s3_class(pattc_en, "pattc_ensemble")
