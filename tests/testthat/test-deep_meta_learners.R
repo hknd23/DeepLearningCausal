@@ -60,6 +60,7 @@ test_that("keras_pattc", {
 
 test_that("ensemble-meta", {
   set.seed(1234)
+  library(SuperLearner)
   slearner_en <- metalearner_ensemble(cov.formula = support_war ~ age + female
                                       + education + income + employed + 
                                       job_loss + hindu + political_ideology,
@@ -75,6 +76,7 @@ test_that("ensemble-meta", {
 
 test_that("ensemble-pattc", {
   set.seed(1234)
+  library(SuperLearner)
   pattc_en <- pattc_ensemble(response.formula = support_war ~ age + female
                             + income + education +  employed + married +
                               hindu + job_loss,
