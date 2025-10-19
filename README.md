@@ -35,13 +35,13 @@ The DeepLearningCausal package also provides users the choice of estimating CATE
 
 | Function                | Description                                                                                             |
 |-------------------------|---------------------------------------------------------------------------------------------------------|
-|'metalearner_deeplearning'| Deep neural network estimation of CATEs for S-, T-, X-, R-learner using reticulate, tensorflow and keras3.|
-|'pattc_deeplearning'| Deep neural network estimation of PATT using reticulate, tensorflow and keras3.|
+|`metalearner_deepneural`| Deep neural network estimation of CATEs for S-, T-, X-, R-learner using reticulate, tensorflow and keras3.|
+|`pattc_deepneural` | Deep neural network estimation of PATT using reticulate, tensorflow and keras3.|
 | `metalearner_ensemble`  |Weighted ensemble learning estimation of CATEs for S-, T-, X-, R-learner using super learner.|
 | `metalearner_deepneural`| Deep neural network estimation of CATEs for S-, T-, X-, R-learner using reticulate, tensorflow and keras3. |
 | `pattc_ensemble`        | Weighted ensemble learning estimation of PATT using super learner.|
 | `pattc_deepneural`      | Deep neural network estimation of PATT using neural net.|
-|`conformal_plot'| Assess treatment effects from meta-learners with conformal prediction to create statistically valid and reliable prediction intervals.|
+|`conformal_plot`| Assess meta-learner ITEs with conformal prediction to create statistically valid and reliable prediction intervals.|
 | `hte_plot`      | Heterogeneous Treatment Effects plots from PATT-C and meta-learner models.|
 
 
