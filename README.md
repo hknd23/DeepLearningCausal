@@ -35,14 +35,14 @@ The DeepLearningCausal package also provides users the choice of estimating CATE
 
 | Function                | Description                                                                                             |
 |-------------------------|---------------------------------------------------------------------------------------------------------|
-|`metalearner_deepneural`| Deep neural network estimation of CATEs for S-, T-, X-, R-learner using reticulate, tensorflow and keras3.|
-|`pattc_deepneural` | Deep neural network estimation of PATT using reticulate, tensorflow and keras3.|
-| `metalearner_ensemble`  |Weighted ensemble learning estimation of CATEs for S-, T-, X-, R-learner using super learner.|
-| `metalearner_deepneural`| Deep neural network estimation of CATEs for S-, T-, X-, R-learner using reticulate, tensorflow and keras3. |
-| `pattc_ensemble`        | Weighted ensemble learning estimation of PATT using super learner.|
-| `pattc_deepneural`      | Deep neural network estimation of PATT using neural net.|
-|`conformal_plot`| Assess meta-learner ITEs with conformal prediction to create statistically valid and reliable prediction intervals.|
-| `hte_plot`      | Heterogeneous Treatment Effects plots from PATT-C and meta-learner models.|
+|`metalearner_deeplearning ()`| Deep neural network estimation of CATEs for S-, T-, X-, R-learner using reticulate, tensorflow and keras3.|
+|`pattc_deeplearning ()` | Deep neural network estimation of PATT using reticulate, tensorflow and keras3.|
+| `metalearner_ensemble ()`  |Weighted ensemble learning estimation of CATEs for S-, T-, X-, R-learner using super learner.|
+| `metalearner_neural ()`| Deep neural network estimation of CATEs for S-, T-, X-, R-learner using reticulate, tensorflow and keras3. |
+| `pattc_ensemble ()`        | Weighted ensemble learning estimation of PATT using super learner.|
+| `pattc_neural ()`      | Deep neural network estimation of PATT using neural net.|
+|`conformal_plot ()`| Assess meta-learner ITEs with conformal prediction to create statistically valid and reliable prediction intervals.|
+| `hte_plot ()`      | Heterogeneous Treatment Effects plots from PATT-C and meta-learner models.|
 
 
 
@@ -135,12 +135,16 @@ devtools::install_github("hknd23/DeepLearningCausal")
 
 We illustrate the functionality of **DeepLearningCausal** using the two datasets summarized above. These datasets are included and briefly described in the manual for the package. 
 
-#### Deep Neural Networks for Meta-Learners Using TensorFlow and Keras3
+#### Deep Neural Networks for Meta-Learners Using reticulate, tensorflow and keras3
 
+The function `metalearner_deepelearning ()` in our package is employed for deep neural network estimation of the CATEs from the four meta-learner models using reticulate, tensorflow and keras3. The code, customization of the deep neural network architecture, and results from the S-learner model using the said function is presented in the paper. The code and arguments for the X-learner model by using the `metalearner_deeplearning ()` function is presented below while the results from the X-learner model in this case is reported in the paper.
 
+<<code for xlearner_deep here>>
+
+The tutorial for `metalearner_deeplearning ()` using using reticulate, tensorflow and keras3 in the case of the T-learner model is <<here>>. The tutorial for `metalearner_deeplearning ()` using using reticulate, tensorflow and keras3 in the case of the R-learner model is <<here>>. 
 
 #### Deep Neural Networks for Meta-Learners Using R Neural Net
-The function `metalearner_deepneural` in the package estimates the CATEs from the four meta-learner models using deep neural networks: T-learner, S-learner, X-learner and R-learner. The example below shows via a tutorial the applicability of this function for a small number of observations (*N*) from our survey response (specifically, survey experiment) dataset in Example 1.
+The function `metalearner_neural ()` in the package estimates the CATEs from the four meta-learner models using deep neural networks: T-learner, S-learner, X-learner and R-learner. The example below shows via a tutorial the applicability of this function for a small number of observations (*N*) from our survey response (specifically, survey experiment) dataset in Example 1.
 
 ``` r
 slearner_nn <- metalearner_deepneural(cov.formula = response_formula,
@@ -148,11 +152,12 @@ slearner_nn <- metalearner_deepneural(cov.formula = response_formula,
                meta.learner.type = "S.Learner", stepmax = 1e+9, 
                hidden.layer = c(2, 2), linear.output = FALSE)
 ```
-The tutorial for `metalearner_deepneural` for the S-learner using R neural net is [here](/tutorial.md#deep-neural-s-learner). The tutorial for `metalearner_deepneural` for the T-learner using R neural net is [here](/tutorial.md#deep-neural-t-learner). The tutorial for `metalearner_deepneural` for the X-learner using R neural net is [here](/tutorial.md#deep-neural-x-learner). The tutorial for `metalearner_deepneural` for the R-learner using R neural net is [here](/tutorial.md#deep-neural-r-learner).
+The tutorial for `metalearner_neural ()` for the S-learner using R neural net is [here](/tutorial.md#deep-neural-s-learner). The tutorial for `metalearner_neural ()` for the T-learner using R neural net is [here](/tutorial.md#deep-neural-t-learner). The tutorial for `metalearner_neural ()` for the X-learner using R neural net is [here](/tutorial.md#deep-neural-x-learner). The tutorial for `metalearner_neural ()` for the R-learner using R neural net is [here](/tutorial.md#deep-neural-r-learner).
 
 
-#### Deep Neural Networks for PATT (settings with treatment noncompliance) Using TensorFlow and Keras3
+#### Deep Neural Networks for PATT (settings with treatment noncompliance) Using reticualte, tensorflow and keras3
 
+The function `pattc_deepelearning ()` in our package is employed for deep neural network estimation of the PATT in settings with treatment noncompliance using reticulate, tensorflow and keras3. The code, customization of the deep neural network architecture, and results from obtaining the PATT via using the said function is presented in the paper.
 
 
 #### Deep Neural Networks for PATT (settings with treatment noncompliance) Using R Neural Net 
@@ -175,12 +180,12 @@ The distribution of the deep neural network-estimated PATT obtained from the PAT
 The tutorial for `pattc_deepneural` for the PATT-C model using R neural net is available [here](/tutorial.md#deep-neural-patt-c). 
 
 
-### Using the Package: Weighted Ensemble Learning Using Super Learner
+### Using the Package: Weighted Ensemble Learning Via Super Learner
 
 
-#### Ensemble Learning for Meta-Learners
+#### Weighted Ensemble Learning for Meta-Learners
 
-The function `metalearner_ensemble` in the package estimates the CATE from the following four meta-learner models using weighted ensemble learning: the S-learner, T-learner X-learner, and R-learner. To allow for easy replication, the example below shows via a tutorial the applicability of this function for a small number of observations (N) from our survey response dataset in Example 1 that incorporates a survey experiment.
+The function `metalearner_ensemble` in our package enables weighted ensemble learning estimation of CATEs from the following four meta-learner models via the Super Learner approach: the S-learner, T-learner X-learner, and R-learner. To allow for easy replication, the example below shows via a tutorial the applicability of this function for a small number of observations (N) from our survey response dataset in Example 1 that incorporates a survey experiment.
 
 ``` r
 library(DeepLearningCausal)
@@ -199,45 +204,11 @@ slearner_en <- metalearner_ensemble(cov.formula = response_formula,
                SL.learners = SLlearners)
 ```
 
-#### Plotting Treatment Effects From Meta-Learners Ensemble 
-The **DeepLearningCausal** package includes numerous features and functions that enable users to extract and illustrate three types of plots from the CATEs obtained from the meta-learner models estimated via weighted ensemble learning. First, users can illustrate both the estimated CATE with confidence intervals and the distribution of the estimated CATE of their treatment indicator on the dependent variable from all the meta-learner models in the package, as demonstrated in our accompanying paper (Huynh et al., 2025). Second, the `hte_plot` function in the package enables users to obtain and illustrate heterogeneous treatment effects (HTE) that can help them identify whether the treatment effect of interest varies across different subgroups in their data. As an example, after estimating the CATE from the S-Learner and the R-learner model via weighted ensemble learning, we employed the `hte_plot` function to assess whether the treatment effect of the *Strong Leader* indicator on *Support War* differs for the subgroup indicators of interest from our survey experiment data. Doing so generates the HTE figures from the S-learner and R-learner estimated via weighted ensemble learning:
-```r
-cut_points <- c(33, .5, 4, 4, .5, 2, .5, 5)
-labels <- c("Age <= 33", "Age > 33", "Primary School", "Tertiary", "Unemployed",         
-            "Employed", "Male", "Female",  "Minority", "Majority Religion" ,
-            "Low Income",  "Middle Income",  "Job Secure",  "Job Insecurity",
-            "Centrist", "Right-wing Partisan")
-```
-```r
-hte_plot(slearner_en, cut_points = cut_points, custom_labels = labels , boot = TRUE,
-         n_boot = 1000)
-```
-
-![](tutorial_files/tutorial_files/figure-gfm/enshte-1.png)<!-- -->
-    
-
-```r
-hte_plot(rlearner_en, cut_points = cut_points, custom_labels = labels ,  boot = TRUE,
-         n_boot = 1000)
-```
-
-![](tutorial_files/tutorial_files/figure-gfm/enrhte-1.png)<!-- -->
+The tutorial for `metalearner_ensemble` for the S-learner is [here](/tutorial.md#ensemble-s-learner). The tutorial for `metalearner_ensemble` for the T-learner is [here](/tutorial.md#ensemble-t-learner). The tutorial for `metalearner_ensemble` for the X-learner is [here](/tutorial.md#ensemble-x-learner). The tutorial for `metalearner_ensemble` for the R-learner is [here](/tutorial.md#ensemble-r-learner)
 
 
-#### Tutorials for Meta-Learners Ensemble 
-
-The tutorial for `metalearner_ensemble` for the S-learner is [here](/tutorial.md#ensemble-s-learner).
-The tutorial for `metalearner_ensemble` for the T-learner is [here](/tutorial.md#ensemble-t-learner).
-The tutorial for `metalearner_ensemble` for the X-learner is [here](/tutorial.md#ensemble-x-learner).
-The tutorial for `metalearner_ensemble` for the R-learner is [here](/tutorial.md#ensemble-r-learner)
-
-
-
-
-### Using the Package: Estimating the PATT
-
-#### Ensemble Learning for Estimating PATT in datasets with Treatment Noncompliance
-The function `PATTC_ensemble` estimates the PATT-C model via weighted ensemble learning. This enables users to estimate PATT from experimental and observational data with treatment noncompliance. The example below shows via a tutorial the applicability of this function for a small number of observations (N) using both the survey experiment dataset in Example 1 and the observational Word Values Survey (WVS) response dataset in Example 2.
+#### Weighted Ensemble Learning for Estimating PATT in datasets with Treatment Noncompliance
+The function `PATTC_ensemble` estimates the PATT-C model via weighted ensemble learning using the super Learner package. This enables users to estimate PATT from experimental and observational data with treatment noncompliance. The example below shows via a tutorial the applicability of this function for a small number of observations (N) using both the survey experiment dataset in Example 1 and the observational Word Values Survey (WVS) response dataset in Example 2.
 
 ```r
 pattc_en <- pattc_ensemble(response.formula = response_formula,
@@ -247,18 +218,14 @@ pattc_en <- pattc_ensemble(response.formula = response_formula,
             response.SL.learners = SLlearners)
 ```
 
-#### Plotting Ensemble Learning-Estimated PATT 
-Our package includes features and functions that enables users to extract and illustrate two types of figures from the PATT that is obtained from the PATT-C model via weighted ensemble learning. The first is the distribution of the estimated PATT of the treatment indicator on the dependent variable:
+Our package includes features and functions that enables users to extract and illustrate two types of figures from the PATT that is obtained from the PATT-C model via weighted ensemble learning using the Super Learner approach. The first is the distribution of the estimated PATT of the treatment indicator on the dependent variable:
 
 ```r
 plot(pattc_en)
 ```
 ![](tutorial_files/tutorial_files/figure-gfm/pattcenv-1.png)<!-- -->
 
-The second is heterogeneous treatment effects that users can employ to assess and visualize whether the PATT varies significantly across different subgroups in our example datasets. The plot for the heterogenous treatment effects obtained in this case can be obtained by using the `hte_plot` function, as shown in the accompanying paper by Huynh et al. (2025).
-
-#### Tutorial for Ensemble Learning-Estimated PATT
-The tutorial for the `PATTC_ensemble` for the PATT-C model is [here](/tutorial.md#ensemble-patt-c).
+The second is heterogeneous treatment effects that users can employ to assess and visualize whether the PATT varies significantly across different subgroups in our example datasets. The plot for the heterogenous treatment effects obtained in this case can be obtained by using the `hte_plot` function, as shown in the accompanying paper by Huynh et al. (2025). Finally, the tutorial for the `PATTC_ensemble` for the PATT-C model in this case is [here](/tutorial.md#ensemble-patt-c).
 
 
 
