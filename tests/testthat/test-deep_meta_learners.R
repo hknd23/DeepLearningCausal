@@ -69,7 +69,11 @@ test_that("ensemble-meta", {
                                   meta.learner.type = "S.Learner", 
                                   family = binomial(),
                                   SL.learners = c("SL.xgboost", "SL.glm"), 
-                                  binary.preds = FALSE)
+                                  binary.outcome = TRUE,
+                                  conformal=TRUE,
+                                  alpha=0.1,
+                                  calib_frac=0.5,
+                                  seed=1234)
   expect_s3_class(slearner_en, "metalearner_ensemble")
 })
 
