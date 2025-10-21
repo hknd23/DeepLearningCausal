@@ -76,8 +76,8 @@ slearner <- metalearner_ensemble(cov.formula = support_war ~ age +
                                 meta.learner.type = "S.Learner",
                                 SL.learners = c("SL.glm"),
                                 nfolds = 5,
-                                family = gaussian(),
-                                binary.preds = FALSE)
+                                binary.outcome = FALSE,
+                                )
 print(slearner)
 
 \donttest{
@@ -91,8 +91,8 @@ tlearner <- metalearner_ensemble(cov.formula = support_war ~ age + income +
                                   SL.learners = c("SL.xgboost","SL.ranger",
                                                "SL.nnet"),
                                   nfolds = 5,
-                                  family = gaussian(),
-                                  binary.preds = FALSE)
+                                  binary.outcome = FALSE,
+                                  )
 
 print(tlearner)
                                   }
@@ -108,8 +108,7 @@ xlearner <- metalearner_ensemble(cov.formula = support_war ~ age + income +
                                  SL.learners = c("SL.glmnet","SL.xgboost", 
                                  "SL.ranger","SL.nnet"),
                                  nfolds = 5,
-                                 family = binomial(),
-                                 binary.preds = TRUE)
+                                 binary.outcome = TRUE)
 
 print(xlearner)
                                   }
