@@ -5,18 +5,27 @@
 \title{metalearner_ensemble}
 \usage{
 metalearner_ensemble(
-  data,
+  data = NULL,
+  train.data = NULL,
+  test.data = NULL,
   cov.formula,
   treat.var,
   meta.learner.type,
   SL.learners = c("SL.glmnet", "SL.xgboost", "SL.ranger", "SL.nnet"),
   nfolds = 5,
-  family = gaussian(),
-  binary.preds = FALSE
+  binary.outcome = FALSE,
+  conformal = FALSE,
+  alpha = 0.1,
+  calib_frac = 0.5,
+  seed = 1234
 )
 }
 \arguments{
-\item{data}{\code{data.frame} object of data}
+\item{data}{\code{data.frame} object of data for cross-validation}
+
+\item{train.data}{\code{data.frame} object of training data}
+
+\item{test.data}{\code{data.frame} object of test data}
 
 \item{cov.formula}{formula description of the model y ~ x(list of covariates)}
 
@@ -29,13 +38,18 @@ metalearner_ensemble(
 \item{SL.learners}{vector for super learner ensemble that includes extreme gradient
 boosting, glmnet, random forest, and neural nets.}
 
-\item{nfolds}{number of folds for cross-validation. Currently supports up to
+\item{nfolds}{number of folds for cross-validation. Currently supports up to}
+
+\item{binary.outcome}{logical for whether outcome variable is binary}
+
+\item{conformal}{logical for whether to compute conformal prediction intervals}
+
+\item{alpha}{proportion for conformal prediction intervals}
+
+\item{calib_frac}{fraction of training data to use for calibration in conformal inference}
+
+\item{seed}{random seed
 5 folds.}
-
-\item{family}{gaussian() for continuous outcome variable or binomial() for binary outcome variable}
-
-\item{binary.preds}{logical specifying predicted outcome variable will take
-binary values or proportions when family = binomial().}
 }
 \value{
 \code{metalearner_ensemble} of predicted outcome values and CATEs

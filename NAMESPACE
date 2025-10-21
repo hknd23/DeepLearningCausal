@@ -2,6 +2,7 @@
 
 S3method(plot,metalearner_ensemble)
 S3method(plot,metalearner_neural)
+S3method(plot,pattc_deeplearning)
 S3method(plot,pattc_ensemble)
 S3method(plot,pattc_neural)
 S3method(print,metalearner_ensemble)

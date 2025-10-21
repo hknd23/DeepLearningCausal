@@ -5,23 +5,16 @@
 \title{plot.pattc_ensemble}
 \usage{
 \method{plot}{pattc_ensemble}(x, ...)
-
-\method{plot}{pattc_ensemble}(x, ...)
 }
 \arguments{
-\item{x}{\code{pattc_deeplearning} model object}
+\item{x}{\code{pattc_ensemble} model object}
 
 \item{...}{Additional arguments}
 }
 \value{
 \code{ggplot} object
-
-\code{ggplot} object
 }
 \description{
 Uses \code{plot()} to generate histogram of ditribution of CATEs or predicted
 outcomes from  \code{pattc_ensemble}
-
-Uses \code{plot()} to generate histogram of ditribution of CATEs or predicted
-outcomes from  \code{pattc_deeplearning}
 }

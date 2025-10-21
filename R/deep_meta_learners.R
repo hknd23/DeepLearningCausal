@@ -27,6 +27,10 @@
 #' @param validation_split double for proportion of training data to split for validation.
 #' @param patience integer for number of epochs with no improvement to wait before stopping training.
 #' @param dropout_rate double or vector for proportion of hidden layer to drop out. 
+#' @param conformal logical for whether to compute conformal prediction intervals
+#' @param alpha proportion for conformal prediction intervals
+#' @param calib_frac fraction of training data to use for calibration in conformal inference
+#' @param seed random seed
 #' @return `metalearner_deeplearning` object with CATEs
 #' @export
 #'

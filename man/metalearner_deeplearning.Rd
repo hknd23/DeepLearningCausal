@@ -8,7 +8,9 @@
 CATE using Deep Neural Networks through Tensorflow.}
 \usage{
 metalearner_deeplearning(
-  data,
+  data = NULL,
+  train.data = NULL,
+  test.data = NULL,
   cov.formula,
   treat.var,
   meta.learner.type,
@@ -25,7 +27,11 @@ metalearner_deeplearning(
   batch_size = 32,
   validation_split = NULL,
   patience = NULL,
-  dropout_rate = NULL
+  dropout_rate = NULL,
+  conformal = FALSE,
+  alpha = 0.1,
+  calib_frac = 0.5,
+  seed = 1234
 )
 }
 \arguments{
@@ -70,6 +76,14 @@ In case of multinomial outcome variable, set to the number of categories.}
 \item{patience}{integer for number of epochs with no improvement to wait before stopping training.}
 
 \item{dropout_rate}{double or vector for proportion of hidden layer to drop out.}
+
+\item{conformal}{logical for whether to compute conformal prediction intervals}
+
+\item{alpha}{proportion for conformal prediction intervals}
+
+\item{calib_frac}{fraction of training data to use for calibration in conformal inference}
+
+\item{seed}{random seed}
 }
 \value{
 \code{metalearner_deeplearning} object with CATEs

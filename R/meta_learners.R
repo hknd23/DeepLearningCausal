@@ -7,7 +7,7 @@
 #' extreme gradient boosting, glmnet (elastic net regression), random forest and
 #' neural nets.
 #'
-#' @param data \code{data.frame} object of data
+#' @param data \code{data.frame} object of data for cross-validation
 #' @param cov.formula formula description of the model y ~ x(list of covariates)
 #' @param treat.var string for the name of treatment variable.
 #' @param meta.learner.type string specifying is the S-learner and
@@ -16,11 +16,14 @@
 #' @param SL.learners vector for super learner ensemble that includes extreme gradient
 #' boosting, glmnet, random forest, and neural nets.
 #' @param nfolds number of folds for cross-validation. Currently supports up to
+#' @param train.data \code{data.frame} object of training data
+#' @param test.data \code{data.frame} object of test data
+#' @param binary.outcome logical for whether outcome variable is binary
+#' @param conformal logical for whether to compute conformal prediction intervals
+#' @param alpha proportion for conformal prediction intervals
+#' @param calib_frac fraction of training data to use for calibration in conformal inference
+#' @param seed random seed
 #' 5 folds.
-#' @param binary.preds logical specifying predicted outcome variable will take
-#' binary values or proportions when family = binomial().
-#' @param family gaussian() for continuous outcome variable or binomial() for binary outcome variable 
-#'
 #' @return `metalearner_ensemble` of predicted outcome values and CATEs 
 #' estimated by the meta learners for each observation.
 #' @export
