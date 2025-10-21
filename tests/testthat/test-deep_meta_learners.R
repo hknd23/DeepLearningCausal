@@ -67,7 +67,6 @@ test_that("ensemble-meta", {
                                   data = exp_data_full, 
                                   treat.var = "strong_leader",
                                   meta.learner.type = "S.Learner", 
-                                  family = binomial(),
                                   SL.learners = c("SL.xgboost", "SL.glm"), 
                                   binary.outcome = TRUE,
                                   conformal=TRUE,
