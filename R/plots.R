@@ -513,6 +513,7 @@ plot.pattc_deeplearning <- function(x, ...)
 #'
 #' @returns A \code{ggplot} object showing sampled individual treatment effects 
 #' with their weighted conformal prediction intervals.
+#' @export
 conformal_plot <- function(x, ...,
                            seed=1234, prop=0.3,
                            binary.outcome=FALSE,
