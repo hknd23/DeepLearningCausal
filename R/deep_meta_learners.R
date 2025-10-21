@@ -31,29 +31,40 @@
 #' @export
 #'
 #@examples
-metalearner_deeplearning <- function(data,
-                             cov.formula,
-                             treat.var,
-                             meta.learner.type,
-                             nfolds = 5,
-                             algorithm = "adam",
-                             hidden.layer = c(2,2),
-                             hidden_activation = "relu",
-                             output_activation = "linear",
-                             output_units = 1,
-                             loss = "mean_squared_error",
-                             metrics = "mean_squared_error",
-                             epoch = 10,
-                             verbose = 1,
-                             batch_size = 32, 
-                             validation_split = NULL,
-                             patience = NULL,
-                             dropout_rate = NULL){
+metalearner_deeplearning <- function(data=NULL,
+                                     train.data=NULL,
+                                     test.data=NULL,
+                                     cov.formula,
+                                     treat.var,
+                                     meta.learner.type,
+                                     nfolds = 5,
+                                     algorithm = "adam",
+                                     hidden.layer = c(2,2),
+                                     hidden_activation = "relu",
+                                     output_activation = "linear",
+                                     output_units = 1,
+                                     loss = "mean_squared_error",
+                                     metrics = "mean_squared_error",
+                                     epoch = 10,
+                                     verbose = 1,
+                                     batch_size = 32, 
+                                     validation_split = NULL,
+                                     patience = NULL,
+                                     dropout_rate = NULL,
+                                     # conformal options
+                                     conformal=FALSE,
+                                     alpha=0.1,
+                                     calib_frac=0.5,
+                                     seed=1234){
   
   check_cran_deps()
   check_python_modules()
   
   nlayers <- length(hidden.layer)
+  
+  if(nlayers == 0){
+    stop("Please specify at least one hidden layer")
+  }
   
   if(!(meta.learner.type %in% c("S.Learner", "T.Learner", 
                                 "X.Learner", "R.Learner"))){
@@ -64,8 +75,529 @@ metalearner_deeplearning <- function(data,
   variables <- all.vars(cov.formula)
   outcome.var <- variables[1]
   covariates <- variables[-1]
-  data.vars <- data[,c(treat.var, variables)]
   
+  set.seed(seed)
+  reticulate::py_set_seed(seed, disable_hash_randomization = TRUE)
+  
+  # ============================================================
+  # MODE 1: Train/Test explicitly provided
+  # ============================================================
+  if(!is.null(train.data) & !is.null(test.data)){
+    message("Running in Train/Test mode")
+
+    # Prepare train and test data
+    train.vars <- train.data[, c(treat.var, variables)]
+    train. <- na.omit(train.vars)
+    train.$y <- train.[, outcome.var]
+    train.$d <- train.[, treat.var]
+    train.data <- train.[, c("y", "d", covariates)]
+    
+    test.vars <- test.data[, c(treat.var, variables)]
+    test. <- na.omit(test.vars)
+    test.$y <- test.[, outcome.var]
+    test.$d <- test.[, treat.var]
+    test.data <- test.[, c("y", "d", covariates)]
+    
+    score_meta <- matrix(0, nrow(test.data), 1)
+    Yhats_list <- list()
+    M_mods <- list()
+    M_mods_history <- list()
+    
+    if (!is.null(patience)){
+      early_stopping <- keras3::callback_early_stopping(monitor = "val_loss",
+                                                        patience = patience,
+                                                        restore_best_weights = TRUE)
+      callbacks_list <- list(early_stopping)
+    } else {
+      callbacks_list <- NULL
+    }
+    
+    if(meta.learner.type == "S.Learner"){
+      modelm_S <- build_model(hidden.layer = hidden.layer,
+                              input_shape = length(covariates) + 1,
+                              hidden_activation = hidden_activation,
+                              output_activation = output_activation,
+                              output_units = output_units,
+                              dropout_rate = dropout_rate)
+      
+      m_mod_S <- modelm_S %>%
+        keras3::compile(optimizer = algorithm, loss = loss, metrics = metrics)
+      
+      X_train <- train.data[, c(covariates, "d")]
+      Y_train <- train.data$y
+      
+      model_history <- m_mod_S %>%
+        keras3::fit(as.matrix(X_train), Y_train,
+                    epochs = epoch, batch_size = batch_size, 
+                    validation_split = validation_split,
+                    callbacks = callbacks_list, verbose = verbose)
+      
+      X_test_0 <- test.data[, c(covariates, "d")]; X_test_0$d <- 0
+      X_test_1 <- test.data[, c(covariates, "d")]; X_test_1$d <- 1
+      
+      Y_hat0 <- predict(m_mod_S, as.matrix(X_test_0))
+      Y_hat1 <- predict(m_mod_S, as.matrix(X_test_1))
+      score_meta <- Y_hat1 - Y_hat0
+      
+      if (!is.null(conformal) && conformal) {
+        message("Applying Weighted Conformal Prediction Intervals for S-Learner")
+        
+        # --- Split calibration set for conformal inference
+        if (is.null(calib_frac) || !is.numeric(calib_frac)) {
+          stop("Error: 'calib_frac' must be provided as a numeric value between 0 and 1 for conformal splitting.")
+        }
+        if (calib_frac <= 0 || calib_frac >= 1) {
+          stop("Error: 'calib_frac' must be strictly between 0 and 1. For example, use calib_frac = 0.8.")
+        }
+        
+        # Split calibration data
+        set.seed(seed)
+        idx_cal <- caret::createDataPartition(train.data$d, p = (1-calib_frac), list = FALSE)
+        fit_data <- train.data[idx_cal, ]
+        calib_data <- train.data[-idx_cal, ]
+        
+        # Refit model on fit_data
+        modelm_S_conf <- build_model(hidden.layer = hidden.layer,
+                                     input_shape = length(covariates) + 1,
+                                     hidden_activation = hidden_activation,
+                                     output_activation = output_activation,
+                                     output_units = output_units,
+                                     dropout_rate = dropout_rate)
+        m_mod_S_conf <- modelm_S_conf %>%
+          keras3::compile(optimizer = algorithm, loss = loss, metrics = metrics)
+        X_fit <- as.matrix(fit_data[, c(covariates, "d")])
+        Y_fit <- fit_data$y
+        m_mod_S_conf %>%
+          keras3::fit(X_fit, Y_fit,
+                      epochs = epoch, batch_size = batch_size,
+                      validation_split = validation_split,
+                      callbacks = callbacks_list, verbose = 0)
+        
+        # Compute residuals (calibration conformity scores)
+        X_calib_0 <- calib_data[, c(covariates, "d")]; X_calib_0$d <- 0
+        X_calib_1 <- calib_data[, c(covariates, "d")]; X_calib_1$d <- 1
+        Y_hat0_calib <- predict(m_mod_S_conf, as.matrix(X_calib_0))
+        Y_hat1_calib <- predict(m_mod_S_conf, as.matrix(X_calib_1))
+        
+        
+        calib_resid <- abs(calib_data$y - (calib_data$d * Y_hat1_calib + (1 - calib_data$d) * Y_hat0_calib))
+        
+        # --- Estimate propensity model on fit_data
+        p_mod <- build_model(
+          hidden.layer = hidden.layer,
+          input_shape = length(covariates),
+          hidden_activation = hidden_activation,
+          output_activation = "sigmoid",
+          output_units = 1,
+          dropout_rate = dropout_rate
+        )
+        
+        p_mod %>%
+          keras3::compile(optimizer = algorithm, 
+                          loss = "binary_crossentropy",
+                          metrics = "accuracy")
+        
+        pmodel_history <-p_mod %>%
+          keras3::fit(
+            as.matrix(fit_data[, covariates]),
+            as.matrix(fit_data$d),
+            epochs = epoch, batch_size = batch_size, verbose = verbose
+          )
+        
+        p_hat <- predict(p_mod, as.matrix(calib_data[, covariates]))
+        w <- as.numeric(p_hat * (1 - p_hat))   # overlap-based weights
+        w <- w / sum(w)
+        
+        # --- Weighted conformal quantile 
+        q_conf <- Hmisc::wtd.quantile(calib_resid, weights = w, probs = 1 - alpha)
+        
+        # --- Apply to test predictions
+        conf_lower <- as.numeric(score_meta) - q_conf
+        conf_upper <- as.numeric(score_meta) + q_conf
+        
+        if (output_activation=="sigmoid") {
+          conf_lower <- pmax(-1, pmin(conf_lower, 1))
+          conf_upper  <- pmax(-1, pmin(conf_upper, 1))
+        }
+        
+        
+        learner_out <- list("formula" = cov.formula,
+                            "treat_var" = treat.var,
+                            "algorithm" = algorithm,
+                            "hidden_layer" = hidden.layer,
+                            "CATEs" = score_meta,
+                            "Y_hats" = data.frame(Y_hat0, Y_hat1),
+                            "conformal_interval" = data.frame(ITE_lower = conf_lower, ITE_upper = conf_upper),
+                            "p_model"= list(p_mod),
+                            "p_model_history"=list(pmodel_history),
+                            "Meta_Learner" = meta.learner.type,
+                            "ml_model" = list(m_mod_S),
+                            "ml_model_history" = list(model_history),
+                            "train_data" = train.data,
+                            "test_data" = test.data)
+      } else {
+        learner_out <- list("formula" = cov.formula,
+                            "treat_var" = treat.var,
+                            "algorithm" = algorithm,
+                            "hidden_layer" = hidden.layer,
+                            "CATEs" = score_meta,
+                            "Y_hats" = data.frame(Y_hat0, Y_hat1),
+                            "Meta_Learner" = meta.learner.type,
+                            "ml_model" = list(m_mod_S),
+                            "ml_model_history" = list(model_history),
+                            "train_data" = train.data,
+                            "test_data" = test.data)
+      }
+    }
+    
+    if(meta.learner.type == "T.Learner"){
+      modelm1_T <- build_model(hidden.layer = hidden.layer,
+                               input_shape = length(covariates) + 1,
+                               hidden_activation = hidden_activation,
+                               output_activation = output_activation,
+                               output_units = output_units,
+                               dropout_rate = dropout_rate)
+      modelm0_T <- build_model(hidden.layer = hidden.layer,
+                               input_shape = length(covariates) + 1,
+                               hidden_activation = hidden_activation,
+                               output_activation = output_activation,
+                               output_units = output_units,
+                               dropout_rate = dropout_rate)
+      
+      m1_mod_T <- modelm1_T %>%
+        keras3::compile(optimizer = algorithm, loss = loss, metrics = metrics)
+      m0_mod_T <- modelm0_T %>%
+        keras3::compile(optimizer = algorithm, loss = loss, metrics = metrics)
+      
+      X_train1 <- train.data[train.data$d == 1, c(covariates, "d")]
+      Y_train1 <- train.data[train.data$d == 1, "y"]
+      X_train0 <- train.data[train.data$d == 0, c(covariates, "d")]
+      Y_train0 <- train.data[train.data$d == 0, "y"]
+      
+      m1_history <- m1_mod_T %>%
+        keras3::fit(as.matrix(X_train1), Y_train1,
+                    epochs = epoch, batch_size = batch_size,
+                    validation_split = validation_split,
+                    callbacks = callbacks_list, verbose = verbose)
+      m0_history <- m0_mod_T %>%
+        keras3::fit(as.matrix(X_train0), Y_train0,
+                    epochs = epoch, batch_size = batch_size,
+                    validation_split = validation_split,
+                    callbacks = callbacks_list, verbose = verbose)
+      
+      X_test <- as.matrix(test.data[, c(covariates, "d")])
+      Y_hat1 <- predict(m1_mod_T, X_test)
+      Y_hat0 <- predict(m0_mod_T, X_test)
+      score_meta <- Y_hat1 - Y_hat0
+      
+      learner_out <- list("formula" = cov.formula,
+                          "treat_var" = treat.var,
+                          "algorithm" = algorithm,
+                          "hidden_layer" = hidden.layer,
+                          "CATEs" = score_meta,
+                          "Y_hats" = data.frame(Y_hat0, Y_hat1),
+                          "Meta_Learner" = meta.learner.type,
+                          "ml_model" = list(m0_mod_T, m1_mod_T),
+                          "ml_model_history" = list(m0_history, m1_history),
+                          "train_data" = train.data,
+                          "test_data" = test.data)
+    }
+    
+    if(meta.learner.type == "X.Learner"){
+      
+      aux_1 <- train.data[train.data$d == 1, ]
+      aux_0 <- train.data[train.data$d == 0, ]
+      
+      modelm1_X <- build_model(hidden.layer = hidden.layer,
+                               input_shape = length(covariates),
+                               hidden_activation = hidden_activation,
+                               output_activation = output_activation,
+                               output_units = output_units,
+                               dropout_rate = dropout_rate)
+      
+      modelm0_X <- build_model(hidden.layer = hidden.layer,
+                               input_shape = length(covariates),
+                               hidden_activation = hidden_activation,
+                               output_activation = output_activation,
+                               output_units = output_units,
+                               dropout_rate = dropout_rate)
+      
+      m1_mod_X <- modelm1_X %>% keras3::compile(optimizer = algorithm, loss = loss, metrics = metrics)
+      m0_mod_X <- modelm0_X %>% keras3::compile(optimizer = algorithm, loss = loss, metrics = metrics)
+      
+      m1_history <- m1_mod_X %>% keras3::fit(as.matrix(aux_1[, covariates]), as.matrix(aux_1$y),
+                                             epochs = epoch, batch_size = batch_size,
+                                             validation_split = validation_split,
+                                             callbacks = callbacks_list, verbose = verbose)
+      
+      m0_history <- m0_mod_X %>% keras3::fit(as.matrix(aux_0[, covariates]), as.matrix(aux_0$y),
+                                             epochs = epoch, batch_size = batch_size,
+                                             validation_split = validation_split,
+                                             callbacks = callbacks_list, verbose = verbose)
+      
+      m_mods <- list(m0_mod_X, m1_mod_X)
+      m_mods_history <- list(m0_history, m1_history)
+      
+      mu_1_hat <- predict(m1_mod_X, as.matrix(train.data[, covariates]))
+      mu_0_hat <- predict(m0_mod_X, as.matrix(train.data[, covariates]))
+      
+      tau1 <- train.data$y[train.data$d == 1] - mu_0_hat[train.data$d == 1]
+      tau0 <- mu_1_hat[train.data$d == 0] - train.data$y[train.data$d == 0]
+      
+      pseudo_all <- data.frame("tau1" = NA, "tau0" = NA)
+      pseudo_all$tau1[train.data$d == 1] <- tau1
+      pseudo_all$tau0[train.data$d == 0] <- tau0
+      
+      tau1_model <- build_model(hidden.layer = hidden.layer,
+                                input_shape = length(covariates),
+                                hidden_activation = hidden_activation,
+                                output_activation = output_activation,
+                                output_units = output_units,
+                                dropout_rate = dropout_rate)
+      
+      tau0_model <- build_model(hidden.layer = hidden.layer,
+                                input_shape = length(covariates),
+                                hidden_activation = hidden_activation,
+                                output_activation = output_activation,
+                                output_units = output_units,
+                                dropout_rate = dropout_rate)
+      
+      tau1_mod <- tau1_model %>% keras3::compile(optimizer = algorithm, loss = loss, metrics = metrics)
+      tau0_mod <- tau0_model %>% keras3::compile(optimizer = algorithm, loss = loss, metrics = metrics)
+      
+      tau_mods_1_history <- tau1_mod %>% keras3::fit(as.matrix(train.data[train.data$d == 1, covariates]),
+                                                     as.matrix(tau1),
+                                                     epochs = epoch, batch_size = batch_size,
+                                                     validation_split = validation_split,
+                                                     callbacks = callbacks_list, verbose = verbose)
+      
+      tau_mods_0_history <- tau0_mod %>% keras3::fit(as.matrix(train.data[train.data$d == 0, covariates]),
+                                                     as.matrix(tau0),
+                                                     epochs = epoch, batch_size = batch_size,
+                                                     validation_split = validation_split,
+                                                     callbacks = callbacks_list, verbose = verbose)
+      
+      p_model <- build_model(hidden.layer = hidden.layer,
+                             input_shape = length(covariates),
+                             hidden_activation = hidden_activation,
+                             output_activation = "sigmoid",
+                             output_units = 1,
+                             dropout_rate = dropout_rate)
+      
+      p_mods <- p_model %>% keras3::compile(optimizer = algorithm,
+                                            loss = "binary_crossentropy",
+                                            metrics = "accuracy")
+      
+      p_mods_history <- p_mods %>% keras3::fit(as.matrix(train.data[, covariates]),
+                                               as.matrix(train.data$d),
+                                               epochs = epoch, batch_size = batch_size,
+                                               validation_split = validation_split,
+                                               callbacks = callbacks_list, verbose = verbose)
+      
+      p_hat <- predict(p_mods, as.matrix(test.data[, covariates]))
+      p_hat <- pmin(pmax(p_hat, 0.025), 0.975)
+      
+      tau1_hat <- predict(tau1_mod, as.matrix(test.data[, covariates]))
+      tau0_hat <- predict(tau0_mod, as.matrix(test.data[, covariates]))
+      score_meta <- p_hat * tau0_hat + (1 - p_hat) * tau1_hat
+      
+      data <- test.data
+      
+      learner_out <- list("formula" = cov.formula,
+                          "treat_var" = treat.var,
+                          "algorithm" = algorithm,
+                          "hidden_layer" = hidden.layer,
+                          "CATEs" = score_meta[,1],
+                          "Meta_Learner" = meta.learner.type,
+                          "ml_model" = list("first_stage_m" = m_mods,
+                                            "first_stage_p" = p_mods,
+                                            "second_stage_mu0" = tau0_mod,
+                                            "second_stage_mu1" = tau1_mod),
+                          "ml_model_history" = list("first_stage_m" = m_mods_history,
+                                                    "first_stage_p" = p_mods_history,
+                                                    "second_stage_mu0" = tau_mods_0_history,
+                                                    "second_stage_mu1" = tau_mods_1_history),
+                          "pseudo_outcome" = pseudo_all,
+                          "train_data" = train.data,
+                          "test_data" = test.data)
+    }
+    
+    if(meta.learner.type == "R.Learner"){
+      
+      modelm_R <- build_model(hidden.layer = hidden.layer,
+                              input_shape = length(covariates),
+                              hidden_activation = hidden_activation,
+                              output_units = output_units,
+                              output_activation = output_activation,
+                              dropout_rate = dropout_rate)
+      modelp_R <- build_model(hidden.layer = hidden.layer,
+                              input_shape = length(covariates),
+                              hidden_activation = hidden_activation,
+                              output_units = 1,
+                              output_activation = "sigmoid",
+                              dropout_rate = dropout_rate)
+      
+      m_mod_R <- modelm_R %>% keras3::compile(
+        optimizer = algorithm,
+        loss = loss,
+        metrics = metrics
+      )
+      p_mod_R <- modelp_R %>% keras3::compile(
+        optimizer = algorithm,
+        loss = "binary_crossentropy",
+        metrics = "accuracy"
+      )
+      
+      mmod_history <- m_mod_R %>% keras3::fit(as.matrix(train.data[, covariates]),
+                                              as.matrix(train.data$y),
+                                              epochs = epoch,
+                                              batch_size = batch_size,
+                                              validation_split = validation_split,
+                                              callbacks = callbacks_list,
+                                              verbose = verbose)
+      
+      pmod_history <- p_mod_R %>% keras3::fit(as.matrix(train.data[, covariates]),
+                                              as.matrix(train.data[, "d"]),
+                                              epochs = epoch,
+                                              batch_size = batch_size,
+                                              validation_split = validation_split,
+                                              callbacks = callbacks_list,
+                                              verbose = verbose)
+      
+      # store first-stage models & histories as lists,
+      m_mods <- list(m_mod_R)
+      m_mods_history <- list(mmod_history)
+      p_mods <- list(p_mod_R)
+      p_mods_history <- list(pmod_history)
+      
+      m_hat <- predict(m_mod_R, as.matrix(test.data[, covariates]))
+      p_hat <- predict(p_mod_R, as.matrix(test.data[, covariates]))
+      p_hat <- ifelse(p_hat < 0.025, 0.025, ifelse(p_hat > .975, .975, p_hat))
+      
+      y_tilde <- test.data$y - m_hat
+      w_tilde <- test.data$d - p_hat
+      pseudo_outcome <- y_tilde / w_tilde
+      weights <- w_tilde^2
+      
+      pseudo_all <- matrix(NA, nrow(test.data), 2)
+      ID_pseudo <- 1:nrow(test.data)
+      pseudo_all <- cbind(pseudo_all, ID_pseudo)
+      pseudo_all[,1] <- pseudo_outcome
+      pseudo_all[,2] <- weights
+      pseudo_all <- as.data.frame(pseudo_all)
+      colnames(pseudo_all) <- c("pseudo_outcome", "weights", "ID_pseudo")
+      
+      r_mods_0 <- list()
+      r_mods_1 <- list()
+      r_mods_0_history <- list()
+      r_mods_1_history <- list()
+      
+      r_mod_data <- cbind(test.data, pseudo_all)
+      res_combined_r <- matrix(NA, nrow(test.data), 5)
+      
+      set_data <- split(r_mod_data, cut(1:nrow(r_mod_data), breaks = 10))
+      set_pseudo <- split(pseudo_all, cut(1:nrow(pseudo_all), breaks = 10))
+      set_index <- split(1:nrow(test.data), cut(1:nrow(test.data), breaks = 10))
+      
+      for(l in 1:10){
+        if(l <= 5){
+          modelcf_R <- build_model(hidden.layer = hidden.layer,
+                                   input_shape = length(covariates),
+                                   hidden_activation = hidden_activation,
+                                   output_activation = output_activation,
+                                   output_units = output_units,
+                                   dropout_rate = dropout_rate)
+          r_mod_cf <- modelcf_R %>% keras3::compile(
+            optimizer = algorithm,
+            loss = loss,
+            metrics = metrics
+          )
+          rmod_history  <- r_mod_cf %>% keras3::fit(as.matrix(do.call(rbind, set_data[l])[, covariates]),
+                                                    as.matrix(do.call(rbind, set_pseudo[l])[, 1]),
+                                                    epochs = epoch,
+                                                    sample_weight = as.matrix(do.call(rbind, set_pseudo[l])[, 2]),
+                                                    batch_size = batch_size,
+                                                    validation_split = validation_split,
+                                                    callbacks = callbacks_list,
+                                                    verbose = verbose)
+          
+          # predict on the opposite half (sets 6:10)
+          score_r_1_cf <- predict(r_mod_cf,
+                                  as.matrix(do.call(rbind, set_data[6:10])[, covariates]))
+          res_combined_r[unlist(set_index[6:10]), l] <- score_r_1_cf
+          
+          r_mods_1[[l]] <- r_mod_cf
+          r_mods_1_history[[l]] <- rmod_history
+        }
+        
+        if(l > 5){
+          modelcf_R <- build_model(hidden.layer = hidden.layer,
+                                   input_shape = length(covariates),
+                                   hidden_activation = hidden_activation,
+                                   output_activation = output_activation,
+                                   output_units = output_units,
+                                   dropout_rate = dropout_rate)
+          r_mod_cf <- modelcf_R %>% keras3::compile(
+            optimizer = algorithm,
+            loss = loss,
+            metrics = metrics
+          )
+          rmod_history  <- r_mod_cf %>% keras3::fit(as.matrix(do.call(rbind, set_data[l])[, covariates]),
+                                                    as.matrix(do.call(rbind, set_pseudo[l])[, 1]),
+                                                    epochs = epoch,
+                                                    sample_weight = as.matrix(do.call(rbind, set_pseudo[l])[, 2]),
+                                                    batch_size = batch_size,
+                                                    validation_split = validation_split,
+                                                    callbacks = callbacks_list,
+                                                    verbose = verbose)
+          
+          # predict on the other half (sets 1:5)
+          score_r_0_cf <- predict(r_mod_cf,
+                                  as.matrix(do.call(rbind, set_data[1:5])[, covariates]))
+          res_combined_r[unlist(set_index[1:5]), (l - 5)] <- score_r_0_cf
+          
+          r_mods_0[[l - 5]] <- r_mod_cf
+          r_mods_0_history[[l - 5]] <- rmod_history
+        }
+      } # end for l
+      
+      score_meta <- matrix(0, nrow(test.data), 1)
+      score_meta[,1] <- rowMeans(res_combined_r)
+      
+      learner_out <- list("formula" = cov.formula,
+                          "treat_var" = treat.var,
+                          "algorithm" = algorithm,
+                          "hidden_layer" = hidden.layer,
+                          "CATEs" = score_meta[,1],
+                          "Meta_Learner" = meta.learner.type,
+                          "ml_model" = list("first_stage_m" = m_mods,
+                                            "first_stage_p" = p_mods,
+                                            "second_stage_r" = list("r_mod_0" = r_mods_0,
+                                                                    "r_mod_1" = r_mods_1)),
+                          "ml_model_history" = list("first_stage_m" = m_mods_history,
+                                                    "first_stage_p" = p_mods_history,
+                                                    "second_stage_r" = list("r_mod_0" = r_mods_0_history,
+                                                                            "r_mod_1" = r_mods_1_history)),
+                          "pseudo_outcome" = pseudo_all,
+                          "train_data" = train.data,
+                          "test_data" = test.data) 
+    }
+    
+    class(learner_out) <- "metalearner_deeplearning"
+    return(learner_out)
+    
+ }
+
+  # MODE 2: Cross-Validation (default)
+  
+  
+  if(is.null(train.data) & is.null(test.data)){
+    
+    if (is.null(data)) stop("Invalid input: provide both 'train.data' and 'test.data' for Train/Test mode, or provide 'data' (and not train/test) for Cross-Validation mode.")
+    message("Running in Cross-Validation mode")  
+  
+  set.seed(seed)    
+  data.vars <- data[,c(treat.var, variables)]
   data.<-na.omit(data.vars)
   data.$y <- data.[,outcome.var]
   data.$d<-data.[,treat.var]
@@ -114,10 +646,10 @@ metalearner_deeplearning <- function(data,
         Y_train_matrix <- as.matrix(Y_train)
         
         model_history <- m_mod_S %>% keras3::fit(X_train_matrix, Y_train_matrix, epochs = epoch, 
-                                batch_size = batch_size, 
-                                verbose = verbose,
-                                validation_split = validation_split,
-                                callbacks = callbacks_list)
+                                                 batch_size = batch_size, 
+                                                 verbose = verbose,
+                                                 validation_split = validation_split,
+                                                 callbacks = callbacks_list)
         M_mods[[f]] <- m_mod_S
         M_mods_history[[f]] <- model_history
         
@@ -177,16 +709,16 @@ metalearner_deeplearning <- function(data,
         X_train0_matrix <- as.matrix(X_train0)
         Y_train0_matrix <- as.matrix(Y_train0)
         
-        m0_history <- m1_mod_T %>% keras3::fit(X_train1_matrix, Y_train1_matrix, epochs = epoch, 
-                         batch_size = batch_size,
-                         validation_split = validation_split,
-                         callbacks = callbacks_list,
-                         verbose = verbose)
-        m1_history <- m0_mod_T %>% keras3::fit(X_train0_matrix, Y_train0_matrix, epochs = epoch, 
-                         batch_size = batch_size, 
-                         validation_split = validation_split,
-                         callbacks = callbacks_list,
-                         verbose = verbose)
+        m1_history <- m1_mod_T %>% keras3::fit(X_train1_matrix, Y_train1_matrix, epochs = epoch, 
+                                               batch_size = batch_size,
+                                               validation_split = validation_split,
+                                               callbacks = callbacks_list,
+                                               verbose = verbose)
+        m0_history <- m0_mod_T %>% keras3::fit(X_train0_matrix, Y_train0_matrix, epochs = epoch, 
+                                               batch_size = batch_size, 
+                                               validation_split = validation_split,
+                                               callbacks = callbacks_list,
+                                               verbose = verbose)
         M_modsT <- list(m0_mod_T,m1_mod_T)
         M_modsT_history <- list(m0_history,m1_history)
         
@@ -263,12 +795,12 @@ metalearner_deeplearning <- function(data,
           metrics = "accuracy"
         )
         m_X_history <- p_mod_X %>% keras3::fit(as.matrix(df_aux[,covariates]), 
-                        df_aux[,"d"], 
-                        epochs = epoch, 
-                        batch_size = batch_size, 
-                        validation_split = validation_split,
-                        callbacks = callbacks_list,
-                        verbose = verbose)
+                                               df_aux[,"d"], 
+                                               epochs = epoch, 
+                                               batch_size = batch_size, 
+                                               validation_split = validation_split,
+                                               callbacks = callbacks_list,
+                                               verbose = verbose)
         
         p_mods[[f]] <- p_mod_X
         p_mods_history[[f]] <- m_X_history
@@ -303,27 +835,27 @@ metalearner_deeplearning <- function(data,
           loss = loss,
           metrics = metrics
         )
-       m1_history <-  m1_mod_X %>% keras3::fit(as.matrix(aux_1[,covariates]), 
-                         as.matrix(aux_1$y), 
-                         epochs = epoch, 
-                         batch_size = batch_size, 
-                         validation_split = validation_split,
-                         callbacks = callbacks_list,
-                         verbose = verbose)
-       m0_history <- m0_mod_X %>% keras3::fit(as.matrix(aux_0[,covariates]),
-                         as.matrix(aux_0$y), 
-                         epochs = epoch, 
-                         batch_size = batch_size, 
-                         validation_split = validation_split,
-                         callbacks = callbacks_list,
-                         verbose = verbose)
+        m1_history <-  m1_mod_X %>% keras3::fit(as.matrix(aux_1[,covariates]), 
+                                                as.matrix(aux_1$y), 
+                                                epochs = epoch, 
+                                                batch_size = batch_size, 
+                                                validation_split = validation_split,
+                                                callbacks = callbacks_list,
+                                                verbose = verbose)
+        m0_history <- m0_mod_X %>% keras3::fit(as.matrix(aux_0[,covariates]),
+                                               as.matrix(aux_0$y), 
+                                               epochs = epoch, 
+                                               batch_size = batch_size, 
+                                               validation_split = validation_split,
+                                               callbacks = callbacks_list,
+                                               verbose = verbose)
         
         m_mods_X <- list(m0_mod_X,m1_mod_X)
         m_mods_X_history <- list(m0_history,m1_history)
         m_mods[[f]] <- m_mods_X
         m_mods_history[[f]] <- m_mods_X_history
         
-       
+        
         m1_hat <- predict(m1_mod_X, as.matrix(df_main[, covariates]))
         m0_hat <- predict(m0_mod_X, as.matrix(df_main[, covariates]))
         
@@ -361,17 +893,17 @@ metalearner_deeplearning <- function(data,
           loss = loss,
           metrics = metrics
         )
-       tau1_history <- tau1_mod %>% keras3::fit(as.matrix(train_data1[, covariates]),
-                         as.matrix(train_data1$y),
-                         epochs = epoch,
-                         batch_size = batch_size,
-                         validation_split = validation_split,
-                         callbacks = callbacks_list,
-                         verbose = verbose)
+        tau1_history <- tau1_mod %>% keras3::fit(as.matrix(train_data1[, covariates]),
+                                                 as.matrix(train_data1$y),
+                                                 epochs = epoch,
+                                                 batch_size = batch_size,
+                                                 validation_split = validation_split,
+                                                 callbacks = callbacks_list,
+                                                 verbose = verbose)
         
-       tau_mods_1[[1]] <- tau1_mod
-       tau_mods_1_history[[1]] <- tau1_history
-       
+        tau_mods_1[[1]] <- tau1_mod
+        tau_mods_1_history[[1]] <- tau1_history
+        
         score_tau1 <- predict(tau1_mod, data[, covariates])
         a1 <- score_tau1
       }, error = function(e){
@@ -393,12 +925,12 @@ metalearner_deeplearning <- function(data,
           metrics = metrics
         )
         tau0_history <- tau0_mod %>% keras3::fit(as.matrix(train_data0[, covariates]),
-                         as.matrix(train_data0$y),
-                         epochs = epoch,
-                         batch_size = batch_size,
-                         validation_split = validation_split,
-                         callbacks = callbacks_list,
-                         verbose = verbose)
+                                                 as.matrix(train_data0$y),
+                                                 epochs = epoch,
+                                                 batch_size = batch_size,
+                                                 validation_split = validation_split,
+                                                 callbacks = callbacks_list,
+                                                 verbose = verbose)
         tau_mods_0[[1]] <- tau0_mod
         tau_mods_0_history[[1]] <- tau0_history
         
@@ -427,9 +959,9 @@ metalearner_deeplearning <- function(data,
                                             "second_stage_mu0" = tau0_mod,
                                             "second_stage_mu1" = tau1_mod),
                           "ml_model_history" = list("first_stage_m" = m_mods_history,
-                                                   "first_stage_p" = p_mods_history,
-                                                   "second_stage_mu0" = tau_mods_0_history,
-                                                   "second_stage_mu1" = tau_mods_1_history),
+                                                    "first_stage_p" = p_mods_history,
+                                                    "second_stage_mu0" = tau_mods_0_history,
+                                                    "second_stage_mu1" = tau_mods_1_history),
                           "pseudo_outcome" = pseudo_all,
                           "data" = data)
     } # end of X learner
@@ -472,21 +1004,21 @@ metalearner_deeplearning <- function(data,
           loss = "binary_crossentropy",
           metrics = "accuracy"
         )
-       mmod_history <- m_mod_R %>% keras3::fit(as.matrix(df_aux[,covariates]), 
-                        as.matrix(df_aux$y), 
-                        epochs = epoch, 
-                        batch_size = batch_size,
-                        validation_split = validation_split,
-                        callbacks = callbacks_list,
-                        verbose = verbose)
+        mmod_history <- m_mod_R %>% keras3::fit(as.matrix(df_aux[,covariates]), 
+                                                as.matrix(df_aux$y), 
+                                                epochs = epoch, 
+                                                batch_size = batch_size,
+                                                validation_split = validation_split,
+                                                callbacks = callbacks_list,
+                                                verbose = verbose)
         
-       pmod_history <- p_mod_R %>% keras3::fit(as.matrix(df_aux[,covariates]), 
-                        as.matrix(df_aux[,"d"]),
-                        epochs = epoch, 
-                        batch_size = batch_size, 
-                        validation_split = validation_split,
-                        callbacks = callbacks_list,
-                        verbose = verbose)
+        pmod_history <- p_mod_R %>% keras3::fit(as.matrix(df_aux[,covariates]), 
+                                                as.matrix(df_aux[,"d"]),
+                                                epochs = epoch, 
+                                                batch_size = batch_size, 
+                                                validation_split = validation_split,
+                                                callbacks = callbacks_list,
+                                                verbose = verbose)
         
         m_mods[[f]] <- m_mod_R
         m_mods_history[[f]] <- mmod_history
@@ -532,22 +1064,22 @@ metalearner_deeplearning <- function(data,
             loss = loss,
             metrics = metrics
           )
-         rmod_history  <- r_mod_cf %>% keras3::fit(as.matrix(do.call(rbind, 
-                                             set_data[l])[,covariates]),
-                           as.matrix(do.call(rbind, 
-                                             set_pseudo[l])[,1]), 
-                           epochs = epoch,
-                           sample_weight = as.matrix(do.call(rbind, 
-                                                             set_pseudo[l])[,2]),
-                           batch_size = batch_size, 
-                           validation_split = validation_split, 
-                           callbacks = callbacks_list,
-                           verbose = verbose)
-         
-         rmods_1[[l]] <- r_mod_cf
-         rmods_1_history[[l]] <- rmod_history
-         
-           score_r_1_cf <- predict(r_mod_cf, 
+          rmod_history  <- r_mod_cf %>% keras3::fit(as.matrix(do.call(rbind, 
+                                                                      set_data[l])[,covariates]),
+                                                    as.matrix(do.call(rbind, 
+                                                                      set_pseudo[l])[,1]), 
+                                                    epochs = epoch,
+                                                    sample_weight = as.matrix(do.call(rbind, 
+                                                                                      set_pseudo[l])[,2]),
+                                                    batch_size = batch_size, 
+                                                    validation_split = validation_split, 
+                                                    callbacks = callbacks_list,
+                                                    verbose = verbose)
+          
+          rmods_1[[l]] <- r_mod_cf
+          rmods_1_history[[l]] <- rmod_history
+          
+          score_r_1_cf <- predict(r_mod_cf, 
                                   as.matrix(do.call(rbind, 
                                                     set_data[6:10])[,covariates]))
           
@@ -568,16 +1100,16 @@ metalearner_deeplearning <- function(data,
             metrics = metrics
           )
           rmod_history  <- r_mod_cf %>% keras3::fit(as.matrix(do.call(rbind, 
-                                             set_data[l])[,covariates]),
-                           as.matrix(do.call(rbind, 
-                                             set_pseudo[l])[,1]), 
-                           epochs = epoch,
-                           sample_weight = as.matrix(do.call(rbind, 
-                                                             set_pseudo[l])[,2]),
-                           batch_size = batch_size, 
-                           validation_split = validation_split, 
-                           callbacks = callbacks_list,
-                           verbose = verbose)
+                                                                      set_data[l])[,covariates]),
+                                                    as.matrix(do.call(rbind, 
+                                                                      set_pseudo[l])[,1]), 
+                                                    epochs = epoch,
+                                                    sample_weight = as.matrix(do.call(rbind, 
+                                                                                      set_pseudo[l])[,2]),
+                                                    batch_size = batch_size, 
+                                                    validation_split = validation_split, 
+                                                    callbacks = callbacks_list,
+                                                    verbose = verbose)
           
           rmods_0[[l-5]] <- r_mod_cf
           rmods_0_history[[l-5]] <- rmod_history
@@ -603,14 +1135,17 @@ metalearner_deeplearning <- function(data,
                                             "second_stage_r" = list("r_mod_0" = r_mods_0,
                                                                     "r_mod_1" = r_mods_1)),
                           "ml_model_history" = list("first_stage_m" = m_mods_history,
-                                                   "first_stage_p" = p_mods_history,
-                                                   "second_stage_r" = list("r_mod_0" = r_mods_0_history,
-                                                                           "r_mod_1" = r_mods_1_history)),
+                                                    "first_stage_p" = p_mods_history,
+                                                    "second_stage_r" = list("r_mod_0" = r_mods_0_history,
+                                                                            "r_mod_1" = r_mods_1_history)),
                           "pseudo_outcome" = pseudo_all,
                           "data" = data)
       
     } # end of R learner
   } # end of R/X learner
+  
   class(learner_out) <- "metalearner_deeplearning"
   return(learner_out)
+  }
 }
+
