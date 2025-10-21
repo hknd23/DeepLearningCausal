@@ -474,4 +474,106 @@ plot.pattc_deeplearning <- function(x, ...)
   print(pattc_plot)
 }
 
-
+#' conformal_plot
+#'
+#' @description
+#' Visualizes the distribution of estimated individual treatment effects (ITEs) 
+#' along with their corresponding conformal prediction intervals. 
+#' The function randomly samples a proportion of observations from a fitted 
+#' \code{metalearner_ensemble} or \code{metalearner_deeplearning} object and 
+#' plots the conformal intervals as vertical ranges around the point estimates. 
+#' This allows users to visually assess the uncertainty and variation in 
+#' estimated treatment effects.
+#'
+#' @param x A fitted model object of class \code{metalearner_ensemble} 
+#' or \code{metalearner_deeplearning} that contains a \code{conformal_interval} element.
+#' @param ... Additional arguments (currently unused).
+#' @param seed Random seed for reproducibility of subsampling. Default is \code{1234}.
+#' @param prop Proportion of observations to randomly sample for plotting. 
+#' Must be between 0 and 1. Default is \code{0.3}.
+#' @param binary.outcome Logical; if \code{TRUE}, constrains the y-axis to 
+#' \code{[-1, 1]} for binary outcomes. Default is \code{FALSE}.
+#' @param x.labels Logical; if \code{TRUE}, displays x-axis labels for each sampled observation. 
+#' Default is \code{TRUE}.
+#' @param x.title Character string specifying the x-axis title. 
+#' Default is \code{"Observations"}.
+#' @param color Color of the conformal intervals and points. 
+#' Default is \code{"steelblue"}.
+#' @param break.by Numeric value determining the spacing between y-axis breaks. 
+#' Default is \code{0.5}.
+#'
+#' @details
+#' The function extracts the estimated ITEs (\code{CATEs}) and conformal intervals 
+#' (\code{ITE_lower}, \code{ITE_upper}) from the model output, samples a subset 
+#' of rows, and generates a \code{ggplot2} visualization. 
+#' Each vertical line represents the conformal prediction interval for one observation’s 
+#' treatment effect estimate. 
+#' The conformal intervals are typically obtained from weighted split-conformal inference, 
+#' using propensity overlap weights to adjust interval width.
+#'
+#' @returns A \code{ggplot} object showing sampled individual treatment effects 
+#' with their weighted conformal prediction intervals.
+conformal_plot <- function(x, ...,
+                           seed=1234, prop=0.3,
+                           binary.outcome=FALSE,
+                           x.labels=TRUE,
+                           x.title="Observations",
+                           color="steelblue",
+                           break.by=0.5) {
+  if (class(x) %in% c("metalearner_ensemble", "metalearner_deeplearning")) {
+    
+    if (!"conformal_interval" %in% names(x)) {
+      stop("Object does not contain 'conformal_interval'. Please ensure conformal intervals are computed.")
+    }
+    set.seed(seed)
+    
+    df<-x[["conformal_interval"]]
+    df$ITE<- x$CATEs
+    df_sample <- df %>%
+      dplyr::mutate(row_id = rownames(df)) %>%   
+      dplyr::sample_frac(prop) %>%
+      dplyr::arrange(row_id)                      
+    
+    y_min <- min(df$ITE_lower, na.rm = TRUE)
+    y_max <- max(df$ITE_upper, na.rm = TRUE)
+    y_range <- y_max - y_min
+    
+    
+    
+    if (binary.outcome==TRUE) {
+      y_limits <- c(-1, 1)
+      y_breaks <- c(-1, -0.5, 0, 0.5, 1)
+    } else {
+      y_limits <- c(y_min - y_range / 5, y_max + y_range / 5)
+      y_breaks <- seq(
+        from = floor(y_limits[1] * 2) / 2,
+        to   = ceiling(y_limits[2] * 2) / 2,
+        by   = break.by
+      )
+    }
+    # Plot coefficient with vertical intervals
+    pic<-ggplot(df_sample, aes(x = factor(row_id), y = ITE)) +
+      geom_pointrange(aes(ymin = ITE_lower, ymax = ITE_upper), 
+                      color = color, size = 0.3) +
+      labs(
+        x = x.title,
+        y = "Estimated ITE",
+        title = paste0("Weighted Conformal Intervals for ITEs (",
+                       prop*100,"% of Observations)")
+      ) +
+      scale_y_continuous(
+        limits = y_limits,
+        breaks = y_breaks
+      ) +
+      theme_minimal(base_size = 10) +
+      theme(
+        panel.grid.major.y = element_blank()
+      )
+    
+    if (!x.labels) {
+      pic <- pic + scale_x_discrete(labels = NULL)
+    }
+    print(pic)
+  } else {stop("Invalid object: 'x' must be of class 'metalearner_ensemble' or 'metalearner_deeplearning'.")}  
+}    
+    
