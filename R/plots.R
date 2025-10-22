@@ -167,7 +167,7 @@ hte_plot <- function(x, ...,
     }
     ht_plot <- ggplot(sorted_df, aes(y = var_name, x = means)) +
       geom_point() +
-      geom_errorbarh(aes(xmin = X2.5., xmax = X97.5.), height = 0.2) +
+      geom_errorbarh(aes(xmin = .data$X2.5., xmax = .data$X97.5.), height = 0.2) +
       theme_minimal() +
       labs(x = "", y = "") +
       geom_vline(xintercept = x_int, linetype = "dashed", color = "grey70") +
@@ -175,7 +175,7 @@ hte_plot <- function(x, ...,
   } else {
     ht_plot <- ggplot(sorted_df, aes(y = var_name, x = means)) +
       geom_point() +
-      geom_errorbarh(aes(xmin = X2.5., xmax = X97.5.), height = 0.2) +
+      geom_errorbarh(aes(xmin = .data$X2.5., xmax = .data$X97.5.), height = 0.2) +
       theme_minimal() +
       labs(x = "", y = "") +
       geom_vline(xintercept = x_int, linetype = "dashed", color = "grey70")
@@ -237,14 +237,14 @@ plot.metalearner_neural <- function(x, ...,
     
     meta_plot <- ggplot() +
       geom_density(data = data.frame(CATE = cate_vals),
-                   aes(x = CATE, y = ..density..),
+                   aes(x = .data$CATE, y = .data$..density..),
                    fill = "gray90", color = "black",
                    alpha = 0.7, linewidth = 0.5) +
       geom_vline(xintercept = 0, linetype = "dotted", color = "gray30") +
       geom_point(data = df_summary, aes(x = Mean, y = 0), size = 2) +
       geom_errorbarh(data = df_summary, 
-                     aes(xmin = Lower, xmax = Upper,
-                         y = 0, color = Color), 
+                     aes(xmin = .data$Lower, xmax = .data$Upper,
+                         y = 0, color = .data$Color), 
                      height = 0.1) +
       scale_color_identity() +
       xlim(x_min, x_max) +
@@ -266,7 +266,7 @@ plot.metalearner_neural <- function(x, ...,
     
     meta_plot <-  ggplot() +
       geom_density(data = meta_preds,  
-                   aes(x = predictions, fill = type),
+                   aes(x = .data$predictions, fill = .data$type),
                    color = "black",
                    alpha = 0.7, linewidth = 0.5) +
       xlab("Predicted Outcome") + ylab("") +
@@ -330,13 +330,13 @@ plot.metalearner_ensemble <- function(x, ...,
     
     meta_plot <- ggplot() +
       geom_density(data = data.frame(CATE = cate_vals),
-                   aes(x = CATE, y = ..density..),
+                   aes(x = .data$CATE, y = .data$..density..),
                    fill = "gray90", color = "black",
                    alpha = 0.7, linewidth = 0.5) +
       geom_vline(xintercept = 0, linetype = "dotted", color = "gray30") +
       geom_point(data = df_summary, aes(x = Mean, y = 0), size = 2) +
-      geom_errorbarh(data = df_summary, aes(xmin = Lower, xmax = Upper, y = 0, 
-                                            color = Color), height = 0.1) +
+      geom_errorbarh(data = df_summary, aes(xmin = .data$Lower, xmax = .data$Upper, y = 0, 
+                                            color = .data$Color), height = 0.1) +
       scale_color_identity() +
       xlim(x_min, x_max) +
       labs(
@@ -358,7 +358,7 @@ plot.metalearner_ensemble <- function(x, ...,
     
     meta_plot <-  ggplot() +
       geom_density(data = meta_preds,  
-                   aes(x = predictions, fill = type),
+                   aes(x = .data$predictions, fill = .data$type),
                    color = "black",
                    alpha = 0.7, linewidth = 0.5) +
       xlab("Predicted Outcomes") + ylab("") +
@@ -394,7 +394,7 @@ plot.pattc_neural <- function(x, ...)
   x_max <- max(patt_preds$predictions) + 1*sd(patt_preds$predictions)
   
   pattc_plot <-  ggplot(data = patt_preds) +
-    geom_density(aes(x = predictions, fill = type),
+    geom_density(aes(x = .data$predictions, fill = .data$type),
                  color = "black",
                  alpha = 0.7, linewidth = 0.5) +
     xlab("Predicted Outcomes") + ylab("") +
@@ -429,7 +429,7 @@ plot.pattc_ensemble <- function(x, ...)
   x_max <- max(patt_preds$predictions) + 1*sd(patt_preds$predictions)
   
   pattc_plot <-  ggplot(data = patt_preds) +
-    geom_density(aes(x = predictions, fill = type),
+    geom_density(aes(x = .data$predictions, fill = .data$type),
                  color = "black",
                  alpha = 0.7, linewidth = 0.5) +
     xlab("Predicted Outcome") + ylab("") +
@@ -464,7 +464,7 @@ plot.pattc_deeplearning <- function(x, ...)
   x_max <- max(patt_preds$predictions) + 1*sd(patt_preds$predictions)
   
   pattc_plot <-  ggplot(data = patt_preds) +
-    geom_density(aes(x = predictions, fill = type),
+    geom_density(aes(x = .data$predictions, fill = .data$type),
                  color = "black",
                  alpha = 0.7, linewidth = 0.5) +
     xlab("Predicted Outcomes") + ylab("") +
@@ -555,8 +555,8 @@ conformal_plot <- function(x, ...,
       )
     }
     # Plot coefficient with vertical intervals
-    pic<- ggplot(df_sample, aes(x = factor(row_id), y = ITE)) +
-      geom_pointrange(aes(ymin = ITE_lower, ymax = ITE_upper), 
+    pic<- ggplot(df_sample, aes(x = factor(.data$row_id), y = .data$ITE)) +
+      geom_pointrange(aes(ymin = .data$ITE_lower, ymax = .data$ITE_upper), 
                       color = color, size = 0.3) +
       labs(
         x = x.title,
