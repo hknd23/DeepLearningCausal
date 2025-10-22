@@ -4,6 +4,8 @@
 #' CATE using Deep Neural Networks through Tensorflow.
 #' 
 #' @param data data.frame object of data.
+#' @param train.data data.frame object of training data for Train/Test mode.
+#' @param test.data data.frame object of test data for Train/Test mode.
 #' @param cov.formula formula description of the model y ~ x(list of covariates).
 #' @param treat.var string for name of Treatment variable
 #' @param meta.learner.type string of "S.Learner", "T.Learner", "X.Learner", or "R.Learner"

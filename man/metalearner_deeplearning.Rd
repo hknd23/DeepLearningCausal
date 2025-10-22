@@ -37,6 +37,10 @@ metalearner_deeplearning(
 \arguments{
 \item{data}{data.frame object of data.}
 
+\item{train.data}{data.frame object of training data for Train/Test mode.}
+
+\item{test.data}{data.frame object of test data for Train/Test mode.}
+
 \item{cov.formula}{formula description of the model y ~ x(list of covariates).}
 
 \item{treat.var}{string for name of Treatment variable}
