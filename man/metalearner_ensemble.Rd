@@ -13,7 +13,8 @@ metalearner_ensemble(
   meta.learner.type,
   SL.learners = c("SL.glmnet", "SL.xgboost", "SL.ranger", "SL.nnet"),
   nfolds = 5,
-  binary.outcome = FALSE,
+  family = gaussian(),
+  binary.preds = FALSE,
   conformal = FALSE,
   alpha = 0.1,
   calib_frac = 0.5,
@@ -40,7 +41,7 @@ boosting, glmnet, random forest, and neural nets.}
 
 \item{nfolds}{number of folds for cross-validation. Currently supports up to}
 
-\item{binary.outcome}{logical for whether outcome variable is binary}
+\item{binary.preds}{logical for whether outcome predictions should be binary}
 
 \item{conformal}{logical for whether to compute conformal prediction intervals}
 
@@ -76,7 +77,7 @@ slearner <- metalearner_ensemble(cov.formula = support_war ~ age +
                                 meta.learner.type = "S.Learner",
                                 SL.learners = c("SL.glm"),
                                 nfolds = 5,
-                                binary.outcome = FALSE,
+                                binary.preds = FALSE,
                                 )
 print(slearner)
 
@@ -91,7 +92,7 @@ tlearner <- metalearner_ensemble(cov.formula = support_war ~ age + income +
                                   SL.learners = c("SL.xgboost","SL.ranger",
                                                "SL.nnet"),
                                   nfolds = 5,
-                                  binary.outcome = FALSE,
+                                  binary.preds = FALSE,
                                   )
 
 print(tlearner)
@@ -108,7 +109,7 @@ xlearner <- metalearner_ensemble(cov.formula = support_war ~ age + income +
                                  SL.learners = c("SL.glmnet","SL.xgboost", 
                                  "SL.ranger","SL.nnet"),
                                  nfolds = 5,
-                                 binary.outcome = TRUE)
+                                 binary.preds = TRUE)
 
 print(xlearner)
                                   }
