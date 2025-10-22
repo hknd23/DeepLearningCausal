@@ -514,6 +514,8 @@ plot.pattc_deeplearning <- function(x, ...)
 #' @returns A \code{ggplot} object showing sampled individual treatment effects 
 #' with their weighted conformal prediction intervals.
 #' @export
+#' @importFrom magrittr %>%
+#' @import ggplot2
 conformal_plot <- function(x, ...,
                            seed=1234, prop=0.3,
                            binary.outcome=FALSE,
@@ -553,7 +555,7 @@ conformal_plot <- function(x, ...,
       )
     }
     # Plot coefficient with vertical intervals
-    pic<-ggplot(df_sample, aes(x = factor(row_id), y = ITE)) +
+    pic<- ggplot(df_sample, aes(x = factor(row_id), y = ITE)) +
       geom_pointrange(aes(ymin = ITE_lower, ymax = ITE_upper), 
                       color = color, size = 0.3) +
       labs(
