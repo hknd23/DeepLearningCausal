@@ -173,7 +173,7 @@ hte_plot <- function(x, ...,
       geom_vline(xintercept = x_int, linetype = "dashed", color = "grey70") +
       scale_y_discrete(labels = custom_labels)
   } else {
-    ht_plot <- ggplot(sorted_df, aes(y = var_name, x = means)) +
+    ht_plot <- ggplot(sorted_df, aes(y = .data$var_name, x = .data$means)) +
       geom_point() +
       geom_errorbarh(aes(xmin = .data$X2.5., xmax = .data$X97.5.), height = 0.2) +
       theme_minimal() +
@@ -241,7 +241,7 @@ plot.metalearner_neural <- function(x, ...,
                    fill = "gray90", color = "black",
                    alpha = 0.7, linewidth = 0.5) +
       geom_vline(xintercept = 0, linetype = "dotted", color = "gray30") +
-      geom_point(data = df_summary, aes(x = Mean, y = 0), size = 2) +
+      geom_point(data = df_summary, aes(x = .data$Mean, y = 0), size = 2) +
       geom_errorbarh(data = df_summary, 
                      aes(xmin = .data$Lower, xmax = .data$Upper,
                          y = 0, color = .data$Color), 
