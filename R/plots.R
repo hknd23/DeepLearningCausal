@@ -165,7 +165,7 @@ hte_plot <- function(x, ...,
       stop(paste0("length of custom_labels must be ", nrow(sorted_df),
                   " (you provided ", length(custom_labels), ")"))
     }
-    ht_plot <- ggplot(sorted_df, aes(y = var_name, x = means)) +
+    ht_plot <- ggplot(sorted_df, aes(y = .data$var_name, x = .data$means)) +
       geom_point() +
       geom_errorbarh(aes(xmin = .data$X2.5., xmax = .data$X97.5.), height = 0.2) +
       theme_minimal() +
@@ -334,7 +334,7 @@ plot.metalearner_ensemble <- function(x, ...,
                    fill = "gray90", color = "black",
                    alpha = 0.7, linewidth = 0.5) +
       geom_vline(xintercept = 0, linetype = "dotted", color = "gray30") +
-      geom_point(data = df_summary, aes(x = Mean, y = 0), size = 2) +
+      geom_point(data = df_summary, aes(x = .data$Mean, y = 0), size = 2) +
       geom_errorbarh(data = df_summary, aes(xmin = .data$Lower, xmax = .data$Upper, y = 0, 
                                             color = .data$Color), height = 0.1) +
       scale_color_identity() +
@@ -535,7 +535,7 @@ conformal_plot <- function(x, ...,
     df_sample <- df %>%
       dplyr::mutate(row_id = rownames(df)) %>%   
       dplyr::sample_frac(prop) %>%
-      dplyr::arrange(row_id)                      
+      dplyr::arrange(.data$row_id)                      
     
     y_min <- min(df$ITE_lower, na.rm = TRUE)
     y_max <- max(df$ITE_upper, na.rm = TRUE)

@@ -491,7 +491,7 @@ metalearner_neural <- function(data,
     set_data <- split(r_mod_data, cut(1:nrow(r_mod_data), breaks = 10))
     set_data_weighted <- lapply(set_data,
                                 function(x) tidyr::uncount(x, 
-                                                           weights = obs_weight))
+                                                           weights = .data$obs_weight))
     
     set_index <- split(1:nrow(data), cut(1:nrow(data), breaks = 10))
     
