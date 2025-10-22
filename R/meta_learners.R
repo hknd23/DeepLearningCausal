@@ -109,8 +109,6 @@ metalearner_ensemble <- function(data = NULL,
   covariates <- variables[-1]
   
   set.seed(seed)
-  reticulate::py_set_seed(seed, disable_hash_randomization = TRUE)
-  
   
   # MODE 1: Train/Test Mode
   if(!is.null(train.data) & !is.null(test.data)){
