@@ -310,6 +310,7 @@ pattc_deeplearning_counterfactuals<- function (pop.data,
 #' @param response.patience integer for number of epochs with no improvement after which training will be stopped in response model.
 #' @param compl.dropout_rate double or vector for proportion of hidden layer to drop out in complier model.
 #' @param response.dropout_rate double or vector for proportion of hidden layer to drop out in response model.
+#' @param seed random seed
 #'
 #' @return pattc_deeplearning object containing the fitted models, predictions, counterfactuals, and PATT-C estimate.
 #' @import keras3 
@@ -379,10 +380,13 @@ pattc_deeplearning <- function(response.formula,
                       response.dropout_rate = NULL,
                       verbose = 1,
                       batch_size = 32,
-                      nboot = 1000){
+                      nboot = 1000,
+                      seed = 1234){
   
   check_cran_deps()
   check_python_modules()
+  set.seed(seed)
+  reticulate::py_set_seed(seed, disable_hash_randomization = TRUE)
   
   expdata <- expcall(response.formula,
                      treat.var = treat.var,

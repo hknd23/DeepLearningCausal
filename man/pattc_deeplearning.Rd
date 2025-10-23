@@ -33,7 +33,8 @@ pattc_deeplearning(
   response.dropout_rate = NULL,
   verbose = 1,
   batch_size = 32,
-  nboot = 1000
+  nboot = 1000,
+  seed = 1234
 )
 }
 \arguments{
@@ -98,6 +99,8 @@ For activation functions available see \code{keras} package.}
 \item{batch_size}{integer specifying the batch size for training the deep learning models. Default is 32.}
 
 \item{nboot}{integer specifying the number of bootstrap samples if bootstrap is TRUE. Default is 1000.}
+
+\item{seed}{random seed}
 }
 \value{
 pattc_deeplearning object containing the fitted models, predictions, counterfactuals, and PATT-C estimate.
