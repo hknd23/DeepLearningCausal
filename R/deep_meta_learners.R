@@ -1155,3 +1155,28 @@ metalearner_deeplearning <- function(data=NULL,
   }
 }
 
+
+
+#' print.metalearner_deeplearning
+#'
+#' @description
+#' Print method for \code{metalearner_deeplearning}
+#' @param x `metalearner_deeplearning` class object from \code{metalearner_deeplearning}
+#' @param ... additional parameter
+#'
+#' @return list of model results
+#' @export
+#'
+
+print.metalearner_deeplearning <- function(x, ...){
+  cat("Method:\n")
+  cat("Ensemble ", x$Meta_Learner)
+  cat("\n")
+  cat("Formula:\n")
+  cat(deparse(x$formula))
+  cat("\n")
+  cat("Treatment Variable: ", x$treat_var)
+  cat("\n")
+  cat("CATEs percentiles:\n")
+  print(quantile(x$CATEs, c(.10 ,.25, .50 ,.75, .90)))
+}
