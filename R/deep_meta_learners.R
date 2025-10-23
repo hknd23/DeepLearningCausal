@@ -328,8 +328,10 @@ metalearner_deeplearning <- function(data=NULL,
                                output_units = output_units,
                                dropout_rate = dropout_rate)
       
-      m1_mod_X <- modelm1_X %>% keras3::compile(optimizer = algorithm, loss = loss, metrics = metrics)
-      m0_mod_X <- modelm0_X %>% keras3::compile(optimizer = algorithm, loss = loss, metrics = metrics)
+      m1_mod_X <- modelm1_X %>% keras3::compile(optimizer = algorithm, 
+                                                loss = loss, metrics = metrics)
+      m0_mod_X <- modelm0_X %>% keras3::compile(optimizer = algorithm, 
+                                                loss = loss, metrics = metrics)
       
       m1_history <- m1_mod_X %>% keras3::fit(as.matrix(aux_1[, covariates]), as.matrix(aux_1$y),
                                              epochs = epoch, batch_size = batch_size,
@@ -350,7 +352,8 @@ metalearner_deeplearning <- function(data=NULL,
       tau1 <- train.data$y[train.data$d == 1] - mu_0_hat[train.data$d == 1]
       tau0 <- mu_1_hat[train.data$d == 0] - train.data$y[train.data$d == 0]
       
-      pseudo_all <- data.frame("tau1" = NA, "tau0" = NA)
+      pseudo_all <- data.frame("tau1" = rep(NA,nrow(train.data)),
+                               "tau0" = rep(NA,nrow(train.data)))
       pseudo_all$tau1[train.data$d == 1] <- tau1
       pseudo_all$tau0[train.data$d == 0] <- tau0
       
