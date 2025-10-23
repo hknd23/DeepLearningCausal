@@ -517,12 +517,13 @@ plot.pattc_deeplearning <- function(x, ...)
 #' @importFrom magrittr %>%
 #' @import ggplot2
 conformal_plot <- function(x, ...,
-                           seed=1234, prop=0.3,
-                           binary.outcome=FALSE,
+                           seed = 1234, 
+                           prop = 0.3,
+                           binary.outcome = FALSE,
                            x.labels=TRUE,
-                           x.title="Observations",
-                           color="steelblue",
-                           break.by=0.5) {
+                           x.title = "Observations",
+                           color = "steelblue",
+                           break.by = 0.5) {
   if (class(x) %in% c("metalearner_ensemble", "metalearner_deeplearning")) {
     
     if (!"conformal_interval" %in% names(x)) {
