@@ -18,7 +18,7 @@
 #' @param nfolds number of folds for cross-validation. Currently supports up to
 #' @param train.data \code{data.frame} object of training data
 #' @param test.data \code{data.frame} object of test data
-#' @param binary.outcome logical for whether outcome variable is binary
+#' @param binary.preds logical for whether outcome predictions should be binary
 #' @param conformal logical for whether to compute conformal prediction intervals
 #' @param alpha proportion for conformal prediction intervals
 #' @param calib_frac fraction of training data to use for calibration in conformal inference
@@ -43,7 +43,7 @@
 #'                                 meta.learner.type = "S.Learner",
 #'                                 SL.learners = c("SL.glm"),
 #'                                 nfolds = 5,
-#'                                 binary.outcome = FALSE,
+#'                                 binary.preds = FALSE,
 #'                                 )
 #' print(slearner)
 #'
@@ -58,7 +58,7 @@
 #'                                   SL.learners = c("SL.xgboost","SL.ranger",
 #'                                                "SL.nnet"),
 #'                                   nfolds = 5,
-#'                                   binary.outcome = FALSE,
+#'                                   binary.preds = FALSE,
 #'                                   )
 #'
 #' print(tlearner)
@@ -75,7 +75,7 @@
 #'                                  SL.learners = c("SL.glmnet","SL.xgboost", 
 #'                                  "SL.ranger","SL.nnet"),
 #'                                  nfolds = 5,
-#'                                  binary.outcome = TRUE)
+#'                                  binary.preds = TRUE)
 #' 
 #' print(xlearner)
 #'                                   }
@@ -90,7 +90,8 @@ metalearner_ensemble <- function(data = NULL,
                                  SL.learners = c("SL.glmnet", "SL.xgboost",
                                                  "SL.ranger", "SL.nnet"),
                                  nfolds = 5,
-                                 binary.outcome = FALSE,
+                                 family = gaussian(),
+                                 binary.preds = FALSE,
                                  conformal=FALSE,
                                  alpha=0.1,
                                  calib_frac=0.5,
@@ -107,6 +108,9 @@ metalearner_ensemble <- function(data = NULL,
   variables <- all.vars(cov.formula)
   outcome.var <- variables[1]
   covariates <- variables[-1]
+  if (family$family == "gaussian") {
+    binary.preds = FALSE
+  }
   
   set.seed(seed)
   
@@ -138,7 +142,7 @@ metalearner_ensemble <- function(data = NULL,
                                           SL.library = SL.learners,
                                           verbose = FALSE,
                                           method = "method.NNLS",
-                                          family = ifelse(binary.outcome,"binomial","gaussian"),
+                                          family = family,
                                           cvControl = control)
       
       # Predict under d=0 and d=1
@@ -181,7 +185,7 @@ metalearner_ensemble <- function(data = NULL,
           SL.library = SL.learners,
           verbose = FALSE,
           method = "method.NNLS",
-          family = ifelse(binary.outcome, "binomial", "gaussian"),
+          family = family,
           cvControl = control
         )
         
@@ -222,7 +226,7 @@ metalearner_ensemble <- function(data = NULL,
         ITE_upper <- ITE_hat + q_alpha
         
         # Clamp to logical bounds if binary
-        if (binary.outcome) {
+        if (family$family == "binomial") {
           ITE_lower <- pmax(-1, pmin(ITE_lower, 1))
           ITE_upper <- pmax(-1, pmin(ITE_upper, 1))
         }
@@ -261,25 +265,25 @@ metalearner_ensemble <- function(data = NULL,
                                            SL.library = SL.learners,
                                            verbose = FALSE,
                                            method = "method.NNLS",
-                                           family = ifelse(binary.outcome,"binomial","gaussian"),
+                                           family = family,
                                            cvControl = control)
       m0_mod <- SuperLearner::SuperLearner(Y = aux_0$y, X = aux_0[,covariates],
                                            newX = test.data[,covariates],
                                            SL.library = SL.learners,
                                            verbose = FALSE,
                                            method = "method.NNLS",
-                                           family = ifelse(binary.outcome,"binomial","gaussian"),
+                                           family = family,
                                            cvControl = control)
       Y_test_1 <- m1_mod$SL.predict
       Y_test_0 <- m0_mod$SL.predict
       
-      if(binary.outcome){
-        Y_hat_test_1 <- apply_cutoff(Y_test_1, test.data$y)
-        Y_hat_test_0 <- apply_cutoff(Y_test_0, test.data$y)
+      if(binary.preds){
+        Y_test_1 <- pmax(-1, pmin(Y_test_1, 1))
+        Y_test_0 <- pmax(-1, pmin(Y_test_0, 1))
       } else {
         Y_hat_test_1 <- Y_test_1
         Y_hat_test_0 <- Y_test_0
-      }
+      } #apply_cutoff
       
       score_meta[,1] <- Y_hat_test_1 - Y_hat_test_0
       Y_hats <- data.frame("Y_hat0"=Y_hat_test_0, "Y_hat1"=Y_hat_test_1)
@@ -318,14 +322,14 @@ metalearner_ensemble <- function(data = NULL,
                                            SL.library = SL.learners,
                                            verbose = FALSE,
                                            method = "method.NNLS",
-                                           family = ifelse(binary.outcome,"binomial","gaussian"),
+                                           family = family,
                                            cvControl = control)
       m0_mod <- SuperLearner::SuperLearner(Y = aux_0$y, X = aux_0[,covariates],
                                            newX = test.data[,covariates],
                                            SL.library = SL.learners,
                                            verbose = FALSE,
                                            method = "method.NNLS",
-                                           family = ifelse(binary.outcome,"binomial","gaussian"),
+                                           family = family,
                                            cvControl = control)
       
       m1_hat <- m1_mod$SL.predict
@@ -391,7 +395,7 @@ metalearner_ensemble <- function(data = NULL,
                                           SL.library = SL.learners,
                                           verbose = FALSE,
                                           method = "method.NNLS",
-                                          family = ifelse(binary.outcome,"binomial","gaussian"),
+                                          family = family,
                                           cvControl = control)
       m_hat <- m_mod$SL.predict
       
@@ -444,6 +448,7 @@ metalearner_ensemble <- function(data = NULL,
     message("Training model for meta learner")
     
     if (meta.learner.type %in% c("S.Learner", "T.Learner")){
+      M_mods <- list()
       for(f in 1:(length(folds))){
         pb <- txtProgressBar(min = 0,
                              max = length(folds),
@@ -484,11 +489,9 @@ metalearner_ensemble <- function(data = NULL,
                                               SL.library = SL.learners,
                                               verbose = FALSE,
                                               method = "method.NNLS",
-                                              family = ifelse(binary.outcome, 
-                                                              "binomial", 
-                                                              "gaussian"),
+                                              family = family,
                                               cvControl = control)
-          
+          M_mods[[f]] <- m_mod
           # Set treatment variable to 0
           X_test_0 <- (df_main[,c(covariates,"d")])
           X_test_0$d <- 0
@@ -502,7 +505,7 @@ metalearner_ensemble <- function(data = NULL,
           Y_test_1 <- predict(object = m_mod, newdata = X_test_1, 
                               onlySL = TRUE)$pred
           
-          if (binary.outcome) {
+          if (binary.preds) {
             Y.pred.1p <- data.frame("outcome" = df_main$y,
                                     "C.pscore" = Y_test_1)
             
@@ -523,7 +526,7 @@ metalearner_ensemble <- function(data = NULL,
             
             Y_hat_test_1 <- ifelse(Y_test_1 > opt.cut.Y1, 1, 0)
             Y_hat_test_0 <- ifelse(Y_test_0 > opt.cut.Y0, 1, 0)
-          } else if (!binary.outcome) {
+          } else if (!binary.preds) {
             Y_hat_test_1 <- Y_test_1
             Y_hat_test_0 <- Y_test_0
           }
@@ -538,7 +541,7 @@ metalearner_ensemble <- function(data = NULL,
                               "CATEs" = score_meta,
                               "Y_hats" = Y_hats,
                               "Meta_Learner" = meta.learner.type,
-                              "ml_model" = m_mod,
+                              "ml_model" = M_mods,
                               "SL_learners" = SL.learners,
                               "data" = data)
         }
@@ -555,9 +558,7 @@ metalearner_ensemble <- function(data = NULL,
                                                SL.library = SL.learners,
                                                verbose = FALSE,
                                                method = "method.NNLS",
-                                               family = ifelse(binary.outcome, 
-                                                               "binomial", 
-                                                               "gaussian"),
+                                               family = family,
                                                cvControl = control)
           
           m0_mod <- SuperLearner::SuperLearner(Y = aux_0$y, 
@@ -566,15 +567,16 @@ metalearner_ensemble <- function(data = NULL,
                                                SL.library = SL.learners,
                                                verbose = FALSE,
                                                method = "method.NNLS",
-                                               family = ifelse(binary.outcome, 
-                                                               "binomial", 
-                                                               "gaussian"),
+                                               family = family,
                                                cvControl = control)
+          
+          M_modsT <- list(m1_mod,m0_mod)
+          M_mods[[f]] <- M_modsT
           
           Y_test_0 <- predict(m0_mod, df_main[,covariates], onlySL = TRUE)$pred
           Y_test_1 <- predict(m1_mod, df_main[,covariates], onlySL = TRUE)$pred
           
-          if (binary.outcome) {
+          if (binary.preds) {
             Y.pred.1p <- data.frame("outcome" = df_main$y,
                                     "C.pscore" = Y_test_1)
             
@@ -596,7 +598,7 @@ metalearner_ensemble <- function(data = NULL,
             Y_hat_test_1 <- ifelse(Y_test_1 > opt.cut.Y1, 1, 0)
             Y_hat_test_0 <- ifelse(Y_test_0 > opt.cut.Y0, 1, 0)
             
-          } else if (!binary.outcome) {
+          } else if (!binary.preds) {
             Y_hat_test_1 <- Y_test_1
             Y_hat_test_0 <- Y_test_0
           }
@@ -610,8 +612,7 @@ metalearner_ensemble <- function(data = NULL,
                               "CATEs" = score_meta,
                               "Y_hats" = Y_hats,
                               "Meta_Learner" = meta.learner.type,
-                              "ml_model1" = m1_mod,
-                              "ml_model0" = m0_mod,
+                              "ml_model" = M_mods,
                               "SL_learners" = SL.learners,
                               "data" = data)}
         Sys.sleep(.05)
@@ -625,6 +626,11 @@ metalearner_ensemble <- function(data = NULL,
       pseudo_all <- matrix(NA, nrow(data), 2)
       ID_pseudo <- 1:nrow(data)
       pseudo_all <- cbind(pseudo_all, ID_pseudo)
+      
+      m_mods <- list()
+      p_mods <- list()
+      tau_mods_0 <- list()
+      tau_mods_1 <- list()
       
       pb <- txtProgressBar(min = 0, 
                            max = length(folds), 
@@ -668,6 +674,8 @@ metalearner_ensemble <- function(data = NULL,
                                             family = binomial(), 
                                             cvControl = control)
         
+        p_mods[[f]] <- p_mod
+        
         p_hat <- p_mod$SL.predict
         # Overlap bounding
         p_hat <- ifelse(p_hat < 0.025, 0.025, ifelse(p_hat > 0.975, 0.975, p_hat)) 
@@ -684,9 +692,7 @@ metalearner_ensemble <- function(data = NULL,
                                              SL.library = SL.learners,
                                              verbose = FALSE, 
                                              method = "method.NNLS", 
-                                             family = ifelse(binary.outcome, 
-                                                             "binomial", 
-                                                             "gaussian"),
+                                             family = family,
                                              cvControl = control)
         m1_hat <- m1_mod$SL.predict
         
@@ -696,11 +702,12 @@ metalearner_ensemble <- function(data = NULL,
                                              SL.library = SL.learners,
                                              verbose = FALSE, 
                                              method = "method.NNLS", 
-                                             family = ifelse(binary.outcome, 
-                                                             "binomial", 
-                                                             "gaussian"),
+                                             family = family,
                                              cvControl = control)
         m0_hat <- m0_mod$SL.predict
+        
+        m_mods_X <- list(m1_mod, m0_mod)
+        m_mods[[f]] <- m_mods_X
         
         # Compute pseudo-outcomes
         tau1 <- df_main[df_main$d == 1, "y"] - m0_hat[df_main$d == 1]
@@ -726,6 +733,7 @@ metalearner_ensemble <- function(data = NULL,
                                                cvControl = control)
         score_tau1<-tau1_mod$SL.predict
         a1 <- score_tau1
+        tau_mods_1[[1]] <- tau1_mod
       }, error = function(e) {
         mean_score <- mean(pseudo_all[,1])
         score_tau1 <- rep.int(mean_score, times = nrow(data))
@@ -745,6 +753,7 @@ metalearner_ensemble <- function(data = NULL,
                                                cvControl = control)
         score_tau0 <- tau0_mod$SL.predict
         a0 <- score_tau0
+        tau_mods_0[[f]] <- tau0_mod
       }, error = function(e) {
         mean_score <- mean(pseudo_all[,1])
         score_tau0 <- rep.int(mean_score, times = nrow(data))
@@ -764,6 +773,10 @@ metalearner_ensemble <- function(data = NULL,
                           "Y_hats" = data.frame("Y_hat0" = score_tau0, 
                                                 "Y_hat1" = score_tau1),
                           "Meta_Learner" = meta.learner.type,
+                          "ml_model" = list("first_stage_m" = m_mods,
+                                            "first_stage_p" = p_mods,
+                                            "second_stage_tau0" = tau_mods_0,
+                                            "second_stage_tau1" = tau_mods_1),,
                           "Prop_score" = pseudo_all[, 2],
                           "SL_learners" = SL.learners,
                           "data" = data)
@@ -776,6 +789,11 @@ metalearner_ensemble <- function(data = NULL,
       pseudo_all <- matrix(NA, nrow(data), 2)
       ID_pseudo <- 1:nrow(data)
       pseudo_all <- cbind(pseudo_all, ID_pseudo)
+      
+      m_mods <- list()
+      p_mods <- list()
+      r_mods_0 <- list()
+      r_mods_1 <- list()
       
       pb <- txtProgressBar(min = 0,
                            max = length(folds),
@@ -820,7 +838,7 @@ metalearner_ensemble <- function(data = NULL,
                                             method = "method.NNLS", 
                                             family = binomial(),
                                             cvControl = control)
-        
+        p_mods[[f]] <- p_mod
         p_hat <- p_mod$SL.predict
         p_hat <- ifelse(p_hat < 0.025, 0.025, 
                         ifelse(p_hat > .975, .975, p_hat))
@@ -831,12 +849,10 @@ metalearner_ensemble <- function(data = NULL,
                                             SL.library = SL.learners,
                                             verbose = FALSE,
                                             method = "method.NNLS",
-                                            family = ifelse(binary.outcome, 
-                                                            "binomial", 
-                                                            "gaussian"),
+                                            family = family,
                                             cvControl = control)
         m_hat <- m_mod$SL.predict
-        
+        m_mods[[f]] <- m_mod
         # Apply the R-learner (residual-on-residual approach)
         y_tilde = df_main$y - m_hat
         w_tilde = df_main$d - p_hat
@@ -872,6 +888,7 @@ metalearner_ensemble <- function(data = NULL,
                                                  obsWeights = set_pseudo[[l]][, 2],
                                                  cvControl = control)
           
+          r_mods_1[[l]] <- r_mod_cf
           score_r_1_cf <- r_mod_cf$SL.predict
           res_combined_r[unlist(set_index[6:10]), l] <- score_r_1_cf
         }
@@ -885,7 +902,7 @@ metalearner_ensemble <- function(data = NULL,
                                                  method = "method.NNLS",
                                                  obsWeights = set_pseudo[[l]][, 2],
                                                  cvControl = control)
-          
+          r_mods_0[[l - 5]] <- r_mod_cf
           score_r_0_cf <- r_mod_cf$SL.predict
           res_combined_r[unlist(set_index[1:5]), (l - 5)] <- score_r_0_cf
         }
@@ -899,6 +916,10 @@ metalearner_ensemble <- function(data = NULL,
                                           "Y_hat1" = score_r_1_cf),
                           "Meta_Learner" = meta.learner.type,
                           "Prop_score" = pseudo_all[, 2],
+                          "ml_model" = list("first_stage_m" = m_mods,
+                                            "first_stage_p" = p_mods,
+                                            "second_stage_r0" = r_mods_0,
+                                            "second_stage_r1" = r_mods_1),
                           "SL_learners" = SL.learners,
                           "data" = data)
     }

@@ -12,7 +12,7 @@ pattc_ensemble(
   compl.var,
   compl.SL.learners = c("SL.glmnet", "SL.xgboost", "SL.ranger", "SL.nnet", "SL.glm"),
   response.SL.learners = c("SL.glmnet", "SL.xgboost", "SL.ranger", "SL.nnet", "SL.glm"),
-  response.family = binomial(),
+  response.family = gaussian(),
   ID = NULL,
   cluster = NULL,
   binary.preds = FALSE,
