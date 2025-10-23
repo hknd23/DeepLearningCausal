@@ -11,7 +11,7 @@ metalearner_ensemble(
   cov.formula,
   treat.var,
   meta.learner.type,
-  SL.learners = c("SL.glmnet", "SL.xgboost", "SL.ranger", "SL.nnet"),
+  SL.learners = c("SL.glmnet", "SL.xgboost", "SL.nnet"),
   nfolds = 5,
   family = gaussian(),
   binary.preds = FALSE,
@@ -41,6 +41,9 @@ boosting, glmnet, random forest, and neural nets.}
 
 \item{nfolds}{number of folds for cross-validation. Currently supports up to}
 
+\item{family}{gaussian() or binomial() family for outcome variable.
+5 folds.}
+
 \item{binary.preds}{logical for whether outcome predictions should be binary}
 
 \item{conformal}{logical for whether to compute conformal prediction intervals}
@@ -49,8 +52,7 @@ boosting, glmnet, random forest, and neural nets.}
 
 \item{calib_frac}{fraction of training data to use for calibration in conformal inference}
 
-\item{seed}{random seed
-5 folds.}
+\item{seed}{random seed}
 }
 \value{
 \code{metalearner_ensemble} of predicted outcome values and CATEs
@@ -89,7 +91,7 @@ tlearner <- metalearner_ensemble(cov.formula = support_war ~ age + income +
                                   data = exp_data,
                                   treat.var = "strong_leader",
                                   meta.learner.type = "T.Learner",
-                                  SL.learners = c("SL.xgboost","SL.ranger",
+                                  SL.learners = c("SL.xgboost",
                                                "SL.nnet"),
                                   nfolds = 5,
                                   binary.preds = FALSE,
@@ -103,12 +105,12 @@ print(tlearner)
 set.seed(123456)
 xlearner <- metalearner_ensemble(cov.formula = support_war ~ age + income +
  employed  + job_loss,
-                                 data = exp_data,
+                                 test.data = exp_data,
+                                 train.data = exp_data,
                                  treat.var = "strong_leader",
                                  meta.learner.type = "X.Learner",
                                  SL.learners = c("SL.glmnet","SL.xgboost", 
-                                 "SL.ranger","SL.nnet"),
-                                 nfolds = 5,
+                                 "SL.nnet"),
                                  binary.preds = TRUE)
 
 print(xlearner)
