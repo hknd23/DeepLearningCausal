@@ -23,6 +23,7 @@
 #' @param alpha proportion for conformal prediction intervals
 #' @param calib_frac fraction of training data to use for calibration in conformal inference
 #' @param seed random seed
+#' @param family gaussian() or binomial() family for outcome variable.
 #' 5 folds.
 #' @return `metalearner_ensemble` of predicted outcome values and CATEs 
 #' estimated by the meta learners for each observation.
@@ -55,7 +56,7 @@
 #'                                   data = exp_data,
 #'                                   treat.var = "strong_leader",
 #'                                   meta.learner.type = "T.Learner",
-#'                                   SL.learners = c("SL.xgboost","SL.ranger",
+#'                                   SL.learners = c("SL.xgboost",
 #'                                                "SL.nnet"),
 #'                                   nfolds = 5,
 #'                                   binary.preds = FALSE,
@@ -69,14 +70,14 @@
 #'set.seed(123456)
 #' xlearner <- metalearner_ensemble(cov.formula = support_war ~ age + income +
 #'  employed  + job_loss,
-#'                                  data = exp_data,
+#'                                  test.data = exp_data,
+#'                                  train.data = exp_data,
 #'                                  treat.var = "strong_leader",
 #'                                  meta.learner.type = "X.Learner",
 #'                                  SL.learners = c("SL.glmnet","SL.xgboost", 
-#'                                  "SL.ranger","SL.nnet"),
-#'                                  nfolds = 5,
+#'                                  "SL.nnet"),
 #'                                  binary.preds = TRUE)
-#' 
+#'
 #' print(xlearner)
 #'                                   }
 #'
@@ -88,7 +89,7 @@ metalearner_ensemble <- function(data = NULL,
                                  treat.var,
                                  meta.learner.type,
                                  SL.learners = c("SL.glmnet", "SL.xgboost",
-                                                 "SL.ranger", "SL.nnet"),
+                                                  "SL.nnet"),
                                  nfolds = 5,
                                  family = gaussian(),
                                  binary.preds = FALSE,
@@ -953,3 +954,5 @@ print.metalearner_ensemble <- function(x, ...){
   cat("CATEs percentiles:\n")
   print(quantile(x$CATEs, c(.10 ,.25, .50 ,.75, .90)))
 }
+
+

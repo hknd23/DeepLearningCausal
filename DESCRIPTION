@@ -51,6 +51,7 @@ Suggests:
     xgboost,
     randomForest,
     glmnet,
+    ranger,
     gam,
     e1071,
     gbm,  
