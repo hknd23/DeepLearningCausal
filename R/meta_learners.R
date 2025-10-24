@@ -258,36 +258,35 @@ metalearner_ensemble <- function(data = NULL,
       
     if(meta.learner.type == "T.Learner"){
       message("Training T-Learner")
+      
       aux_1 <- train.data[train.data$d==1,]
       aux_0 <- train.data[train.data$d==0,]
       
-      m1_mod <- SuperLearner::SuperLearner(Y = aux_1$y, X = aux_1[,covariates],
-                                           newX = test.data[,covariates],
-                                           SL.library = SL.learners,
-                                           verbose = FALSE,
-                                           method = "method.NNLS",
-                                           family = family,
-                                           cvControl = control)
-      m0_mod <- SuperLearner::SuperLearner(Y = aux_0$y, X = aux_0[,covariates],
-                                           newX = test.data[,covariates],
-                                           SL.library = SL.learners,
-                                           verbose = FALSE,
-                                           method = "method.NNLS",
-                                           family = family,
-                                           cvControl = control)
+      m1_mod <- SuperLearner::SuperLearner(
+        Y = aux_1$y, X = aux_1[,covariates],
+        newX = test.data[,covariates],
+        SL.library = SL.learners,
+        verbose = FALSE,
+        method = "method.NNLS",
+        family = ifelse(binary.outcome, "binomial", "gaussian"),
+        cvControl = control
+      )
+      m0_mod <- SuperLearner::SuperLearner(
+        Y = aux_0$y, X = aux_0[,covariates],
+        newX = test.data[,covariates],
+        SL.library = SL.learners,
+        verbose = FALSE,
+        method = "method.NNLS",
+        family = ifelse(binary.outcome, "binomial", "gaussian"),
+        cvControl = control
+      )
+      
       Y_test_1 <- m1_mod$SL.predict
       Y_test_0 <- m0_mod$SL.predict
       
-      if(binary.preds){
-        Y_test_1 <- pmax(-1, pmin(Y_test_1, 1))
-        Y_test_0 <- pmax(-1, pmin(Y_test_0, 1))
-      } else {
-        Y_hat_test_1 <- Y_test_1
-        Y_hat_test_0 <- Y_test_0
-      } #apply_cutoff
+      score_meta[,1] <- Y_test_1 - Y_test_0
       
-      score_meta[,1] <- Y_hat_test_1 - Y_hat_test_0
-      Y_hats <- data.frame("Y_hat0"=Y_hat_test_0, "Y_hat1"=Y_hat_test_1)
+      Y_hats <- data.frame("Y_hat0"=Y_test_0, "Y_hat1"=Y_test_1)
       
       learner_out <- list("formula" = cov.formula,
                           "treat_var" = treat.var,
@@ -299,6 +298,72 @@ metalearner_ensemble <- function(data = NULL,
                           "SL_learners" = SL.learners,
                           "train_data" = train.data,
                           "test_data" = test.data)
+
+      if (!is.null(conformal) && conformal) {
+        message("Applying Conformal Prediction Intervals for T-Learner")
+        
+        if (is.null(calib_frac) || !is.numeric(calib_frac))
+          stop("'calib_frac' must be numeric between 0 and 1 for conformal splitting.")
+        if (calib_frac <= 0 || calib_frac >= 1)
+          stop("'calib_frac' must be strictly between 0 and 1 (e.g., 0.8).")
+        
+        set.seed(seed)
+        idx_cal <- caret::createDataPartition(train.data$d, p = (1 - calib_frac), list = FALSE)
+        fit_data <- train.data[idx_cal, ]
+        calib_data <- train.data[-idx_cal, ]
+        
+        # Refit both outcome models on fit_data
+        fit_1 <- fit_data[fit_data$d==1,]
+        fit_0 <- fit_data[fit_data$d==0,]
+        
+        m1_fit <- SuperLearner::SuperLearner(Y = fit_1$y, X = fit_1[,covariates],
+                                             SL.library = SL.learners,
+                                             verbose = FALSE,
+                                             family = ifelse(binary.outcome, "binomial", "gaussian"))
+        m0_fit <- SuperLearner::SuperLearner(Y = fit_0$y, X = fit_0[,covariates],
+                                             SL.library = SL.learners,
+                                             verbose = FALSE,
+                                             family = ifelse(binary.outcome, "binomial", "gaussian"))
+        
+        # Predict on calibration data
+        Y_hat_calib <- numeric(nrow(calib_data))
+        for (i in seq_len(nrow(calib_data))) {
+          if (calib_data$d[i] == 1) {
+            Y_hat_calib[i] <- predict(m1_fit, newdata = calib_data[i, covariates], onlySL = TRUE)$pred
+          } else {
+            Y_hat_calib[i] <- predict(m0_fit, newdata = calib_data[i, covariates], onlySL = TRUE)$pred
+          }
+        }
+        
+        calib_resid <- abs(calib_data$y - Y_hat_calib)
+        
+        # propensity weighting
+        ps_model <- glm(d ~ ., data = fit_data[, c("d", covariates)], family = binomial)
+        ps_hat <- predict(ps_model, newdata = calib_data[, covariates], type = "response")
+        w <- ps_hat * (1 - ps_hat)  # overlap weights
+        
+        q_conf <- Hmisc::wtd.quantile(calib_resid, weights = w, probs = 1 - alpha, na.rm = TRUE)
+        
+        ITE_lower <- score_meta[,1] - q_conf
+        ITE_upper <- score_meta[,1] + q_conf
+        
+        if (binary.outcome) {
+          ITE_lower <- pmax(-1, pmin(ITE_lower, 1))
+          ITE_upper <- pmax(-1, pmin(ITE_upper, 1))
+        }
+        
+        learner_out <- list("formula" = cov.formula,
+                            "treat_var" = treat.var,
+                            "CATEs" = score_meta,
+                            "Y_hats" = Y_hats,
+                            "conformal_interval" = data.frame(ITE_lower, ITE_upper),
+                            "Meta_Learner" = meta.learner.type,
+                            "ml_model1" = m1_mod,
+                            "ml_model0" = m0_mod,
+                            "SL_learners" = SL.learners,
+                            "train_data" = train.data,
+                            "test_data" = test.data)
+      } 
     }
     
     
