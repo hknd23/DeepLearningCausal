@@ -300,7 +300,7 @@ metalearner_ensemble <- function(data = NULL,
                           "test_data" = test.data)
 
       if (!is.null(conformal) && conformal) {
-        message("Applying Conformal Prediction Intervals for T-Learner")
+        message("Applying Weighted Conformal Prediction Intervals for T-Learner")
         
         if (is.null(calib_frac) || !is.numeric(calib_frac))
           stop("'calib_frac' must be numeric between 0 and 1 for conformal splitting.")
