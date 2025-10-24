@@ -307,6 +307,129 @@ metalearner_deeplearning <- function(data=NULL,
                           "ml_model_history" = list(m0_history, m1_history),
                           "train_data" = train.data,
                           "test_data" = test.data)
+
+      if (!is.null(conformal) && conformal) {
+        message("Applying Weighted Conformal Prediction Intervals for T-Learner")
+        
+        if (is.null(calib_frac) || !is.numeric(calib_frac))
+          stop("Error: 'calib_frac' must be numeric in (0,1) for conformal splitting.")
+        if (calib_frac <= 0 || calib_frac >= 1)
+          stop("Error: 'calib_frac' must be strictly between 0 and 1, e.g., 0.5 or 0.8.")
+        
+        set.seed(seed)
+        idx_cal   <- caret::createDataPartition(train.data$d, p = (1 - calib_frac), list = FALSE)
+        fit_data  <- train.data[idx_cal, ]
+        calib_data<- train.data[-idx_cal, ]
+        
+        # --- Refit group-specific outcome nets on the fit split ---
+        fit_1 <- fit_data[fit_data$d == 1, , drop = FALSE]
+        fit_0 <- fit_data[fit_data$d == 0, , drop = FALSE]
+        
+        modelm1_fit <- build_model(
+          hidden.layer       = hidden.layer,
+          input_shape        = length(covariates) + 1,
+          hidden_activation  = hidden_activation,
+          output_activation  = output_activation,
+          output_units       = output_units,
+          dropout_rate       = dropout_rate
+        )
+        modelm0_fit <- build_model(
+          hidden.layer       = hidden.layer,
+          input_shape        = length(covariates) + 1,
+          hidden_activation  = hidden_activation,
+          output_activation  = output_activation,
+          output_units       = output_units,
+          dropout_rate       = dropout_rate
+        )
+        
+        m1_fit <- modelm1_fit %>%
+          keras3::compile(optimizer = algorithm, loss = loss, metrics = metrics)
+        m0_fit <- modelm0_fit %>%
+          keras3::compile(optimizer = algorithm, loss = loss, metrics = metrics)
+        
+        X_fit1 <- as.matrix(fit_1[, c(covariates, "d")])
+        X_fit0 <- as.matrix(fit_0[, c(covariates, "d")])
+        Y_fit1 <- fit_1$y
+        Y_fit0 <- fit_0$y
+        
+        invisible(m1_fit %>% keras3::fit(
+          X_fit1, Y_fit1,
+          epochs = epoch, batch_size = batch_size,
+          validation_split = validation_split,
+          callbacks = callbacks_list, verbose = 0,
+          shuffle = FALSE
+        ))
+        invisible(m0_fit %>% keras3::fit(
+          X_fit0, Y_fit0,
+          epochs = epoch, batch_size = batch_size,
+          validation_split = validation_split,
+          callbacks = callbacks_list, verbose = 0,
+          shuffle = FALSE
+        ))
+        
+        # --- Calibration residuals |d: use the model for the observed arm ---
+        X_cal <- calib_data[, c(covariates, "d")]
+        X_cal1 <- X_cal; X_cal1$d <- 1
+        X_cal0 <- X_cal; X_cal0$d <- 0
+        
+        pred1_all <- as.numeric(predict(m1_fit, as.matrix(X_cal1)))
+        pred0_all <- as.numeric(predict(m0_fit, as.matrix(X_cal0)))
+        yhat_cal  <- ifelse(calib_data$d == 1, pred1_all, pred0_all)
+        
+        calib_resid <- abs(as.numeric(calib_data$y) - yhat_cal)
+        
+        # --- Propensity model on fit split for overlap weights w = p(1-p) ---
+        p_model <- build_model(
+          hidden.layer       = c(3),
+          input_shape        = length(covariates),
+          hidden_activation  = "relu",
+          output_activation  = "sigmoid",
+          output_units       = 1,
+          dropout_rate       = dropout_rate
+        ) 
+        
+        p_model<-p_model%>%
+          keras3::compile(optimizer = algorithm, 
+                          loss = "binary_crossentropy",
+                          metrics = "accuracy")
+        
+        pmodel_history<-p_model %>% keras3::fit(
+          as.matrix(fit_data[, covariates]),
+          as.matrix(fit_data$d),
+          epochs = epoch, batch_size = batch_size,
+          verbose = 0, shuffle = FALSE
+        )
+        
+        p_hat_cal <- as.numeric(predict(p_model, as.matrix(calib_data[, covariates])))
+        w <- p_hat_cal * (1 - p_hat_cal)  
+        
+        # --- Weighted two-sided split conformal cutoff 
+        
+        q_alpha <- Hmisc::wtd.quantile(
+          calib_resid, weights = w, probs = 1 - alpha, na.rm = TRUE
+        )
+        
+        ITE_hat   <- as.numeric(score_meta)
+        ITE_lower <- ITE_hat - q_alpha
+        ITE_upper <- ITE_hat + q_alpha
+        
+        learner_out <- list(
+          "formula"          = cov.formula,
+          "treat_var"        = treat.var,
+          "algorithm"        = algorithm,
+          "hidden_layer"     = hidden.layer,
+          "CATEs"            = score_meta,
+          "Y_hats"           = data.frame(Y_hat0, Y_hat1),
+          "conformal_interval" = data.frame(ITE_lower = ITE_lower, ITE_upper = ITE_upper),
+          "p_model"= list(p_model),
+          "p_model_history"=list(pmodel_history),
+          "Meta_Learner"     = meta.learner.type,
+          "ml_model"         = list(m0_mod_T, m1_mod_T),
+          "ml_model_history" = list(m0_history, m1_history),
+          "train_data"       = train.data,
+          "test_data"        = test.data
+        )
+      }
     }
     
     if(meta.learner.type == "X.Learner"){
