@@ -32,6 +32,7 @@
 #' @param conformal logical for whether to compute conformal prediction intervals
 #' @param alpha proportion for conformal prediction intervals
 #' @param calib_frac fraction of training data to use for calibration in conformal inference
+#' @param prob_bound logical for whether to bound conformal intervals within [-1,1] for classification models
 #' @param seed random seed
 #' @return `metalearner_deeplearning` object with CATEs
 #' @export
@@ -61,6 +62,7 @@ metalearner_deeplearning <- function(data=NULL,
                                      conformal=FALSE,
                                      alpha=0.1,
                                      calib_frac=0.5,
+                                     prob_bound = TRUE,
                                      seed=1234){
   
   check_cran_deps()
@@ -173,11 +175,11 @@ metalearner_deeplearning <- function(data=NULL,
           keras3::compile(optimizer = algorithm, loss = loss, metrics = metrics)
         X_fit <- as.matrix(fit_data[, c(covariates, "d")])
         Y_fit <- fit_data$y
-        m_mod_S_conf %>%
+        invisible(m_mod_S_conf %>%
           keras3::fit(X_fit, Y_fit,
                       epochs = epoch, batch_size = batch_size,
                       validation_split = validation_split,
-                      callbacks = callbacks_list, verbose = 0)
+                      callbacks = callbacks_list, verbose = 0))
         
         # Compute residuals (calibration conformity scores)
         X_calib_0 <- calib_data[, c(covariates, "d")]; X_calib_0$d <- 0
@@ -221,7 +223,7 @@ metalearner_deeplearning <- function(data=NULL,
         conf_lower <- as.numeric(score_meta) - q_conf
         conf_upper <- as.numeric(score_meta) + q_conf
         
-        if (output_activation=="sigmoid") {
+        if ((output_activation=="sigmoid" || output_activation=="softmax") && prob_bound) {
           conf_lower <- pmax(-1, pmin(conf_lower, 1))
           conf_upper  <- pmax(-1, pmin(conf_upper, 1))
         }
@@ -412,6 +414,12 @@ metalearner_deeplearning <- function(data=NULL,
         ITE_hat   <- as.numeric(score_meta)
         ITE_lower <- ITE_hat - q_alpha
         ITE_upper <- ITE_hat + q_alpha
+        
+        # Adjust bounds for binary outcomes
+        if ((output_activation=="sigmoid" || output_activation=="softmax") && prob_bound) {
+          ITE_lower <- pmax(-1, pmin(ITE_lower, 1))
+          ITE_upper <- pmax(-1, pmin(ITE_upper, 1))
+        }
         
         learner_out <- list(
           "formula"          = cov.formula,
@@ -738,7 +746,7 @@ metalearner_deeplearning <- function(data=NULL,
   data$ID <- c(1:nrow(data))
   score_meta <- matrix(0, nrow(data), 1)
   CATEs <- list()
-  folds <- caret::createFolds(data$d, k=nfolds)
+  folds <- caret::createFolds(data$d, k = nfolds)
   Yhats_list <- list()
   M_mods <- list()
   M_mods_history <- list()
