@@ -338,7 +338,7 @@ metalearner_ensemble <- function(data = NULL,
         calib_resid <- abs(calib_data$y - Y_hat_calib)
         
         # propensity weighting
-        ps_model <- glm(d ~ ., data = fit_data[, c("d", covariates)], family = binomial)
+        ps_model <- stats::glm(d ~ ., data = fit_data[, c("d", covariates)], family = binomial)
         ps_hat <- predict(ps_model, newdata = calib_data[, covariates], type = "response")
         w <- ps_hat * (1 - ps_hat)  # overlap weights
         

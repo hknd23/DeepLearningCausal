@@ -88,7 +88,7 @@ In case of multinomial outcome variable, set to the number of categories.}
 
 \item{calib_frac}{fraction of training data to use for calibration in conformal inference}
 
-\item{prob_bound}{logical for whether to bound conformal intervals within \link{-1,1} for classification models}
+\item{prob_bound}{logical for whether to bound conformal intervals within [-1,1] for classification models}
 
 \item{seed}{random seed}
 }

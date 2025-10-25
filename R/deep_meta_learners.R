@@ -32,7 +32,7 @@
 #' @param conformal logical for whether to compute conformal prediction intervals
 #' @param alpha proportion for conformal prediction intervals
 #' @param calib_frac fraction of training data to use for calibration in conformal inference
-#' @param prob_bound logical for whether to bound conformal intervals within [-1,1] for classification models
+#' @param prob_bound logical for whether to bound conformal intervals within \[-1,1\] for classification models
 #' @param seed random seed
 #' @return `metalearner_deeplearning` object with CATEs
 #' @export
