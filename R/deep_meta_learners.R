@@ -209,7 +209,7 @@ metalearner_deeplearning <- function(data=NULL,
           keras3::fit(
             as.matrix(fit_data[, covariates]),
             as.matrix(fit_data$d),
-            epochs = epoch, batch_size = batch_size, verbose = verbose
+            epochs = epoch, batch_size = batch_size, verbose = 0
           )
         
         p_hat <- predict(p_mod, as.matrix(calib_data[, covariates]))
