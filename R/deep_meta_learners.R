@@ -1304,7 +1304,7 @@ metalearner_deeplearning <- function(data=NULL,
 
 print.metalearner_deeplearning <- function(x, ...){
   cat("Method:\n")
-  cat("Ensemble ", x$Meta_Learner)
+  cat("Deep Learning ", x$Meta_Learner)
   cat("\n")
   cat("Formula:\n")
   cat(deparse(x$formula))
