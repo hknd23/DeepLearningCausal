@@ -797,9 +797,9 @@ metalearner_ensemble <- function(data = NULL,
                                                verbose = FALSE, 
                                                method = "method.NNLS",
                                                cvControl = control)
-        score_tau1<-tau1_mod$SL.predict
-        a1 <- score_tau1
         tau_mods_1[[1]] <- tau1_mod
+        score_tau1 <- tau1_mod$SL.predict
+        a1 <- score_tau1
       }, error = function(e) {
         mean_score <- mean(pseudo_all[,1])
         score_tau1 <- rep.int(mean_score, times = nrow(data))
@@ -817,9 +817,9 @@ metalearner_ensemble <- function(data = NULL,
                                                verbose = FALSE,
                                                method = "method.NNLS", 
                                                cvControl = control)
+        tau_mods_0[[f]] <- tau0_mod
         score_tau0 <- tau0_mod$SL.predict
         a0 <- score_tau0
-        tau_mods_0[[f]] <- tau0_mod
       }, error = function(e) {
         mean_score <- mean(pseudo_all[,1])
         score_tau0 <- rep.int(mean_score, times = nrow(data))
