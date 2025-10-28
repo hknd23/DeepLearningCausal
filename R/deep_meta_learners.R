@@ -4,11 +4,15 @@
 #' CATEs using Deep Neural Networks through Tensorflow.
 #' Deep Learning Estimation of CATEs from four meta-learner models (S,T,X and R-learner) using TensorFlow and Keras3
 #' @param data data.frame object of data.
-#' If a single dataset is specified, then the model will use cross-validation to train the meta-learners and estimate CATEs.  with their test daUsers can also specify the arguments (defined below) to separately train meta-learners on their training data and estiamte CATEs with their test data.
+#' If a single dataset is specified, then the model will use cross-validation to train the meta-learners and estimate CATEs. Users can also specify the arguments (defined below) to separately train meta-learners on their training data and estimate CATEs with their test data.
 #' @param train.data data.frame object of training data for Train/Test mode.
+#'Argument must be specified to separately train the meta-learners on the training data.
 #' @param test.data data.frame object of test data for Train/Test mode.
+#'Argument must be specified to estimate CATEs on the test data.
 #' @param cov.formula formula description of the model y ~ x(list of covariates).
+#'Permits users to specify covariates in the meta-learner model of interest. This includes the outcome variables and the confounders.
 #' @param treat.var string for name of Treatment variable
+#'Users can specify the treatment variable in their data from employing the treat.var argument.
 #' @param meta.learner.type string of "S.Learner", "T.Learner", "X.Learner", or "R.Learner"
 #' @param nfolds integer for number of folds for Meta Learners
 #' @param algorithm string for optimization algorithm. For optimizers available see `keras` package.
