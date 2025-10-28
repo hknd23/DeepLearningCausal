@@ -7,7 +7,8 @@
 #' @param complier.formula formula to fit compliance model (c ~ x) using complier variable and covariates
 #' @param treat.var string specifying the binary treatment variable
 #' @param exp.data list object of experimental data.
-#' @param algorithm string for name of optimizer algorithm
+#' @param algorithm string for name of optimizer algorithm. Set to adam.
+#' other optimization algorithms available are sgd, rprop, adagrad.
 #' @param hidden.layer vector specifying the hidden layers and the number of neurons in each layer.
 #' @param ID string for name of indentifier variable.
 #' @param epoch integer for number of epochs
