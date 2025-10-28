@@ -4,6 +4,7 @@
 #' CATEs using Deep Neural Networks through Tensorflow.
 #' Deep Learning Estimation of CATEs from four meta-learner models (S,T,X and R-learner) using TensorFlow and Keras3
 #' @param data data.frame object of data.
+If a single dataset is specified, then the model will use cross-validation to train the meta-learners and estimate CATEs.
 #' @param train.data data.frame object of training data for Train/Test mode.
 #' @param test.data data.frame object of test data for Train/Test mode.
 #' @param cov.formula formula description of the model y ~ x(list of covariates).
