@@ -10,6 +10,8 @@
 #' @param treat.var string for the name of treatment variable.
 #' @param meta.learner.type string specifying is the S-learner and
 #' \code{"T.Learner"} for the T-learner model.
+#' \code{"X.Learner"} for the X-learner model.
+#' \code{"R.Learner"} for the R-learner model.
 #' @param stepmax maximum number of steps for training model.
 #' @param nfolds number of folds for cross-validation. Currently supports up to
 #' 5 folds.
@@ -23,7 +25,6 @@
 #' binary values or proportions.
 #' @param act.fct "logistic" or "tanh" for activation function to be used in the neural network. 
 #' @param err.fct "ce" for cross-entropy or "sse" for sum of squared errors as error function.
-#'
 #' @return `metalearner_neural` of predicted outcome values and CATEs estimated by the meta
 #' learners for each observation.
 #' @export

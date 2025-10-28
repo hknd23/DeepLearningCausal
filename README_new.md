@@ -73,8 +73,26 @@ We illustrate the functionality of **DeepLearningCausal** using the two datasets
 
 The function `metalearner_deepelearning ()` in our package is employed for deep neural network estimation of the CATEs from the four meta-learner models using reticulate, tensorflow and keras3. The code, customization of the deep neural network architecture, and results from the S-learner model using the said function is presented in the paper. The code and arguments for the X-learner model by using the `metalearner_deeplearning ()` function is presented below while the results from the X-learner model in this case is reported in the paper.
 
-<<code for xlearner_deep here>>
 
+``` r
+set.seed(1234)
+exp_split <- rsample::initial_split(exp_data,)
+train_data <- rsample::training(exp_split)
+test_data <- rsample::testing(exp_split)
+
+response_formula <- support_war ~ age + female + education + income + employed +
+  job_loss + hindu + political_ideology
+
+slearner_deep <- metalearner_deeplearning(cov.formula = response_formula, 
+                                          train.data = train_data,
+                                          test.data = test_data,
+                                          treat.var = "strong_leader", meta.learner.type = "X.Learner",
+                                          algorithm = "adam", hidden.layer = c(4,2), hidden_activation = "relu",
+                                          output_activation = "sigmoid", output_units = 1,
+                                          loss = "binary_crossentropy", metrics = "accuracy", epoch = 50,
+                                          batch_size = 32, validation_split = 0.2, dropout_rate = 0.1, patience = 20, 
+                                          verbose = 1, seed = 1234)
+```
 The tutorial for `metalearner_deeplearning()` using using reticulate, tensorflow and keras3 in the case of the T-learner model is <<here>>. The tutorial for `metalearner_deeplearning ()` using using reticulate, tensorflow and keras3 in the case of the R-learner model is <<here>>. 
 
 #### Deep Neural Networks for Meta-Learners Using R Neural Net
@@ -90,6 +108,22 @@ The tutorial for `metalearner_neural()` for the R-learner using R neural net is 
 
 The function `pattc_deepelearning ()` in our package is employed for deep neural network estimation of the PATT in settings with treatment noncompliance using reticulate, tensorflow and keras3. The code, customization of the deep neural network architecture, and results from obtaining the PATT via using the said function is presented in the paper.
 
+``` r
+deeppattc <- pattc_deeplearning(response.formula = response_formula,
+                                exp.data = exp_data, pop.data = pop_data,
+                                treat.var = "strong_leader", compl.var = "compliance",
+                                compl.algorithm = "adam", response.algorithm = "adam",
+                                compl.hidden.layer = c(2,2), response.hidden.layer = c(2,2),
+                                compl.hidden_activation = "relu", response.hidden_activation = "relu",
+                                response.output_activation = "sigmoid", response.output_units = 1, 
+                                response.loss = "binary_crossentropy", response.metrics = "accuracy",
+                                compl.epoch = 50, response.epoch = 100, verbose = 1, batch_size = 32, 
+                                compl.validation_split = 0.2, response.validation_split = 0.2, 
+                                compl.dropout_rate = 0.1, response.dropout_rate = 0.1,
+                                compl.patience = 20, response.patience = 20,
+                                nboot = 1000, 
+                                seed = 1234)
+```
 
 #### Deep Neural Networks for PATT (settings with treatment noncompliance) Using R Neural Net 
 

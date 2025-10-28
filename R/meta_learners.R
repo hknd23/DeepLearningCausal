@@ -2,22 +2,26 @@
 #'
 #' @description
 #' \code{metalearner_ensemble} implements the S-learner, T-learner, and X-learner for
-#' estimating CATE using the super learner ensemble method. The super learner in
+#' weighted ensemble learning estimatio of CATEs using super learner. The super learner in
 #' this case includes the following machine learning algorithms:
 #' extreme gradient boosting, glmnet (elastic net regression), random forest and
 #' neural nets.
-#'
 #' @param data \code{data.frame} object of data for cross-validation
 #' @param cov.formula formula description of the model y ~ x(list of covariates)
+#' permits users to incorporate outcome variable and confounders in model.
 #' @param treat.var string for the name of treatment variable.
 #' @param meta.learner.type string specifying is the S-learner and
 #' \code{"T.Learner"} for the T-learner model.
 #' \code{"X.Learner"} for the X-learner model.
+#' \code{"R.Learner"} for the X-learner model.
 #' @param SL.learners vector for super learner ensemble that includes extreme gradient
 #' boosting, glmnet, random forest, and neural nets.
-#' @param nfolds number of folds for cross-validation. Currently supports up to
+#' @param nfolds number of folds for cross-validation. Currently supports up to 
+#' 5 folds.
 #' @param train.data \code{data.frame} object of training data
+#' argument to separately train the meta-learners on training data.
 #' @param test.data \code{data.frame} object of test data
+#' argument to estimate CATEs on the test data.
 #' @param binary.preds logical for whether outcome predictions should be binary
 #' @param conformal logical for whether to compute conformal prediction intervals
 #' @param alpha proportion for conformal prediction intervals
