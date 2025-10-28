@@ -18,8 +18,9 @@
 #' boosting, glmnet, random forest, and neural nets.
 #' @param nfolds number of folds for cross-validation. Currently supports up to 10 folds.
 #' @param train.data \code{data.frame} object of training data
-#'
+#' argument to separately train the meta-learners on training data.
 #' @param test.data \code{data.frame} object of test data
+#' argument to estimate CATEs on the test data.
 #' @param binary.preds logical for whether outcome predictions should be binary
 #' @param conformal logical for whether to compute conformal prediction intervals
 #' @param alpha proportion for conformal prediction intervals
