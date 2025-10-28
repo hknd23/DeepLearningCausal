@@ -188,7 +188,7 @@ pattc_counterfactuals<- function (pop.data,
   return(Y.hats)
 }
 
-#' PATT_C SL Ensemble
+#' PATT-C SL Ensemble
 #'
 #' @description
 #' \code{pattc_ensemble} estimates the Population Average Treatment Effect
