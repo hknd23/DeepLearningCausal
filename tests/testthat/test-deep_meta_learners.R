@@ -108,5 +108,20 @@ test_that("neuralnet-pattc", {
   expect_s3_class(pattc_nn, "pattc_neural")
 })
 
+test_that("neuralnet-xl", {
+  set.seed(1234)
+  xlearner_nn <- metalearner_neural(cov.formula = response_formula, 
+                                    data = exp_data, 
+                                    treat.var = "strong_leader",
+                                    meta.learner.type = "X.Learner", 
+                                    stepmax = 1e+9,
+                                    algorithm = "rprop+", 
+                                    hidden.layer = c(2,2),
+                                    act.fct = "logistic",
+                                    err.fct = "sse",
+                                    linear.output = FALSE, 
+                                    binary.preds = FALSE)
+  expect_s3_class(xlearner_nn, "metalearner_neural")
+})
                              
                                         
