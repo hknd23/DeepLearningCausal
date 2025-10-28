@@ -49,7 +49,7 @@
 #' @param verbose integer specifying the verbosity level during training. 
 #' 1 for full information and learning curve plots. 0 to suppress messages and plots.
 #' @param batch_size integer for batch size to split training data. 
-#' 'Overall, batch size  refers to the number of training samples processed 
+#' batch size  refers to the number of training samples processed 
 #' before the model's parameters are updated. Batch size is a vital hyperparameter 
 #' that affects both training speed and model performance. It is crucial for computational efficiency.
 #' @param loss string for loss function "mean_squared_error" recommended for linear models,
@@ -57,11 +57,18 @@
 #' @param metrics string for metrics in response model. 
 #' "mean_squared_error" recommended for linear models, "binary_accuracy" for binary models.
 #' @param epoch interger for number of epochs.
+#' epoch denotes one complete pass through the entire training dataset. 
+#' Model processes each training example once during an epoch.
 #' @param validation_split double for proportion of training data to split for validation.
+#' validation split involves partitioning data into training and validation sets to build and tune model.
 #' @param patience integer for number of epochs with no improvement to wait before stopping training.
+#'patience stops training of neural network if model's performance on validation data stops improving.
 #' @param dropout_rate double or vector for proportion of hidden layer to drop out. 
+#' dropout rate is hyperparameter for preventing a model from overfitting the training data.
 #' @param conformal logical for whether to compute conformal prediction intervals
+#' conformal prediction intervals provide measure of uncertainty for ITEs.
 #' @param alpha proportion for conformal prediction intervals
+#' alpha proportion refers to significance level that guarantees desired coverage probability for ITEs 
 #' @param calib_frac fraction of training data to use for calibration in conformal inference
 #' @param prob_bound logical for whether to bound conformal intervals within \[-1,1\] for classification models
 #' @param seed random seed
