@@ -21,15 +21,17 @@
 #'Arguments to reconfigure and train the deep neural networks for meta-learner estimation include the optimization algorithm. Options for the optimization alogrithm include "adam", “adagrad”, “rmsprop”, “sgd”. 
 #' @param hidden.layer permits users to specify the number of hidden layers in the model and the number of neurons in each hidden layer.
 #' @param hidden_activation string or vector for name of activation function for hidden layers of  model.
-#'Defaults to "relu" which means that users can specify a single value to use one activation function for each hidden layer. Users can also specify a vector to set different activation functions for each hideen layer.
+#'Defaults to "relu" which means that users can specify a single value to use one activation function for each hidden layer. While "relu" is a popular choice for hidden layers, users can also use "softmax" which converts a vector of values into a probability distribution and "tanh" that maps input to a value between -1 and 1.
 #' @param output_activation string for name of activation function for output layer of  model.
 #'  "linear" is recommended for continuous outcome variables, and "sigmoid" for binary outcome variables. 
 #'  For activation functions available see `keras` package.
+#'For instance, Keras provides various activation functions that can be used in neural network layers to introduce non-linearity
 #' @param output_units integer for units in output layer. Defaults to 1 for continuous and binary outcome variables. 
 #' In case of multinomial outcome variable, set to the number of categories.
 #' @param verbose integer specifying the verbosity level during training. 
 #' 1 for full information and learning curve plots. 0 to suppress messages and plots.
 #' @param batch_size integer for batch size to split training data.
+#'Overall, batch size  refers to the number of training samples processed before the model's parameters are updated. Batch size is a vital hyperparameter that affects both training speed and model performance. It is crucial for computational efficiency.
 #' @param loss string for loss function "mean_squared_error" recommended for linear models, 
 #' "binary_crossentropy" for binary models.
 #' @param metrics string for metrics in response model. "mean_squared_error" recommended for linear models, 
