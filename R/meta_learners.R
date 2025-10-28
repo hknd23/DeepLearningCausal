@@ -268,7 +268,7 @@ metalearner_ensemble <- function(data = NULL,
         SL.library = SL.learners,
         verbose = FALSE,
         method = "method.NNLS",
-        family = ifelse(binary.outcome, "binomial", "gaussian"),
+        family = family,
         cvControl = control
       )
       m0_mod <- SuperLearner::SuperLearner(
@@ -277,7 +277,7 @@ metalearner_ensemble <- function(data = NULL,
         SL.library = SL.learners,
         verbose = FALSE,
         method = "method.NNLS",
-        family = ifelse(binary.outcome, "binomial", "gaussian"),
+        family = family,
         cvControl = control
       )
       
@@ -319,11 +319,11 @@ metalearner_ensemble <- function(data = NULL,
         m1_fit <- SuperLearner::SuperLearner(Y = fit_1$y, X = fit_1[,covariates],
                                              SL.library = SL.learners,
                                              verbose = FALSE,
-                                             family = ifelse(binary.outcome, "binomial", "gaussian"))
+                                             family = family)
         m0_fit <- SuperLearner::SuperLearner(Y = fit_0$y, X = fit_0[,covariates],
                                              SL.library = SL.learners,
                                              verbose = FALSE,
-                                             family = ifelse(binary.outcome, "binomial", "gaussian"))
+                                             family = family)
         
         # Predict on calibration data
         Y_hat_calib <- numeric(nrow(calib_data))
@@ -347,7 +347,7 @@ metalearner_ensemble <- function(data = NULL,
         ITE_lower <- score_meta[,1] - q_conf
         ITE_upper <- score_meta[,1] + q_conf
         
-        if (binary.outcome) {
+        if (binary.preds) {
           ITE_lower <- pmax(-1, pmin(ITE_lower, 1))
           ITE_upper <- pmax(-1, pmin(ITE_upper, 1))
         }

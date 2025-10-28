@@ -86,7 +86,7 @@
 #' validation_split = NULL,  patience = NULL,
 #' dropout_rate = NULL, conformal= FALSE,  seed=1234)
 #' }
-#' #' \dontrun{
+#' \dontrun{
 #' #check for python and required modules
 #' python_ready()
 #' data("exp_data")
