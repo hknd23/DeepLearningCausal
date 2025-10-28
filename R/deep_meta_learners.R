@@ -20,7 +20,8 @@
 #' @param algorithm string for optimization algorithm. For optimizers available see `keras` package.
 #'Arguments to reconfigure and train the deep neural networks for meta-learner estimation include the optimization algorithm. Options for the optimization alogrithm include "adam", “adagrad”, “rmsprop”, “sgd”. 
 #' @param hidden.layer permits users to specify the number of hidden layers in the model and the number of neurons in each hidden layer.
-#' @param hidden_activation string or vector for name of activation function for hidden layers of  model. Defaults to "relu".
+#' @param hidden_activation string or vector for name of activation function for hidden layers of  model.
+#'Defaults to "relu" which means that users can specify a single value to use one activation function for each hidden layer. Users can also specify a vector to set different activation functions for each hideen layer.
 #' @param output_activation string for name of activation function for output layer of  model.
 #'  "linear" is recommended for continuous outcome variables, and "sigmoid" for binary outcome variables. 
 #'  For activation functions available see `keras` package.
