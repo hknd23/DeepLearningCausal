@@ -21,8 +21,7 @@ deep_complier_mod(
 )
 }
 \arguments{
-\item{complier.formula}{formula to fit compliance model (c ~ x) using
-complier variable and covariates}
+\item{complier.formula}{formula to fit compliance model (c ~ x) using complier variable and covariates}
 
 \item{exp.data}{list object of experimental data.}
 

@@ -107,44 +107,33 @@ pattc_deeplearning object containing the fitted models, predictions, counterfact
 }
 \description{
 This function implements the Deep PATT-C method for estimating the Population Average Treatment
-Effect on the Treated Compliers (PATT-C) using deep learning models.
+Effect on the Treated Compliers (PATT-C) using deep learning models using keras and Tensorflow.
 It consists of training a deep learning model to predict compliance among treated individuals,
 predicting compliance in the experimental data, training a response model among predicted compliers,
 and estimating counterfactual outcomes in the population data.
 }
 \examples{
 \dontrun{
-library(DeepLearningCausal)
+#check for python and required modules
+python_ready()
+
 data("exp_data")
 data("pop_data")
 set.seed(1243)
 deeppattc <- pattc_deeplearning(response.formula = support_war ~ age + female +
-income + education +  employed + married +
-  hindu + job_loss,
-exp.data = exp_data,
-pop.data = pop_data,
-treat.var = "strong_leader", 
-compl.var = "compliance",
-compl.algorithm = "adam", 
-response.algorithm = "adam",
-compl.hidden.layer = c(4,2), 
-response.hidden.layer = c(4,2),
-compl.hidden_activation = "relu", 
-response.hidden_activation = "relu",
-response.output_activation = "sigmoid",
-response.output_units = 1, 
-response.loss = "binary_crossentropy",
-response.metrics = "accuracy",
-compl.epoch = 50, 
-response.epoch = 80,
-verbose = 1,
-batch_size = 32, 
-compl.validation_split = 0.2,
-response.validation_split = 0.2,
-compl.dropout_rate = 0.1,
-response.dropout_rate = 0.1,
-compl.patience = 20, 
-response.patience = 20,
-nboot = 1000)
+income + education +  employed + married + hindu + job_loss,
+exp.data = exp_data, pop.data = pop_data,
+treat.var = "strong_leader",  compl.var = "compliance",
+compl.algorithm = "adam", response.algorithm = "adam",
+compl.hidden.layer = c(4,2),  response.hidden.layer = c(4,2),
+compl.hidden_activation = "relu",  response.hidden_activation = "relu",
+response.output_activation = "sigmoid", response.output_units = 1, 
+response.loss = "binary_crossentropy", response.metrics = "accuracy",
+compl.epoch = 50, response.epoch = 80,
+verbose = 1, batch_size = 32, 
+compl.validation_split = 0.2, response.validation_split = 0.2,
+compl.dropout_rate = 0.1, response.dropout_rate = 0.1,
+compl.patience = 20, response.patience = 20,
+nboot = 1000, seed = 1234)
 }
 }

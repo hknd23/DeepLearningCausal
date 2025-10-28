@@ -67,11 +67,47 @@
 #' @param seed random seed
 #' @return `metalearner_deeplearning` object with CATEs
 #' @export
-#'
-#@examples
-metalearner_deeplearning <- function(data=NULL,
-                                     train.data=NULL,
-                                     test.data=NULL,
+#' 
+#' @examples
+#' \dontrun{
+#' #check for python and required modules
+#' python_ready()
+#' data("exp_data")
+#' 
+#' s_deeplearning <- metalearner_deeplearning(data = exp_data,
+#' cov.formula  = support_war ~ age + female + income + education
+#' + employed + married + hindu + job_loss, 
+#' treat.var = "strong_leader",  meta.learner.type = "S.Learner",
+#' nfolds = 5,  algorithm = "adam",
+#' hidden.layer = c(2,2),  hidden_activation = "relu",
+#' output_activation = "sigmoid", output_units = 1,
+#' loss = "binary_crossentropy",  metrics = "accuracy",
+#' epoch = 10,  verbose = 1,   batch_size = 32, 
+#' validation_split = NULL,  patience = NULL,
+#' dropout_rate = NULL, conformal= FALSE,  seed=1234)
+#' }
+#' #' \dontrun{
+#' #check for python and required modules
+#' python_ready()
+#' data("exp_data")
+#' 
+#' t_deeplearning <- metalearner_deeplearning(data = exp_data,
+#' cov.formula  = support_war ~ age + female + income + education
+#' + employed + married + hindu + job_loss, 
+#' treat.var = "strong_leader",  meta.learner.type = "T.Learner",
+#' nfolds = 5,  algorithm = "adam",
+#' hidden.layer = c(2,2),  hidden_activation = "relu",
+#' output_activation = "sigmoid", output_units = 1,
+#' loss = "binary_crossentropy",  metrics = "accuracy",
+#' epoch = 10,  verbose = 1,   batch_size = 32, 
+#' validation_split = NULL,  patience = NULL,
+#' dropout_rate = NULL, conformal= TRUE, 
+#' alpha = 0.1,calib_frac = 0.5, prob_bound = TRUE, seed = 1234)
+#' }
+#' 
+metalearner_deeplearning <- function(data = NULL,
+                                     train.data = NULL,
+                                     test.data = NULL,
                                      cov.formula,
                                      treat.var,
                                      meta.learner.type,
@@ -89,10 +125,9 @@ metalearner_deeplearning <- function(data=NULL,
                                      validation_split = NULL,
                                      patience = NULL,
                                      dropout_rate = NULL,
-                                     # conformal options
-                                     conformal=FALSE,
-                                     alpha=0.1,
-                                     calib_frac=0.5,
+                                     conformal = FALSE,
+                                     alpha = 0.1,
+                                     calib_frac = 0.5,
                                      prob_bound = TRUE,
                                      seed=1234){
   
