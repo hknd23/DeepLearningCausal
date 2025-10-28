@@ -2,23 +2,60 @@
 #'#' @description
 #' \code{metalearner_deeplearning} implements the meta learners for estimating
 #' CATEs using Deep Neural Networks through Tensorflow.
-#' Deep Learning Estimation of CATEs from four meta-learner models (S,T,X and R-learner) using TensorFlow and Keras3
-#' @param data data.frame object of data. If a single dataset is specified, then the model will use cross-validation to train the meta-learners and estimate CATEs. Users can also specify the arguments (defined below) to separately train meta-learners on their training data and estimate CATEs with their test data.
-#' @param train.data data.frame object of training data for Train/Test mode. Argument must be specified to separately train the meta-learners on the training data.
-#' @param test.data data.frame object of test data for Train/Test mode. Argument must be specified to estimate CATEs on the test data.
-#' @param cov.formula formula description of the model y ~ x(list of covariates). Permits users to specify covariates in the meta-learner model of interest. This includes the outcome variables and the confounders.
-#' @param treat.var string for name of Treatment variable. Users can specify the treatment variable in their data by employing the treat.var argument.
-#' @param meta.learner.type string of "S.Learner", "T.Learner", "X.Learner", or "R.Learner". Employed to specify any of the following four meta-learner models for estimation via deep learning: S,T,X or R-Learner.
-#' @param nfolds integer for number of folds for Meta Learners. When a single dataset is specified, then users employ cross-validation to train the meta-learners and estimate CATEs. For a single dataset, users specify nfolds to define the number of folds to split data for cross-validation.
-#' @param algorithm string for optimization algorithm. For optimizers available see `keras` package. Arguments to reconfigure and train the deep neural networks for meta-learner estimation include the optimization algorithm. Options for the optimization alogrithm include "adam", “adagrad”, “rmsprop”, “sgd”. 
-#' @param hidden.layer permits users to specify the number of hidden layers in the model and the number of neurons in each hidden layer.
-#' @param hidden_activation string or vector for name of activation function for hidden layers of  model. Defaults to "relu" which means that users can specify a single value to use one activation function for each hidden layer. While "relu" is a popular choice for hidden layers, users can also use "softmax" which converts a vector of values into a probability distribution and "tanh" that maps input to a value between -1 and 1.
-#' @param output_activation string for name of activation function for output layer of  model. "linear" is recommended for continuous outcome variables, and "sigmoid" for binary outcome variables. For activation functions available see `keras` package. 'For instance, Keras provides various activation functions that can be used in neural network layers to introduce non-linearity
-#' @param output_units integer for units in output layer. Defaults to 1 for continuous and binary outcome variables. In case of multinomial outcome variable, set to the number of categories.
-#' @param verbose integer specifying the verbosity level during training. 1 for full information and learning curve plots. 0 to suppress messages and plots.
-#' @param batch_size integer for batch size to split training data. 'Overall, batch size  refers to the number of training samples processed before the model's parameters are updated. Batch size is a vital hyperparameter that affects both training speed and model performance. It is crucial for computational efficiency.
-#' @param loss string for loss function "mean_squared_error" recommended for linear models, "binary_crossentropy" for binary models.
-#' @param metrics string for metrics in response model. "mean_squared_error" recommended for linear models, "binary_accuracy" for binary models.
+#' Deep Learning Estimation of CATEs from four meta-learner models (S,T,X and R-learner)
+#'  using TensorFlow and Keras3
+#' @param data data.frame object of data. If a single dataset is specified, 
+#' then the model will use cross-validation to train the meta-learners and estimate CATEs. 
+#' Users can also specify the arguments (defined below) to separately train meta-learners 
+#' on their training data and estimate CATEs with their test data.
+#' @param train.data data.frame object of training data for Train/Test mode. 
+#' Argument must be specified to separately train the meta-learners on the training data.
+#' @param test.data data.frame object of test data for Train/Test mode. 
+#' Argument must be specified to estimate CATEs on the test data.
+#' @param cov.formula formula description of the model y ~ x(list of covariates). 
+#' Permits users to specify covariates in the meta-learner model of interest. 
+#' This includes the outcome variables and the confounders.
+#' @param treat.var string for name of Treatment variable. 
+#' Users can specify the treatment variable in their data by employing the treat.var argument.
+#' @param meta.learner.type string of "S.Learner", "T.Learner", "X.Learner", or "R.Learner". 
+#' Employed to specify any of the following four meta-learner models for
+#' estimation via deep learning: S,T,X or R-Learner.
+#' @param nfolds integer for number of folds for Meta Learners. 
+#' When a single dataset is specified, then users employ cross-validation to 
+#' train the meta-learners and estimate CATEs. 
+#' For a single dataset, users specify nfolds to define the number of folds to 
+#' split data for cross-validation.
+#' @param algorithm string for optimization algorithm. 
+#' For optimizers available see `keras` package. 
+#' Arguments to reconfigure and train the deep neural networks for meta-learner 
+#' estimation include the optimization algorithm. Options for the optimization 
+#' alogrithm include "adam", “adagrad”, “rmsprop”, “sgd”. 
+#' @param hidden.layer permits users to specify the number of hidden layers in the model 
+#' and the number of neurons in each hidden layer.
+#' @param hidden_activation string or vector for name of activation function for
+#' hidden layers of  model. Defaults to "relu" which means that users can specify 
+#' a single value to use one activation function for each hidden layer.
+#'  While "relu" is a popular choice for hidden layers, users can also use "softmax" 
+#'  which converts a vector of values into a probability distribution and 
+#'  "tanh" that maps input to a value between -1 and 1.
+#' @param output_activation string for name of activation function for output layer of  model. 
+#' "linear" is recommended for continuous outcome variables, and "sigmoid" for binary outcome variables.
+#'  For activation functions available see `keras` package. 
+#'  'For instance, Keras provides various activation functions 
+#'  that can be used in neural network layers to introduce non-linearity
+#' @param output_units integer for units in output layer. 
+#' Defaults to 1 for continuous and binary outcome variables. 
+#' In case of multinomial outcome variable, set to the number of categories.
+#' @param verbose integer specifying the verbosity level during training. 
+#' 1 for full information and learning curve plots. 0 to suppress messages and plots.
+#' @param batch_size integer for batch size to split training data. 
+#' 'Overall, batch size  refers to the number of training samples processed 
+#' before the model's parameters are updated. Batch size is a vital hyperparameter 
+#' that affects both training speed and model performance. It is crucial for computational efficiency.
+#' @param loss string for loss function "mean_squared_error" recommended for linear models,
+#' "binary_crossentropy" for binary models.
+#' @param metrics string for metrics in response model. 
+#' "mean_squared_error" recommended for linear models, "binary_accuracy" for binary models.
 #' @param epoch interger for number of epochs.
 #' @param validation_split double for proportion of training data to split for validation.
 #' @param patience integer for number of epochs with no improvement to wait before stopping training.
