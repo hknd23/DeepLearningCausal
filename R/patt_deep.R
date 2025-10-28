@@ -4,8 +4,7 @@
 #' Train model using group exposed to treatment with compliance as binary
 #' outcome variable and covariates.
 #' 
-#' @param complier.formula formula to fit compliance model (c ~ x) using
-#' complier variable and covariates
+#' @param complier.formula formula to fit compliance model (c ~ x) using complier variable and covariates
 #' @param treat.var string specifying the binary treatment variable
 #' @param exp.data list object of experimental data.
 #' @param algorithm string for name of optimizer algorithm
