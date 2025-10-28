@@ -12,10 +12,13 @@
 #' @param cov.formula formula description of the model y ~ x(list of covariates).
 #'Permits users to specify covariates in the meta-learner model of interest. This includes the outcome variables and the confounders.
 #' @param treat.var string for name of Treatment variable
-#'Users can specify the treatment variable in their data from employing the treat.var argument.
+#'Users can specify the treatment variable in their data by employing the treat.var argument.
 #' @param meta.learner.type string of "S.Learner", "T.Learner", "X.Learner", or "R.Learner"
+#'Employed to specify any of the following four meta-learner models for estimation via deep learning: S,T,X or R-Learner.
 #' @param nfolds integer for number of folds for Meta Learners
+#'When a single dataset is specified, then users employ cross-validation to train the meta-learners and estimate CATEs. For a single dataset, users specify nfolds to define the number of folds to split data for cross-validation.
 #' @param algorithm string for optimization algorithm. For optimizers available see `keras` package.
+#'Arguments to reconfigure and train the deep neural networks for meta-learner estimation include the optimization algorithm. Options for the optimization alogrithm include "adam", “adagrad”, “rmsprop”, “sgd”. 
 #' @param hidden.layer vector specifying the hidden layers in the model and the number of neurons in each hidden layer.
 #' @param hidden_activation string or vector for name of activation function for hidden layers of  model. Defaults to "relu".
 #' @param output_activation string for name of activation function for output layer of  model.
