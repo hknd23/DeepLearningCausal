@@ -16,7 +16,8 @@
 #' \code{"R.Learner"} for the X-learner model.
 #' @param SL.learners vector for super learner ensemble that includes extreme gradient
 #' boosting, glmnet, random forest, and neural nets.
-#' @param nfolds number of folds for cross-validation. Currently supports up to 10 folds.
+#' @param nfolds number of folds for cross-validation. Currently supports up to 
+#' 5 folds.
 #' @param train.data \code{data.frame} object of training data
 #' argument to separately train the meta-learners on training data.
 #' @param test.data \code{data.frame} object of test data
