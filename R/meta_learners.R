@@ -842,7 +842,7 @@ metalearner_ensemble <- function(data = NULL,
                           "ml_model" = list("first_stage_m" = m_mods,
                                             "first_stage_p" = p_mods,
                                             "second_stage_tau0" = tau_mods_0,
-                                            "second_stage_tau1" = tau_mods_1),,
+                                            "second_stage_tau1" = tau_mods_1),
                           "Prop_score" = pseudo_all[, 2],
                           "SL_learners" = SL.learners,
                           "data" = data)

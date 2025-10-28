@@ -4,8 +4,7 @@
 #' Train model using group exposed to treatment with compliance as binary
 #' outcome variable and covariates.
 #' 
-#' @param complier.formula formula to fit compliance model (c ~ x) using
-#' complier variable and covariates
+#' @param complier.formula formula to fit compliance model (c ~ x) using complier variable and covariates
 #' @param treat.var string specifying the binary treatment variable
 #' @param exp.data list object of experimental data.
 #' @param algorithm string for name of optimizer algorithm
@@ -272,7 +271,7 @@ pattc_deeplearning_counterfactuals<- function (pop.data,
 
 #' @title Deep PATT-C
 #' @description This function implements the Deep PATT-C method for estimating the Population Average Treatment
-#' Effect on the Treated Compliers (PATT-C) using deep learning models.
+#' Effect on the Treated Compliers (PATT-C) using deep learning models using keras and Tensorflow.
 #' It consists of training a deep learning model to predict compliance among treated individuals,
 #' predicting compliance in the experimental data, training a response model among predicted compliers,
 #' and estimating counterfactual outcomes in the population data.
