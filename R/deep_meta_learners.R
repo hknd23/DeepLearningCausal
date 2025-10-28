@@ -2,7 +2,7 @@
 #'#' @description
 #' \code{metalearner_deeplearning} implements the meta learners for estimating
 #' CATEs using Deep Neural Networks through Tensorflow.
-#' Deep Learning Estimation of CATEs from S,T,X and R-learner meta-learner models using TensorFlow and Keras3
+#' Deep Learning Estimation of CATEs from four meta-learner models (S,T,X and R-learner) using TensorFlow and Keras3
 #' @param data data.frame object of data.
 #' @param train.data data.frame object of training data for Train/Test mode.
 #' @param test.data data.frame object of test data for Train/Test mode.
