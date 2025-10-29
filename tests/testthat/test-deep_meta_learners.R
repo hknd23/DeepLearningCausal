@@ -125,5 +125,21 @@ test_that("neuralnet-xl", {
                                     binary.preds = FALSE)
   expect_s3_class(xlearner_nn, "metalearner_neural")
 })
-                             
-                                        
+
+test_that("neuralnet-rl", {
+  set.seed(1234)
+  xlearner_nn <- metalearner_neural(cov.formula = support_war ~ age + female
+                                    + income + education +  employed + married +
+                                      hindu + job_loss,
+                                    data = exp_data, 
+                                    treat.var = "strong_leader",
+                                    meta.learner.type = "R.Learner", 
+                                    stepmax = 1e+9,
+                                    algorithm = "rprop+", 
+                                    hidden.layer = c(2,2),
+                                    act.fct = "logistic",
+                                    err.fct = "sse",
+                                    linear.output = FALSE, 
+                                    binary.preds = FALSE)
+  expect_s3_class(xlearner_nn, "metalearner_neural")
+})
