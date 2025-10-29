@@ -456,7 +456,7 @@ metalearner_neural <- function(data,
                       ifelse(p_hat > .975, .975, p_hat))
       
 
-      m_mod <- neuralnet::neuralnet(cov.formula, data = df_aux, 
+      m_mod <- neuralnet::neuralnet(s.formula, data = df_aux, 
                                     hidden = hidden.layer,
                                     algorithm = algorithm, 
                                     linear.output = linear.output, 
