@@ -110,7 +110,9 @@ test_that("neuralnet-pattc", {
 
 test_that("neuralnet-xl", {
   set.seed(1234)
-  xlearner_nn <- metalearner_neural(cov.formula = response_formula, 
+  xlearner_nn <- metalearner_neural(cov.formula = support_war ~ age + female
+                                    + income + education +  employed + married +
+                                      hindu + job_loss,
                                     data = exp_data, 
                                     treat.var = "strong_leader",
                                     meta.learner.type = "X.Learner", 
