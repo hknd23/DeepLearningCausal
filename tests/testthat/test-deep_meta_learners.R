@@ -1,4 +1,11 @@
-skip_on_cran()
+testthat::skip_on_cran()
+testthat::skip_if_not_installed("reticulate")
+testthat::skip_if_not_installed("keras3")
+testthat::skip_if_not_installed("tensorflow")
+testthat::skip_if_not(reticulate::py_available(), "Python not available")
+testthat::skip_if_not(reticulate::py_module_available("tensorflow"), "Python tensorflow not available")
+testthat::skip_if_not(reticulate::py_module_available("keras"), "Python keras not available")
+
 test_that("keras_pattc", {
   #python_ready()
   message(paste0("Python tensorflow: ", reticulate::py_module_available('tensorflow')))
@@ -51,8 +58,6 @@ test_that("keras_pattc", {
                           batch_size = 32,
                           nboot = 1000)
   expect_s3_class(deeppattc, "pattc_deeplearning")
-  #print(nrow(deeppattc$population_counterfactuals))
-  #expect_equal(nrow(deeppattc$population_counterfactuals), nrow(pop_data_full))
   expect_equal(nrow(deeppattc$complier_prediction), nrow(exp_data_full))
   
 })
