@@ -1,10 +1,4 @@
 testthat::skip_on_cran()
-testthat::skip_if_not_installed("reticulate")
-testthat::skip_if_not_installed("keras3")
-testthat::skip_if_not_installed("tensorflow")
-testthat::skip_if_not(reticulate::py_available(), "Python not available")
-testthat::skip_if_not(reticulate::py_module_available("tensorflow"), "Python tensorflow not available")
-testthat::skip_if_not(reticulate::py_module_available("keras"), "Python keras not available")
 
 test_that("keras_pattc", {
   #python_ready()

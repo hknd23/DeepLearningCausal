@@ -2,12 +2,7 @@
 % Please edit documentation in R/deep_meta_learners.R
 \name{metalearner_deeplearning}
 \alias{metalearner_deeplearning}
-\title{metalearner_deeplearning
-#' @description
-\code{metalearner_deeplearning} implements the meta learners for estimating
-CATEs using Deep Neural Networks through Tensorflow.
-Deep Learning Estimation of CATEs from four meta-learner models (S,T,X and R-learner)
-using TensorFlow and Keras3}
+\title{metalearner_deeplearning}
 \usage{
 metalearner_deeplearning(
   data = NULL,
@@ -98,25 +93,32 @@ In case of multinomial outcome variable, set to the number of categories.}
 \item{metrics}{string for metrics in response model.
 "mean_squared_error" recommended for linear models, "binary_accuracy" for binary models.}
 
-\item{epoch}{interger for number of epochs.}
+\item{epoch}{interger for number of epochs.
+epoch denotes one complete pass through the entire training dataset.
+Model processes each training example once during an epoch.}
 
 \item{verbose}{integer specifying the verbosity level during training.
 1 for full information and learning curve plots. 0 to suppress messages and plots.}
 
 \item{batch_size}{integer for batch size to split training data.
-'Overall, batch size  refers to the number of training samples processed
+batch size  refers to the number of training samples processed
 before the model's parameters are updated. Batch size is a vital hyperparameter
 that affects both training speed and model performance. It is crucial for computational efficiency.}
 
-\item{validation_split}{double for proportion of training data to split for validation.}
+\item{validation_split}{double for proportion of training data to split for validation.
+validation split involves partitioning data into training and validation sets to build and tune model.}
 
-\item{patience}{integer for number of epochs with no improvement to wait before stopping training.}
+\item{patience}{integer for number of epochs with no improvement to wait before stopping training.
+patience stops training of neural network if model's performance on validation data stops improving.}
 
-\item{dropout_rate}{double or vector for proportion of hidden layer to drop out.}
+\item{dropout_rate}{double or vector for proportion of hidden layer to drop out.
+dropout rate is hyperparameter for preventing a model from overfitting the training data.}
 
-\item{conformal}{logical for whether to compute conformal prediction intervals}
+\item{conformal}{logical for whether to compute conformal prediction intervals
+conformal prediction intervals provide measure of uncertainty for ITEs.}
 
-\item{alpha}{proportion for conformal prediction intervals}
+\item{alpha}{proportion for conformal prediction intervals
+alpha proportion refers to significance level that guarantees desired coverage probability for ITEs}
 
 \item{calib_frac}{fraction of training data to use for calibration in conformal inference}
 
@@ -128,8 +130,6 @@ that affects both training speed and model performance. It is crucial for comput
 \code{metalearner_deeplearning} object with CATEs
 }
 \description{
-metalearner_deeplearning
-#' @description
 \code{metalearner_deeplearning} implements the meta learners for estimating
 CATEs using Deep Neural Networks through Tensorflow.
 Deep Learning Estimation of CATEs from four meta-learner models (S,T,X and R-learner)

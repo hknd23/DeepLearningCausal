@@ -27,7 +27,8 @@ deep_complier_mod(
 
 \item{treat.var}{string specifying the binary treatment variable}
 
-\item{algorithm}{string for name of optimizer algorithm}
+\item{algorithm}{string for name of optimizer algorithm. Set to adam.
+other optimization algorithms available are sgd, rprop, adagrad.}
 
 \item{hidden.layer}{vector specifying the hidden layers and the number of neurons in each layer.}
 

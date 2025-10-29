@@ -1,5 +1,5 @@
 #' metalearner_deeplearning
-#'#' @description
+#' @description
 #' \code{metalearner_deeplearning} implements the meta learners for estimating
 #' CATEs using Deep Neural Networks through Tensorflow.
 #' Deep Learning Estimation of CATEs from four meta-learner models (S,T,X and R-learner)
@@ -35,13 +35,13 @@
 #' @param hidden_activation string or vector for name of activation function for
 #' hidden layers of  model. Defaults to "relu" which means that users can specify 
 #' a single value to use one activation function for each hidden layer.
-#'  While "relu" is a popular choice for hidden layers, users can also use "softmax" 
-#'  which converts a vector of values into a probability distribution and 
-#'  "tanh" that maps input to a value between -1 and 1.
+#' While "relu" is a popular choice for hidden layers, users can also use "softmax" 
+#' which converts a vector of values into a probability distribution and 
+#' "tanh" that maps input to a value between -1 and 1.
 #' @param output_activation string for name of activation function for output layer of  model. 
 #' "linear" is recommended for continuous outcome variables, and "sigmoid" for binary outcome variables.
-#'  For activation functions available see `keras` package. 
-#'  'For instance, Keras provides various activation functions 
+#' For activation functions available see `keras` package. 
+#' 'For instance, Keras provides various activation functions 
 #'  that can be used in neural network layers to introduce non-linearity
 #' @param output_units integer for units in output layer. 
 #' Defaults to 1 for continuous and binary outcome variables. 
@@ -62,7 +62,7 @@
 #' @param validation_split double for proportion of training data to split for validation.
 #' validation split involves partitioning data into training and validation sets to build and tune model.
 #' @param patience integer for number of epochs with no improvement to wait before stopping training.
-#'patience stops training of neural network if model's performance on validation data stops improving.
+#' patience stops training of neural network if model's performance on validation data stops improving.
 #' @param dropout_rate double or vector for proportion of hidden layer to drop out. 
 #' dropout rate is hyperparameter for preventing a model from overfitting the training data.
 #' @param conformal logical for whether to compute conformal prediction intervals

@@ -24,22 +24,27 @@ metalearner_ensemble(
 \arguments{
 \item{data}{\code{data.frame} object of data for cross-validation}
 
-\item{train.data}{\code{data.frame} object of training data}
+\item{train.data}{\code{data.frame} object of training data
+argument to separately train the meta-learners on training data.}
 
-\item{test.data}{\code{data.frame} object of test data}
+\item{test.data}{\code{data.frame} object of test data
+argument to estimate CATEs on the test data.}
 
-\item{cov.formula}{formula description of the model y ~ x(list of covariates)}
+\item{cov.formula}{formula description of the model y ~ x(list of covariates)
+permits users to incorporate outcome variable and confounders in model.}
 
 \item{treat.var}{string for the name of treatment variable.}
 
 \item{meta.learner.type}{string specifying is the S-learner and
 \code{"T.Learner"} for the T-learner model.
-\code{"X.Learner"} for the X-learner model.}
+\code{"X.Learner"} for the X-learner model.
+\code{"R.Learner"} for the X-learner model.}
 
 \item{SL.learners}{vector for super learner ensemble that includes extreme gradient
 boosting, glmnet, random forest, and neural nets.}
 
-\item{nfolds}{number of folds for cross-validation. Currently supports up to}
+\item{nfolds}{number of folds for cross-validation. Currently supports up to
+5 folds.}
 
 \item{family}{gaussian() or binomial() family for outcome variable.
 5 folds.}
@@ -60,7 +65,7 @@ estimated by the meta learners for each observation.
 }
 \description{
 \code{metalearner_ensemble} implements the S-learner, T-learner, and X-learner for
-estimating CATE using the super learner ensemble method. The super learner in
+weighted ensemble learning estimatio of CATEs using super learner. The super learner in
 this case includes the following machine learning algorithms:
 extreme gradient boosting, glmnet (elastic net regression), random forest and
 neural nets.

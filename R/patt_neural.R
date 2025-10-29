@@ -247,24 +247,6 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #' data(pop_data) #population data
 #' # specify models and estimate PATTC
 #' set.seed(123456)
-#' pattc_neural <- pattc_neural(response.formula = support_war ~ age + female +
-#'                                income + education +  employed + married +
-#'                                hindu + job_loss,
-#'                                exp.data = exp_data,
-#'                                pop.data = pop_data,
-#'                                treat.var = "strong_leader",
-#'                                compl.var = "compliance",
-#'                                compl.algorithm = "rprop+",
-#'                                response.algorithm = "rprop+",
-#'                                compl.hidden.layer = c(4,2),
-#'                                response.hidden.layer = c(4,2),
-#'                                compl.stepmax = 1e+09,
-#'                                response.stepmax = 1e+09,
-#'                                ID = NULL,
-#'                                cluster = NULL,
-#'                                binary.preds = FALSE)
-#'
-#' print(pattc_neural)
 #'
 #' pattc_neural_boot <- pattc_neural(response.formula = support_war ~ age + female +
 #'                                income + education +  employed + married +

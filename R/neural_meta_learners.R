@@ -48,7 +48,8 @@
 #'                                    binary.preds = FALSE)
 #'
 #' print(slearner_nn)
-#'
+#' }
+#' \donttest{
 #' # load dataset
 #' set.seed(123456)
 #' # estimate CATEs with T Learner
@@ -66,7 +67,9 @@
 #'                                   binary.preds = FALSE)
 #'
 #' print(tlearner_nn)
-#'
+#' }
+#' 
+#' \donttest{
 #' # load dataset
 #' set.seed(123456)
 #' # estimate CATEs with X Learner

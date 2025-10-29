@@ -2,7 +2,7 @@
 % Please edit documentation in R/patt_ensemble.R
 \name{pattc_ensemble}
 \alias{pattc_ensemble}
-\title{PATT_C SL Ensemble}
+\title{PATT-C SL Ensemble}
 \usage{
 pattc_ensemble(
   response.formula,
@@ -73,20 +73,6 @@ data(pop_data) #population data
 library(SuperLearner)
 set.seed(123456)
 #specify models and estimate PATTC
-pattc <- pattc_ensemble(response.formula = support_war ~ age + income +
-                                education + employed + job_loss,
-                                exp.data = exp_data_full,
-                                pop.data = pop_data,
-                                treat.var = "strong_leader",
-                                compl.var = "compliance",
-                                compl.SL.learners = c("SL.glm", "SL.nnet"),
-                                response.SL.learners = c("SL.glm", "SL.nnet"),
-                                response.family = binomial(),
-                                ID = NULL,
-                                cluster = NULL,
-                                binary.preds = FALSE)
-
-print(pattc)
 
 pattc_boot <- pattc_ensemble(response.formula = support_war ~ age + income +
                                 education + employed + job_loss,

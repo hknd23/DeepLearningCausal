@@ -27,7 +27,9 @@ metalearner_neural(
 \item{treat.var}{string for the name of treatment variable.}
 
 \item{meta.learner.type}{string specifying is the S-learner and
-\code{"T.Learner"} for the T-learner model.}
+\code{"T.Learner"} for the T-learner model.
+\code{"X.Learner"} for the X-learner model.
+\code{"R.Learner"} for the R-learner model.}
 
 \item{stepmax}{maximum number of steps for training model.}
 
@@ -78,7 +80,8 @@ slearner_nn <- metalearner_neural(cov.formula = support_war ~ age + income +
                                    binary.preds = FALSE)
 
 print(slearner_nn)
-
+}
+\donttest{
 # load dataset
 set.seed(123456)
 # estimate CATEs with T Learner
@@ -96,7 +99,9 @@ tlearner_nn <- metalearner_neural(cov.formula = support_war ~ age +
                                   binary.preds = FALSE)
 
 print(tlearner_nn)
+}
 
+\donttest{
 # load dataset
 set.seed(123456)
 # estimate CATEs with X Learner

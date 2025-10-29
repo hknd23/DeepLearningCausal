@@ -231,20 +231,6 @@ pattc_counterfactuals<- function (pop.data,
 #' library(SuperLearner)
 #' set.seed(123456)
 #' #specify models and estimate PATTC
-#' pattc <- pattc_ensemble(response.formula = support_war ~ age + income +
-#'                                 education + employed + job_loss,
-#'                                 exp.data = exp_data_full,
-#'                                 pop.data = pop_data,
-#'                                 treat.var = "strong_leader",
-#'                                 compl.var = "compliance",
-#'                                 compl.SL.learners = c("SL.glm", "SL.nnet"),
-#'                                 response.SL.learners = c("SL.glm", "SL.nnet"),
-#'                                 response.family = binomial(),
-#'                                 ID = NULL,
-#'                                 cluster = NULL,
-#'                                 binary.preds = FALSE)
-#'
-#' print(pattc)
 #'
 #' pattc_boot <- pattc_ensemble(response.formula = support_war ~ age + income +
 #'                                 education + employed + job_loss,
