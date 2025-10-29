@@ -22,7 +22,7 @@ Description: Functions for deep learning estimation of Conditional Average Treat
 from meta-learner models and Population Average Treatment Effects on the Treated (PATT) in settings with 
 treatment noncompliance using reticulate, TensorFlow and Keras3. Functions in the package also implements
 the conformal prediction framework that enables computation and illustration of conformal prediction (CP) 
-intervals for estimated individual treatment effects (ITEs) from two meta-learner models. Additional
+intervals for estimated individual treatment effects (ITEs) from meta-learner models. Additional
 functions in the package permit users to estimate the meta-learner CATEs and the PATT in settings with
 treatment noncompliance using weighted ensemble learning via the super learner approach and R neural networks.
 License: GPL-3
