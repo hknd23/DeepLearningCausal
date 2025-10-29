@@ -12,12 +12,14 @@
 [![](http://cranlogs.r-pkg.org/badges/grand-total/DeepLearningCausal)](https://cran.r-project.org/package=DeepLearningCausal)
 <!-- badges: end -->
 
-Our **DeepLearningCausal** R package provides functions that enables users to employ deep neural networks to estimate Conditional Average Treatment Effects (CATEs) from four meta-learner models and the Population Average Treatment Effects on the Treated (PATT) in settings with treatment noncompliance. The four meta-learner models analyzed in our package are the T-learner, S-learner, X-learner and R-learner models (Künzel et al., 2019; Nie and Wager, 2021). Estimation of the PATT from experimental and observational data with treatment noncompliance is based on the PATT-C model developed by Ottoboni and Poulous (2020).  
+Our **DeepLearningCausal** R package provides functions for deep learning estimation of Conditional Average Treatment Effects (CATEs) 
+from meta-learner models and Population Average Treatment Effects on the Treated (PATT) in settings with treatment noncompliance using *reticulate*, *TensorFlow* 
+and *Keras3* packages. The meta-learner models analyzed in our package are the T, S, X and R-learner models (Künzel et al., 2019; Nie and Wager, 2021). 
+Estimation of the PATT from experimental and observational datasets with treatment noncompliance is based on the PATT-C model developed by Ottoboni and Poulous (2020).  
 
-The functions in the **DeepLearningCausal** package enables users to employ deep neural networks (i.e. deep learning) for estimating CATEs and the PATT using the *reticulate*, *TensorFlow*, and *Keras3* packages, which gives them access to Python’s deep learning libraries in their R session. If users prefer to employ deep learning estimation without enabling Python, our package also provides functions that allows them to implement deep neural network estimation of CATEs and PATT by using the R neural net package. The package also includes functions that allows users to estimate CATEs from the four meta-learner models and the PATT by using weighted ensemble learning via the SuperLearner package developed by Polley et al. (2024). 
-
-Furthermore, the DeepLearningCausal package includes functions to extract and illustrate heterogeneous treatment effects from the estimated meta-learner models and the PATT from settings with treatment noncompliance. The package includes features that enables users to visualize and assess conformal inference for treatment effects obtain from the meta-learner models---this entails combining the meta-learner models, which estimates individual treatment effects (ITEs), with conformal prediction to create statistically valid and reliable prediction intervals. Finally, the package allows users to extract trace plots and accuracy plots to assess the performance of their deep neural network architecture employed for estimation, plot the distribution and pairwise correlations of estimated individual treatment effects from the meta-learner models, and display the distribution of the PATT estimate obtained from data with treatment compliance. 
-
+Functions in the **DeepLearningCausal** package also enable users to implement the conformal prediction framework to compute and illustrate conformal prediction (CP) 
+intervals for estimated individual treatment effects (ITEs) from the meta-learner models. Additional functions in the package permit users to estimate the meta-learner CATEs and the PATT in settings with
+treatment noncompliance using weighted ensemble learning via the super learner approach (Polley et al., 2024) and R neural networks via the resilient backpropagation. 
 
 ### Why DeepLearningCausal?
 
