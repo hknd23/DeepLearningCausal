@@ -19,7 +19,7 @@ Authors@R: c(
            role = c("aut"),
            comment = c(ORCID = "0009-0004-6135-4555")))
 Maintainer: Nguyen K. Huynh <khoinguyen.huynh@r.hit-u.ac.jp>
-    Description: Functions for deep learning estimation of Conditional Average Treatment Effects (CATEs) 
+Description: Functions for deep learning estimation of Conditional Average Treatment Effects (CATEs) 
     from meta-learner models and Population Average Treatment Effects on the Treated (PATT) in settings with 
     treatment noncompliance using reticulate, TensorFlow and Keras3. Functions in the package also implements
     the conformal prediction framework that enables computation and illustration of conformal prediction (CP) 
