@@ -87,7 +87,6 @@ of the Treated from experimental data with noncompliers using Deep Neural
 Networks.
 }
 \examples{
-\donttest{
 # load datasets
 data(exp_data) #experimental data
 data(pop_data) #population data
@@ -103,18 +102,14 @@ pattc_neural_boot <- pattc_neural(response.formula = support_war ~ age + female 
                                compl.var = "compliance",
                                compl.algorithm = "rprop+",
                                response.algorithm = "rprop+",
-                               compl.hidden.layer = c(4,2),
-                               response.hidden.layer = c(4,2),
+                               compl.hidden.layer = c(2),
+                               response.hidden.layer = c(2),
                                compl.stepmax = 1e+09,
                                response.stepmax = 1e+09,
                                ID = NULL,
                                cluster = NULL,
                                binary.preds = FALSE,
                                bootstrap = TRUE,
-                               nboot = 2000)
-
-print(pattc_neural_boot)
-
-}
+                               nboot = 1000)
 
 }
