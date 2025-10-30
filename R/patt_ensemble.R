@@ -8,7 +8,7 @@
 #' @param complier.formula formula to fit compliance model (c ~ x) using
 #' complier variable and covariates
 #' @param treat.var string specifying the binary treatment variable
-#' @param ID string for name of indentifier variable.
+#' @param ID string for name of identifier variable.
 #' @param SL.learners vector of strings for ML classifier algorithms. Defaults to
 #' extreme gradient boosting, elastic net regression, random forest, and neural nets.
 #'

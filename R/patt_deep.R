@@ -10,7 +10,7 @@
 #' @param algorithm string for name of optimizer algorithm. Set to adam.
 #' other optimization algorithms available are sgd, rprop, adagrad.
 #' @param hidden.layer vector specifying the hidden layers and the number of neurons in each layer.
-#' @param ID string for name of indentifier variable.
+#' @param ID string for name of identifier variable.
 #' @param epoch integer for number of epochs
 #' @param verbose 1 to display model training information and learning curve plot. 0 to suppress messages and plots.
 #' @param batch_size integer for batch size to split the training set. Defaults to 32.

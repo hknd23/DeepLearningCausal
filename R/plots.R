@@ -187,7 +187,7 @@ hte_plot <- function(x, ...,
 #' plot.metalearner_neural
 #'
 #' @description
-#' Uses \code{plot()} to generate histogram of ditribution of CATEs or predicted
+#' Uses \code{plot()} to generate histogram of distribution of CATEs or predicted
 #' outcomes from  \code{metalearner_neural}
 #'
 #' @param x \code{metalearner_neural} model object.
@@ -280,7 +280,7 @@ plot.metalearner_neural <- function(x, ...,
 #' plot.metalearner_ensemble
 #'
 #' @description
-#' Uses \code{plot()} to generate histogram of ditribution of CATEs or predicted
+#' Uses \code{plot()} to generate histogram of distribution of CATEs or predicted
 #' outcomes from  \code{metalearner_ensemble}
 #'
 #' @param x \code{metalearner_ensemble} model object
@@ -372,7 +372,7 @@ plot.metalearner_ensemble <- function(x, ...,
 #' plot.pattc_neural
 #'
 #' @description
-#' Uses \code{plot()} to generate histogram of ditribution of CATEs or predicted
+#' Uses \code{plot()} to generate histogram of distribution of CATEs or predicted
 #' outcomes from  \code{pattc_neural}
 #'
 #' @param x \code{pattc_neural} model object
@@ -407,7 +407,7 @@ plot.pattc_neural <- function(x, ...)
 #' plot.pattc_ensemble
 #'
 #' @description
-#' Uses \code{plot()} to generate histogram of ditribution of CATEs or predicted
+#' Uses \code{plot()} to generate histogram of distribution of CATEs or predicted
 #' outcomes from  \code{pattc_ensemble}
 #'
 #' @param x \code{pattc_ensemble} model object
@@ -442,7 +442,7 @@ plot.pattc_ensemble <- function(x, ...)
 #' plot.pattc_deeplearning
 #'
 #' @description
-#' Uses \code{plot()} to generate histogram of ditribution of predicted
+#' Uses \code{plot()} to generate histogram of distribution of predicted
 #' outcomes from  \code{pattc_deeplearning}
 #'
 #' @param x \code{pattc_deeplearning} model object
@@ -488,7 +488,7 @@ plot.pattc_deeplearning <- function(x, ...)
 #' @param x A fitted model object of class \code{metalearner_ensemble} 
 #' or \code{metalearner_deeplearning} that contains a \code{conformal_interval} element.
 #' @param ... Additional arguments (currently unused).
-#' @param seed Random seed for reproducibility of subsampling. Default is \code{1234}.
+#' @param seed Random seed for reproductibility of subsampling. Default is \code{1234}.
 #' @param prop Proportion of observations to randomly sample for plotting. 
 #' Must be between 0 and 1. Default is \code{0.3}.
 #' @param binary.outcome Logical; if \code{TRUE}, constrains the y-axis to 

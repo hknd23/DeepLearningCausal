@@ -2,7 +2,7 @@
 #'
 #' @description
 #' \code{metalearner_ensemble} implements the S-learner, T-learner, and X-learner for
-#' weighted ensemble learning estimatio of CATEs using super learner. The super learner in
+#' weighted ensemble learning estimation of CATEs using super learner. The super learner in
 #' this case includes the following machine learning algorithms:
 #' extreme gradient boosting, glmnet (elastic net regression), random forest and
 #' neural nets.

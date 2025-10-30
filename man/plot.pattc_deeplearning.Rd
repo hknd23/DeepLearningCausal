@@ -15,6 +15,6 @@
 \code{ggplot} object
 }
 \description{
-Uses \code{plot()} to generate histogram of ditribution of predicted
+Uses \code{plot()} to generate histogram of distribution of predicted
 outcomes from  \code{pattc_deeplearning}
 }

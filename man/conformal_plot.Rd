@@ -22,7 +22,7 @@ or \code{metalearner_deeplearning} that contains a \code{conformal_interval} ele
 
 \item{...}{Additional arguments (currently unused).}
 
-\item{seed}{Random seed for reproducibility of subsampling. Default is \code{1234}.}
+\item{seed}{Random seed for reproductibility of subsampling. Default is \code{1234}.}
 
 \item{prop}{Proportion of observations to randomly sample for plotting.
 Must be between 0 and 1. Default is \code{0.3}.}

@@ -21,7 +21,7 @@ variable and covariates}
 
 \item{compl.var}{string for complier variable}
 
-\item{treat.var}{string for treatmet variable}
+\item{treat.var}{string for treatment variable}
 
 \item{pop.data}{\code{data.frame} of experimental variable}
 

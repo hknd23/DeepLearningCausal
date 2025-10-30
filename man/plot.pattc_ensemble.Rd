@@ -15,6 +15,6 @@
 \code{ggplot} object
 }
 \description{
-Uses \code{plot()} to generate histogram of ditribution of CATEs or predicted
+Uses \code{plot()} to generate histogram of distribution of CATEs or predicted
 outcomes from  \code{pattc_ensemble}
 }

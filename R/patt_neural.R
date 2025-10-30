@@ -214,10 +214,10 @@ neuralnet_pattc_counterfactuals <- function (pop.data,
 #' compliance variable
 #' @param treat.var string for treatment variable.
 #' @param compl.var string for compliance variable
-#' @param compl.algorithm string for algorithim to train neural network for
+#' @param compl.algorithm string for algorithm to train neural network for
 #' compliance model. Default set to `"rprop+"`. See (`neuralnet` package for
 #' available algorithms).
-#' @param response.algorithm string for algorithim to train neural network for
+#' @param response.algorithm string for algorithm to train neural network for
 #' response model. Default set to `"rprop+"`. See (`neuralnet` package for
 #' available algorithms).
 #' @param compl.hidden.layer vector for specifying hidden layers and number of

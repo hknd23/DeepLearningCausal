@@ -73,7 +73,7 @@ expcall <- function(response.formula,
 #' @param weights observation weights
 #' @param cluster clustering variable
 #' @param ID identifier variable
-#' @param treat.var string for treatmet variable
+#' @param treat.var string for treatment variable
 #' @param patt logical for patt, subsetting population treated observations
 #' @return list of processed dataset
 #' @keywords internal

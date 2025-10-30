@@ -34,7 +34,7 @@ other optimization algorithms available are sgd, rprop, adagrad.}
 
 \item{hidden_activation}{string or vector for activation function used for hidden layers. Defaults to "relu".}
 
-\item{ID}{string for name of indentifier variable.}
+\item{ID}{string for name of identifier variable.}
 
 \item{epoch}{integer for number of epochs}
 

@@ -41,11 +41,11 @@ compliance variable}
 
 \item{compl.var}{string for compliance variable}
 
-\item{compl.algorithm}{string for algorithim to train neural network for
+\item{compl.algorithm}{string for algorithm to train neural network for
 compliance model. Default set to \code{"rprop+"}. See (\code{neuralnet} package for
 available algorithms).}
 
-\item{response.algorithm}{string for algorithim to train neural network for
+\item{response.algorithm}{string for algorithm to train neural network for
 response model. Default set to \code{"rprop+"}. See (\code{neuralnet} package for
 available algorithms).}
 
