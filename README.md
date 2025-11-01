@@ -130,7 +130,7 @@ test_data <- rsample::testing(exp_split)
 response_formula <- support_war ~ age + female + education + income + employed +
   job_loss + hindu + political_ideology
 
-slearner_deep <- metalearner_deeplearning(cov.formula = response_formula, 
+Xlearner_deep <- metalearner_deeplearning(cov.formula = response_formula, 
                                           train.data = train_data,
                                           test.data = test_data,
                                           treat.var = "strong_leader", meta.learner.type = "X.Learner",
