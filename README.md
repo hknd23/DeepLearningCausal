@@ -160,20 +160,28 @@ The function `pattc_deepelearning ()` in our package is employed for deep neural
 
 ``` r
 deeppattc <- pattc_deeplearning(response.formula = response_formula,
-                                exp.data = exp_data, pop.data = pop_data,
+                                exp.data = exp_data_full, pop.data = pop_data_full,
                                 treat.var = "strong_leader", compl.var = "compliance",
                                 compl.algorithm = "adam", response.algorithm = "adam",
-                                compl.hidden.layer = c(2,2), response.hidden.layer = c(2,2),
+                                compl.hidden.layer = c(4,2), response.hidden.layer = c(4,2),
                                 compl.hidden_activation = "relu", response.hidden_activation = "relu",
                                 response.output_activation = "sigmoid", response.output_units = 1, 
                                 response.loss = "binary_crossentropy", response.metrics = "accuracy",
-                                compl.epoch = 50, response.epoch = 100, verbose = 1, batch_size = 32, 
+                                compl.epoch = 100, response.epoch = 300, verbose = 1, batch_size = 32, 
                                 compl.validation_split = 0.2, response.validation_split = 0.2, 
                                 compl.dropout_rate = 0.1, response.dropout_rate = 0.1,
                                 compl.patience = 20, response.patience = 20,
                                 nboot = 1000, 
                                 seed = 1234)
 ```
+
+```r
+plot(deep_pattc$response_history)
+plot(deep_pattc$complier_history)
+```
+
+![](tutorial_files/tutorial_files/figure-gfm/complier_trace2025-10-26.png)<!-- -->
+![](tutorial_files/tutorial_files/figure-gfm/response_trace2025-10-26.png)<!-- -->
 
 #### Deep Neural Networks for PATT (settings with treatment noncompliance) Using R Neural Net 
 The function `PATTC_deepneural` implements deep neural network estimation of the PATT from the PATT-C model for experimental data (in settings with noncompliance) using the R neural net package. The tutorial in the example below shows the applicability of this function for a small number of observations using both the survey response dataset in Example 1 and the WVS response dataset in Example 2. 
@@ -187,9 +195,7 @@ pattc_nn <- pattc_deepneural(response.formula = response_formula,
             compl.stepmax = 1e+09, response.stepmax = 1e+09)
 ```
 
-The distribution of the deep neural network-estimated PATT obtained from the PATT-C model using R neural net can be visualized by using `plot()`:
-
-![](tutorial_files/tutorial_files/figure-gfm/pattcnnv-1.png)<!-- -->
+The distribution of the deep neural network-estimated PATT obtained from the PATT-C model using R neural net can be visualized by using `plot(pattc_nn)`.
 
 
 The tutorial for `pattc_deepneural` for the PATT-C model using R neural net is available [here](/tutorial.md#deep-neural-patt-c). 
@@ -233,12 +239,7 @@ pattc_en <- pattc_ensemble(response.formula = response_formula,
             response.SL.learners = SLlearners)
 ```
 
-Our package includes features and functions that enables users to extract and illustrate two types of figures from the PATT that is obtained from the PATT-C model via weighted ensemble learning using the Super Learner approach. The first is the distribution of the estimated PATT of the treatment indicator on the dependent variable:
-
-```r
-plot(pattc_en)
-```
-![](tutorial_files/tutorial_files/figure-gfm/pattcenv-1.png)<!-- -->
+Our package includes features and functions that enables users to extract and illustrate two types of figures from the PATT that is obtained from the PATT-C model via weighted ensemble learning using the Super Learner approach. The first is the distribution of the estimated PATT of the treatment indicator on the dependent variable using plot(pattc_en).
 
 The second is heterogeneous treatment effects that users can employ to assess and visualize whether the PATT varies significantly across different subgroups in our example datasets. The plot for the heterogeneous treatment effects obtained in this case can be obtained by using the `hte_plot` function, as shown in the accompanying paper by Huynh et al. (2025). Finally, the tutorial for the `PATTC_ensemble` for the PATT-C model in this case is [here](/tutorial.md#ensemble-patt-c).
 
