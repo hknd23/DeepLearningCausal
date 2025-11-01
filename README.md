@@ -176,8 +176,8 @@ deeppattc <- pattc_deeplearning(response.formula = response_formula,
 ```
 
 ```r
-plot(deep_pattc$response_history)
 plot(deep_pattc$complier_history)
+plot(deep_pattc$response_history)
 ```
 
 ![](tutorial_files/tutorial_files/figure-gfm/complier_trace2025-10-26.png)<!-- -->
