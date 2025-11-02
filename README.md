@@ -158,7 +158,7 @@ slearner_nn <- metalearner_neural(cov.formula = response_formula,
                meta.learner.type = "S.Learner", stepmax = 1e+9, 
                hidden.layer = c(2, 2), linear.output = FALSE)
 ```
-The tutorial for `metalearner_neural ()` for the S-learner using R neural net is [here](/tutorial.md#deep-neural-s-learner). The tutorial for `metalearner_neural ()` for the T-learner using R neural net is [here](/tutorial.md#deep-neural-t-learner). The tutorial for `metalearner_neural ()` for the X-learner using R neural net is [here](/tutorial.md#deep-neural-x-learner). The tutorial for `metalearner_neural ()` for the R-learner using R neural net is [here](/tutorial.md#deep-neural-r-learner).
+The tutorial for `metalearner_neural ()` for the S-learner using R neuralnet is [here](/tutorial.md#deep-neural-s-learner). The tutorial for `metalearner_neural ()` for the T-learner using R neuralnet is [here](/tutorial.md#deep-neural-t-learner). The tutorial for `metalearner_neural ()` for the X-learner using R neuralnet is [here](/tutorial.md#deep-neural-x-learner). The tutorial for `metalearner_neural ()` for the R-learner using R neuralnet is [here](/tutorial.md#deep-neural-r-learner).
 
 
 #### Deep Neural Networks for PATT (settings with treatment noncompliance) Using reticulate, tensorflow and keras3
@@ -190,8 +190,8 @@ plot(deep_pattc$response_history)
 ![](tutorial_files/tutorial_files/figure-gfm/complier_trace2025-10-26.png)<!-- -->
 ![](tutorial_files/tutorial_files/figure-gfm/response_trace2025-10-26.png)<!-- -->
 
-#### Deep Neural Networks for PATT (settings with treatment noncompliance) Using R Neural Net 
-The function `PATTC_neural` implements deep neural network estimation of the PATT from the PATT-C model for experimental data (in settings with noncompliance) using the R neural net package. The tutorial in the example below shows the applicability of this function for a small number of observations using both the survey response dataset in Example 1 and the WVS response dataset in Example 2. 
+#### Deep Neural Networks for PATT (settings with treatment noncompliance) Using R Neuralnet 
+The function `PATTC_neural` implements deep neural network estimation of the PATT from the PATT-C model for experimental data (in settings with noncompliance) using the R neuralnet package. The tutorial in the example below shows the applicability of this function for a small number of observations using both the survey response dataset in Example 1 and the WVS response dataset in Example 2. 
 
 ```r
 pattc_nn <- pattc_neural(response.formula = response_formula,
@@ -202,13 +202,13 @@ pattc_nn <- pattc_neural(response.formula = response_formula,
             compl.stepmax = 1e+09, response.stepmax = 1e+09)
 ```
 
-The distribution of the deep neural network-estimated PATT obtained from the PATT-C model using R neural net can be visualized by using `plot(pattc_nn)`.
+The distribution of the deep neural network-estimated PATT obtained from the PATT-C model using R neuralnet can be visualized by using `plot(pattc_nn)`.
 
 
-The tutorial for `pattc_neural` for the PATT-C model using R neural net is available [here](/tutorial.md#deep-neural-patt-c). 
+The tutorial for `pattc_neural` for the PATT-C model using R neuralnet is available [here](/tutorial.md#deep-neural-patt-c). 
 
 
-### Using the Package: Weighted Ensemble Learning Via Super Learner
+### Using the Package: Weighted Ensemble Learning Via SuperLearner
 
 
 #### Weighted Ensemble Learning for Meta-Learners
@@ -236,7 +236,7 @@ The tutorial for `metalearner_ensemble` for the S-learner is [here](/tutorial.md
 
 
 #### Weighted Ensemble Learning for Estimating PATT in datasets with Treatment Noncompliance
-The function `PATTC_ensemble` estimates the PATT-C model via weighted ensemble learning using the super Learner package. This enables users to estimate PATT from experimental and observational data with treatment noncompliance. The example below shows via a tutorial the applicability of this function for a small number of observations (N) using both the survey experiment dataset in Example 1 and the observational Word Values Survey (WVS) response dataset in Example 2.
+The function `PATTC_ensemble` estimates the PATT-C model via weighted ensemble learning using the SuperLearner package. This enables users to estimate PATT from experimental and observational data with treatment noncompliance. The example below shows via a tutorial the applicability of this function for a small number of observations (N) using both the survey experiment dataset in Example 1 and the observational Word Values Survey (WVS) response dataset in Example 2.
 
 ```r
 pattc_en <- pattc_ensemble(response.formula = response_formula,
