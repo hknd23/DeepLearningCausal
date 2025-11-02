@@ -117,9 +117,16 @@ devtools::install_github("hknd23/DeepLearningCausal")
 
 We illustrate the functionality of **DeepLearningCausal** using the two datasets summarized above. These datasets are included and briefly described in the manual for the package. 
 
+To estimate CATEs from Meta Learners and PATT-C using reticulate, TensorFlow, and Keras. Users must first initialize the Python environment and install required Python modules. To streamline the process, the package provides the function `python_ready()`:
+
+``` r
+python_ready()
+```
+
 #### Deep Neural Networks for Meta-Learners Using reticulate, tensorflow and keras3
 
 The function `metalearner_deepelearning ()` in our package is employed for deep neural network estimation of the CATEs from the four meta-learner models using reticulate, tensorflow and keras3. The code, customization of the deep neural network architecture, and results from the S-learner model using the said function is presented in the paper. The code and arguments for the X-learner model by using the `metalearner_deeplearning ()` function is presented below while the results from the X-learner model in this case is reported in the paper.
+
 
 ``` r
 set.seed(1234)
