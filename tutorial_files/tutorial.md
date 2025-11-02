@@ -17,6 +17,8 @@ install.packages("DeepLearningCausal")
 library(DeepLearningCausal)
 ```
 
+The following message can be ignored if not using `metalearner_deeplearning()` or `pattc_deeplearning()`
+
     ## Install Python from https://www.python.org/ and use `python_ready()` to enable all features.
 
 ``` r
@@ -121,17 +123,6 @@ print(slearner_en)
 plot(slearner_en)
 ```
 
-    ## Warning: The dot-dot notation (`..density..`) was deprecated in ggplot2 3.4.0.
-    ## ℹ Please use `after_stat(density)` instead.
-    ## ℹ The deprecated feature was likely used in the DeepLearningCausal package.
-    ##   Please report the issue at
-    ##   <https://github.com/hknd23/DeepLearningCausal/issues>.
-    ## This warning is displayed once every 8 hours.
-    ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-    ## generated.
-
-    ## `height` was translated to `width`.
-
 ![](tutorial_files/figure-gfm/enslearner-1.png)<!-- -->
 
 ### Ensemble T Learner
@@ -198,7 +189,7 @@ print(tlearner_en)
 plot(tlearner_en)
 ```
 
-    ## `height` was translated to `width`.
+   
 
 ![](tutorial_files/figure-gfm/entlearner-1.png)<!-- -->
 
@@ -248,7 +239,7 @@ print(xlearner_en)
 plot(xlearner_en)
 ```
 
-    ## `height` was translated to `width`.
+   
 
 ![](tutorial_files/figure-gfm/enxlearner-1.png)<!-- -->
 
@@ -298,7 +289,7 @@ print(rlearner_en)
 plot(rlearner_en)
 ```
 
-    ## `height` was translated to `width`.
+   
 
 ![](tutorial_files/figure-gfm/enrlearner-1.png)<!-- -->
 
@@ -339,7 +330,7 @@ print(slearner_nn)
 plot(slearner_nn)
 ```
 
-    ## `height` was translated to `width`.
+   
 
 ![](tutorial_files/figure-gfm/nnslearner-1.png)<!-- -->
 
@@ -379,7 +370,7 @@ print(tlearner_nn)
 plot(tlearner_nn)
 ```
 
-    ## `height` was translated to `width`.
+   
 
 ![](tutorial_files/figure-gfm/nntlearner-1.png)<!-- -->
 
@@ -419,7 +410,7 @@ print(xlearner_nn)
 plot(xlearner_nn)
 ```
 
-    ## `height` was translated to `width`.
+   
 
     ## Warning: Removed 1 row containing missing values or values outside the scale range
     ## (`geom_vline()`).
@@ -459,7 +450,7 @@ print(rlearner_nn)
 plot(rlearner_nn)
 ```
 
-    ## `height` was translated to `width`.
+   
 
 ![](tutorial_files/figure-gfm/nnrlearner-1.png)<!-- -->
 
@@ -578,7 +569,7 @@ hte_plot(slearner_en, cut_points = cuts, custom_labels = labels, boot = TRUE,
          n_boot = 1000)
 ```
 
-    ## `height` was translated to `width`.
+   
 
 ![](tutorial_files/figure-gfm/enshte-1.png)<!-- -->
 
@@ -587,7 +578,7 @@ hte_plot(rlearner_en, cut_points = cuts, custom_labels = labels, boot = TRUE,
          n_boot = 1000)
 ```
 
-    ## `height` was translated to `width`.
+   
 
 ![](tutorial_files/figure-gfm/enrhte-1.png)<!-- -->
 
@@ -596,7 +587,7 @@ hte_plot(slearner_nn, cut_points = cuts, custom_labels = labels, boot = TRUE,
          n_boot = 1000)
 ```
 
-    ## `height` was translated to `width`.
+   
 
 ![](tutorial_files/figure-gfm/nnshte-1.png)<!-- -->
 
@@ -605,7 +596,7 @@ hte_plot(rlearner_nn, cut_points = cuts, custom_labels = labels, boot = TRUE,
          n_boot = 1000)
 ```
 
-    ## `height` was translated to `width`.
+   
 
 ![](tutorial_files/figure-gfm/nnrhte-1.png)<!-- -->
 
@@ -614,7 +605,7 @@ hte_plot(pattc_en, cut_points = cuts, custom_labels = labels, boot = TRUE,
          n_boot = 1000)
 ```
 
-    ## `height` was translated to `width`.
+   
 
 ![](tutorial_files/figure-gfm/hte_patten-1.png)<!-- -->
 
@@ -623,6 +614,6 @@ hte_plot(pattc_nn, cut_points = cuts, custom_labels = labels, boot = TRUE,
          n_boot = 1000)
 ```
 
-    ## `height` was translated to `width`.
+   
 
 ![](tutorial_files/figure-gfm/hte_pattnn-1.png)<!-- -->
