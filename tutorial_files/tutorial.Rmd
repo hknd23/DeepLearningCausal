@@ -1,7 +1,7 @@
 ---
 title: "DeepLearningCausal"
 output: github_document
-date: "2025-04-26"
+date: "2025-11-02"
 ---
 
 ```{r setup, include=FALSE}
@@ -10,7 +10,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introduction
 
-This is the tutorial for the main functions in the `DeepLearningCausal` package. 
+This is the tutorial for the functions in the `DeepLearningCausal`
+package using the ensemble method from SuperLearner and neural network based on neuralnet.
+
 ```{r importcran, warning = FALSE, eval=FALSE}
 devtools::install_github("hknd23/DeepLearningCausal",force = TRUE)
 install.packages("DeepLearningCausal")
@@ -51,8 +53,7 @@ slearner_en <- metalearner_ensemble(cov.formula = response_formula,
                data = exp_data,
                treat.var = "strong_leader",
                meta.learner.type = "S.Learner",
-               SL.learners = SLlearners,
-               binary.outcome = FALSE)
+               SL.learners = SLlearners)
 
 print(slearner_en)
 
@@ -76,8 +77,7 @@ tlearner_en <- metalearner_ensemble(cov.formula = response_formula,
                data = exp_data,
                treat.var = "strong_leader",
                meta.learner.type = "T.Learner",
-               SL.learners = SLlearners,
-               binary.outcome = FALSE)
+               SL.learners = SLlearners)
 print(tlearner_en)
 
 plot(tlearner_en)
@@ -100,8 +100,7 @@ xlearner_en <- metalearner_ensemble(cov.formula = response_formula,
                data = exp_data,
                treat.var = "strong_leader",
                meta.learner.type = "X.Learner",
-               SL.learners = SLlearners,
-               binary.outcome = FALSE)
+               SL.learners = SLlearners)
 print(xlearner_en)
 
 plot(xlearner_en)
@@ -125,8 +124,7 @@ rlearner_en <- metalearner_ensemble(cov.formula = response_formula,
                data = exp_data,
                treat.var = "strong_leader",
                meta.learner.type = "R.Learner",
-               SL.learners = SLlearners,
-               binary.outcome = FALSE)
+               SL.learners = SLlearners)
 print(rlearner_en)
 
 plot(rlearner_en)
@@ -141,12 +139,11 @@ response_formula <- support_war ~ age + female + education + income +
                     employed + job_loss + hindu + political_ideology
 set.seed(123456)
 
-slearner_nn <- metalearner_deepneural(cov.formula = response_formula,
+slearner_nn <- metalearner_neural(cov.formula = response_formula,
                data = exp_data, treat.var = "strong_leader",
                meta.learner.type = "S.Learner",
                stepmax = 1e+9,  algorithm = "rprop+",
-               hidden.layer = c(2, 2), linear.output = FALSE,
-               binary.outcome = FALSE)
+               hidden.layer = c(1, 1), linear.output = FALSE)
 print(slearner_nn)
 
 plot(slearner_nn)
@@ -160,11 +157,10 @@ response_formula <- support_war ~ age + female + education + income +
                     employed + job_loss + hindu + political_ideology
 set.seed(123456)
 
-tlearner_nn <- metalearner_deepneural(cov.formula = response_formula,
+tlearner_nn <- metalearner_neural(cov.formula = response_formula,
                data = exp_data, treat.var = "strong_leader",
                meta.learner.type = "T.Learner", stepmax = 1e+9, 
-               hidden.layer = c(2, 2), linear.output = FALSE,
-               binary.outcome = FALSE)
+               hidden.layer = c(1, 1), linear.output = FALSE)
 print(tlearner_nn)
 
 plot(tlearner_nn)
@@ -178,11 +174,10 @@ response_formula <- support_war ~ age + female + education + income +
                     employed + job_loss + hindu + political_ideology
 set.seed(123456)
 
-xlearner_nn <- metalearner_deepneural(cov.formula = response_formula,
+xlearner_nn <- metalearner_neural(cov.formula = response_formula,
                data = exp_data, treat.var = "strong_leader",
                meta.learner.type = "X.Learner", stepmax = 1e+9, 
-               hidden.layer = c(2, 2), linear.output = FALSE,
-               binary.outcome = FALSE)
+               hidden.layer = c(1, 1), linear.output = FALSE)
 print(xlearner_nn)
 
 plot(xlearner_nn)
@@ -195,11 +190,10 @@ response_formula <- support_war ~ age + female + education + income +
                     employed + job_loss + hindu + political_ideology
 set.seed(123456)
 
-rlearner_nn <- metalearner_deepneural(cov.formula = response_formula,
+rlearner_nn <- metalearner_neural(cov.formula = response_formula,
                data = exp_data, treat.var = "strong_leader",
                meta.learner.type = "R.Learner", stepmax = 1e+9, 
-               hidden.layer = c(2, 2), linear.output = FALSE,
-               binary.outcome = FALSE)
+               hidden.layer = c(1, 1), linear.output = FALSE)
 print(rlearner_nn)
 
 plot(rlearner_nn)
@@ -214,15 +208,20 @@ library(SuperLearner)
 
 response_formula <- support_war ~ age + female + education + income +
                     employed + job_loss + hindu + political_ideology
-SLlearners = c("SL.xgboost", "SL.ranger", "SL.nnet","SL.glm")
+SLlearners = c("SL.nnet","SL.glm")
 set.seed(123456)
 
 pattc_en <- pattc_ensemble(response.formula = response_formula,
-            exp.data = exp_data, pop.data = pop_data,
-            treat.var = "strong_leader", compl.var = "compliance",
-            compl.SL.learners = SLlearners,
-            response.SL.learners = SLlearners,
-            binary.outcome = FALSE, bootstrap = FALSE)
+                           exp.data = exp_data, 
+                           pop.data = pop_data,
+                           treat.var = "strong_leader", 
+                           compl.var = "compliance", 
+                           compl.SL.learners = SLlearners,
+                           response.SL.learners = SLlearners,
+                           response.family = binomial(),
+                           binary.preds = FALSE, 
+                           bootstrap = TRUE,
+                           nboot = 1000)
 print(pattc_en)
 ```
 
@@ -230,48 +229,7 @@ print(pattc_en)
 plot(pattc_en)
 ```
 
-### Bootstrapped Ensemble PATT-C
-
-For bootstrapped PATT-C users can specify arguments `bootstrap = TRUE` and number
-of iterations with `nboot = 5000` (default is 1000). 
-
-```{r enmeta_boot, warning = FALSE}
-response_formula <- support_war ~ age + female + education + income +
-                    employed + job_loss + hindu + political_ideology
-set.seed(123456)
-
-pattc_en_b <- pattc_ensemble(response.formula = response_formula,
-            exp.data = exp_data, pop.data = pop_data,
-            treat.var = "strong_leader", compl.var = "compliance",
-            compl.SL.learners = SLlearners,
-            response.SL.learners = SLlearners,
-            binary.outcome = FALSE, 
-            bootstrap = TRUE, nboot = 5000)
-print(pattc_en_b)
-```
-
-## Deep Neural PATT-C
-
-```{r nnpatt}
-response_formula <- support_war ~ age + female + education + income +
-                    employed + job_loss + hindu + political_ideology
-set.seed(123456)
-
-pattc_nn <- pattc_deepneural(response.formula = response_formula,
-            exp.data = exp_data, pop.data = pop_data,
-            treat.var = "strong_leader", compl.var = "compliance",
-            compl.hidden.layer = c(2, 2),
-            response.hidden.layer = c(2, 2),
-            compl.stepmax = 1e+09, response.stepmax = 1e+09,
-            binary.outcome = FALSE)
-print(pattc_nn)
-```
-
-```{r pattcnnv, warning=FALSE}
-plot(pattc_nn)
-```
-
-### Bootstrapped Deep Neural PATT-C
+###  Deep Neural PATT-C
 
 For bootstrapped PATT-C, use `bootstrap = TRUE` and number of iterations with `nboot = 5000`. 
 
@@ -280,15 +238,14 @@ response_formula <- support_war ~ age + female + education + income +
                     employed + job_loss + hindu + political_ideology
 set.seed(123456)
 
-pattc_nn_b <- pattc_deepneural(response.formula = response_formula,
+pattc_nn <- pattc_neural(response.formula = response_formula,
               exp.data = exp_data, pop.data = pop_data,
               treat.var = "strong_leader", compl.var = "compliance",
-              compl.hidden.layer = c(2, 2),
-              response.hidden.layer = c(2, 2),
-              compl.stepmax = 1e+09, response.stepmax = 1e+09,
-              binary.outcome = FALSE, 
-              bootstrap = TRUE, nboot = 5000)
-print(pattc_nn_b)
+              compl.hidden.layer = c(1, 1),
+              response.hidden.layer = c(1, 1),
+              compl.stepmax = 1e+09, response.stepmax = 1e+09, bootstrap = TRUE,
+              nboot = 1000, binary.preds = FALSE)
+print(pattc_nn)
 ```
 
 ## Subgroup HTE Plots
