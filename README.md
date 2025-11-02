@@ -153,7 +153,7 @@ The tutorial for `metalearner_deeplearning ()` using using reticulate, tensorflo
 The function `metalearner_neural ()` in the package estimates the CATEs from the four meta-learner models using deep neural networks: T-learner, S-learner, X-learner and R-learner. The example below shows via a tutorial the applicability of this function for a small number of observations (*N*) from our survey response (specifically, survey experiment) dataset in Example 1.
 
 ``` r
-slearner_nn <- metalearner_deepneural(cov.formula = response_formula,
+slearner_nn <- metalearner_neural(cov.formula = response_formula,
                data = exp_data, treat.var = "strong_leader",
                meta.learner.type = "S.Learner", stepmax = 1e+9, 
                hidden.layer = c(2, 2), linear.output = FALSE)
@@ -191,10 +191,10 @@ plot(deep_pattc$response_history)
 ![](tutorial_files/tutorial_files/figure-gfm/response_trace2025-10-26.png)<!-- -->
 
 #### Deep Neural Networks for PATT (settings with treatment noncompliance) Using R Neural Net 
-The function `PATTC_deepneural` implements deep neural network estimation of the PATT from the PATT-C model for experimental data (in settings with noncompliance) using the R neural net package. The tutorial in the example below shows the applicability of this function for a small number of observations using both the survey response dataset in Example 1 and the WVS response dataset in Example 2. 
+The function `PATTC_neural` implements deep neural network estimation of the PATT from the PATT-C model for experimental data (in settings with noncompliance) using the R neural net package. The tutorial in the example below shows the applicability of this function for a small number of observations using both the survey response dataset in Example 1 and the WVS response dataset in Example 2. 
 
 ```r
-pattc_nn <- pattc_deepneural(response.formula = response_formula,
+pattc_nn <- pattc_neural(response.formula = response_formula,
             exp.data = exp_data, pop.data = pop_data,
             treat.var = "strong_leader", compl.var = "compliance",
             compl.hidden.layer = c(2, 2),
@@ -205,7 +205,7 @@ pattc_nn <- pattc_deepneural(response.formula = response_formula,
 The distribution of the deep neural network-estimated PATT obtained from the PATT-C model using R neural net can be visualized by using `plot(pattc_nn)`.
 
 
-The tutorial for `pattc_deepneural` for the PATT-C model using R neural net is available [here](/tutorial.md#deep-neural-patt-c). 
+The tutorial for `pattc_neural` for the PATT-C model using R neural net is available [here](/tutorial.md#deep-neural-patt-c). 
 
 
 ### Using the Package: Weighted Ensemble Learning Via Super Learner
