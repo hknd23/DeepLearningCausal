@@ -198,7 +198,7 @@ Users can employ 'plot(deeppattc\$complier\_history)' and 'plot(deeppattc\$respo
 ![](tutorial_files/tutorial_files/figure-gfm/complier_trace2025-10-26.png)<!-- -->
 ![](tutorial_files/tutorial_files/figure-gfm/response_trace2025-10-26.png)<!-- -->
 
-The trace plots for the complier and response model enables users to assess whether their deep neural network architecture is learning and identifying overfitting when estimating PATT in data with treatment noncompliance. 
+The trace plots for the complier and response model enables users to assess whether their deep neural network architecture is learning and identifying overfitting when estimating PATT in data with treatment noncompliance. Overall, these figures reveal stable learning given the steady decreases in loss but increase in accuracy for both the complier and response model.  
 
 
 #### Deep Neural Networks for PATT (settings with treatment noncompliance) Using R Neuralnet 
