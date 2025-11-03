@@ -43,14 +43,14 @@ The DeepLearningCausal package also provides users the choice of estimating CATE
 |`metalearner_neural ()`| Deep neural network estimation of CATEs for S-, T-, X-, R-learner using reticulate, tensorflow and keras3. |
 |`pattc_ensemble ()`        | Weighted ensemble learning estimation of PATT using super learner.|
 |`pattc_neural ()`      | Deep neural network estimation of PATT using neural net.|
-|`conformal_plot ()`| Assess meta-learner ITEs with conformal prediction to create statistically valid and reliable prediction intervals.|
+|`conformal_plot ()`| Assess meta-learner ITEs with conformal prediction to create statistically valid and reliable conformal prediction intervals.|
 |`hte_plot ()`      | Heterogeneous Treatment Effects plots from PATT-C and meta-learner models.|
 
 
 
 ### Example 1
 
-We employ data from a pilot survey response questionnaire (administered online) to obtain the CATE from the S-learner, T-learner X-learner, and R-learner models that are each estimated using weighted ensemble learning and deep neural networks. This survey response sample incorporates a vignette survey experiment fielded in India. The vignette describes a crisis scenario between country A and B where the leader of country B proposes the necessity of fighting a war with country A. After reading this vignette, respondents are then randomly assigned to the control group or to a binary treatment "strong leader" indicator variable. The treatment variable captures a hawkish policy prescription to the said international crisis by a strong populist leader as opposed to a centrist, non-populist leader. 
+We employ data from a pilot survey response questionnaire to obtain the CATEs from the S, T, X, and R-learner models that are each estimated using weighted ensemble learning and deep neural networks. This survey response sample incorporates a vignette survey experiment fielded in India. The vignette describes a crisis scenario between country A and B where the leader of country B proposes the necessity of fighting a war with country A. After reading this vignette, respondents are then randomly assigned to the control group or to a binary treatment "strong leader" indicator variable. The treatment variable captures a hawkish policy prescription to the said international crisis by a strong populist leader as opposed to a centrist, non-populist leader. 
 
 After being randomly assigned to the control group or the treatment, the respondents are asked whether or not they are willing to support the policy decision to fight a war against country A. This generates the binary "support war" dependent variable coded as 1 for respondents who support the policy decision of fighting a war against country A; it is coded as 0 otherwise. We also recorded the vignette screen time latency and conducted factual manipulation checks to assess the engagement of respondents--or, in other words, compliance--with the treatment. This permits operationalization of the binary "compliance" coded as 1 for respondents who understood and followed the instructions associated with the strong leader treatment and thus fully complied with this treatment; it is coded as 0 for “noncompliers”. The survey response dataset also includes numerous other covariates summarized in the following table.
 
@@ -147,7 +147,13 @@ Xlearner_deep <- metalearner_deeplearning(cov.formula = response_formula,
                                           batch_size = 32, validation_split = 0.2, dropout_rate = 0.1, patience = 20, 
                                           verbose = 1, seed = 1234)
 ```
-The tutorial for `metalearner_deeplearning ()` using using reticulate, tensorflow and keras3 in the case of the T-learner model is <<here>>. The tutorial for `metalearner_deeplearning ()` using using reticulate, tensorflow and keras3 in the case of the R-learner model is <<here>>. 
+The code and arguments for `metalearner_deeplearning ()` using reticulate, tensorflow and keras3 in the case of the T-learner model is:
+
+<<Nguyen, put 'meta-learner_deeplearning ()' code and arguments for T-learner here>>
+
+The tutorial for `metalearner_deeplearning ()` using using reticulate, tensorflow and keras3 in the case of the R-learner model is:
+
+<<Nguyen, put 'meta-learner_deeplearning ()' code and arguments for T-learner here>>
 
 #### Deep Neural Networks for Meta-Learners Using R Neural Net
 The function `metalearner_neural ()` in the package estimates the CATEs from the four meta-learner models using deep neural networks: T-learner, S-learner, X-learner and R-learner. The example below shows via a tutorial the applicability of this function for a small number of observations (*N*) from our survey response (specifically, survey experiment) dataset in Example 1.
@@ -187,8 +193,13 @@ plot(deep_pattc$complier_history)
 plot(deep_pattc$response_history)
 ```
 
+Users can employ 'plot(deeppattc\$complier\_history)' and 'plot(deeppattc\$response\_history)' can be employed to illustrate the trace plots of the loss and metric functions of the complier and response models used for estimating the PATT. 
+
 ![](tutorial_files/tutorial_files/figure-gfm/complier_trace2025-10-26.png)<!-- -->
 ![](tutorial_files/tutorial_files/figure-gfm/response_trace2025-10-26.png)<!-- -->
+
+The trace plots for the complier and response model enables users to assess whether their deep neural network architecture is learning and identifying overfitting when estimating PATT in data with treatment noncompliance. 
+
 
 #### Deep Neural Networks for PATT (settings with treatment noncompliance) Using R Neuralnet 
 The function `PATTC_neural` implements deep neural network estimation of the PATT from the PATT-C model for experimental data (in settings with noncompliance) using the R neuralnet package. The tutorial in the example below shows the applicability of this function for a small number of observations using both the survey response dataset in Example 1 and the WVS response dataset in Example 2. 
