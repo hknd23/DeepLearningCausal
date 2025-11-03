@@ -125,7 +125,7 @@ python_ready()
 
 #### Deep Neural Networks for Meta-Learners Using reticulate, tensorflow and keras3
 
-The function `metalearner_deepelearning ()` in our package is employed for deep neural network estimation of the CATEs from the four meta-learner models using reticulate, tensorflow and keras3. The code, customization of the deep neural network architecture, and results from the S-learner model using the said function is presented in the paper. The code and arguments for the X-learner model by using the `metalearner_deeplearning ()` function is presented below while the results from the X-learner model in this case is reported in the paper.
+The function `metalearner_deeplearning ()` in our package is employed for deep neural network estimation of the CATEs from the four meta-learner models using reticulate, tensorflow and keras3. The code, customization of the deep neural network architecture, and results from the S-learner model using the said function is presented in the paper. The code and arguments for the X-learner model by using the `metalearner_deeplearning ()` function is presented below while the results from the X-learner model in this case is reported in the paper.
 
 
 ``` r
@@ -169,7 +169,7 @@ The tutorial for `metalearner_neural ()` for the S-learner using R neuralnet is 
 
 #### Deep Neural Networks for PATT (settings with treatment noncompliance) Using reticulate, tensorflow and keras3
 
-The function `pattc_deepelearning ()` in our package is employed for deep neural network estimation of the PATT in settings with treatment noncompliance using reticulate, tensorflow and keras3. The code, customization of the deep neural network architecture, and results from obtaining the PATT via using the said function is presented in the paper.
+The function `pattc_deeplearning ()` in our package is employed for deep neural network estimation of the PATT in settings with treatment noncompliance using reticulate, tensorflow and keras3. The code, customization of the deep neural network architecture, and results from obtaining the PATT via using the said function is presented in the paper.
 
 ``` r
 deeppattc <- pattc_deeplearning(response.formula = response_formula,
@@ -193,7 +193,7 @@ plot(deep_pattc$complier_history)
 plot(deep_pattc$response_history)
 ```
 
-Users can employ 'plot(deeppattc\$complier\_history)' and 'plot(deeppattc\$response\_history)' can be employed to illustrate the trace plots of the loss and metric functions of the complier and response models used for estimating the PATT. 
+Users can employ "plot(deeppattc\$complier\_history)" and "plot(deeppattc\$response\_history)" to illustrate the trace plots of the loss and metric functions of the complier and response models used for estimating the PATT. 
 
 ![](tutorial_files/tutorial_files/figure-gfm/complier_trace2025-10-26.png)<!-- -->
 ![](tutorial_files/tutorial_files/figure-gfm/response_trace2025-10-26.png)<!-- -->
