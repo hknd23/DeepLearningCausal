@@ -149,12 +149,35 @@ Xlearner_deep <- metalearner_deeplearning(cov.formula = response_formula,
 ```
 The code and arguments for `metalearner_deeplearning ()` using reticulate, tensorflow and keras3 in the case of the T-learner model is:
 
-<<Nguyen, put 'meta-learner_deeplearning ()' code and arguments for T-learner here>>
-
+```r
+tlearner_deep <- metalearner_deeplearning(cov.formula = response_formula, 
+                                          train.data = train_data,
+                                          test.data = test_data,
+                                          treat.var = "strong_leader", 
+                                          meta.learner.type = "T.Learner",
+                                          algorithm = "adam", hidden.layer = c(4,2), hidden_activation = "relu",
+                                          output_activation = "sigmoid", output_units = 1,
+                                          loss = "binary_crossentropy", metrics = "accuracy", epoch = 100,
+                                          batch_size = 32, validation_split = 0.2, dropout_rate = 0.1, patience = 20, 
+                                          conformal = TRUE,
+                                          alpha = 0.1,
+                                          calib_frac = 0.5, prob_bound = TRUE,
+                                          verbose = 1, seed = 1234)
+```                                          
 The tutorial for `metalearner_deeplearning ()` using using reticulate, tensorflow and keras3 in the case of the R-learner model is:
 
-<<Nguyen, put 'meta-learner_deeplearning ()' code and arguments for T-learner here>>
-
+```r
+rlearner_deep <- metalearner_deeplearning(cov.formula = response_formula, 
+                                          train.data = train_data,
+                                          test.data = test_data,
+                                          treat.var = "strong_leader", 
+                                          meta.learner.type = "R.Learner",
+                                          algorithm = "adam", hidden.layer = c(4,2), hidden_activation = "relu",
+                                          output_activation = "sigmoid", output_units = 1,
+                                          loss = "binary_crossentropy", metrics = "accuracy", epoch = 100,
+                                          batch_size = 32, validation_split = 0.2, dropout_rate = 0.1, patience = 20, 
+                                          conformal = FALSE, seed = 1234)
+```
 #### Deep Neural Networks for Meta-Learners Using R Neural Net
 The function `metalearner_neural ()` in the package estimates the CATEs from the four meta-learner models using deep neural networks: T-learner, S-learner, X-learner and R-learner. The example below shows via a tutorial the applicability of this function for a small number of observations (*N*) from our survey response (specifically, survey experiment) dataset in Example 1.
 
