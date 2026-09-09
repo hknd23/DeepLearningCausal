@@ -12,6 +12,8 @@
 [![](http://cranlogs.r-pkg.org/badges/grand-total/DeepLearningCausal)](https://cran.r-project.org/package=DeepLearningCausal)
 <!-- badges: end -->
 
+[R Journal Paper](https://journal.r-project.org/articles/RJ-2026-035/)
+
 Our **DeepLearningCausal** R package provides functions for deep learning estimation of Conditional Average Treatment Effects (CATEs) 
 from meta-learner models and Population Average Treatment Effects on the Treated (PATT) in settings with treatment noncompliance using *reticulate*, *TensorFlow* 
 and *Keras3* packages. The meta-learner models analyzed in our package are the T, S, X and R-learner models (Künzel et al., 2019; Nie and Wager, 2021). 
